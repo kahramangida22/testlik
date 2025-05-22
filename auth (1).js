@@ -65,3 +65,4 @@ window.addPoints = async function(points) {
   });
   alert(points + " puan eklendi!");
 };
+auth (1).js silindi
