@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel - Çekim Talepleri</title>
+  <script type="module" src="auth.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+    h2 { color: #333; }
+    .request { background: white; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    button { margin-top: 10px; margin-right: 10px; padding: 6px 12px; }
+  </style>
+</head>
+<body>
+  <h2>Para Çekme Talepleri</h2>
+  <div id="requests">Yükleniyor...</div>
+
+  <script type="module">
+    import { getFirestore, collectionGroup, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
+      authDomain: "testlik.firebaseapp.com",
+      projectId: "testlik",
+      storageBucket: "testlik.firebasestorage.app",
+      messagingSenderId: "668524500496",
+      appId: "1:668524500496:web:579bb4fc5990c87afedc95",
+      measurementId: "G-8ZEYBJCV3T"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    function updateStatus(path, status) {
+      const ref = doc(db, path);
+      updateDoc(ref, { status: status }).then(() => {
+        alert("Durum güncellendi: " + status);
+        location.reload();
+      });
+    }
+
+    onAuthStateChanged(auth, async user => {
+      if (user) {
+        const q = collectionGroup(db, "withdrawals");
+        const snap = await getDocs(q);
+        let html = "";
+        snap.forEach(docu => {
+          const d = docu.data();
+          html += `
+            <div class='request'>
+              <strong>IBAN:</strong> ${d.iban}<br/>
+              <strong>Miktar:</strong> ${d.amount} puan<br/>
+              <strong>Açıklama:</strong> ${d.explanation || "Yok"}<br/>
+              <strong>Tarih:</strong> ${new Date(d.date.seconds * 1000).toLocaleString()}<br/>
+              <strong>Durum:</strong> ${d.status}<br/>
+              <button onclick="updateStatus('${docu.ref.path}', 'Ödendi')">Onayla</button>
+              <button onclick="updateStatus('${docu.ref.path}', 'Reddedildi')">Reddet</button>
+            </div>
+          `;
+        });
+        document.getElementById("requests").innerHTML = html || "<em>Henüz talep yok.</em>";
+      } else {
+        document.getElementById("requests").innerHTML = "<strong>Lütfen giriş yapın.</strong>";
+      }
+    });
+
+    window.updateStatus = updateStatus;
+  </script>
+</body>
+</html>
