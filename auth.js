@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
@@ -13,12 +14,18 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 window.register = function() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
   createUserWithEmailAndPassword(auth, email, password)
-    .then(() => {
+    .then(async (userCredential) => {
+      const uid = userCredential.user.uid;
+      await setDoc(doc(db, "users", uid), {
+        email: email,
+        points: 0
+      });
       window.location.href = "dashboard.html";
     })
     .catch(error => alert(error.message));
@@ -40,9 +47,21 @@ window.logout = function() {
   });
 };
 
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, async (user) => {
   if (user && document.getElementById("username")) {
-    document.getElementById("username").textContent = user.email;
-    document.getElementById("userpoints").textContent = "100";
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    const userData = userDoc.data();
+    document.getElementById("username").textContent = userData.email;
+    document.getElementById("userpoints").textContent = userData.points;
   }
 });
+
+window.addPoints = async function(points) {
+  const user = auth.currentUser;
+  if (!user) return;
+  const userRef = doc(db, "users", user.uid);
+  await updateDoc(userRef, {
+    points: increment(points)
+  });
+  alert(points + " puan eklendi!");
+};
