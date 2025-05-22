@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Soru 1</title>
+</head>
+<body>
+  <h2>1. Seni en iyi anlatan kelime?</h2>
+  <form onsubmit="return saveAnswerAndContinue();">
+    <label><input type="radio" name="q1" value="1" required> Enerjik</label><br>
+    <label><input type="radio" name="q1" value="1"> Duygusal</label><br>
+    <label><input type="radio" name="q1" value="1"> Mantıklı</label><br>
+    <label><input type="radio" name="q1" value="1"> Yaratıcı</label><br><br>
+    <button type="submit">Sonraki</button>
+  </form>
+
+  <script>
+    function saveAnswerAndContinue() {
+      const selected = document.querySelector('input[name="q1"]:checked');
+      if (selected) {
+        localStorage.setItem("q1", selected.value);
+        window.location.href = "test-soru2.html";
+      }
+      return false;
+    }
+  </script>
+</body>
+</html>

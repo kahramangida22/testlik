@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Soru 2</title>
+</head>
+<body>
+  <h2>2. En rahat hissettiğin ortam?</h2>
+  <form onsubmit="return saveAnswerAndContinue();">
+    <label><input type="radio" name="q2" value="1" required> Kalabalık</label><br>
+    <label><input type="radio" name="q2" value="1"> Doğa</label><br>
+    <label><input type="radio" name="q2" value="1"> Ev</label><br>
+    <label><input type="radio" name="q2" value="1"> Sahne</label><br><br>
+    <button type="submit">Sonraki</button>
+  </form>
+
+  <script>
+    function saveAnswerAndContinue() {
+      const selected = document.querySelector('input[name="q2"]:checked');
+      if (selected) {
+        localStorage.setItem("q2", selected.value);
+        window.location.href = "test-sonuc.html";
+      }
+      return false;
+    }
+  </script>
+</body>
+</html>

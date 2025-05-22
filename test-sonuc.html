@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Sonucu</title>
+  <script type="module" src="auth.js"></script>
+</head>
+<body>
+  <h2>Test Sonucu</h2>
+  <div id="puan"></div>
+
+  <script>
+    const q1 = parseInt(localStorage.getItem("q1")) || 0;
+    const q2 = parseInt(localStorage.getItem("q2")) || 0;
+    const score = q1 + q2;
+    const total = 2;
+
+    document.getElementById("puan").innerHTML = `<h3>Puanın: ${score * 10} / ${total * 10}</h3>`;
+
+    // Firebase'e gönder
+    if (typeof addPoints === "function") {
+      addPoints(score * 10);
+    }
+
+    // Cevapları temizle
+    localStorage.removeItem("q1");
+    localStorage.removeItem("q2");
+  </script>
+</body>
+</html>
