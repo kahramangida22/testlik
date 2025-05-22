@@ -1,0 +1,21 @@
+[
+  {
+    "id": 1,
+    "title": "Kişilik Testi",
+    "questions": [
+      {
+        "q": "Seni en iyi anlatan kelime?",
+        "a": ["Enerjik", "Duygusal", "Mantıklı", "Yaratıcı"]
+      },
+      {
+        "q": "En rahat hissettiğin ortam?",
+        "a": ["Kalabalık", "Doğa", "Ev", "Sahne"]
+      },
+      {
+        "q": "En çok vakit geçirdiğin şey?",
+        "a": ["Arkadaşlar", "Kitap", "Hayaller", "İnternet"]
+      }
+    ],
+    "pointPerQuestion": 10
+  }
+]
