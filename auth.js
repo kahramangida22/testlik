@@ -1,7 +1,7 @@
-// Firebase transaction kayıt ve cüzdan + para çekme için auth.js güncellenmiş versiyonu
+// Firebase transaction kayıt, cüzdan, para çekme ve admin paneli için auth.js güncellenmiş versiyonu
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, collection, addDoc, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, collection, addDoc, query, orderBy, getDocs, updateDoc as updateDocRef } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
@@ -64,6 +64,26 @@ onAuthStateChanged(auth, async (user) => {
     });
     document.getElementById("transactions").innerHTML = html || "<em>Henüz işlem yok.</em>";
   }
+  if (user && document.getElementById("withdrawalsList")) {
+    const usersSnap = await getDocs(collection(db, "users"));
+    let html = "";
+    for (const userDoc of usersSnap.docs) {
+      const withdrawalsRef = collection(db, "users", userDoc.id, "withdrawals");
+      const withdrawalsSnap = await getDocs(withdrawalsRef);
+      withdrawalsSnap.forEach(w => {
+        const data = w.data();
+        html += `<div class='txn'>
+          <strong>${data.amount} puan</strong> - ${data.iban}<br/>
+          <small>${new Date(data.date.seconds * 1000).toLocaleString()}</small><br/>
+          Açıklama: ${data.explanation}<br/>
+          Durum: <strong>${data.status}</strong><br/>
+          <button onclick="approveWithdrawal('${userDoc.id}', '${w.id}')">Onayla</button>
+          <button onclick="rejectWithdrawal('${userDoc.id}', '${w.id}')">Reddet</button>
+        </div><hr/>`;
+      });
+    }
+    document.getElementById("withdrawalsList").innerHTML = html || "<em>Çekim talebi yok.</em>";
+  }
 });
 
 window.addPoints = async function(points, title = "Test Çözümü") {
@@ -102,4 +122,16 @@ window.requestWithdrawal = async function() {
   });
 
   alert("Çekim talebin alındı! 48 saat içinde incelenecek.");
+};
+
+window.approveWithdrawal = async function(uid, wid) {
+  const ref = doc(db, "users", uid, "withdrawals", wid);
+  await updateDocRef(ref, { status: "Ödendi" });
+  alert("Talep onaylandı.");
+};
+
+window.rejectWithdrawal = async function(uid, wid) {
+  const ref = doc(db, "users", uid, "withdrawals", wid);
+  await updateDocRef(ref, { status: "Reddedildi" });
+  alert("Talep reddedildi.");
 };
