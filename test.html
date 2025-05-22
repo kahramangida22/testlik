@@ -4,11 +4,25 @@
   <meta charset="UTF-8" />
   <title>Testlik | Test Çöz</title>
   <script defer src="script.js"></script>
-</head>
+</<script type="module" src="auth.js"></script>
+>
 <body>
   <h1 id="test-title">Yükleniyor...</h1>
   <div id="questions"></div>
-  <button onclick="submitTest()">Testi Bitir</button>
+  <button onclick="<script>
+function submitTest() {
+  const formElements = document.querySelectorAll('input[type="radio"]:checked');
+  const total = window.currentTest.questions.length * window.currentTest.pointPerQuestion;
+  const score = formElements.length * window.currentTest.pointPerQuestion;
+  document.getElementById('result').innerHTML = `<h3>Puanın: ${score} / ${total}</h3>`;
+
+  // Eğer kullanıcı giriş yaptıysa +10 puan ekle
+  if (typeof addPoints === "function") {
+    addPoints(score); // örnek: score kadar puan veriyoruz
+  }
+}
+</script>
+">Testi Bitir</button>
   <div id="result"></div>
 </body>
 </html>
