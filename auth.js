@@ -1,4 +1,4 @@
-// Firebase transaction kayıt ve cüzdan için auth.js güncellenmiş versiyonu
+// Firebase transaction kayıt ve cüzdan + para çekme için auth.js güncellenmiş versiyonu
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, collection, addDoc, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
@@ -77,4 +77,29 @@ window.addPoints = async function(points, title = "Test Çözümü") {
     date: new Date()
   });
   alert(points + " puan eklendi!");
+};
+
+window.requestWithdrawal = async function() {
+  const iban = document.getElementById("iban").value;
+  const amount = parseInt(document.getElementById("amount").value);
+  const explanation = document.getElementById("explanation").value;
+  const user = auth.currentUser;
+  if (!user) return alert("Lütfen giriş yapın.");
+
+  const userRef = doc(db, "users", user.uid);
+  const userSnap = await getDoc(userRef);
+  const currentPoints = userSnap.data().points;
+
+  if (amount > currentPoints) return alert("Yeterli puan yok.");
+  if (amount < 100) return alert("Minimum çekim limiti 100 puandır.");
+
+  await addDoc(collection(db, "users", user.uid, "withdrawals"), {
+    iban: iban,
+    amount: amount,
+    explanation: explanation,
+    date: new Date(),
+    status: "Beklemede"
+  });
+
+  alert("Çekim talebin alındı! 48 saat içinde incelenecek.");
 };
