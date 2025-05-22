@@ -1,6 +1,7 @@
+// Firebase transaction kayıt ve cüzdan için auth.js güncellenmiş versiyonu
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, collection, addDoc, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
@@ -48,20 +49,32 @@ window.logout = function() {
 };
 
 onAuthStateChanged(auth, async (user) => {
-  if (user && document.getElementById("username")) {
+  if (user && document.getElementById("userpoints")) {
     const userDoc = await getDoc(doc(db, "users", user.uid));
     const userData = userDoc.data();
-    document.getElementById("username").textContent = userData.email;
     document.getElementById("userpoints").textContent = userData.points;
+  }
+  if (user && document.getElementById("transactions")) {
+    const txnQuery = query(collection(db, "users", user.uid, "transactions"), orderBy("date", "desc"));
+    const txnSnap = await getDocs(txnQuery);
+    let html = "";
+    txnSnap.forEach(doc => {
+      const t = doc.data();
+      html += `<div class='txn'><strong>+${t.points} puan</strong> - ${t.title} <br/><small>${new Date(t.date.seconds * 1000).toLocaleString()}</small></div>`;
+    });
+    document.getElementById("transactions").innerHTML = html || "<em>Henüz işlem yok.</em>";
   }
 });
 
-window.addPoints = async function(points) {
+window.addPoints = async function(points, title = "Test Çözümü") {
   const user = auth.currentUser;
   if (!user) return;
   const userRef = doc(db, "users", user.uid);
-  await updateDoc(userRef, {
-    points: increment(points)
+  await updateDoc(userRef, { points: increment(points) });
+  await addDoc(collection(db, "users", user.uid, "transactions"), {
+    title: title,
+    points: points,
+    date: new Date()
   });
   alert(points + " puan eklendi!");
 };
