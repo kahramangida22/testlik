@@ -1,7 +1,7 @@
-// Firebase transaction kayıt, cüzdan, para çekme ve admin paneli için auth.js güncellenmiş versiyonu
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, collection, addDoc, query, orderBy, getDocs, updateDoc as updateDocRef } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, collection, addDoc, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
@@ -20,13 +20,19 @@ const db = getFirestore(app);
 window.register = function() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
+  const referrer = localStorage.getItem("referrer");
+
   createUserWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
       const uid = userCredential.user.uid;
-      await setDoc(doc(db, "users", uid), {
+      const data = {
         email: email,
         points: 0
-      });
+      };
+      if (referrer) {
+        data.referrer = referrer;
+      }
+      await setDoc(doc(db, "users", uid), data);
       window.location.href = "dashboard.html";
     })
     .catch(error => alert(error.message));
@@ -64,38 +70,38 @@ onAuthStateChanged(auth, async (user) => {
     });
     document.getElementById("transactions").innerHTML = html || "<em>Henüz işlem yok.</em>";
   }
-  if (user && document.getElementById("withdrawalsList")) {
-    const usersSnap = await getDocs(collection(db, "users"));
-    let html = "";
-    for (const userDoc of usersSnap.docs) {
-      const withdrawalsRef = collection(db, "users", userDoc.id, "withdrawals");
-      const withdrawalsSnap = await getDocs(withdrawalsRef);
-      withdrawalsSnap.forEach(w => {
-        const data = w.data();
-        html += `<div class='txn'>
-          <strong>${data.amount} puan</strong> - ${data.iban}<br/>
-          <small>${new Date(data.date.seconds * 1000).toLocaleString()}</small><br/>
-          Açıklama: ${data.explanation}<br/>
-          Durum: <strong>${data.status}</strong><br/>
-          <button onclick="approveWithdrawal('${userDoc.id}', '${w.id}')">Onayla</button>
-          <button onclick="rejectWithdrawal('${userDoc.id}', '${w.id}')">Reddet</button>
-        </div><hr/>`;
-      });
-    }
-    document.getElementById("withdrawalsList").innerHTML = html || "<em>Çekim talebi yok.</em>";
-  }
 });
 
 window.addPoints = async function(points, title = "Test Çözümü") {
   const user = auth.currentUser;
   if (!user) return;
   const userRef = doc(db, "users", user.uid);
+  const userSnap = await getDoc(userRef);
+  const userData = userSnap.data();
+
   await updateDoc(userRef, { points: increment(points) });
+
   await addDoc(collection(db, "users", user.uid, "transactions"), {
     title: title,
     points: points,
     date: new Date()
   });
+
+  // Referanslı kullanıcı ise referans sahibine puan ver
+  if (userData.referrer) {
+    const refSnap = await getDocs(query(collection(db, "users")));
+    refSnap.forEach(async refDoc => {
+      if (refDoc.data().email === userData.referrer) {
+        await updateDoc(doc(db, "users", refDoc.id), { points: increment(5) });
+        await addDoc(collection(db, "users", refDoc.id, "transactions"), {
+          title: "Referans Kazancı",
+          points: 5,
+          date: new Date()
+        });
+      }
+    });
+  }
+
   alert(points + " puan eklendi!");
 };
 
@@ -122,16 +128,4 @@ window.requestWithdrawal = async function() {
   });
 
   alert("Çekim talebin alındı! 48 saat içinde incelenecek.");
-};
-
-window.approveWithdrawal = async function(uid, wid) {
-  const ref = doc(db, "users", uid, "withdrawals", wid);
-  await updateDocRef(ref, { status: "Ödendi" });
-  alert("Talep onaylandı.");
-};
-
-window.rejectWithdrawal = async function(uid, wid) {
-  const ref = doc(db, "users", uid, "withdrawals", wid);
-  await updateDocRef(ref, { status: "Reddedildi" });
-  alert("Talep reddedildi.");
 };
