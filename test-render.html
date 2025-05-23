@@ -2,68 +2,45 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Testi Çöz</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test Çöz</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
-    .container { max-width: 700px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    h2 { color: #333; }
-    .question { margin-top: 20px; }
-    .question p { font-weight: bold; }
+    body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+    .card { background: #fff; border-radius: 8px; padding: 20px; max-width: 600px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .question { margin: 20px 0; }
     .options label { display: block; margin-bottom: 8px; }
-    .submit-btn { margin-top: 20px; padding: 10px 20px; font-size: 16px; border: none; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer; }
-    .submit-btn:hover { background-color: #0056b3; }
+    button { margin-top: 20px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2 id="testTitle">Test</h2>
-    <form id="testForm"></form>
-    <button class="submit-btn" onclick="submitTest()">Testi Bitir</button>
-    <div id="result"></div>
+  <div class="card">
+    <h2 id="test-title">Yükleniyor...</h2>
+    <div id="questions"></div>
+    <button onclick="finishTest()">Testi Bitir</button>
   </div>
 
   <script>
-    const test = JSON.parse(localStorage.getItem("currentTest"));
-    if (!test) {
-      document.getElementById("testForm").innerHTML = "<p>Test yüklenemedi.</p>";
-    } else {
-      document.getElementById("testTitle").textContent = test.title;
-      const form = document.getElementById("testForm");
-      test.questions.forEach((q, index) => {
+    async function loadTest() {
+      const res = await fetch("test-1.json");
+      const data = await res.json();
+      document.getElementById("test-title").textContent = data.title;
+      const container = document.getElementById("questions");
+      data.questions.forEach((q, index) => {
         const div = document.createElement("div");
-        div.className = "question";
-        div.innerHTML = \`
-          <p>${index + 1}. ${q.text}</p>
-          <div class="options">
-            ${q.options.map((opt, i) => \`
-              <label><input type="radio" name="q${index}" value="${opt}" required> ${opt}</label>
-            \`).join("")}
-          </div>
-        \`;
-        form.appendChild(div);
+        div.classList.add("question");
+        div.innerHTML = `<strong>${index + 1}. ${q.question}</strong><div class="options">` +
+          q.options.map(opt => `<label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label>`).join("") +
+          `</div>`;
+        container.appendChild(div);
       });
     }
 
-    function submitTest() {
-      const totalQuestions = test.questions.length;
-      const selected = document.querySelectorAll("input[type='radio']:checked").length;
-      if (selected < totalQuestions) {
-        alert("Lütfen tüm soruları cevaplayın.");
-        return;
-      }
-      const puan = totalQuestions * 10;
-      document.getElementById("result").innerHTML = \`
-        <h3>Puanınız: \${puan}</h3>
-        <p>Tebrikler! Bu testi tamamladınız.</p>
-      \`;
-
-      // Firebase puan işlemi (auth.js'teki addPoints fonksiyonu çağrılır)
-      if (typeof addPoints === "function") {
-        addPoints(puan, test.title);
-      }
+    function finishTest() {
+      alert("Cevaplarınız alınmıştır. Teşekkürler!");
     }
+
+    loadTest();
   </script>
-  <script type="module" src="auth.js"></script>
 </body>
 </html>
