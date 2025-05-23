@@ -1,60 +1,17 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Testlik - Testler</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
-    h1 { text-align: center; color: #333; }
-    .category-filter {
-      text-align: center;
-      margin: 20px 0;
-    }
-    .category-filter button {
-      margin: 0 5px;
-      padding: 8px 15px;
-      border: none;
-      background: #00796b;
-      color: white;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .test-card {
-      background: white;
-      margin: 10px auto;
-      padding: 20px;
-      max-width: 600px;
-      border-radius: 8px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
-      position: relative;
-    }
-    .test-card h3 { margin: 0 0 10px; }
-    .test-card p { margin: 0 0 5px; }
-    .test-card a {
-      display: inline-block;
-      margin-top: 10px;
-      color: #00796b;
-      text-decoration: underline;
-    }
-    .favorite-btn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      background: none;
-      border: none;
-      font-size: 20px;
-      cursor: pointer;
-      color: #ff9800;
-    }
-  </style>
 </head>
 <body>
-  <h1>Testlik Testleri</h1>
-  <div class="category-filter" id="categoryFilter"></div>
-  <div id="testList"></div>
+  <h1 style="text-align: center;">Testlik Testleri</h1>
 
-  <script type="module" src="index.js"></script>
+  <!-- ✅ TESTLERİN LİSTELENECEĞİ ALAN -->
+  <div id="test-list" style="max-width: 600px; margin: 0 auto;"></div>
+
+  <!-- ✅ JAVASCRIPT KODLARININ ÇAĞRILMASI -->
+  <script type="module" src="anasayfa.js"></script>
 </body>
 </html>
