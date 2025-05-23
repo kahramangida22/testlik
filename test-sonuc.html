@@ -1,31 +1,48 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Test Sonucu</title>
-  <script type="module" src="auth.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 40px;
+      text-align: center;
+    }
+    .result-box {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    .result-box img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .result-box h2 {
+      margin: 0;
+      color: #00796b;
+    }
+    .result-box p {
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
-  <h2>Test Sonucu</h2>
-  <div id="puan"></div>
+  <div class="result-box">
+    <img id="resultImage" src="" alt="Sonuç Görseli" />
+    <h2 id="resultTitle">Yükleniyor...</h2>
+    <p id="resultMessage"></p>
+    <p id="resultPoints"></p>
+  </div>
 
-  <script>
-    const q1 = parseInt(localStorage.getItem("q1")) || 0;
-    const q2 = parseInt(localStorage.getItem("q2")) || 0;
-    const score = q1 + q2;
-    const total = 2;
-
-    document.getElementById("puan").innerHTML = `<h3>Puanın: ${score * 10} / ${total * 10}</h3>`;
-
-    // Firebase'e gönder
-    if (typeof addPoints === "function") {
-      addPoints(score * 10);
-    }
-
-    // Cevapları temizle
-    localStorage.removeItem("q1");
-    localStorage.removeItem("q2");
-  </script>
+  <script type="module" src="test-sonuc.js"></script>
 </body>
 </html>
