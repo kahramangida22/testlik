@@ -1,30 +1,57 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Test Çöz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Testi Çöz</title>
   <style>
-    body { font-family: Arial; padding: 20px; background: #f5f5f5; }
-    .card { background: #fff; border-radius: 8px; padding: 20px; max-width: 700px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    .question { margin: 20px 0; }
-    .options label { display: block; margin-bottom: 8px; }
-    button { margin-top: 20px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    body {
+      font-family: sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-bottom: 10px;
+    }
+    .question {
+      margin-bottom: 25px;
+    }
+    .options label {
+      display: block;
+      margin: 5px 0;
+      cursor: pointer;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h2 id="test-title">Yükleniyor...</h2>
-    <p id="test-desc"></p>
-    <div id="questions"></div>
-    <button onclick="submitTest()">Testi Bitir</button>
-    <div id="result"></div>
+  <div class="container">
+    <h2 id="testTitle">Yükleniyor...</h2>
+    <form id="testForm"></form>
+    <button id="testFinishButton" style="display:none">Testi Bitir</button>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
@@ -37,59 +64,54 @@
     };
 
     const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
     const db = getFirestore(app);
 
     const params = new URLSearchParams(window.location.search);
     const testId = params.get("id") || "test-1";
 
-    let totalScore = 0;
+    const testTitle = document.getElementById("testTitle");
+    const testForm = document.getElementById("testForm");
+    const finishBtn = document.getElementById("testFinishButton");
 
     async function loadTest() {
-      const docRef = doc(db, "tests", testId);
+      const docRef = doc(db, "testler", testId);
       const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        document.getElementById("test-title").textContent = data.title;
-        document.getElementById("test-desc").textContent = data.description;
-        const container = document.getElementById("questions");
-        data.questions.forEach((q, i) => {
-          const div = document.createElement("div");
-          div.classList.add("question");
-          div.innerHTML = `
-            <strong>${i + 1}. ${q.question}</strong>
-            <div class="options">
-              ${q.options.map((opt, idx) =>
-                `<label><input type="radio" name="q${i}" value="${idx}"> ${opt}</label>`
-              ).join("")}
-            </div>`;
-          container.appendChild(div);
-        });
-        window.testData = data;
-      } else {
-        document.getElementById("test-title").textContent = "Test bulunamadı.";
-      }
-    }
 
-    function submitTest() {
-      const data = window.testData;
-      if (!data) return;
-      let score = 0;
-      for (let i = 0; i < data.questions.length; i++) {
-        const selected = document.querySelector(`input[name="q${i}"]:checked`);
-        if (!selected) return alert("Tüm soruları cevaplayın.");
-        const selectedIndex = parseInt(selected.value);
-        score += (data.questions[i].scores ? data.questions[i].scores[selectedIndex] : 2); // varsayılan puan
+      if (!docSnap.exists()) {
+        testTitle.textContent = "Test bulunamadı.";
+        return;
       }
 
-      let result = data.results.find(r => score >= r.minScore && score <= r.maxScore);
-      if (!result) result = { title: "Sonuç Yok", description: "Skor aralığına uygun sonuç bulunamadı." };
+      const test = docSnap.data();
+      testTitle.textContent = test.title;
 
-      document.getElementById("result").innerHTML = `
-        <hr/><h3>Sonuç: ${result.title}</h3>
-        <p>${result.description}</p>
-        ${result.image ? `<img src="${result.image}" style="max-width:100%;border-radius:10px;margin-top:10px;">` : ""}
-      `;
+      test.questions.forEach((q, index) => {
+        const div = document.createElement("div");
+        div.className = "question";
+        div.innerHTML = `<strong>${index + 1}. ${q.question}</strong>`;
+        const options = q.options.map(opt => `
+          <label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label>
+        `).join("");
+        div.innerHTML += `<div class="options">${options}</div>`;
+        testForm.appendChild(div);
+      });
+
+      finishBtn.style.display = "inline-block";
     }
+
+    async function addPoints(points = 10) {
+      const user = auth.currentUser;
+      if (!user) return alert("Lütfen giriş yapın.");
+      const ref = doc(db, "users", user.uid);
+      await updateDoc(ref, { points: increment(points) });
+      alert(`${points} puan kazandınız!`);
+    }
+
+    finishBtn.addEventListener("click", e => {
+      e.preventDefault();
+      addPoints();
+    });
 
     loadTest();
   </script>
