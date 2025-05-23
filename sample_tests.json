@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "title": "Hangi Türk Dizisi Seni Anlatıyor?",
+    "category": "Eğlence"
+  },
+  {
+    "id": 2,
+    "title": "Zeka Tipin Hangisi?",
+    "category": "Kişilik"
+  },
+  {
+    "id": 3,
+    "title": "2025'te Seni Neler Bekliyor?",
+    "category": "Gelecek"
+  },
+  {
+    "id": 4,
+    "title": "En Uygun Meslek Hangisi?",
+    "category": "Kariyer"
+  },
+  {
+    "id": 5,
+    "title": "Tatilde Nereye Gitmelisin?",
+    "category": "Yaşam"
+  }
+]
