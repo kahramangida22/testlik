@@ -1,0 +1,32 @@
+{
+  "title": "Kişilik Testi",
+  "questions": [
+    {
+      "text": "Seni en iyi tanımlayan kelime?",
+      "options": [
+        "Neşeli",
+        "Ciddi",
+        "Macera sever",
+        "Yalnız"
+      ]
+    },
+    {
+      "text": "En rahat hissettiğin ortam?",
+      "options": [
+        "Kalabalık",
+        "Doğa",
+        "Ev",
+        "Sahne"
+      ]
+    },
+    {
+      "text": "En çok zaman geçirdiğin yer?",
+      "options": [
+        "Ev",
+        "Kütüphane",
+        "Sokaklar",
+        "Sosyal Medya"
+      ]
+    }
+  ]
+}
