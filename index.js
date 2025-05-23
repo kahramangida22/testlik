@@ -1,24 +1,27 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
   authDomain: "testlik.firebaseapp.com",
-  projectId: "testlik",
-  storageBucket: "testlik.firebasestorage.app",
-  messagingSenderId: "668524500496",
-  appId: "1:668524500496:web:579bb4fc5990c87afedc95",
-  measurementId: "G-8ZEYBJCV3T"
+  projectId: "testlik"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+
+let currentUser = null;
+let allTests = [];
 
 const testList = document.getElementById("testList");
 const categoryFilter = document.getElementById("categoryFilter");
 
-let allTests = [];
+onAuthStateChanged(auth, (user) => {
+  currentUser = user;
+});
 
 async function fetchTests() {
   const querySnapshot = await getDocs(collection(db, "testler"));
@@ -46,12 +49,23 @@ window.filterCategory = (cat) => {
 function displayTests(list = allTests) {
   testList.innerHTML = list.map(test => `
     <div class="test-card">
+      <button class="favorite-btn" onclick="addToFavorites('${test.id}', '${test.title}')">⭐</button>
       <h3>${test.title}</h3>
       <p><strong>Kategori:</strong> ${test.category}</p>
       <p>${test.description}</p>
-      <a href="test-render.html?id=${test.id}">Teste Git</a>
+      <a href="test-render.html?id=${test.id}&q=1">Teste Git</a>
     </div>
   `).join("");
 }
+
+window.addToFavorites = async (testId, title) => {
+  if (!currentUser) return alert("Favorilere eklemek için giriş yapmalısınız.");
+  await setDoc(doc(db, "users", currentUser.uid, "favorites", testId), {
+    testId: testId,
+    title: title,
+    addedAt: new Date()
+  });
+  alert("Favorilere eklendi!");
+};
 
 fetchTests();
