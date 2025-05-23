@@ -1,70 +1,68 @@
 {
-  "title": "Kişilik Testi",
+  "id": "test-1",
+  "title": "Kişilik Tipini Öğren!",
+  "description": "Bu testle kişilik tipini öğrenmeye hazır mısın?",
   "questions": [
     {
-      "question": "Seni en iyi anlatan kelime?",
+      "question": "En sevdiğin renk hangisi?",
       "options": [
-        "Energik",
-        "Duygusal",
-        "Mantıklı",
-        "Yaratıcı"
-      ],
-      "scores": [
-        10,
-        5,
-        7,
-        8
+        "Kırmızı",
+        "Mavi",
+        "Yeşil",
+        "Siyah"
       ]
     },
     {
-      "question": "En rahat hissettiğin ortam?",
+      "question": "Boş zamanlarında ne yapmayı seversin?",
+      "options": [
+        "Kitap okumak",
+        "Spor yapmak",
+        "Film izlemek",
+        "Uyumak"
+      ]
+    },
+    {
+      "question": "Seni en iyi anlatan kelime nedir?",
+      "options": [
+        "Enerjik",
+        "Duygusal",
+        "Mantıklı",
+        "Yaratıcı"
+      ]
+    },
+    {
+      "question": "Bir sorunla karşılaştığında ne yaparsın?",
+      "options": [
+        "Sakince düşünürüm",
+        "Destek isterim",
+        "Hemen harekete geçerim",
+        "Ertelemeye çalışırım"
+      ]
+    },
+    {
+      "question": "En çok hangi ortamlarda bulunmaktan hoşlanırsın?",
       "options": [
         "Kalabalık",
         "Doğa",
         "Ev",
         "Sahne"
-      ],
-      "scores": [
-        5,
-        10,
-        7,
-        8
-      ]
-    },
-    {
-      "question": "En çok vakit geçirdiğin şey?",
-      "options": [
-        "Arkadaşlar",
-        "Kitap",
-        "Hayaller",
-        "İnternet"
-      ],
-      "scores": [
-        9,
-        8,
-        7,
-        6
       ]
     }
   ],
   "results": [
     {
       "minScore": 0,
-      "maxScore": 15,
-      "title": "Sakin Ruh",
-      "description": "Sen sakinliği seven birisin."
+      "maxScore": 5,
+      "title": "Sakin ve Düşünceli",
+      "description": "Sen genellikle içe dönük ve huzurlu birisin. Sakinliğinle dikkat çekiyorsun.",
+      "image": "https://example.com/images/sakin.png"
     },
     {
-      "minScore": 16,
-      "maxScore": 24,
-      "title": "Düşünür",
-      "description": "Sen düşünmeyi seven birisin."
-    },
-    {
-      "minScore": 25,
-      "maxScore": 30,
-      "title": "Enerjik Lider",
-      "description": "Sen enerjik ve lider ruhlusun."
+      "minScore": 6,
+      "maxScore": 10,
+      "title": "Enerjik ve Sosyal",
+      "description": "Sen dışa dönük, enerjik ve sosyal bir insansın. İnsanlarla iletişimin çok güçlü.",
+      "image": "https://example.com/images/enerjik.png"
     }
   ]
 }
