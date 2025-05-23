@@ -29,7 +29,6 @@ async function loadQuestion() {
 
   const test = snap.data();
   if (!test.questions || test.questions.length < qIndex) {
-    questionEl.textContent = "Test tamamlandı.";
     window.location.href = "test-sonuc.html";
     return;
   }
@@ -47,7 +46,6 @@ async function loadQuestion() {
     label.appendChild(input);
     label.append(" " + opt);
     optionsEl.appendChild(label);
-    optionsEl.appendChild(document.createElement("br"));
   });
 
   nextBtn.style.display = "inline-block";
