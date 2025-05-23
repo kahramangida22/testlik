@@ -1,137 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Testi Çöz</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #e0f7fa, #fff);
-      margin: 0; padding: 0;
-    }
-    .container {
-      max-width: 700px;
-      margin: 40px auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    }
-    h2 { text-align: center; color: #00796b; }
-    .question {
-      margin: 20px 0;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 10px;
-    }
-    .question:last-child { border-bottom: none; }
-    .options label {
-      display: block;
-      padding: 10px;
-      margin: 5px 0;
-      background: #f0f0f0;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .options input[type="radio"] {
-      margin-right: 10px;
-    }
-    .options label:hover {
-      background: #c8e6c9;
-    }
-    button {
-      display: block;
-      margin: 30px auto 0;
-      padding: 12px 25px;
-      font-size: 16px;
-      background: #00796b;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background: #004d40;
-    }
-  </style>
+  <title>Testlik - Test</title>
+  <script type="module" src="test-render.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h2 id="testTitle">Yükleniyor...</h2>
-    <form id="testForm"></form>
-    <button id="testFinishButton" style="display:none">Testi Bitir</button>
+  <div id="container">
+    <h2 id="question">Yükleniyor...</h2>
+    <form id="options"></form>
+    <button id="nextBtn" style="display:none">Devam Et</button>
   </div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-    import { getAuth } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
-      authDomain: "testlik.firebaseapp.com",
-      projectId: "testlik",
-      storageBucket: "testlik.firebasestorage.app",
-      messagingSenderId: "668524500496",
-      appId: "1:668524500496:web:579bb4fc5990c87afedc95",
-      measurementId: "G-8ZEYBJCV3T"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    const params = new URLSearchParams(window.location.search);
-    const testId = params.get("id") || "test-1";
-
-    const testTitle = document.getElementById("testTitle");
-    const testForm = document.getElementById("testForm");
-    const finishBtn = document.getElementById("testFinishButton");
-
-    async function loadTest() {
-      const docRef = doc(db, "testler", testId);
-      const docSnap = await getDoc(docRef);
-
-      if (!docSnap.exists()) {
-        testTitle.textContent = "Test bulunamadı.";
-        return;
-      }
-
-      const test = docSnap.data();
-      testTitle.textContent = test.title;
-
-      test.questions.forEach((q, index) => {
-        const div = document.createElement("div");
-        div.className = "question";
-        div.innerHTML = `<strong>${index + 1}. ${q.question}</strong>`;
-        const options = q.options.map(opt => `
-          <label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label>
-        `).join("");
-        div.innerHTML += `<div class="options">${options}</div>`;
-        testForm.appendChild(div);
-      });
-
-      finishBtn.style.display = "inline-block";
-    }
-
-    async function addPoints(points = 10) {
-      const user = auth.currentUser;
-      if (!user) return alert("Lütfen giriş yapın.");
-      const ref = doc(db, "users", user.uid);
-      await updateDoc(ref, { points: increment(points) });
-      alert(`${points} puan kazandınız!`);
-    }
-
-    finishBtn.addEventListener("click", e => {
-      e.preventDefault();
-      addPoints();
-    });
-
-    loadTest();
-  </script>
 </body>
 </html>
