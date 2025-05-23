@@ -1,3 +1,4 @@
+// Firebase bağlantısı
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
@@ -14,37 +15,36 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// HTML'e listele
+// ✅ Testleri çek ve ekrana yaz
 async function loadTests() {
-  const testContainer = document.getElementById("test-list");
+  const testListDiv = document.getElementById("test-list");
+  testListDiv.innerHTML = "<p>Yükleniyor...</p>";
 
   try {
     const querySnapshot = await getDocs(collection(db, "testler"));
     if (querySnapshot.empty) {
-      testContainer.innerHTML = "<p>Hiç test bulunamadı.</p>";
+      testListDiv.innerHTML = "<p>Test bulunamadı.</p>";
       return;
     }
 
+    let html = "";
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-      const title = data.title || "Başlıksız Test";
-      const description = data.description || "";
-      const testId = doc.id;
-
-      const card = document.createElement("div");
-      card.className = "test-card";
-      card.innerHTML = `
-        <h3>${title}</h3>
-        <p>${description}</p>
-        <a href="test-render.html?id=${testId}" class="test-btn">Teste Git</a>
+      html += `
+        <div style="border: 1px solid #ccc; border-radius: 10px; padding: 20px; margin: 15px 0;">
+          <h3>${data.title || "Adsız Test"}</h3>
+          <p>${data.description || ""}</p>
+          <a href="test-render.html?id=${doc.id}">
+            <button style="padding: 10px 20px;">Teste Git</button>
+          </a>
+        </div>
       `;
-
-      testContainer.appendChild(card);
     });
+
+    testListDiv.innerHTML = html;
   } catch (error) {
-    testContainer.innerHTML = `<p>Testler yüklenirken hata oluştu: ${error.message}</p>`;
-    console.error("Hata:", error);
+    testListDiv.innerHTML = "<p>Testler yüklenemedi. Hata: " + error.message + "</p>";
   }
 }
 
-window.addEventListener("DOMContentLoaded", loadTests);
+loadTests();
