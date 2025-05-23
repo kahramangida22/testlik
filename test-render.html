@@ -7,7 +7,7 @@
   <title>Test Çöz</title>
   <style>
     body { font-family: Arial; padding: 20px; background: #f5f5f5; }
-    .card { background: #fff; border-radius: 8px; padding: 20px; max-width: 600px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .card { background: #fff; border-radius: 8px; padding: 20px; max-width: 700px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
     .question { margin: 20px 0; }
     .options label { display: block; margin-bottom: 8px; }
     button { margin-top: 20px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
@@ -16,28 +16,79 @@
 <body>
   <div class="card">
     <h2 id="test-title">Yükleniyor...</h2>
+    <p id="test-desc"></p>
     <div id="questions"></div>
-    <button onclick="finishTest()">Testi Bitir</button>
+    <button onclick="submitTest()">Testi Bitir</button>
+    <div id="result"></div>
   </div>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
+      authDomain: "testlik.firebaseapp.com",
+      projectId: "testlik",
+      storageBucket: "testlik.firebasestorage.app",
+      messagingSenderId: "668524500496",
+      appId: "1:668524500496:web:579bb4fc5990c87afedc95",
+      measurementId: "G-8ZEYBJCV3T"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const params = new URLSearchParams(window.location.search);
+    const testId = params.get("id") || "test-1";
+
+    let totalScore = 0;
+
     async function loadTest() {
-      const res = await fetch("test-1.json");
-      const data = await res.json();
-      document.getElementById("test-title").textContent = data.title;
-      const container = document.getElementById("questions");
-      data.questions.forEach((q, index) => {
-        const div = document.createElement("div");
-        div.classList.add("question");
-        div.innerHTML = `<strong>${index + 1}. ${q.question}</strong><div class="options">` +
-          q.options.map(opt => `<label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label>`).join("") +
-          `</div>`;
-        container.appendChild(div);
-      });
+      const docRef = doc(db, "tests", testId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        document.getElementById("test-title").textContent = data.title;
+        document.getElementById("test-desc").textContent = data.description;
+        const container = document.getElementById("questions");
+        data.questions.forEach((q, i) => {
+          const div = document.createElement("div");
+          div.classList.add("question");
+          div.innerHTML = `
+            <strong>${i + 1}. ${q.question}</strong>
+            <div class="options">
+              ${q.options.map((opt, idx) =>
+                `<label><input type="radio" name="q${i}" value="${idx}"> ${opt}</label>`
+              ).join("")}
+            </div>`;
+          container.appendChild(div);
+        });
+        window.testData = data;
+      } else {
+        document.getElementById("test-title").textContent = "Test bulunamadı.";
+      }
     }
 
-    function finishTest() {
-      alert("Cevaplarınız alınmıştır. Teşekkürler!");
+    function submitTest() {
+      const data = window.testData;
+      if (!data) return;
+      let score = 0;
+      for (let i = 0; i < data.questions.length; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (!selected) return alert("Tüm soruları cevaplayın.");
+        const selectedIndex = parseInt(selected.value);
+        score += (data.questions[i].scores ? data.questions[i].scores[selectedIndex] : 2); // varsayılan puan
+      }
+
+      let result = data.results.find(r => score >= r.minScore && score <= r.maxScore);
+      if (!result) result = { title: "Sonuç Yok", description: "Skor aralığına uygun sonuç bulunamadı." };
+
+      document.getElementById("result").innerHTML = `
+        <hr/><h3>Sonuç: ${result.title}</h3>
+        <p>${result.description}</p>
+        ${result.image ? `<img src="${result.image}" style="max-width:100%;border-radius:10px;margin-top:10px;">` : ""}
+      `;
     }
 
     loadTest();
