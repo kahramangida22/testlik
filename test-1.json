@@ -2,31 +2,69 @@
   "title": "Kişilik Testi",
   "questions": [
     {
-      "text": "Seni en iyi tanımlayan kelime?",
+      "question": "Seni en iyi anlatan kelime?",
       "options": [
-        "Neşeli",
-        "Ciddi",
-        "Macera sever",
-        "Yalnız"
+        "Energik",
+        "Duygusal",
+        "Mantıklı",
+        "Yaratıcı"
+      ],
+      "scores": [
+        10,
+        5,
+        7,
+        8
       ]
     },
     {
-      "text": "En rahat hissettiğin ortam?",
+      "question": "En rahat hissettiğin ortam?",
       "options": [
         "Kalabalık",
         "Doğa",
         "Ev",
         "Sahne"
+      ],
+      "scores": [
+        5,
+        10,
+        7,
+        8
       ]
     },
     {
-      "text": "En çok zaman geçirdiğin yer?",
+      "question": "En çok vakit geçirdiğin şey?",
       "options": [
-        "Ev",
-        "Kütüphane",
-        "Sokaklar",
-        "Sosyal Medya"
+        "Arkadaşlar",
+        "Kitap",
+        "Hayaller",
+        "İnternet"
+      ],
+      "scores": [
+        9,
+        8,
+        7,
+        6
       ]
+    }
+  ],
+  "results": [
+    {
+      "minScore": 0,
+      "maxScore": 15,
+      "title": "Sakin Ruh",
+      "description": "Sen sakinliği seven birisin."
+    },
+    {
+      "minScore": 16,
+      "maxScore": 24,
+      "title": "Düşünür",
+      "description": "Sen düşünmeyi seven birisin."
+    },
+    {
+      "minScore": 25,
+      "maxScore": 30,
+      "title": "Enerjik Lider",
+      "description": "Sen enerjik ve lider ruhlusun."
     }
   ]
 }
