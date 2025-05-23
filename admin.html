@@ -1,33 +1,42 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Panel - Testlik</title>
+  <meta charset="UTF-8">
+  <title>Testlik Admin Paneli</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; }
-    h1 { color: #333; }
-    input, textarea, select, button {
-      display: block;
-      margin: 10px 0;
-      padding: 10px;
-      width: 100%;
-      max-width: 600px;
-    }
+    body { font-family: Arial; margin: 0; padding: 20px; background: #f0f0f0; }
+    .panel { background: #fff; padding: 20px; border-radius: 8px; max-width: 800px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input, textarea, select, button { width: 100%; margin-bottom: 10px; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+    h2 { color: #00796b; }
+    .question-block, .result-block { background: #fafafa; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    button.add-btn { background: #00796b; color: white; border: none; width: auto; padding: 10px 20px; cursor: pointer; }
   </style>
 </head>
 <body>
-  <h1>Admin Panel</h1>
-  <form id="testForm">
-    <input type="text" id="testTitle" placeholder="Test Başlığı" required />
-    <input type="text" id="testCategory" placeholder="Kategori (örn: kişilik, eğlence, bilgi)" required />
-    <textarea id="testDescription" placeholder="Test Açıklaması" rows="3"></textarea>
-    <textarea id="testJSON" placeholder="Test JSON içeriği" rows="10" required></textarea>
-    <button type="submit">Testi Yayınla</button>
-  </form>
-  <div id="status"></div>
+  <div class="panel">
+    <h2>Yeni Test Oluştur</h2>
+    <input type="text" id="title" placeholder="Test Başlığı">
+    <textarea id="description" rows="2" placeholder="Test Açıklaması"></textarea>
 
-  <script type="module" src="./admin.js"></script>
+    <label for="category">Kategori Seçin:</label>
+    <select id="category">
+      <option value="Kişilik">Kişilik</option>
+      <option value="Genel Kültür">Genel Kültür</option>
+      <option value="Eğlence">Eğlence</option>
+    </select>
+
+    <h3>Sorular</h3>
+    <div id="questions"></div>
+    <button type="button" class="add-btn" onclick="addQuestion()">+ Yeni Soru Ekle</button>
+
+    <h3>Sonuçlar</h3>
+    <div id="results"></div>
+    <button type="button" class="add-btn" onclick="addResult()">+ Yeni Sonuç Aralığı</button>
+
+    <button onclick="submitTest()">Testi Kaydet</button>
+  </div>
+
+  <script type="module" src="admin.js"></script>
 </body>
 </html>
