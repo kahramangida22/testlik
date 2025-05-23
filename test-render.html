@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -5,39 +6,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Testi Çöz</title>
   <style>
+    * { box-sizing: border-box; }
     body {
-      font-family: sans-serif;
-      background: #f2f2f2;
-      margin: 0;
-      padding: 20px;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #fff);
+      margin: 0; padding: 0;
     }
     .container {
       max-width: 700px;
-      margin: auto;
-      background: white;
+      margin: 40px auto;
+      background: #fff;
       padding: 30px;
-      border-radius: 10px;
+      border-radius: 12px;
       box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
-    h2 {
-      margin-bottom: 10px;
-    }
+    h2 { text-align: center; color: #00796b; }
     .question {
-      margin-bottom: 25px;
+      margin: 20px 0;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
     }
+    .question:last-child { border-bottom: none; }
     .options label {
       display: block;
+      padding: 10px;
       margin: 5px 0;
+      background: #f0f0f0;
+      border-radius: 6px;
       cursor: pointer;
+      transition: background 0.3s;
+    }
+    .options input[type="radio"] {
+      margin-right: 10px;
+    }
+    .options label:hover {
+      background: #c8e6c9;
     }
     button {
-      padding: 10px 20px;
+      display: block;
+      margin: 30px auto 0;
+      padding: 12px 25px;
       font-size: 16px;
-      background: #007bff;
+      background: #00796b;
       color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #004d40;
     }
   </style>
 </head>
@@ -50,7 +68,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
     import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
