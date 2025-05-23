@@ -2,26 +2,36 @@
   {
     "id": 1,
     "title": "Hangi Türk Dizisi Seni Anlatıyor?",
+    "description": "Kendini hangi dizi karakteri gibi hissediyorsun? Bu test tam sana göre!",
+    "image": "images/dizi.jpg",
     "category": "Eğlence"
   },
   {
     "id": 2,
     "title": "Zeka Tipin Hangisi?",
+    "description": "Herkesin zekası farklı çalışır. Peki seninki hangisi?",
+    "image": "images/zeka.jpg",
     "category": "Kişilik"
   },
   {
     "id": 3,
     "title": "2025'te Seni Neler Bekliyor?",
+    "description": "Geleceğe bir bakış at! 2025'te seni neler bekliyor olabilir?",
+    "image": "images/gelecek.jpg",
     "category": "Gelecek"
   },
   {
     "id": 4,
     "title": "En Uygun Meslek Hangisi?",
+    "description": "Kariyerin konusunda kafan karışık mı? Bu test karar vermene yardım edebilir.",
+    "image": "images/meslek.jpg",
     "category": "Kariyer"
   },
   {
     "id": 5,
     "title": "Tatilde Nereye Gitmelisin?",
+    "description": "Huzur mu arıyorsun? Macera mı? Tatil rotanı bu testle bul!",
+    "image": "images/tatil.jpg",
     "category": "Yaşam"
   }
 ]
