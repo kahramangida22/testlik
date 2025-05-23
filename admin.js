@@ -1,7 +1,7 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-import { getFirestore, collection, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
@@ -20,6 +20,7 @@ const auth = getAuth(app);
 document.getElementById("testForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const title = document.getElementById("testTitle").value.trim();
+  const category = document.getElementById("testCategory").value.trim();
   const description = document.getElementById("testDescription").value.trim();
   const content = document.getElementById("testJSON").value.trim();
 
@@ -27,6 +28,7 @@ document.getElementById("testForm").addEventListener("submit", async (e) => {
     const jsonContent = JSON.parse(content);
     await setDoc(doc(db, "testler", title), {
       title,
+      category,
       description,
       questions: jsonContent.questions || []
     });
