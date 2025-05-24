@@ -18,17 +18,18 @@
     <h2>Toplam Puan: <span id="userpoints">0</span></h2>
 
     <h3>💰 Puan Geçmişin</h3>
-    <div id="transactions">
-      <em>Yükleniyor...</em>
-    </div>
+    <div id="transactions"><em>Yükleniyor...</em></div>
 
     <hr/>
-
     <h3>🧾 Para Çek</h3>
     <input type="text" id="iban" placeholder="TR ile başlayan IBAN">
     <input type="number" id="amount" placeholder="Çekilecek puan">
     <textarea id="explanation" placeholder="Açıklama girin (örneğin: 'haftalık çekim')"></textarea>
     <button onclick="requestWithdrawal()">Çekim Talebi Gönder</button>
+
+    <hr/>
+    <h3>📜 Çekim Taleplerim</h3>
+    <div id="withdrawals"><em>Yükleniyor...</em></div>
 
     <hr/>
     <button onclick="logout()">Çıkış Yap</button>
