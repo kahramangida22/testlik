@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Çekim Talepleri</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f8f8f8; }
+    h2 { color: #00796b; }
+    .request { background: #fff; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 0 4px rgba(0,0,0,0.1); }
+    .request p { margin: 5px 0; }
+    .request button { margin-right: 10px; padding: 6px 10px; border: none; border-radius: 5px; cursor: pointer; }
+    .approve { background: #4CAF50; color: white; }
+    .reject { background: #f44336; color: white; }
+  </style>
+</head>
+<body>
+  <h2>💸 Bekleyen Çekim Talepleri</h2>
+  <div id="requests">Yükleniyor...</div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getFirestore, collectionGroup, updateDoc, doc, getDocs } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
+      authDomain: "testlik.firebaseapp.com",
+      projectId: "testlik"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadRequests() {
+      const container = document.getElementById("requests");
+      const querySnapshot = await getDocs(collectionGroup(db, "withdrawals"));
+      let html = "";
+
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (data.status === "Beklemede") {
+          const refPath = docSnap.ref.path;
+          html += `
+            <div class="request">
+              <p><strong>IBAN:</strong> ${data.iban}</p>
+              <p><strong>Miktar:</strong> ${data.amount} puan</p>
+              <p><strong>Açıklama:</strong> ${data.explanation}</p>
+              <p><strong>Tarih:</strong> ${new Date(data.date.seconds * 1000).toLocaleString()}</p>
+              <button class="approve" onclick="updateStatus('${refPath}', 'Onaylandı')">Onayla</button>
+              <button class="reject" onclick="updateStatus('${refPath}', 'Reddedildi')">Reddet</button>
+            </div>
+          `;
+        }
+      });
+
+      container.innerHTML = html || "<em>Bekleyen talep yok.</em>";
+    }
+
+    window.updateStatus = async function(path, status) {
+      const ref = doc(db, path);
+      await updateDoc(ref, { status });
+      alert("Durum güncellendi: " + status);
+      location.reload();
+    };
+
+    loadRequests();
+  </script>
+</body>
+</html>
