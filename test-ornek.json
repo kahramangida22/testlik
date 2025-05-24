@@ -1,0 +1,38 @@
+{
+  "title": "test-ornek",
+  "description": "Bu test otomatik olarak oluşturuldu.",
+  "questions": [
+    {
+      "question": "En sevdiğin renk?",
+      "options": [
+        "Kırmızı",
+        "Mavi",
+        "Yeşil",
+        "Siyah"
+      ]
+    },
+    {
+      "question": "En çok zaman geçirdiğin yer?",
+      "options": [
+        "Ev",
+        "Dışarı",
+        "İş",
+        "Kütüphane"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "min": 0,
+      "max": 5,
+      "text": "Sen enerjik ve sosyal birisin!",
+      "image": "https://cdn.testlik.com/images/sonuc1.jpg"
+    },
+    {
+      "min": 6,
+      "max": 10,
+      "text": "Sen daha çok düşünceli ve duygusalsın.",
+      "image": "https://cdn.testlik.com/images/sonuc2.jpg"
+    }
+  ]
+}
