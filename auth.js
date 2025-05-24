@@ -1,4 +1,3 @@
-// Firebase transaction kayıt ve cüzdan + para çekme için auth.js güncellenmiş versiyonu
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, collection, addDoc, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
@@ -49,13 +48,17 @@ window.logout = function() {
 };
 
 onAuthStateChanged(auth, async (user) => {
-  if (user && document.getElementById("userpoints")) {
+  if (!user) return;
+
+  // Puanı göster
+  if (document.getElementById("userpoints")) {
     const userDoc = await getDoc(doc(db, "users", user.uid));
     const userData = userDoc.data();
     document.getElementById("userpoints").textContent = userData.points;
   }
 
-  if (user && document.getElementById("transactions")) {
+  // İşlem geçmişi
+  if (document.getElementById("transactions")) {
     const txnQuery = query(collection(db, "users", user.uid, "transactions"), orderBy("date", "desc"));
     const txnSnap = await getDocs(txnQuery);
     let html = "";
@@ -65,9 +68,23 @@ onAuthStateChanged(auth, async (user) => {
     });
     document.getElementById("transactions").innerHTML = html || "<em>Henüz işlem yok.</em>";
   }
+
+  // Para çekme talepleri
+  if (document.getElementById("withdrawals")) {
+    const wdQuery = query(collection(db, "users", user.uid, "withdrawals"), orderBy("date", "desc"));
+    const wdSnap = await getDocs(wdQuery);
+    let html = "";
+    wdSnap.forEach(doc => {
+      const w = doc.data();
+      html += `<div class='txn'>
+        <strong>${w.amount} puan</strong> - ${w.iban} <br/>
+        <small>${w.explanation} - ${new Date(w.date.seconds * 1000).toLocaleString()} - <b>${w.status}</b></small>
+      </div>`;
+    });
+    document.getElementById("withdrawals").innerHTML = html || "<em>Talep bulunamadı.</em>";
+  }
 });
 
-// Test tamamlandığında puan ekle
 window.addPoints = async function(points, title = "Test Çözümü") {
   const user = auth.currentUser;
   if (!user) return;
@@ -84,7 +101,6 @@ window.addPoints = async function(points, title = "Test Çözümü") {
   alert(points + " puan eklendi!");
 };
 
-// Para çekme talebi gönder
 window.requestWithdrawal = async function() {
   const iban = document.getElementById("iban").value;
   const amount = parseInt(document.getElementById("amount").value);
