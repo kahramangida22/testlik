@@ -1,1 +1,54 @@
-<!DOCTYPE html><html><head><title>Testlik</title></head><body><h1>Testlik Anasayfa</h1></body></html>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Testlik Anasayfa</title>
+</head>
+<body>
+  <h1>Testlik Testleri</h1>
+  <div id="testList">Yükleniyor...</div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
+      authDomain: "testlik.firebaseapp.com",
+      projectId: "testlik",
+      storageBucket: "testlik.firebasestorage.app",
+      messagingSenderId: "668524500496",
+      appId: "1:668524500496:web:579bb4fc5990c87afedc95",
+      measurementId: "G-8ZEYBJCV3T"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadTests() {
+      const testsCol = collection(db, "tests");
+      const testSnap = await getDocs(testsCol);
+      const container = document.getElementById("testList");
+
+      if (testSnap.empty) {
+        container.innerHTML = "<p>Hiç test bulunamadı.</p>";
+        return;
+      }
+
+      container.innerHTML = "";
+      testSnap.forEach(doc => {
+        const t = doc.data();
+        container.innerHTML += `
+          <div style="margin-bottom: 20px;">
+            <h3>${t.title}</h3>
+            <p>${t.description}</p>
+            <a href="test-render.html?id=${doc.id}">Testi Çöz</a>
+          </div>
+        `;
+      });
+    }
+
+    loadTests();
+  </script>
+</body>
+</html>
