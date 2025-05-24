@@ -2,70 +2,68 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sonuç Sayfası</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 40px;
-      text-align: center;
-      background-color: #f2f2f2;
-    }
-    #result-container img {
-      max-width: 300px;
-      margin-top: 20px;
-    }
+    body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 20px; text-align: center; }
+    h1 { color: #333; }
+    .result-container { background: white; padding: 20px; border-radius: 10px; max-width: 500px; margin: 40px auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    img { max-width: 100%; border-radius: 10px; margin-top: 20px; }
+    #loading { color: #666; font-style: italic; }
   </style>
 </head>
 <body>
-  <h1>Sonuç Sayfası</h1>
-  <div id="result-container">Yükleniyor...</div>
+  <div class="result-container">
+    <h1>Sonuç Sayfası</h1>
+    <div id="loading">Yükleniyor...</div>
+    <div id="result" style="display: none;">
+      <p id="result-text"></p>
+      <img id="result-image" src="" alt="Sonuç Görseli"/>
+    </div>
+  </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+    import {{ initializeApp }} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {{ getFirestore, doc, getDoc }} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    const firebaseConfig = {
+    const firebaseConfig = {{
       apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
       projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
       appId: "YOUR_APP_ID"
-    };
+    }};
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
     const urlParams = new URLSearchParams(window.location.search);
-    const testId = urlParams.get("id") || "test-1";
+    const testId = urlParams.get('id') || "test-1";
+    const score = parseInt(urlParams.get('score'), 10) || 0;
 
-    const docRef = doc(db, "testler", testId);
-    const docSnap = await getDoc(docRef);
+    async function getResult() {{
+      const docRef = doc(db, "testler", testId);
+      const docSnap = await getDoc(docRef);
 
-    const resultContainer = document.getElementById("result-container");
+      if (docSnap.exists()) {{
+        const data = docSnap.data();
+        const resultData = data.results.find(r => score >= r.min && score <= r.max);
+        if (resultData) {{
+          document.getElementById("result-text").innerText = resultData.text;
+          document.getElementById("result-image").src = resultData.image;
+        }} else {{
+          document.getElementById("result-text").innerText = "Sonuç bulunamadı.";
+        }}
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("result").style.display = "block";
+      }} else {{
+        document.getElementById("loading").innerText = "Test bulunamadı.";
+      }}
+    }}
 
-    if (docSnap.exists()) {
-      const testData = docSnap.data();
-      const userTotalScore = parseInt(localStorage.getItem("score")) || 0;
-
-      if (testData.results && Array.isArray(testData.results)) {
-        const result = testData.results.find(r => userTotalScore >= r.min && userTotalScore <= r.max);
-        if (result) {
-          resultContainer.innerHTML = `
-            <h2>Sonuç: ${userTotalScore} Puan</h2>
-            <p>${result.text}</p>
-            <img src="${result.image}" alt="Sonuç Görseli">
-          `;
-        } else {
-          resultContainer.innerHTML = "<p>Sonuca ulaşılamadı.</p>";
-        }
-      } else {
-        resultContainer.innerHTML = "<p>Sonuç verisi bulunamadı.</p>";
-      }
-    } else {
-      resultContainer.innerHTML = "<p>Test bulunamadı.</p>";
-    }
+    getResult();
   </script>
 </body>
 </html>
