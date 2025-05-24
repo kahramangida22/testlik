@@ -1,13 +1,39 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Testlik - Panel</title>
-  <script type="module" src="auth.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Testlik Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; background: #f4f4f4; }
+    .box { background: white; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input, textarea, button { width: 100%; padding: 10px; margin-top: 10px; border-radius: 5px; border: 1px solid #ccc; }
+    h1, h2, h3 { color: #00796b; }
+    .txn { padding: 10px; border-bottom: 1px solid #eee; }
+  </style>
 </head>
 <body>
-  <h2>Hoş geldin, <span id="username">Yükleniyor...</span></h2>
-  <p>Puanın: <span id="userpoints">0</span></p>
-  <button onclick="logout()">Çıkış Yap</button>
+  <div class="box">
+    <h1>Hoş geldin!</h1>
+    <h2>Toplam Puan: <span id="userpoints">0</span></h2>
+
+    <h3>💰 Puan Geçmişin</h3>
+    <div id="transactions">
+      <em>Yükleniyor...</em>
+    </div>
+
+    <hr/>
+
+    <h3>🧾 Para Çek</h3>
+    <input type="text" id="iban" placeholder="TR ile başlayan IBAN">
+    <input type="number" id="amount" placeholder="Çekilecek puan">
+    <textarea id="explanation" placeholder="Açıklama girin (örneğin: 'haftalık çekim')"></textarea>
+    <button onclick="requestWithdrawal()">Çekim Talebi Gönder</button>
+
+    <hr/>
+    <button onclick="logout()">Çıkış Yap</button>
+  </div>
+
+  <script type="module" src="auth.js"></script>
 </body>
 </html>
