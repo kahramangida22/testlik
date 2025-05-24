@@ -1,0 +1,1 @@
+// Google ReCAPTCHA entegrasyonu için script örneği

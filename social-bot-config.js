@@ -1,0 +1,1 @@
+// Otomatik paylaşım yapısı - cron görevleri için
