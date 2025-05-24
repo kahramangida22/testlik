@@ -2,13 +2,47 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Testlik Anasayfa</title>
 </head>
 <body>
   <h1>Testlik Testleri</h1>
-  <div id="test-list">Yükleniyor...</div>
-  <script type="module" src="scripts/load-tests.js"></script>
+  <div id="test-list"><em>Yükleniyor...</em></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
+      authDomain: "testlik.firebaseapp.com",
+      projectId: "testlik",
+      storageBucket: "testlik.appspot.com",
+      messagingSenderId: "668524500496",
+      appId: "1:668524500496:web:579bb4fc5990c87afedc95"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const testContainer = document.getElementById("test-list");
+
+    async function loadTests() {
+      const querySnapshot = await getDocs(collection(db, "testler"));
+      if (querySnapshot.empty) {
+        testContainer.innerHTML = "<p>Hiç test bulunamadı.</p>";
+      } else {
+        testContainer.innerHTML = "";
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const div = document.createElement("div");
+          div.innerHTML = `<h3>${data.title}</h3><p>${data.description}</p>`;
+          testContainer.appendChild(div);
+        });
+      }
+    }
+
+    loadTests();
+  </script>
 </body>
 </html>
