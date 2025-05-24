@@ -1,1 +1,67 @@
-<!DOCTYPE html><html><head><title>Sonuç</title></head><body><h1>Sonuç Sayfası</h1></body></html>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Sonuç Sayfası</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      text-align: center;
+    }
+    #result-image {
+      max-width: 300px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sonuç Sayfası</h1>
+  <p id="result-text">Yükleniyor...</p>
+  <img id="result-image" src="" alt="" style="display:none;" />
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
+      authDomain: "testlik.firebaseapp.com",
+      projectId: "testlik",
+      storageBucket: "testlik.firebasestorage.app",
+      messagingSenderId: "668524500496",
+      appId: "1:668524500496:web:579bb4fc5990c87afedc95",
+      measurementId: "G-8ZEYBJCV3T"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const testId = urlParams.get("id") || "test-1";
+    const score = parseInt(urlParams.get("puan") || "0");
+
+    async function showResult() {
+      const docRef = doc(db, "testler", testId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const results = data.results || [];
+        let selected = results.find(r => score >= r.min && score <= r.max);
+        if (!selected) selected = results[0];
+        document.getElementById("result-text").textContent = selected?.text || "Sonuç bulunamadı.";
+        if (selected?.image) {
+          const img = document.getElementById("result-image");
+          img.src = selected.image;
+          img.style.display = "block";
+        }
+      } else {
+        document.getElementById("result-text").textContent = "Test verisi bulunamadı.";
+      }
+    }
+
+    showResult();
+  </script>
+</body>
+</html>
