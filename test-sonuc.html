@@ -8,38 +8,38 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      text-align: center;
-      padding: 50px;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
-    .result-container {
+    .container {
       background: white;
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      display: inline-block;
-    }
-    h1 {
-      color: #333;
-    }
-    #resultText {
-      font-size: 18px;
-      margin: 20px 0;
-    }
-    #resultImage {
-      max-width: 300px;
-      height: auto;
-      border-radius: 10px;
+      padding: 2rem;
+      border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 600px;
+    }
+    .result-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .loading {
+      font-style: italic;
+      color: gray;
     }
   </style>
 </head>
 <body>
-  <div class="result-container">
+  <div class="container" id="result-container">
     <h1>Sonuç Sayfası</h1>
-    <p id="loading">Yükleniyor...</p>
-    <p id="resultText" style="display:none;"></p>
-    <img id="resultImage" src="" alt="Sonuç Görseli" style="display:none;" />
+    <p class="loading">Yükleniyor...</p>
   </div>
 
   <script type="module">
@@ -48,9 +48,9 @@
 
     const firebaseConfig = {
       apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      authDomain: "YOUR_AUTH_DOMAIN",
       projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      storageBucket: "YOUR_STORAGE_BUCKET",
       messagingSenderId: "YOUR_SENDER_ID",
       appId: "YOUR_APP_ID"
     };
@@ -60,36 +60,43 @@
 
     const urlParams = new URLSearchParams(window.location.search);
     const testId = urlParams.get("id");
-    const puan = parseInt(urlParams.get("puan"));
+    const score = parseInt(urlParams.get("score"), 10);
 
-    async function getResult() {
-      const ref = doc(db, "testler", testId);
-      const snap = await getDoc(ref);
-      if (!snap.exists()) {
-        document.getElementById("loading").innerText = "Sonuç bulunamadı.";
-        return;
+    async function fetchAndDisplayResult() {
+      if (!testId || isNaN(score)) return;
+
+      const docRef = doc(db, "testler", testId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const results = data.results || [];
+        const result = results.find(r => score >= r.min && score <= r.max);
+
+        const container = document.getElementById("result-container");
+        container.innerHTML = "<h1>Sonuç Sayfası</h1>";
+
+        if (result) {
+          if (result.image) {
+            const img = document.createElement("img");
+            img.src = result.image;
+            img.alt = "Sonuç Görseli";
+            img.className = "result-image";
+            container.appendChild(img);
+          }
+
+          const text = document.createElement("p");
+          text.textContent = result.text || "Sonuç metni bulunamadı.";
+          container.appendChild(text);
+        } else {
+          container.innerHTML += "<p>Sonuç bulunamadı.</p>";
+        }
+      } else {
+        document.getElementById("result-container").innerHTML = "<h1>Sonuç Sayfası</h1><p>Test bulunamadı.</p>";
       }
-
-      const data = snap.data();
-      if (!data.results) {
-        document.getElementById("loading").innerText = "Sonuçlar tanımlı değil.";
-        return;
-      }
-
-      const result = data.results.find(r => puan >= r.min && puan <= r.max);
-      if (!result) {
-        document.getElementById("loading").innerText = "Uygun sonuç bulunamadı.";
-        return;
-      }
-
-      document.getElementById("loading").style.display = "none";
-      document.getElementById("resultText").innerText = result.text;
-      document.getElementById("resultText").style.display = "block";
-      document.getElementById("resultImage").src = result.image;
-      document.getElementById("resultImage").style.display = "block";
     }
 
-    getResult();
+    fetchAndDisplayResult();
   </script>
 </body>
 </html>
