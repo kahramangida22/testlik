@@ -1,4 +1,4 @@
-
+// Firebase transaction kayıt ve cüzdan + para çekme için auth.js güncellenmiş versiyonu
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, collection, addDoc, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
@@ -20,19 +20,13 @@ const db = getFirestore(app);
 window.register = function() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
-  const referrer = localStorage.getItem("referrer");
-
   createUserWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
       const uid = userCredential.user.uid;
-      const data = {
+      await setDoc(doc(db, "users", uid), {
         email: email,
         points: 0
-      };
-      if (referrer) {
-        data.referrer = referrer;
-      }
-      await setDoc(doc(db, "users", uid), data);
+      });
       window.location.href = "dashboard.html";
     })
     .catch(error => alert(error.message));
@@ -60,6 +54,7 @@ onAuthStateChanged(auth, async (user) => {
     const userData = userDoc.data();
     document.getElementById("userpoints").textContent = userData.points;
   }
+
   if (user && document.getElementById("transactions")) {
     const txnQuery = query(collection(db, "users", user.uid, "transactions"), orderBy("date", "desc"));
     const txnSnap = await getDocs(txnQuery);
@@ -72,13 +67,12 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
+// Test tamamlandığında puan ekle
 window.addPoints = async function(points, title = "Test Çözümü") {
   const user = auth.currentUser;
   if (!user) return;
-  const userRef = doc(db, "users", user.uid);
-  const userSnap = await getDoc(userRef);
-  const userData = userSnap.data();
 
+  const userRef = doc(db, "users", user.uid);
   await updateDoc(userRef, { points: increment(points) });
 
   await addDoc(collection(db, "users", user.uid, "transactions"), {
@@ -87,24 +81,10 @@ window.addPoints = async function(points, title = "Test Çözümü") {
     date: new Date()
   });
 
-  // Referanslı kullanıcı ise referans sahibine puan ver
-  if (userData.referrer) {
-    const refSnap = await getDocs(query(collection(db, "users")));
-    refSnap.forEach(async refDoc => {
-      if (refDoc.data().email === userData.referrer) {
-        await updateDoc(doc(db, "users", refDoc.id), { points: increment(5) });
-        await addDoc(collection(db, "users", refDoc.id, "transactions"), {
-          title: "Referans Kazancı",
-          points: 5,
-          date: new Date()
-        });
-      }
-    });
-  }
-
   alert(points + " puan eklendi!");
 };
 
+// Para çekme talebi gönder
 window.requestWithdrawal = async function() {
   const iban = document.getElementById("iban").value;
   const amount = parseInt(document.getElementById("amount").value);
