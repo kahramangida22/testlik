@@ -1,44 +1,88 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Favori Testlerim - Testlik</title>
+  <title>Favori Testlerim</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f0f0f0; padding: 20px; }
-    h2 { text-align: center; color: #333; }
-    .test-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
-    .test-card { background: white; border-radius: 8px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
-    .test-card:hover { transform: scale(1.02); }
-    .test-title { font-size: 18px; font-weight: bold; color: #222; }
-    .test-category { font-size: 14px; color: #777; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+      padding: 40px;
+    }
+    h1 {
+      margin-bottom: 30px;
+    }
+    .test {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    .test a {
+      color: #007bff;
+      font-weight: bold;
+      font-size: 18px;
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
-  <h2>Favori Testlerim</h2>
-  <div class="test-list" id="favoritesList">Yükleniyor...</div>
+  <h1>Favori Testlerim</h1>
+  <div id="fav-list">Yükleniyor...</div>
 
-  <script>
-    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    const container = document.getElementById("favoritesList");
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
-    if (favorites.length === 0) {
-      container.innerHTML = "<p style='text-align:center;'>Henüz favori testin yok.</p>";
-    } else {
-      favorites.forEach(test => {
-        const card = document.createElement("div");
-        card.className = "test-card";
-        card.innerHTML = \`
-          <div class="test-title">\${test.title}</div>
-          <div class="test-category">\${test.category}</div>
-        \`;
-        card.onclick = () => {
-          localStorage.setItem("currentTest", JSON.stringify(test));
-          window.location.href = "test-render.html";
-        };
-        container.appendChild(card);
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
+      authDomain: "testlik.firebaseapp.com",
+      projectId: "testlik",
+      storageBucket: "testlik.appspot.com",
+      messagingSenderId: "668524500496",
+      appId: "1:668524500496:web:579bb4fc5990c87afedc95"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    const favList = document.getElementById("fav-list");
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        favList.innerHTML = "<p>Lütfen giriş yapınız.</p>";
+        return;
+      }
+
+      const uid = user.uid;
+      const userRef = doc(db, "kullanicilar", uid);
+      const userSnap = await getDoc(userRef);
+
+      if (!userSnap.exists()) {
+        favList.innerHTML = "<p>Kullanıcı verisi bulunamadı.</p>";
+        return;
+      }
+
+      const data = userSnap.data();
+      const favorites = data.favorites || [];
+
+      if (favorites.length === 0) {
+        favList.innerHTML = "<p>Henüz hiç favori testiniz yok.</p>";
+        return;
+      }
+
+      favList.innerHTML = "";
+      favorites.forEach(testId => {
+        favList.innerHTML += `
+          <div class="test">
+            <a href="test-render.html?id=${testId}">${testId}</a>
+          </div>
+        `;
       });
-    }
+    });
   </script>
 </body>
 </html>
