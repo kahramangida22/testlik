@@ -1,52 +1,52 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sonuç Sayfası</title>
+  <title>Test Sonucu</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f6f6f6;
+      background-color: #f5f5f5;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
     }
     .result-container {
-      background: white;
-      padding: 2rem;
+      background-color: white;
+      padding: 40px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
       text-align: center;
-      max-width: 400px;
+      max-width: 600px;
     }
-    .result-container img {
+    #resultImage {
       max-width: 100%;
-      border-radius: 8px;
-      margin-top: 1rem;
+      margin-top: 20px;
+      border-radius: 10px;
     }
   </style>
 </head>
 <body>
   <div class="result-container">
-    <h2>Sonuç Sayfası</h2>
+    <h1>Sonuç Sayfası</h1>
     <p id="resultText">Yükleniyor...</p>
-    <img id="resultImage" style="display:none;" />
+    <img id="resultImage" src="" alt="Sonuç Görseli"/>
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_BUCKET",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyCjM4E***************", // Gerçek API anahtarınızla değiştirin
+      authDomain: "testlik.firebaseapp.com",
+      projectId: "testlik",
+      storageBucket: "testlik.appspot.com",
+      messagingSenderId: "1081********",
+      appId: "1:1081*********:web:**********"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -54,37 +54,30 @@
 
     const urlParams = new URLSearchParams(window.location.search);
     const testId = urlParams.get("id");
-    const score = parseInt(localStorage.getItem("score"));
 
-    async function fetchResult() {
-      if (!testId || isNaN(score)) {
-        document.getElementById("resultText").textContent = "Sonuç bulunamadı.";
-        return;
-      }
-
+    async function fetchResults() {
       const docRef = doc(db, "testler", testId);
       const docSnap = await getDoc(docRef);
 
-      if (!docSnap.exists()) {
-        document.getElementById("resultText").textContent = "Test bulunamadı.";
-        return;
-      }
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const results = data.results || [];
+        const totalScore = parseInt(localStorage.getItem("score") || 0);
 
-      const data = docSnap.data();
-      const results = data.results || [];
+        const result = results.find(r => totalScore >= r.min && totalScore <= r.max);
 
-      const matched = results.find(r => score >= r.min && score <= r.max);
-      if (matched) {
-        document.getElementById("resultText").textContent = matched.text;
-        const img = document.getElementById("resultImage");
-        img.src = matched.image;
-        img.style.display = "block";
+        if (result) {
+          document.getElementById("resultText").innerText = result.text;
+          document.getElementById("resultImage").src = result.image;
+        } else {
+          document.getElementById("resultText").innerText = "Sonuç bulunamadı.";
+        }
       } else {
-        document.getElementById("resultText").textContent = "Uygun sonuç bulunamadı.";
+        document.getElementById("resultText").innerText = "Veri alınamadı.";
       }
     }
 
-    fetchResult();
+    fetchResults();
   </script>
 </body>
 </html>
