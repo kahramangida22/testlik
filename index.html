@@ -1,1 +1,55 @@
-<!DOCTYPE html><html><head><title>Testlik</title></head><body><h1>Anasayfa</h1></body></html>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Testlik | Anasayfa</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <h1>Testlik Testleri</h1>
+    <div id="test-listesi">Yükleniyor...</div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
+            authDomain: "testlik.firebaseapp.com",
+            projectId: "testlik",
+            storageBucket: "testlik.appspot.com",
+            messagingSenderId: "668524500496",
+            appId: "1:668524500496:web:579bb4fc5990c87afedc95"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const testListesiDiv = document.getElementById("test-listesi");
+
+        async function yukleTestler() {
+            try {
+                const testlerRef = collection(db, "testler");
+                const querySnapshot = await getDocs(testlerRef);
+                let html = "";
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    html += `
+                        <div class="test-kutusu">
+                            <a href="test-render.html?id=${doc.id}">${data.title || doc.id}</a><br>
+                            <small>${data.description || ''}</small>
+                        </div>
+                    `;
+                });
+
+                testListesiDiv.innerHTML = html || "<em>Hiç test bulunamadı.</em>";
+            } catch (err) {
+                testListesiDiv.innerHTML = "Hata oluştu: " + err.message;
+            }
+        }
+
+        yukleTestler();
+    </script>
+</body>
+</html>
