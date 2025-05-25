@@ -35,31 +35,35 @@
     <h1 id="test-title">Test Yükleniyor...</h1>
     <div id="question-container"></div>
     <button id="next-btn" style="display:none;">Devam Et</button>
+    <button id="favori-btn">♡ Favorilere Ekle</button>
   </div>
 
   <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
-  <script>
-    // Firebase Config
     const firebaseConfig = {
-      apiKey: "API_KEY",
+      apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
       authDomain: "testlik.firebaseapp.com",
       projectId: "testlik",
       storageBucket: "testlik.appspot.com",
-      messagingSenderId: "SENDER_ID",
-      appId: "APP_ID"
+      messagingSenderId: "668524500496",
+      appId: "1:668524500496:web:579bb4fc5990c87afedc95"
     };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
 
-    // Helpers
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
     const urlParams = new URLSearchParams(window.location.search);
     const testId = urlParams.get('id');
+
     const testTitle = document.getElementById("test-title");
     const questionContainer = document.getElementById("question-container");
     const nextBtn = document.getElementById("next-btn");
+    const favoriBtn = document.getElementById("favori-btn");
 
     let currentQuestionIndex = 0;
     let selectedAnswers = [];
@@ -71,15 +75,15 @@
         return;
       }
 
-      const docRef = db.collection("testler").doc(testId);
-      const doc = await docRef.get();
+      const docRef = doc(db, "testler", testId);
+      const docSnap = await getDoc(docRef);
 
-      if (!doc.exists) {
+      if (!docSnap.exists()) {
         testTitle.textContent = "Test bulunamadı.";
         return;
       }
 
-      const data = doc.data();
+      const data = docSnap.data();
       questions = data.questions;
       testTitle.textContent = data.title || "Test";
 
@@ -121,6 +125,29 @@
       selectedAnswers.push(parseInt(selected.value));
       currentQuestionIndex++;
       showQuestion();
+    });
+
+    // Favorilere ekle
+    favoriBtn.addEventListener("click", () => {
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          alert("Favorilere eklemek için giriş yapmalısınız.");
+          return;
+        }
+
+        const uid = user.uid;
+        const userRef = doc(db, "kullanicilar", uid);
+
+        try {
+          await updateDoc(userRef, {
+            favorites: arrayUnion(testId)
+          });
+          alert("Test favorilere eklendi!");
+        } catch (error) {
+          console.error("Favori ekleme hatası:", error);
+          alert("Favoriye eklenemedi.");
+        }
+      });
     });
 
     loadTest();
