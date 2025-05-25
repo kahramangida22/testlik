@@ -1,1 +1,27 @@
-body { font-family: Arial; }
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    padding: 40px;
+}
+h1 {
+    color: #222;
+}
+#test-listesi {
+    margin-top: 20px;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.test-kutusu {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+.test-kutusu a {
+    font-weight: bold;
+    font-size: 18px;
+    text-decoration: none;
+    color: #007bff;
+}
