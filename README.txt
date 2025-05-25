@@ -1,0 +1,1 @@
+Bu zip dosyası testlik.com projesinin tüm sayfalarını içerir.
