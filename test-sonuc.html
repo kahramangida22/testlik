@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Test Sonucu | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Test sonucunu ve puanını öğren!">
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="firebase.js"></script>
+</head>
+<body>
+  <header>
+    <div class="container nav-flex">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
+      <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="kategoriler.html">Kategoriler</a>
+        <a href="favoriler.html">Favoriler</a>
+        <a href="profil.html">Profil</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="akademi.html">Akademi</a>
+        <a href="istatistik.html">İstatistik</a>
+        <a href="admin.html" class="admin-link">Admin</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section>
+      <div id="result-area">
+        <p>Sonuç hesaplanıyor...</p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="container footer-flex">
+      <p>&copy; 2025 Testlik.com</p>
+      <div class="odeme-logo">
+        <img src="wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
+        <img src="payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
+        <img src="iban.png" alt="IBAN" style="height:28px;"/>
+      </div>
+    </div>
+  </footer>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const testId = urlParams.get('id');
+    const answers = urlParams.get('answers') ? urlParams.get('answers').split(',').map(Number) : [];
+    let testData = null;
+
+    db.collection("tests").doc(testId).get().then(doc => {
+      if (!doc.exists) {
+        document.getElementById("result-area").innerHTML = "<p>Test bulunamadı!</p>";
+      } else {
+        testData = doc.data();
+        // Puan hesapla (örnek: doğru sayısı veya klasik testler için seçenek sayısı)
+        let score = 0;
+        if (testData.answers) {
+          for (let i = 0; i < answers.length; i++) {
+            if (answers[i] === testData.answers[i]) score++;
+          }
+        } else {
+          // Klasik tipte testte (puan yoksa) tüm cevaplar 1 puan gibi kabul edilir
+          score = answers.length;
+        }
+
+        // Sonuç ekranı ve uygun görsel/metin (puan aralığına göre)
+        let resultText = "Başarıyla tamamladın!";
+        let resultImage = testData.image || "test-default.png";
+        if (testData.results) {
+          for (let res of testData.results) {
+            if (score >= res.min && score <= res.max) {
+              resultText = res.text;
+              resultImage = res.image || resultImage;
+            }
+          }
+        }
+        document.getElementById("result-area").innerHTML = `
+          <div class="test-card">
+            <img src="${resultImage}" alt="Sonuç Görseli" />
+            <h2>Puanın: ${score} / ${testData.questions.length}</h2>
+            <p>${resultText}</p>
+            <a href="index.html" class="cta-btn">Diğer Testler</a>
+          </div>
+        `;
+      }
+    });
+  </script>
+</body>
+</html>
