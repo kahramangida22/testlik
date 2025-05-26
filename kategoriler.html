@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kategoriler | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Tüm test kategorilerini keşfet.">
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="firebase.js"></script>
+</head>
+<body>
+  <header>
+    <div class="container nav-flex">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
+      <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="kategoriler.html" class="active">Kategoriler</a>
+        <a href="favoriler.html">Favoriler</a>
+        <a href="profil.html">Profil</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="akademi.html">Akademi</a>
+        <a href="istatistik.html">İstatistik</a>
+        <a href="admin.html" class="admin-link">Admin</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section>
+      <h1>Kategoriler</h1>
+      <div class="test-list" id="category-list">
+        <!-- Kategoriler buraya yüklenecek -->
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="container footer-flex">
+      <p>&copy; 2025 Testlik.com</p>
+      <div class="odeme-logo">
+        <img src="wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
+        <img src="payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
+        <img src="iban.png" alt="IBAN" style="height:28px;"/>
+      </div>
+    </div>
+  </footer>
+  <script>
+    document.addEventListener("DOMContentLoaded", async function() {
+      const catList = document.getElementById("category-list");
+      catList.innerHTML = "<p>Kategoriler yükleniyor...</p>";
+      try {
+        // Firestore'dan kategorileri sırala
+        const snapshot = await db.collection("categories").orderBy("order", "asc").get();
+        if (snapshot.empty) {
+          catList.innerHTML = "<p>Hiç kategori yok!</p>";
+        } else {
+          catList.innerHTML = "";
+          snapshot.forEach(doc => {
+            const cat = doc.data();
+            catList.innerHTML += `
+              <div class="test-card">
+                <img src="${cat.image || 'kategori-default.png'}" alt="${cat.name}" />
+                <h3>${cat.name}</h3>
+                <p>${cat.description || ''}</p>
+                <a href="index.html?category=${doc.id}" class="cta-btn">Testleri Gör</a>
+              </div>
+            `;
+          });
+        }
+      } catch (err) {
+        catList.innerHTML = "<p>Kategoriler yüklenemedi!</p>";
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
