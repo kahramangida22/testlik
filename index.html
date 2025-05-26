@@ -9,9 +9,10 @@
   <link rel="icon" href="favicon.png" />
 </head>
 <body>
+  <!-- Navbar -->
   <header>
-    <div class="container">
-      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
+    <div class="container nav-flex">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" style="height:48px;"/>
       <nav>
         <a href="index.html" class="active">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
@@ -25,6 +26,7 @@
     </div>
   </header>
 
+  <!-- Hero Section -->
   <main>
     <section class="hero">
       <h1>Testlik.com - Eğlenceli Testler, Puanlar ve Ödüller!</h1>
@@ -34,22 +36,23 @@
 
     <section class="test-list" id="test-list">
       <!-- Testler dinamik olarak buraya yüklenecek -->
+      <div class="loader">Testler yükleniyor...</div>
     </section>
   </main>
 
+  <!-- Footer -->
   <footer>
-    <div class="container">
+    <div class="container footer-flex">
       <p>&copy; 2025 Testlik.com | Tüm Hakları Saklıdır</p>
       <div class="odeme-logo">
-        <img src="wise.png" alt="Wise" />
-        <img src="payoneer.png" alt="Payoneer" />
-        <img src="iban.png" alt="IBAN" />
+        <img src="wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
+        <img src="payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
+        <img src="iban.png" alt="IBAN" style="height:28px;"/>
       </div>
     </div>
   </footer>
 
-  <!-- Firebase + Main.js -->
-  <script src="firebase.js" type="module"></script>
-  <script src="main.js" type="module"></script>
+  <script src="firebase.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
