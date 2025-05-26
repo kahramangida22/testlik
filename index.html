@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Testlik.com - Eğlenceli testler, puan toplama, ödüller ve kazanç sistemi!">
+  <title>Testlik.com | Eğlenceli Testler ve Kazanç</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.png" />
+</head>
+<body>
+  <header>
+    <div class="container">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
+      <nav>
+        <a href="index.html" class="active">Anasayfa</a>
+        <a href="kategoriler.html">Kategoriler</a>
+        <a href="favoriler.html">Favoriler</a>
+        <a href="profil.html">Profil</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="akademi.html">Akademi</a>
+        <a href="istatistik.html">İstatistik</a>
+        <a href="admin.html" class="admin-link">Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Testlik.com - Eğlenceli Testler, Puanlar ve Ödüller!</h1>
+      <p>Kategorilere göre binlerce eğlenceli test, anında puan ve kazanç sistemiyle!</p>
+      <a href="kategoriler.html" class="cta-btn">Testleri Keşfet</a>
+    </section>
+
+    <section class="test-list" id="test-list">
+      <!-- Testler dinamik olarak buraya yüklenecek -->
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Testlik.com | Tüm Hakları Saklıdır</p>
+      <div class="odeme-logo">
+        <img src="wise.png" alt="Wise" />
+        <img src="payoneer.png" alt="Payoneer" />
+        <img src="iban.png" alt="IBAN" />
+      </div>
+    </div>
+  </footer>
+
+  <!-- Firebase + Main.js -->
+  <script src="firebase.js" type="module"></script>
+  <script src="main.js" type="module"></script>
+</body>
+</html>
