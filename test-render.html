@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Test Çöz | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Soruları tek tek çöz, puan kazan!">
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="firebase.js"></script>
+</head>
+<body>
+  <header>
+    <div class="container nav-flex">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
+      <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="kategoriler.html">Kategoriler</a>
+        <a href="favoriler.html">Favoriler</a>
+        <a href="profil.html">Profil</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="akademi.html">Akademi</a>
+        <a href="istatistik.html">İstatistik</a>
+        <a href="admin.html" class="admin-link">Admin</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section>
+      <div id="test-area">
+        <p>Test yükleniyor...</p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="container footer-flex">
+      <p>&copy; 2025 Testlik.com</p>
+      <div class="odeme-logo">
+        <img src="wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
+        <img src="payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
+        <img src="iban.png" alt="IBAN" style="height:28px;"/>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // test-render.js gömülü
+    const urlParams = new URLSearchParams(window.location.search);
+    const testId = urlParams.get('id');
+    let currentQ = 0, userAnswers = [], testData = null;
+
+    function showQuestion() {
+      if (!testData) return;
+      const area = document.getElementById("test-area");
+      const q = testData.questions[currentQ];
+      let html = `<h2>${testData.title}</h2>`;
+      html += `<div class="test-card"><h3>${q.question}</h3>`;
+      q.options.forEach((opt, i) => {
+        html += `<div>
+          <input type="radio" id="opt${i}" name="option" value="${i}">
+          <label for="opt${i}">${opt}</label>
+        </div>`;
+      });
+      html += `<button onclick="submitAnswer()" class="cta-btn">Devam Et</button></div>`;
+      area.innerHTML = html;
+    }
+    function submitAnswer() {
+      const selected = document.querySelector('input[name="option"]:checked');
+      if (!selected) { alert("Bir seçenek seç!"); return; }
+      userAnswers.push(Number(selected.value));
+      currentQ++;
+      if (currentQ < testData.questions.length) showQuestion();
+      else goToResult();
+    }
+    function goToResult() {
+      const params = new URLSearchParams();
+      params.append('id', testId);
+      params.append('answers', userAnswers.join(','));
+      window.location.href = 'test-sonuc.html?' + params.toString();
+    }
+    // Testi Firestore'dan çek
+    db.collection("tests").doc(testId).get().then(doc => {
+      if (!doc.exists) {
+        document.getElementById("test-area").innerHTML = "<p>Test bulunamadı!</p>";
+      } else {
+        testData = doc.data();
+        showQuestion();
+      }
+    });
+  </script>
+</body>
+</html>
