@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Favori Testlerim | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Favori testlerini burada görebilirsin.">
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="firebase.js"></script>
+</head>
+<body>
+  <header>
+    <div class="container nav-flex">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
+      <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="kategoriler.html">Kategoriler</a>
+        <a href="favoriler.html" class="active">Favoriler</a>
+        <a href="profil.html">Profil</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="akademi.html">Akademi</a>
+        <a href="istatistik.html">İstatistik</a>
+        <a href="admin.html" class="admin-link">Admin</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section>
+      <h1>Favori Testlerim</h1>
+      <div id="favorites-list" class="test-list">
+        <p>Favoriler yükleniyor...</p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="container footer-flex">
+      <p>&copy; 2025 Testlik.com</p>
+      <div class="odeme-logo">
+        <img src="wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
+        <img src="payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
+        <img src="iban.png" alt="IBAN" style="height:28px;"/>
+      </div>
+    </div>
+  </footer>
+  <script>
+    firebase.auth().onAuthStateChanged(async function(user) {
+      const favList = document.getElementById("favorites-list");
+      if (!user) {
+        favList.innerHTML = "<p>Favori testlerini görmek için giriş yapmalısın.</p>";
+        return;
+      }
+      favList.innerHTML = "<p>Favoriler yükleniyor...</p>";
+      try {
+        const userDoc = await db.collection("users").doc(user.uid).get();
+        const favorites = userDoc.data().favorites || [];
+        if (favorites.length === 0) {
+          favList.innerHTML = "<p>Hiç favori testin yok!</p>";
+          return;
+        }
+        favList.innerHTML = "";
+        for (let testId of favorites) {
+          const testDoc = await db.collection("tests").doc(testId).get();
+          if (testDoc.exists) {
+            const t = testDoc.data();
+            favList.innerHTML += `
+              <div class="test-card">
+                <img src="${t.image || 'test-default.png'}" alt="Test Görseli" />
+                <div class="category">${t.category || 'Genel'}</div>
+                <h3>${t.title}</h3>
+                <p>${t.description || ''}</p>
+                <a href="test-render.html?id=${testDoc.id}" class="cta-btn">Testi Çöz</a>
+                <button onclick="removeFavorite('${testDoc.id}')" style="margin-top:7px;">Favorilerden Kaldır</button>
+              </div>
+            `;
+          }
+        }
+      } catch (err) {
+        favList.innerHTML = "<p>Favoriler yüklenemedi!</p>";
+        console.error(err);
+      }
+    });
+
+    async function removeFavorite(testId) {
+      const user = firebase.auth().currentUser;
+      if (!user) return;
+      const userRef = db.collection("users").doc(user.uid);
+      const userDoc = await userRef.get();
+      let favorites = userDoc.data().favorites || [];
+      favorites = favorites.filter(fav => fav !== testId);
+      await userRef.update({ favorites });
+      location.reload();
+    }
+  </script>
+</body>
+</html>
