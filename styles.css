@@ -1,0 +1,120 @@
+/* styles.css */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f5f7fb;
+  color: #12294b;
+}
+header {
+  background: linear-gradient(90deg, #003a74 40%, #36a8ff 100%);
+  color: #fff;
+  padding: 0.5rem 0;
+  margin-bottom: 2rem;
+}
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  height: 48px;
+  margin-right: 1rem;
+}
+nav {
+  display: flex;
+  gap: 1.2rem;
+}
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+nav a.active,
+nav a:hover {
+  background: #fff;
+  color: #003a74;
+}
+.cta-btn {
+  background: #ffe037;
+  color: #003a74;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 26px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.cta-btn:hover {
+  background: #ffd000;
+}
+.hero {
+  background: linear-gradient(90deg, #36a8ff 30%, #003a74 100%);
+  color: #fff;
+  padding: 2.5rem 0 1.5rem 0;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  border-radius: 0 0 32px 32px;
+}
+.test-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.08);
+  margin: 1rem auto;
+  padding: 1.6rem 2rem;
+  max-width: 480px;
+}
+.test-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+.test-card img {
+  max-width: 100%;
+  max-height: 180px;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  background: #e5e8f0;
+  object-fit: cover;
+}
+footer {
+  background: #102040;
+  color: #fff;
+  padding: 2rem 0 0.6rem 0;
+  margin-top: 2.5rem;
+  border-radius: 32px 32px 0 0;
+  text-align: center;
+  font-size: 1rem;
+}
+.odeme-logo img {
+  height: 34px;
+  margin: 0 10px;
+}
+input, select, textarea, button {
+  font-family: inherit;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e5e8f0;
+  padding: 8px;
+  margin-bottom: 1rem;
+  outline: none;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: #36a8ff;
+}
+@media (max-width: 800px) {
+  .container { flex-direction: column; align-items: flex-start; }
+  nav { gap: 0.7rem; margin-top: 10px; flex-wrap: wrap;}
+  .test-card { padding: 1rem; }
+  .hero { padding: 1.5rem 0 1rem 0; font-size: 0.95rem;}
+  .odeme-logo img { height: 24px; }
+}
+::-webkit-scrollbar { width: 6px; background: #e7eafd;}
+::-webkit-scrollbar-thumb { background: #36a8ff; border-radius: 6px;}
