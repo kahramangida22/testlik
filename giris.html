@@ -6,12 +6,14 @@
   <title>Giriş Yap | Testlik.com</title>
   <meta name="description" content="Testlik.com - Giriş ve üye ol sayfası.">
   <link rel="stylesheet" href="styles.css" />
-  <!-- Firebase ve main.js (main.js zorunlu değil, sadece eklemek istersen ekle) -->
-  <script src="firebase.js" type="module"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="firebase.js"></script>
 </head>
 <body>
   <header>
-    <div class="container">
+    <div class="container nav-flex">
       <img src="logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
@@ -37,28 +39,31 @@
     </div>
   </main>
   <footer>
-    <div class="container">
+    <div class="container footer-flex">
       <p>&copy; 2025 Testlik.com</p>
+      <div class="odeme-logo">
+        <img src="wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
+        <img src="payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
+        <img src="iban.png" alt="IBAN" style="height:28px;"/>
+      </div>
     </div>
   </footer>
-  <script type="module">
-    import { auth, db } from './firebase.js';
-
-    window.login = function () {
+  <script>
+    function login() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
-      auth.signInWithEmailAndPassword(email, password)
+      firebase.auth().signInWithEmailAndPassword(email, password)
         .then(() => { window.location.href = "index.html"; })
         .catch(err => {
           document.getElementById("login-status").innerText = err.message;
         });
     }
-    window.register = function () {
+    function register() {
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
-      auth.createUserWithEmailAndPassword(email, password)
+      firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(async (userCred) => {
-          // Kayıt olan kullanıcıya Firestore'da bir profil belgesi aç
+          // Firestore'da profil aç
           await db.collection("users").doc(userCred.user.uid).set({
             email,
             displayName: "",
