@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Puan durumu, ödül çekim ve işlem geçmişi.">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.png" />
+</head>
+<body>
+  <header>
+    <div class="container">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
+      <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="kategoriler.html">Kategoriler</a>
+        <a href="favoriler.html">Favoriler</a>
+        <a href="profil.html">Profil</a>
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="akademi.html">Akademi</a>
+        <a href="istatistik.html">İstatistik</a>
+        <a href="admin.html" class="admin-link">Admin</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section>
+      <h1>Dashboard</h1>
+      <div id="dashboard-area" class="test-card">
+        <p>Dashboard yükleniyor...</p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Testlik.com</p>
+      <div class="odeme-logo">
+        <img src="wise.png" alt="Wise" />
+        <img src="payoneer.png" alt="Payoneer" />
+        <img src="iban.png" alt="IBAN" />
+      </div>
+    </div>
+  </footer>
+  <script src="firebase.js"></script>
+  <script>
+    auth.onAuthStateChanged(async user => {
+      const dArea = document.getElementById("dashboard-area");
+      if (!user) {
+        dArea.innerHTML = `
+          <p>Bilgileri görmek için giriş yapmalısın.</p>
+          <a href="giris.html" class="cta-btn">Giriş Yap</a>
+        `;
+        return;
+      }
+      try {
+        const doc = await db.collection("users").doc(user.uid).get();
+        const u = doc.data();
+        // Para çekim geçmişi
+        let txHtml = "<ul>";
+        (u.withdrawals || []).forEach(tx => {
+          txHtml += `<li>${tx.date || ""} - ${tx.amount} TL - ${tx.status || "Bekliyor"}</li>`;
+        });
+        txHtml += "</ul>";
+        dArea.innerHTML = `
+          <p><b>Toplam Puanın:</b> <span style="font-size:2rem;">${u.points || 0}</span></p>
+          <form id="withdrawForm">
+            <label>Çekmek istediğin miktar (puan):</label>
+            <input type="number" id="amount" min="1" max="${u.points || 0}" required>
+            <label>IBAN:</label>
+            <input type="text" id="iban" placeholder="TR...">
+            <button type="submit" class="cta-btn">Çekim Talebi Gönder</button>
+          </form>
+          <hr/>
+          <h3>Çekim Geçmişi</h3>
+          ${txHtml}
+        `;
+        document.getElementById("withdrawForm").onsubmit = async (e) => {
+          e.preventDefault();
+          const amount = Number(document.getElementById("amount").value);
+          const iban = document.getElementById("iban").value.trim();
+          if (!iban.startsWith("TR") || iban.length < 16) {
+            alert("Geçerli bir IBAN girin!");
+            return;
+          }
+          if (amount < 1 || amount > (u.points || 0)) {
+            alert("Geçerli bir miktar girin!");
+            return;
+          }
+          // Çekim işlemini kaydet
+          await db.collection("users").doc(user.uid).update({
+            points: (u.points || 0) - amount,
+            withdrawals: firebase.firestore.FieldValue.arrayUnion({
+              date: new Date().toLocaleString("tr-TR"),
+              amount,
+              iban,
+              status: "Bekliyor"
+            })
+          });
+          alert("Çekim talebin alındı!");
+          location.reload();
+        };
+      } catch (err) {
+        dArea.innerHTML = "<p>Dashboard yüklenemedi!</p>";
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
