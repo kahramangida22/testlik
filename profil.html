@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profilim | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Kullanıcı profili, başarılar ve favori testlerin.">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.png" />
+</head>
+<body>
+  <header>
+    <div class="container">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
+      <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="kategoriler.html">Kategoriler</a>
+        <a href="favoriler.html">Favoriler</a>
+        <a href="profil.html" class="active">Profil</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="akademi.html">Akademi</a>
+        <a href="istatistik.html">İstatistik</a>
+        <a href="admin.html" class="admin-link">Admin</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="profile-section">
+      <h1>Profilim</h1>
+      <div id="profile-area" class="test-card">
+        <p>Profil yükleniyor...</p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Testlik.com</p>
+      <div class="odeme-logo">
+        <img src="wise.png" alt="Wise" />
+        <img src="payoneer.png" alt="Payoneer" />
+        <img src="iban.png" alt="IBAN" />
+      </div>
+    </div>
+  </footer>
+  <script src="firebase.js"></script>
+  <script>
+    auth.onAuthStateChanged(async user => {
+      const pArea = document.getElementById("profile-area");
+      if (!user) {
+        pArea.innerHTML = `
+          <p>Profil bilgilerini görmek için giriş yapmalısın.</p>
+          <a href="giris.html" class="cta-btn">Giriş Yap</a>
+        `;
+        return;
+      }
+      try {
+        const doc = await db.collection("users").doc(user.uid).get();
+        const u = doc.data();
+        pArea.innerHTML = `
+          <img src="${u.avatar || 'avatar-default.png'}" alt="Profil Fotoğrafı" style="width:90px; border-radius:50%; margin-bottom: 1rem;">
+          <h3>${u.displayName || user.email}</h3>
+          <p><b>E-Posta:</b> ${user.email}</p>
+          <p><b>Toplam Puan:</b> ${u.points || 0}</p>
+          <p><b>Çözülen Test:</b> ${u.completedTests ? u.completedTests.length : 0}</p>
+          <p><b>Favori Test:</b> ${u.favorites ? u.favorites.length : 0}</p>
+          <button onclick="logout()" class="cta-btn">Çıkış Yap</button>
+        `;
+      } catch (err) {
+        pArea.innerHTML = "<p>Profil yüklenemedi!</p>";
+        console.error(err);
+      }
+    });
+    function logout() {
+      auth.signOut().then(() => location.reload());
+    }
+  </script>
+</body>
+</html>
