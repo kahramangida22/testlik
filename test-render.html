@@ -6,14 +6,11 @@
   <title>Test Çöz | Testlik.com</title>
   <meta name="description" content="Testlik.com - Soruları tek tek çöz, puan kazan!">
   <link rel="stylesheet" href="styles.css" />
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="firebase.js"></script>
+  <link rel="icon" href="favicon.png" />
 </head>
 <body>
   <header>
-    <div class="container nav-flex">
+    <div class="container">
       <img src="logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
@@ -35,17 +32,17 @@
     </section>
   </main>
   <footer>
-    <div class="container footer-flex">
+    <div class="container">
       <p>&copy; 2025 Testlik.com</p>
       <div class="odeme-logo">
-        <img src="wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
-        <img src="payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
-        <img src="iban.png" alt="IBAN" style="height:28px;"/>
+        <img src="wise.png" alt="Wise" />
+        <img src="payoneer.png" alt="Payoneer" />
+        <img src="iban.png" alt="IBAN" />
       </div>
     </div>
   </footer>
+  <script src="firebase.js"></script>
   <script>
-    // test-render.js gömülü
     const urlParams = new URLSearchParams(window.location.search);
     const testId = urlParams.get('id');
     let currentQ = 0, userAnswers = [], testData = null;
@@ -79,7 +76,6 @@
       params.append('answers', userAnswers.join(','));
       window.location.href = 'test-sonuc.html?' + params.toString();
     }
-    // Testi Firestore'dan çek
     db.collection("tests").doc(testId).get().then(doc => {
       if (!doc.exists) {
         document.getElementById("test-area").innerHTML = "<p>Test bulunamadı!</p>";
