@@ -6,14 +6,11 @@
   <title>Test Sonucu | Testlik.com</title>
   <meta name="description" content="Testlik.com - Test sonucunu ve puanını öğren!">
   <link rel="stylesheet" href="styles.css" />
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="firebase.js"></script>
+  <link rel="icon" href="favicon.png" />
 </head>
 <body>
   <header>
-    <div class="container nav-flex">
+    <div class="container">
       <img src="logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
@@ -35,15 +32,16 @@
     </section>
   </main>
   <footer>
-    <div class="container footer-flex">
+    <div class="container">
       <p>&copy; 2025 Testlik.com</p>
       <div class="odeme-logo">
-        <img src="wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
-        <img src="payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
-        <img src="iban.png" alt="IBAN" style="height:28px;"/>
+        <img src="wise.png" alt="Wise" />
+        <img src="payoneer.png" alt="Payoneer" />
+        <img src="iban.png" alt="IBAN" />
       </div>
     </div>
   </footer>
+  <script src="firebase.js"></script>
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const testId = urlParams.get('id');
@@ -55,18 +53,7 @@
         document.getElementById("result-area").innerHTML = "<p>Test bulunamadı!</p>";
       } else {
         testData = doc.data();
-        // Puan hesapla (örnek: doğru sayısı veya klasik testler için seçenek sayısı)
-        let score = 0;
-        if (testData.answers) {
-          for (let i = 0; i < answers.length; i++) {
-            if (answers[i] === testData.answers[i]) score++;
-          }
-        } else {
-          // Klasik tipte testte (puan yoksa) tüm cevaplar 1 puan gibi kabul edilir
-          score = answers.length;
-        }
-
-        // Sonuç ekranı ve uygun görsel/metin (puan aralığına göre)
+        let score = answers.length; // Klasik testlerde puan=cevap sayısı
         let resultText = "Başarıyla tamamladın!";
         let resultImage = testData.image || "test-default.png";
         if (testData.results) {
