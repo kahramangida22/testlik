@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>İstatistiklerim | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Kullanıcı başarı istatistikleri, toplam puan, test geçmişi.">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.png" />
+</head>
+<body>
+  <header>
+    <div class="container">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
+      <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="kategoriler.html">Kategoriler</a>
+        <a href="favoriler.html">Favoriler</a>
+        <a href="profil.html">Profil</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="akademi.html">Akademi</a>
+        <a href="istatistik.html" class="active">İstatistik</a>
+        <a href="admin.html" class="admin-link">Admin</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section>
+      <h1>Başarı İstatistiklerim</h1>
+      <div class="test-card" id="stats-area">
+        <p>İstatistikler yükleniyor...</p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Testlik.com</p>
+      <div class="odeme-logo">
+        <img src="wise.png" alt="Wise" />
+        <img src="payoneer.png" alt="Payoneer" />
+        <img src="iban.png" alt="IBAN" />
+      </div>
+    </div>
+  </footer>
+  <script src="firebase.js"></script>
+  <script>
+    auth.onAuthStateChanged(async user => {
+      const stats = document.getElementById("stats-area");
+      if (!user) {
+        stats.innerHTML = `
+          <p>İstatistikleri görmek için giriş yapmalısın.</p>
+          <a href="giris.html" class="cta-btn">Giriş Yap</a>
+        `;
+        return;
+      }
+      try {
+        const doc = await db.collection("users").doc(user.uid).get();
+        const u = doc.data();
+        stats.innerHTML = `
+          <p><b>Toplam Puan:</b> ${u.points || 0}</p>
+          <p><b>Çözülen Test Sayısı:</b> ${u.completedTests ? u.completedTests.length : 0}</p>
+          <p><b>Favori Test Sayısı:</b> ${u.favorites ? u.favorites.length : 0}</p>
+          <p><b>Son Çözülen Testler:</b></p>
+          <ul>
+            ${(u.completedTests || []).slice(-5).map(tid => `<li>${tid}</li>`).join('')}
+          </ul>
+        `;
+      } catch (err) {
+        stats.innerHTML = "<p>İstatistikler yüklenemedi!</p>";
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
