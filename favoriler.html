@@ -6,14 +6,11 @@
   <title>Favori Testlerim | Testlik.com</title>
   <meta name="description" content="Testlik.com - Favori testlerini burada görebilirsin.">
   <link rel="stylesheet" href="styles.css" />
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="firebase.js"></script>
+  <link rel="icon" href="favicon.png" />
 </head>
 <body>
   <header>
-    <div class="container nav-flex">
+    <div class="container">
       <img src="logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
@@ -36,26 +33,27 @@
     </section>
   </main>
   <footer>
-    <div class="container footer-flex">
+    <div class="container">
       <p>&copy; 2025 Testlik.com</p>
       <div class="odeme-logo">
-        <img src="wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
-        <img src="payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
-        <img src="iban.png" alt="IBAN" style="height:28px;"/>
+        <img src="wise.png" alt="Wise" />
+        <img src="payoneer.png" alt="Payoneer" />
+        <img src="iban.png" alt="IBAN" />
       </div>
     </div>
   </footer>
+  <script src="firebase.js"></script>
   <script>
-    firebase.auth().onAuthStateChanged(async function(user) {
+    auth.onAuthStateChanged(async user => {
       const favList = document.getElementById("favorites-list");
       if (!user) {
-        favList.innerHTML = "<p>Favori testlerini görmek için giriş yapmalısın.</p>";
+        favList.innerHTML = "<p>Favori testlerini görmek için giriş yapmalısın.</p><a href='giris.html' class='cta-btn'>Giriş Yap</a>";
         return;
       }
       favList.innerHTML = "<p>Favoriler yükleniyor...</p>";
       try {
         const userDoc = await db.collection("users").doc(user.uid).get();
-        const favorites = userDoc.data().favorites || [];
+        const favorites = userDoc.data()?.favorites || [];
         if (favorites.length === 0) {
           favList.innerHTML = "<p>Hiç favori testin yok!</p>";
           return;
@@ -72,7 +70,7 @@
                 <h3>${t.title}</h3>
                 <p>${t.description || ''}</p>
                 <a href="test-render.html?id=${testDoc.id}" class="cta-btn">Testi Çöz</a>
-                <button onclick="removeFavorite('${testDoc.id}')" style="margin-top:7px;">Favorilerden Kaldır</button>
+                <button onclick="removeFavorite('${testDoc.id}')">Favorilerden Kaldır</button>
               </div>
             `;
           }
@@ -84,7 +82,7 @@
     });
 
     async function removeFavorite(testId) {
-      const user = firebase.auth().currentUser;
+      const user = auth.currentUser;
       if (!user) return;
       const userRef = db.collection("users").doc(user.uid);
       const userDoc = await userRef.get();
