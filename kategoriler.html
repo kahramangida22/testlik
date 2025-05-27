@@ -6,14 +6,11 @@
   <title>Kategoriler | Testlik.com</title>
   <meta name="description" content="Testlik.com - Tüm test kategorilerini keşfet.">
   <link rel="stylesheet" href="styles.css" />
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="firebase.js"></script>
+  <link rel="icon" href="favicon.png" />
 </head>
 <body>
   <header>
-    <div class="container nav-flex">
+    <div class="container">
       <img src="logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
@@ -36,21 +33,22 @@
     </section>
   </main>
   <footer>
-    <div class="container footer-flex">
+    <div class="container">
       <p>&copy; 2025 Testlik.com</p>
       <div class="odeme-logo">
-        <img src="wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
-        <img src="payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
-        <img src="iban.png" alt="IBAN" style="height:28px;"/>
+        <img src="wise.png" alt="Wise" />
+        <img src="payoneer.png" alt="Payoneer" />
+        <img src="iban.png" alt="IBAN" />
       </div>
     </div>
   </footer>
+  <script src="firebase.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", async function() {
       const catList = document.getElementById("category-list");
       catList.innerHTML = "<p>Kategoriler yükleniyor...</p>";
       try {
-        // Firestore'dan kategorileri sırala
+        // Kategoriler koleksiyonunu "categories" adıyla tutuyorsan:
         const snapshot = await db.collection("categories").orderBy("order", "asc").get();
         if (snapshot.empty) {
           catList.innerHTML = "<p>Hiç kategori yok!</p>";
