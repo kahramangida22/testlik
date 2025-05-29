@@ -6,12 +6,12 @@
   <title>Test Sonucu | Testlik.com</title>
   <meta name="description" content="Testlik.com - Test sonucunu ve puanını öğren!">
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="favicon.png" />
+  <link rel="icon" href="img/favicon.png" />
 </head>
 <body>
   <header>
     <div class="container">
-      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
+      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
@@ -35,9 +35,9 @@
     <div class="container">
       <p>&copy; 2025 Testlik.com</p>
       <div class="odeme-logo">
-        <img src="wise.png" alt="Wise" />
-        <img src="payoneer.png" alt="Payoneer" />
-        <img src="iban.png" alt="IBAN" />
+        <img src="img/wise.png" alt="Wise" />
+        <img src="img/payoneer.png" alt="Payoneer" />
+        <img src="img/iban.png" alt="IBAN" />
       </div>
     </div>
   </footer>
@@ -53,9 +53,9 @@
         document.getElementById("result-area").innerHTML = "<p>Test bulunamadı!</p>";
       } else {
         testData = doc.data();
-        let score = answers.length; // Klasik testlerde puan=cevap sayısı
+        let score = answers.length;
         let resultText = "Başarıyla tamamladın!";
-        let resultImage = testData.image || "test-default.png";
+        let resultImage = "img/result-success.png";
         if (testData.results) {
           for (let res of testData.results) {
             if (score >= res.min && score <= res.max) {
@@ -66,7 +66,7 @@
         }
         document.getElementById("result-area").innerHTML = `
           <div class="test-card">
-            <img src="${resultImage}" alt="Sonuç Görseli" />
+            <img src="${resultImage}" alt="Sonuç Görseli" style="width:110px;height:80px;object-fit:cover;border-radius:12px;margin-bottom:14px;background:#e6eef7;" loading="lazy"/>
             <h2>Puanın: ${score} / ${testData.questions.length}</h2>
             <p>${resultText}</p>
             <a href="index.html" class="cta-btn">Diğer Testler</a>
