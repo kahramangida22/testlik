@@ -6,13 +6,13 @@
   <meta name="description" content="Testlik.com - Eğlenceli testler, puan toplama, ödüller ve kazanç sistemi!">
   <title>Testlik.com | Eğlenceli Testler ve Kazanç</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="favicon.png" />
+  <link rel="icon" href="img/favicon.png" />
 </head>
 <body>
   <!-- Navbar -->
   <header>
     <div class="container nav-flex">
-      <img src="logo.png" alt="Testlik.com Logo" class="logo" style="height:48px;"/>
+      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" style="height:48px;"/>
       <nav>
         <a href="index.html" class="active">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
@@ -34,6 +34,16 @@
       <a href="kategoriler.html" class="cta-btn">Testleri Keşfet</a>
     </section>
 
+    <!-- Giriş/Üye Ol KUTUSU -->
+    <section style="max-width: 400px; margin: 30px auto 0 auto; background: #fff; border-radius:18px; box-shadow: 0 2px 20px #00339912; padding: 24px;">
+      <h2 style="margin-bottom:16px; color:#003399;">Giriş Yap / Üye Ol</h2>
+      <input id="email" type="email" placeholder="E-Posta" style="width:100%;margin-bottom:10px;padding:9px;">
+      <input id="password" type="password" placeholder="Şifre" style="width:100%;margin-bottom:10px;padding:9px;">
+      <button onclick="login()" class="cta-btn" style="width:100%;">Giriş Yap</button>
+      <div id="login-status" style="color:red;margin-top:10px;"></div>
+      <button onclick="register()" style="width:100%;margin-top:10px;background:#1a64d6;color:#fff;border-radius:30px;padding:11px;font-weight:600;cursor:pointer;">Üye Ol</button>
+    </section>
+
     <section class="test-list" id="test-list">
       <!-- Testler dinamik olarak buraya yüklenecek -->
       <div class="loader">Testler yükleniyor...</div>
@@ -45,14 +55,46 @@
     <div class="container footer-flex">
       <p>&copy; 2025 Testlik.com | Tüm Hakları Saklıdır</p>
       <div class="odeme-logo">
-        <img src="wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
-        <img src="payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
-        <img src="iban.png" alt="IBAN" style="height:28px;"/>
+        <img src="img/wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
+        <img src="img/payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
+        <img src="img/iban.png" alt="IBAN" style="height:28px;"/>
       </div>
     </div>
   </footer>
 
   <script src="firebase.js"></script>
   <script src="main.js"></script>
+  <script>
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(() => { window.location.href = "index.html"; })
+        .catch(err => {
+          document.getElementById("login-status").innerText = err.message;
+        });
+    }
+    function register() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(async (userCred) => {
+          // Firestore'da profil aç
+          await db.collection("users").doc(userCred.user.uid).set({
+            email,
+            displayName: "",
+            avatar: "",
+            points: 0,
+            favorites: [],
+            completedTests: [],
+            withdrawals: []
+          });
+          window.location.href = "index.html";
+        })
+        .catch(err => {
+          document.getElementById("login-status").innerText = err.message;
+        });
+    }
+  </script>
 </body>
 </html>
