@@ -6,12 +6,12 @@
   <title>Test Çöz | Testlik.com</title>
   <meta name="description" content="Testlik.com - Soruları tek tek çöz, puan kazan!">
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="favicon.png" />
+  <link rel="icon" href="img/favicon.png" />
 </head>
 <body>
   <header>
     <div class="container">
-      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
+      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
@@ -35,9 +35,9 @@
     <div class="container">
       <p>&copy; 2025 Testlik.com</p>
       <div class="odeme-logo">
-        <img src="wise.png" alt="Wise" />
-        <img src="payoneer.png" alt="Payoneer" />
-        <img src="iban.png" alt="IBAN" />
+        <img src="img/wise.png" alt="Wise" />
+        <img src="img/payoneer.png" alt="Payoneer" />
+        <img src="img/iban.png" alt="IBAN" />
       </div>
     </div>
   </footer>
@@ -52,7 +52,9 @@
       const area = document.getElementById("test-area");
       const q = testData.questions[currentQ];
       let html = `<h2>${testData.title}</h2>`;
-      html += `<div class="test-card"><h3>${q.question}</h3>`;
+      html += `<div class="test-card">`;
+      html += `<img src="${testData.image || 'img/test-category-default.png'}" alt="Test Görseli" style="width:110px;height:80px;object-fit:cover;border-radius:12px;margin-bottom:14px;background:#e6eef7;" loading="lazy"/>`;
+      html += `<h3>${q.question}</h3>`;
       q.options.forEach((opt, i) => {
         html += `<div>
           <input type="radio" id="opt${i}" name="option" value="${i}">
