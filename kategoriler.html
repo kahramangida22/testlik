@@ -1,4 +1,75 @@
-<!-- kategoriler.html -->
-...
-<img src="${cat.image || 'img/test-category-default.png'}" alt="${cat.name}" loading="lazy"/>
-...
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kategoriler | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Tüm test kategorilerini keşfet.">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="img/favicon.png" />
+</head>
+<body>
+  <header>
+    <div class="container">
+      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
+      <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="kategoriler.html" class="active">Kategoriler</a>
+        <a href="favoriler.html">Favoriler</a>
+        <a href="profil.html">Profil</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="akademi.html">Akademi</a>
+        <a href="istatistik.html">İstatistik</a>
+        <a href="admin.html" class="admin-link">Admin</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section>
+      <h1>Kategoriler</h1>
+      <div class="test-list" id="category-list">
+        <!-- Kategoriler buraya yüklenecek -->
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Testlik.com</p>
+      <div class="odeme-logo">
+        <img src="img/wise.png" alt="Wise" />
+        <img src="img/payoneer.png" alt="Payoneer" />
+        <img src="img/iban.png" alt="IBAN" />
+      </div>
+    </div>
+  </footer>
+  <script src="firebase.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async function() {
+      const catList = document.getElementById("category-list");
+      catList.innerHTML = "<p>Kategoriler yükleniyor...</p>";
+      try {
+        const snapshot = await db.collection("categories").orderBy("order", "asc").get();
+        if (snapshot.empty) {
+          catList.innerHTML = "<p>Hiç kategori yok!</p>";
+        } else {
+          catList.innerHTML = "";
+          snapshot.forEach(doc => {
+            const cat = doc.data();
+            catList.innerHTML += `
+              <div class="test-card">
+                <img src="${cat.image || 'img/test-category-default.png'}" alt="${cat.name}" loading="lazy"/>
+                <h3>${cat.name}</h3>
+                <p>${cat.description || ''}</p>
+                <a href="index.html?category=${doc.id}" class="cta-btn">Testleri Gör</a>
+              </div>
+            `;
+          });
+        }
+      } catch (err) {
+        catList.innerHTML = "<p>Kategoriler yüklenemedi!</p>";
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
