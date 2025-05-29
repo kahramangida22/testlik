@@ -1,5 +1,6 @@
 // main.js
 
+// Anasayfa: Testleri getirip ekrana basar
 document.addEventListener("DOMContentLoaded", async function() {
   const testList = document.getElementById("test-list");
   if (!testList) return;
