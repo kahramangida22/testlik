@@ -22,6 +22,7 @@
         <a href="akademi.html">Akademi</a>
         <a href="istatistik.html">İstatistik</a>
         <a href="admin.html" class="admin-link">Admin</a>
+        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
@@ -69,13 +70,29 @@
   <script src="firebase.js"></script>
   <script src="main.js"></script>
   <script>
-    // Giriş yapan kullanıcıya giriş kutusunu gizle!
+    // Giriş yapan kullanıcıya giriş kutusunu gizle, çıkış butonunu göster!
     firebase.auth().onAuthStateChanged(function(user) {
       var loginSection = document.getElementById('login-section');
-      if (user && loginSection) {
-        loginSection.style.display = 'none';
-      } else if (loginSection) {
-        loginSection.style.display = 'block';
+      var logoutBtn = document.getElementById('logout-btn');
+      if (user) {
+        if (loginSection) loginSection.style.display = 'none';
+        if (logoutBtn) logoutBtn.style.display = 'inline-block';
+      } else {
+        if (loginSection) loginSection.style.display = 'block';
+        if (logoutBtn) logoutBtn.style.display = 'none';
+      }
+    });
+
+    // Çıkışa tıklanınca çıkış yap ve anasayfaya yönlendir
+    document.addEventListener('DOMContentLoaded', function() {
+      var logoutBtnElem = document.getElementById('logout-btn');
+      if (logoutBtnElem) {
+        logoutBtnElem.onclick = function(e) {
+          e.preventDefault();
+          firebase.auth().signOut().then(() => {
+            window.location.href = "index.html";
+          });
+        }
       }
     });
 
