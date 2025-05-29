@@ -6,6 +6,7 @@
   <title>Admin Panel | Testlik.com</title>
   <meta name="description" content="Testlik.com - Admin panel: test, kategori, sonuç yönetimi.">
   <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="img/favicon.png" />
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -14,7 +15,7 @@
 <body>
   <header>
     <div class="container nav-flex">
-      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
+      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
@@ -39,9 +40,9 @@
     <div class="container footer-flex">
       <p>&copy; 2025 Testlik.com</p>
       <div class="odeme-logo">
-        <img src="wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
-        <img src="payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
-        <img src="iban.png" alt="IBAN" style="height:28px;"/>
+        <img src="img/wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
+        <img src="img/payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
+        <img src="img/iban.png" alt="IBAN" style="height:28px;"/>
       </div>
     </div>
   </footer>
@@ -63,7 +64,7 @@
         <h3>Test Ekle</h3>
         <form id="testForm">
           <input type="text" id="title" placeholder="Test Başlığı" required><br>
-          <input type="text" id="image" placeholder="Görsel (URL)"><br>
+          <input type="text" id="image" placeholder="Görsel (URL veya img/...)"><br>
           <select id="category">
             <option value="Genel">Genel</option>
             <option value="Kişilik">Kişilik</option>
@@ -93,13 +94,13 @@
     "min": 0,
     "max": 10,
     "text": "Sen oldukça duygusal birisin!",
-    "image": "https://link.com/duygusal.jpg"
+    "image": "img/result-fail.png"
   },
   {
     "min": 11,
     "max": 20,
     "text": "Sen çok mantıklı bir insansın!",
-    "image": "https://link.com/mantikli.jpg"
+    "image": "img/result-success.png"
   }
 ]</pre>
         </div>
