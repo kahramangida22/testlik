@@ -1,3 +1,5 @@
+// firebase.js
+
 // Firebase SDK yüklenmiş olmalı, index.html’de bunu eklemen gerekiyor:
 // <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 // <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
