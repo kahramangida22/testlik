@@ -1,6 +1,5 @@
 // main.js
 
-// Anasayfa: Testleri getirip ekrana basar
 document.addEventListener("DOMContentLoaded", async function() {
   const testList = document.getElementById("test-list");
   if (!testList) return;
@@ -27,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async function() {
       const t = doc.data();
       testList.innerHTML += `
         <div class="test-card">
-          <img src="${t.image || 'test-default.png'}" alt="Test Görseli" />
+          <img src="${t.image || 'img/test-category-default.png'}" alt="Test Görseli" loading="lazy"/>
           <div class="category">${t.category || 'Genel'}</div>
           <h3>${t.title}</h3>
           <p>${t.description || ''}</p>
