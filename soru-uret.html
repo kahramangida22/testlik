@@ -3,11 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Soru/Test Öner | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Kendi testini ya da sorunuzu önerin, yayınlansın!">
+  <title>Soru/Öneri Gönder | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Kendi testini/sorunu öner, puan kazan!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    .soru-card {
+      background:#fff;border-radius:28px;box-shadow:0 2px 24px #735aff19;
+      padding:36px 28px 28px 28px;max-width:430px;margin:44px auto 24px auto;
+      font-size:1.13em;color:#4a306f;text-align:center;
+    }
+    .soru-title {
+      color:#735aff;font-size:1.22em;font-weight:800;margin-bottom:13px;display:flex;align-items:center;gap:10px;justify-content:center;
+    }
+    .soru-inp, .soru-textarea {
+      width:99%;padding:9px 10px;margin-bottom:11px;
+      border-radius:14px;border:1.3px solid #b69bfc;font-size:1.07em;
+      background:#faf4ff;resize:vertical;
+      font-family:inherit;
+    }
+    .soru-textarea {min-height:44px;max-height:200px;}
+    .soru-btn {
+      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
+      color:#fff;border:none;border-radius:17px;
+      padding:11px 29px;margin-top:7px;font-weight:700;font-size:1.06em;cursor:pointer;
+      box-shadow:0 2px 10px #735aff29;transition:background .13s;
+    }
+    .soru-btn:active{background:#ed4a88;}
+    .soru-result {margin-top:16px;color:#ed4a88;font-weight:700;min-height:24px;}
+  </style>
 </head>
 <body>
   <header>
@@ -31,18 +56,12 @@
     </div>
   </header>
   <main>
-    <h1 class="main-title"><span class="emoji">💡</span> Soru/Test Öner</h1>
     <div class="soru-card">
-      <form id="suggestForm">
-        <label for="testTitle">Test Başlığı</label>
-        <input type="text" id="testTitle" required placeholder="Başlık...">
-        <label for="testDesc">Kısa Açıklama</label>
-        <input type="text" id="testDesc" required placeholder="Test hakkında kısa bilgi...">
-        <label for="testQ">Soru / Detay / Açıklama</label>
-        <textarea id="testQ" required placeholder="Test sorusu, örnek seçenekler veya açıklamanı yaz..."></textarea>
-        <button class="cta-btn" style="width:100%;" type="submit">Gönder</button>
-      </form>
-      <div id="formMsg" style="margin-top:13px;min-height:22px;"></div>
+      <div class="soru-title"><img src="add.png" style="height:32px;" alt="Ekle"/> Soru / Test / Öneri Gönder</div>
+      <input class="soru-inp" id="soru-title" placeholder="Başlık (zorunlu)" maxlength="60"/>
+      <textarea class="soru-textarea" id="soru-desc" placeholder="Kısa açıklama, soru veya önerin (zorunlu)" maxlength="300"></textarea>
+      <button class="soru-btn" id="soru-btn">Gönder</button>
+      <div class="soru-result" id="soru-result"></div>
     </div>
   </main>
   <footer>
@@ -60,6 +79,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
+    // Navbar çıkış butonu
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
       if (logoutBtn) {
@@ -79,28 +99,29 @@
       }
     });
 
-    // Öneri gönderme
-    document.getElementById("suggestForm").onsubmit = async function(e) {
-      e.preventDefault();
-      const title = document.getElementById("testTitle").value.trim();
-      const desc = document.getElementById("testDesc").value.trim();
-      const detail = document.getElementById("testQ").value.trim();
-      if (!title || !desc || !detail) {
-        document.getElementById("formMsg").innerHTML = "<span style='color:#ed4a88;'>Tüm alanları doldurmalısın!</span>";
+    // Soru/öneri gönderme
+    document.getElementById("soru-btn").onclick = async function() {
+      const title = document.getElementById("soru-title").value.trim();
+      const desc = document.getElementById("soru-desc").value.trim();
+      const res = document.getElementById("soru-result");
+      if (!title || !desc) {
+        res.innerHTML = "<span>Lütfen başlık ve açıklama gir.</span>";
         return;
       }
-      try {
-        await db.collection("suggestions").add({
-          title, desc, detail,
-          createdAt: new Date(),
-          status: "waiting"
-        });
-        document.getElementById("formMsg").innerHTML = "<span style='color:#13bd72;'>Önerin başarıyla gönderildi, onay sonrası yayınlanacak!</span>";
-        document.getElementById("suggestForm").reset();
-      } catch (err) {
-        document.getElementById("formMsg").innerHTML = "<span style='color:#ed4a88;'>Hata oluştu! Lütfen tekrar dene.</span>";
+      // Kullanıcıya login değilse anonim ekle
+      let uid = null, displayName = "Anonim";
+      const user = firebase.auth().currentUser;
+      if (user) {
+        uid = user.uid;
+        displayName = user.displayName || user.email || "Kullanıcı";
       }
-    };
+      await db.collection("suggestions").add({
+        title, desc, createdAt: Date.now(), uid, displayName
+      });
+      res.innerHTML = "<span style='color:#13bd72;'>Önerin başarıyla kaydedildi! Teşekkürler 🙏</span>";
+      document.getElementById("soru-title").value = "";
+      document.getElementById("soru-desc").value = "";
+    }
   </script>
 </body>
 </html>
