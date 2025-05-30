@@ -4,9 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Test Sonucu | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Test sonucunu ve puanını öğren!">
+  <meta name="description" content="Test sonuçlarını gör ve başarıyı paylaş!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    .sonuc-kart {background:#fff;border-radius:22px;box-shadow:0 2px 18px #735aff13;padding:34px 28px 22px 28px;max-width:430px;margin:52px auto 32px auto;text-align:center;}
+    .sonuc-puan {font-size:2.3em;color:#ed4a88;font-weight:800;margin:10px 0 16px 0;letter-spacing:.02em;}
+    .sonuc-img {width:160px;height:100px;object-fit:contain;margin:0 auto 20px auto;display:block;}
+    .sonuc-mesaj {color:#735aff;font-size:1.19em;font-weight:600;margin-bottom:18px;}
+    .paylas-btn {background:#f7e8ff;color:#735aff;font-weight:700;border:none;padding:9px 30px;border-radius:18px;font-size:1em;cursor:pointer;transition:background .13s;}
+    .paylas-btn:hover {background:#735aff;color:#fff;}
+  </style>
 </head>
 <body>
   <header>
@@ -15,25 +24,30 @@
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
+        <a href="sizdengelenler.html">Sizden Gelenler</a>
+        <a href="soru-uret.html">Soru Üret</a>
+        <a href="cark.html">Çarkıfelek</a>
+        <a href="video-izle.html">Video İzle Kazan</a>
         <a href="favoriler.html">Favoriler</a>
         <a href="profil.html">Profil</a>
         <a href="dashboard.html">Dashboard</a>
         <a href="akademi.html">Akademi</a>
         <a href="istatistik.html">İstatistik</a>
         <a href="admin.html" class="admin-link">Admin</a>
+        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
   <main>
     <section>
-      <div id="result-area">
-        <p>Sonuç hesaplanıyor...</p>
+      <div class="sonuc-kart" id="sonuc-alani">
+        <div class="loader">Sonuç yükleniyor...</div>
       </div>
     </section>
   </main>
   <footer>
     <div class="container">
-      <p>&copy; 2025 Testlik.com</p>
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
         <img src="img/wise.png" alt="Wise" />
         <img src="img/payoneer.png" alt="Payoneer" />
@@ -41,39 +55,73 @@
       </div>
     </div>
   </footer>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const testId = urlParams.get('id');
-    const answers = urlParams.get('answers') ? urlParams.get('answers').split(',').map(Number) : [];
-    let testData = null;
-
-    db.collection("tests").doc(testId).get().then(doc => {
-      if (!doc.exists) {
-        document.getElementById("result-area").innerHTML = "<p>Test bulunamadı!</p>";
-      } else {
-        testData = doc.data();
-        let score = answers.length;
-        let resultText = "Başarıyla tamamladın!";
-        let resultImage = "img/result-success.png";
-        if (testData.results) {
-          for (let res of testData.results) {
-            if (score >= res.min && score <= res.max) {
-              resultText = res.text;
-              resultImage = res.image || resultImage;
-            }
-          }
-        }
-        document.getElementById("result-area").innerHTML = `
-          <div class="test-card">
-            <img src="${resultImage}" alt="Sonuç Görseli" style="width:110px;height:80px;object-fit:cover;border-radius:12px;margin-bottom:14px;background:#e6eef7;" loading="lazy"/>
-            <h2>Puanın: ${score} / ${testData.questions.length}</h2>
-            <p>${resultText}</p>
-            <a href="index.html" class="cta-btn">Diğer Testler</a>
-          </div>
-        `;
+    firebase.auth().onAuthStateChanged(function(user) {
+      var logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        if (user) logoutBtn.style.display = 'inline-block';
+        else logoutBtn.style.display = 'none';
       }
     });
+    document.addEventListener('DOMContentLoaded', function() {
+      var logoutBtnElem = document.getElementById('logout-btn');
+      if (logoutBtnElem) {
+        logoutBtnElem.onclick = function(e) {
+          e.preventDefault();
+          firebase.auth().signOut().then(() => {
+            window.location.href = "index.html";
+          });
+        }
+      }
+    });
+
+    // Sonucu göster
+    const urlParams = new URLSearchParams(window.location.search);
+    const testId = urlParams.get("id");
+    const puan = Number(urlParams.get("puan"));
+    let sonucGorseller = [
+      {min:0, max:0, img:"img/result-fail.png", mesaj:"Üzgünüm! Hiç doğru cevap yok. Yeniden dene!"},
+      {min:1, max:2, img:"img/result-medium.png", mesaj:"Fena değil! Daha iyisini yapabilirsin."},
+      {min:3, max:100, img:"img/result-success.png", mesaj:"Mükemmel! Gerçek bir test ustasısın!"}
+    ];
+    async function sonucuYaz() {
+      // Testin toplam soru sayısına göre sonucu daha dinamik ayarlayabilirsin.
+      let gorsel = sonucGorseller[0];
+      for (const g of sonucGorseller) {
+        if (puan >= g.min && puan <= g.max) gorsel = g;
+      }
+      // Testin başlığı için firestore'dan çek
+      let title = "Test Sonucu";
+      if (testId) {
+        const doc = await db.collection("tests").doc(testId).get();
+        if (doc.exists) title = doc.data().title || title;
+      }
+      document.getElementById("sonuc-alani").innerHTML = `
+        <h2 style="color:#735aff;">${title}</h2>
+        <img src="${gorsel.img}" alt="Sonuç Görseli" class="sonuc-img" />
+        <div class="sonuc-puan">${puan} Doğru</div>
+        <div class="sonuc-mesaj">${gorsel.mesaj}</div>
+        <button class="paylas-btn" onclick="paylas()">Sonucu Paylaş</button>
+        <a href="index.html" class="cta-btn ghost-btn" style="margin-top:12px;">Ana Sayfaya Dön</a>
+      `;
+    }
+    function paylas() {
+      const url = window.location.href;
+      if (navigator.share) {
+        navigator.share({
+          title: document.title,
+          text: "Test sonucumu gör! Sen de testlik.com'da hemen dene.",
+          url
+        });
+      } else {
+        prompt("Sonucu arkadaşlarınla paylaşmak için linki kopyala:", url);
+      }
+    }
+    sonucuYaz();
   </script>
 </body>
 </html>
