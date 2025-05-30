@@ -7,8 +7,24 @@
   <title>Testlik.com | Eğlenceli Testler ve Kazanç</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
+  <!-- Google Fonts - daha eğlenceli tipografi -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- ANİMASYONLU BALONCUKLAR -->
+  <div class="bubbles-bg">
+    <div class="bubble" style="--i:1"></div>
+    <div class="bubble" style="--i:2"></div>
+    <div class="bubble" style="--i:3"></div>
+    <div class="bubble" style="--i:4"></div>
+    <div class="bubble" style="--i:5"></div>
+    <div class="bubble" style="--i:6"></div>
+    <div class="bubble" style="--i:7"></div>
+    <div class="bubble" style="--i:8"></div>
+    <div class="bubble" style="--i:9"></div>
+    <div class="bubble" style="--i:10"></div>
+  </div>
+
   <!-- Navbar -->
   <header>
     <div class="container nav-flex">
@@ -30,19 +46,25 @@
   <!-- Hero Section -->
   <main>
     <section class="hero">
-      <h1>Testlik.com - Eğlenceli Testler, Puanlar ve Ödüller!</h1>
-      <p>Kategorilere göre binlerce eğlenceli test, anında puan ve kazanç sistemiyle!</p>
-      <a href="kategoriler.html" class="cta-btn">Testleri Keşfet</a>
+      <h1>
+        <span class="emoji">🎉</span>
+        Testlik.com
+        <span class="emoji">✨</span>
+        <br>
+        <span style="font-size:1.4rem; font-weight:400;">Eğlenceli Testler, Puanlar ve Ödüller!</span>
+      </h1>
+      <p style="font-size:1.2rem;">Kategorilere göre <b>binlerce eğlenceli test</b>, anında puan ve kazanç sistemiyle!</p>
+      <a href="kategoriler.html" class="cta-btn animated-btn">Testleri Keşfet 🚀</a>
     </section>
 
     <!-- Giriş/Üye Ol KUTUSU -->
-    <section id="login-section" style="max-width: 400px; margin: 30px auto 0 auto; background: #fff; border-radius:18px; box-shadow: 0 2px 20px #00339912; padding: 24px;">
-      <h2 style="margin-bottom:16px; color:#003399;">Giriş Yap / Üye Ol</h2>
-      <input id="email" type="email" placeholder="E-Posta" style="width:100%;margin-bottom:10px;padding:9px;">
-      <input id="password" type="password" placeholder="Şifre" style="width:100%;margin-bottom:10px;padding:9px;">
+    <section id="login-section" class="login-card fancy-card">
+      <h2>Giriş Yap / Üye Ol</h2>
+      <input id="email" type="email" placeholder="E-Posta">
+      <input id="password" type="password" placeholder="Şifre">
       <button onclick="login()" class="cta-btn" style="width:100%;">Giriş Yap</button>
       <div id="login-status" style="color:red;margin-top:10px;"></div>
-      <button onclick="register()" style="width:100%;margin-top:10px;background:#1a64d6;color:#fff;border-radius:30px;padding:11px;font-weight:600;cursor:pointer;">Üye Ol</button>
+      <button onclick="register()" class="cta-btn ghost-btn" style="width:100%;margin-top:10px;">Üye Ol</button>
     </section>
 
     <section class="test-list" id="test-list">
@@ -54,16 +76,16 @@
   <!-- Footer -->
   <footer>
     <div class="container footer-flex">
-      <p>&copy; 2025 Testlik.com | Tüm Hakları Saklıdır</p>
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
-        <img src="img/wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
-        <img src="img/payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
-        <img src="img/iban.png" alt="IBAN" style="height:28px;"/>
+        <img src="img/wise.png" alt="Wise" />
+        <img src="img/payoneer.png" alt="Payoneer" />
+        <img src="img/iban.png" alt="IBAN" />
       </div>
     </div>
   </footer>
 
-  <!-- Firebase ve main.js -->
+  <!-- Firebase CDN’leri -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
