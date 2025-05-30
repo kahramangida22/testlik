@@ -4,9 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Kategoriler | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Tüm test kategorilerini keşfet.">
+  <meta name="description" content="Testlik.com - Test kategorilerini keşfet!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    .kategori-kart {background:#fff;border-radius:20px;box-shadow:0 2px 18px #735aff13;padding:28px 18px;margin:0;max-width:220px;width:100%;text-align:center;transition:box-shadow .13s,transform .12s;cursor:pointer;position:relative;}
+    .kategori-kart:hover {box-shadow:0 6px 28px #fd72ff2c;transform:scale(1.06) translateY(-2px);}
+    .kategori-ikon {font-size:2.3em;margin-bottom:14px;}
+    .kategori-adi {color:#735aff;font-size:1.13em;font-weight:700;margin-bottom:7px;}
+    .kategori-aciklama {color:#5a6cff;font-size:.97em;}
+    .kategori-listesi {display:flex;flex-wrap:wrap;gap:28px;justify-content:center;margin:40px 0;}
+  </style>
 </head>
 <body>
   <header>
@@ -15,6 +24,10 @@
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html" class="active">Kategoriler</a>
+        <a href="sizdengelenler.html">Sizden Gelenler</a>
+        <a href="soru-uret.html">Soru Üret</a>
+        <a href="cark.html">Çarkıfelek</a>
+        <a href="video-izle.html">Video İzle Kazan</a>
         <a href="favoriler.html">Favoriler</a>
         <a href="profil.html">Profil</a>
         <a href="dashboard.html">Dashboard</a>
@@ -27,15 +40,49 @@
   </header>
   <main>
     <section>
-      <h1>Kategoriler</h1>
-      <div class="test-list" id="category-list">
-        <!-- Kategoriler buraya yüklenecek -->
+      <h1 style="text-align:center;color:#735aff;font-weight:700;margin-top:34px;">Kategoriler <span class="emoji">📚</span></h1>
+      <div class="kategori-listesi">
+        <div class="kategori-kart" onclick="kategoriyeGit('Genel')">
+          <div class="kategori-ikon">🌟</div>
+          <div class="kategori-adi">Genel</div>
+          <div class="kategori-aciklama">Her konudan testler!</div>
+        </div>
+        <div class="kategori-kart" onclick="kategoriyeGit('Eğlence')">
+          <div class="kategori-ikon">😂</div>
+          <div class="kategori-adi">Eğlence</div>
+          <div class="kategori-aciklama">Mizah, popüler kültür, capsler...</div>
+        </div>
+        <div class="kategori-kart" onclick="kategoriyeGit('Bilgi')">
+          <div class="kategori-ikon">🧠</div>
+          <div class="kategori-adi">Bilgi</div>
+          <div class="kategori-aciklama">Bilgi yarışmaları, IQ soruları...</div>
+        </div>
+        <div class="kategori-kart" onclick="kategoriyeGit('Psikoloji')">
+          <div class="kategori-ikon">🧘</div>
+          <div class="kategori-adi">Psikoloji</div>
+          <div class="kategori-aciklama">Kişilik, mizah, analiz testleri</div>
+        </div>
+        <div class="kategori-kart" onclick="kategoriyeGit('Tarih')">
+          <div class="kategori-ikon">🏺</div>
+          <div class="kategori-adi">Tarih</div>
+          <div class="kategori-aciklama">Geçmişe dair her şey!</div>
+        </div>
+        <div class="kategori-kart" onclick="kategoriyeGit('Teknoloji')">
+          <div class="kategori-ikon">💻</div>
+          <div class="kategori-adi">Teknoloji</div>
+          <div class="kategori-aciklama">Güncel teknoloji testleri</div>
+        </div>
+        <div class="kategori-kart" onclick="kategoriyeGit('Diğer')">
+          <div class="kategori-ikon">🌀</div>
+          <div class="kategori-adi">Diğer</div>
+          <div class="kategori-aciklama">Farklı, özel kategoriler</div>
+        </div>
       </div>
     </section>
   </main>
   <footer>
     <div class="container">
-      <p>&copy; 2025 Testlik.com</p>
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
         <img src="img/wise.png" alt="Wise" />
         <img src="img/payoneer.png" alt="Payoneer" />
@@ -48,7 +95,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
-    // Çıkış butonu kontrolü
+    // Navbar çıkış
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
       if (logoutBtn) {
@@ -68,32 +115,14 @@
       }
     });
 
-    document.addEventListener("DOMContentLoaded", async function() {
-      const catList = document.getElementById("category-list");
-      catList.innerHTML = "<p>Kategoriler yükleniyor...</p>";
-      try {
-        const snapshot = await db.collection("categories").orderBy("order", "asc").get();
-        if (snapshot.empty) {
-          catList.innerHTML = "<p>Hiç kategori yok!</p>";
-        } else {
-          catList.innerHTML = "";
-          snapshot.forEach(doc => {
-            const cat = doc.data();
-            catList.innerHTML += `
-              <div class="test-card">
-                <img src="${cat.image || 'img/test-category-default.png'}" alt="${cat.name}" loading="lazy"/>
-                <h3>${cat.name}</h3>
-                <p>${cat.description || ''}</p>
-                <a href="index.html?category=${doc.id}" class="cta-btn">Testleri Gör</a>
-              </div>
-            `;
-          });
-        }
-      } catch (err) {
-        catList.innerHTML = "<p>Kategoriler yüklenemedi!</p>";
-        console.error(err);
-      }
-    });
+    // Kategori seçilince o kategoriye ait testleri gösteren sayfaya yönlendirme (örnek)
+    function kategoriyeGit(kat) {
+      // Eğer ayrı bir kategori-sayfa.html dosyası yaparsan buraya yönlendirme yazabilirsin:
+      // window.location.href = "kategori.html?kategori=" + encodeURIComponent(kat);
+
+      // Veya ana sayfa ya da sizdengelenler.html gibi test listesini filtreleyeceksen querystring ile gidebilirsin:
+      window.location.href = "sizdengelenler.html?kategori=" + encodeURIComponent(kat);
+    }
   </script>
 </body>
 </html>
