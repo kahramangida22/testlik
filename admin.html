@@ -8,14 +8,42 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Sosyal medya ikonları için fontawesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
   <style>
     .admin-panel {max-width:700px;margin:46px auto 18px auto;background:#fff;border-radius:20px;box-shadow:0 2px 18px #735aff13;padding:38px 34px;}
     .admin-hdr {color:#735aff;font-weight:700;font-size:1.33em;margin-bottom:18px;}
     .admin-form input, .admin-form select, .admin-form textarea {width:100%;margin-bottom:7px;}
+    .admin-table {width:100%;margin:20px 0;border-collapse:collapse;}
+    .admin-table th, .admin-table td {padding:7px 9px;border-bottom:1px solid #eee;}
+    .admin-table th {color:#8f7fff;}
+    .bildirim-btn {background:#735aff;color:#fff;border:none;border-radius:15px;padding:7px 18px;font-weight:700;cursor:pointer;transition:background .13s;}
+    .bildirim-btn:hover {background:#ed4a88;}
     .info-mini {font-size:.92em;color:#5a6cff;}
-    .social-btns {display: flex; gap: 16px; margin: 22px 0 12px 0;}
-    .social-btn {background:#fff;border:1.5px solid #8f7fff;color:#8f7fff;padding:7px 16px;border-radius:16px;font-weight:700;cursor:pointer;transition:all .14s;}
-    .social-btn:hover {background:#735aff;color:#fff;}
+    .test-share-btns {margin-top:8px;}
+    .test-share-btns button {
+      background: #fff;
+      border: none;
+      margin-right: 6px;
+      padding: 7px 13px;
+      border-radius: 10px;
+      color: #735aff;
+      box-shadow: 0 1px 8px #7c45e922;
+      font-size: 1.16em;
+      cursor: pointer;
+      transition: background .14s, color .14s;
+    }
+    .test-share-btns button:hover {background:#f7e8ff;color:#ed4a88;}
+    .admin-test-card {
+      background: #f8f6ff;
+      border-radius: 15px;
+      box-shadow: 0 1px 8px #ed4a8811;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+    .admin-test-title {font-size:1.09em;color:#735aff;font-weight:700;}
+    .admin-test-cat {font-size:.97em;color:#ed4a88;}
+    .admin-test-desc {color:#333;}
   </style>
 </head>
 <body>
@@ -26,29 +54,72 @@
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
         <a href="sizdengelenler.html">Sizden Gelenler</a>
+        <a href="soru-uret.html">Soru Üret</a>
+        <a href="cark.html">Çarkıfelek</a>
+        <a href="video-izle.html">Video İzle Kazan</a>
+        <a href="favoriler.html">Favoriler</a>
+        <a href="profil.html">Profil</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="akademi.html">Akademi</a>
+        <a href="istatistik.html">İstatistik</a>
         <a href="admin.html" class="active admin-link">Admin</a>
+        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
   <main>
     <section class="admin-panel">
       <h1 class="admin-hdr">Admin Panel <span class="emoji">🛠️</span></h1>
-      <div class="info-mini">Sadece JSON'u yapıştırman yeterli. Kategori, açıklama, başlık alanı otomatik algılanır.</div>
+      <div class="info-mini">Yalnızca yetkili kullanıcılar erişebilir.</div>
+      <hr style="margin:16px 0 24px 0;" />
+      <h3 style="color:#8f7fff;">Test Ekle (JSON veya Form ile)</h3>
       <form class="admin-form" id="adminTestForm">
-        <textarea id="a_json" rows="9" placeholder="Sadece JSON verisini buraya yapıştır (ör: { 'title':'...', ... })" required></textarea>
-        <button type="submit" class="cta-btn">Testi Ekle</button>
+        <input id="a_title" type="text" placeholder="Test Başlığı" required />
+        <input id="a_description" type="text" placeholder="Açıklama" required />
+        <select id="a_category" required>
+          <option value="">Kategori Seç</option>
+          <option>Genel</option>
+          <option>Eğlence</option>
+          <option>Bilgi</option>
+          <option>Psikoloji</option>
+          <option>Tarih</option>
+          <option>Teknoloji</option>
+          <option>Diğer</option>
+        </select>
+        <textarea id="a_json" placeholder="Testi JSON formatında gir (isteğe bağlı)"></textarea>
+        <button type="submit" class="cta-btn">Testi Kaydet</button>
         <div id="adminFormMsg" style="min-height:18px;font-weight:600;margin-top:7px;"></div>
       </form>
-      <div class="social-btns">
-        <button class="social-btn" onclick="shareAll('facebook')">Facebook'ta Paylaş</button>
-        <button class="social-btn" onclick="shareAll('twitter')">Twitter'da Paylaş</button>
-        <button class="social-btn" onclick="shareAll('linkedin')">LinkedIn'de Paylaş</button>
-      </div>
+      <hr style="margin:20px 0 14px 0;" />
+      <h3 style="color:#8f7fff;">Kullanıcıya Bildirim Gönder <span class="emoji">🔔</span></h3>
+      <form class="admin-form" id="notifForm">
+        <input id="notif_title" type="text" placeholder="Bildirim Başlığı" required />
+        <textarea id="notif_body" placeholder="Bildirim Mesajı" required></textarea>
+        <button type="submit" class="bildirim-btn">Tüm Kullanıcılara Gönder (Çerez onaylayanlar)</button>
+        <div id="notifMsg" style="min-height:18px;font-weight:600;margin-top:7px;"></div>
+      </form>
+      <hr style="margin:24px 0 12px 0;" />
+      <h3 style="color:#8f7fff;">Kullanıcı & Test Ara</h3>
+      <input type="text" id="searchInput" placeholder="Kullanıcı e-posta veya test başlığı ara" style="width:98%;margin-bottom:10px;">
+      <div id="adminTestResults"></div>
+      <table class="admin-table" id="adminTable">
+        <thead>
+          <tr><th>Kullanıcı/Test</th><th>Bilgi</th></tr>
+        </thead>
+        <tbody>
+          <!-- Sonuçlar buraya gelecek -->
+        </tbody>
+      </table>
     </section>
   </main>
   <footer>
     <div class="container">
-      <p>&copy; 2025 <b>Testlik.com</b></p>
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
+      <div class="odeme-logo">
+        <img src="img/wise.png" alt="Wise" />
+        <img src="img/payoneer.png" alt="Payoneer" />
+        <img src="img/iban.png" alt="IBAN" />
+      </div>
     </div>
   </footer>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -56,47 +127,153 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
-    // Çıkış kontrol
-    firebase.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged(async function(user) {
       var logoutBtn = document.getElementById('logout-btn');
-      if (logoutBtn) logoutBtn.style.display = user ? 'inline-block' : 'none';
+      if (logoutBtn) {
+        if (user) logoutBtn.style.display = 'inline-block';
+        else logoutBtn.style.display = 'none';
+      }
       if (!user || user.email !== "admin@testlik.com") {
         document.body.innerHTML = "<h2 style='text-align:center;margin-top:88px;color:#ed4a88;'>Bu panele erişim yetkiniz yok.</h2>";
       }
     });
+    document.addEventListener('DOMContentLoaded', function() {
+      var logoutBtnElem = document.getElementById('logout-btn');
+      if (logoutBtnElem) {
+        logoutBtnElem.onclick = function(e) {
+          e.preventDefault();
+          firebase.auth().signOut().then(() => {
+            window.location.href = "index.html";
+          });
+        }
+      }
+    });
 
-    // Test ekleme (sadece JSON)
+    // Test ekleme (createdBy: "admin" ile kaydeder)
     document.getElementById("adminTestForm").onsubmit = async function(e) {
       e.preventDefault();
+      const title = document.getElementById("a_title").value.trim();
+      const description = document.getElementById("a_description").value.trim();
+      const category = document.getElementById("a_category").value;
       const jsonRaw = document.getElementById("a_json").value.trim();
       let testData;
-      try { testData = JSON.parse(jsonRaw); } 
-      catch { document.getElementById("adminFormMsg").innerText = "Geçersiz JSON!"; return;}
-      testData.createdBy = "admin";
-      if (!testData.likes) testData.likes = 0;
-      if (!testData.likedBy) testData.likedBy = [];
-      if (!testData.image) testData.image = "img/soru-isareti.png";
+      if (jsonRaw) {
+        try { testData = JSON.parse(jsonRaw); } catch { document.getElementById("adminFormMsg").innerText = "Geçersiz JSON!"; return;}
+        testData.title = title; testData.description = description; testData.category = category;
+        testData.image = "img/soru-isareti.png";
+        testData.createdBy = "admin";
+        if (!testData.likes) testData.likes = 0;
+        if (!testData.likedBy) testData.likedBy = [];
+      } else {
+        testData = {
+          title, description, category,
+          image: "img/soru-isareti.png",
+          createdBy: "admin",
+          likes: 0,
+          likedBy: [],
+          questions: [],
+          createdAt: new Date()
+        };
+      }
       try {
         await db.collection("tests").add(testData);
         document.getElementById("adminFormMsg").style.color = "#13bd72";
         document.getElementById("adminFormMsg").innerText = "Test başarıyla eklendi!";
         document.getElementById("adminTestForm").reset();
+        loadTestList(); // Testler otomatik güncellensin
       } catch (err) {
         document.getElementById("adminFormMsg").style.color = "#ed4a88";
         document.getElementById("adminFormMsg").innerText = "Hata!";
       }
     };
 
-    // Basit sosyal medya paylaşımı (testlik.com ana sayfa)
-    function shareAll(platform) {
-      const url = "https://testlik.com";
-      const title = "Testlik.com'da yeni testler yayında! 🎉";
-      let shareUrl = "";
-      if (platform === "facebook") shareUrl = `https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-      if (platform === "twitter") shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
-      if (platform === "linkedin") shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`;
-      window.open(shareUrl, "_blank");
+    // Bildirim gönderme (çerez kabul edenler)
+    document.getElementById("notifForm").onsubmit = async function(e) {
+      e.preventDefault();
+      const title = document.getElementById("notif_title").value.trim();
+      const body = document.getElementById("notif_body").value.trim();
+      const users = await db.collection("users").where("cookieAccepted", "==", true).get();
+      for (const doc of users.docs) {
+        await db.collection("users").doc(doc.id).update({
+          notifications: firebase.firestore.FieldValue.arrayUnion({
+            title, body, date: new Date().toLocaleString("tr-TR")
+          })
+        });
+      }
+      document.getElementById("notifMsg").style.color = "#13bd72";
+      document.getElementById("notifMsg").innerText = "Bildirimler gönderildi!";
+      document.getElementById("notifForm").reset();
+    };
+
+    // Testleri ve kullanıcıları ara + testleri listele (sosyal medya paylaşım butonlarıyla)
+    async function loadTestList(filter="") {
+      const testDiv = document.getElementById("adminTestResults");
+      let html = "";
+      const tests = await db.collection("tests").orderBy("createdAt","desc").get();
+      tests.forEach(doc=>{
+        const t = doc.data();
+        if (
+          !filter ||
+          (t.title && t.title.toLowerCase().includes(filter)) ||
+          (t.description && t.description.toLowerCase().includes(filter)) ||
+          (t.category && t.category.toLowerCase().includes(filter))
+        ) {
+          html += `
+          <div class="admin-test-card">
+            <div class="admin-test-title">${t.title}</div>
+            <div class="admin-test-cat">${t.category || ''}</div>
+            <div class="admin-test-desc">${t.description || ''}</div>
+            <div class="test-share-btns">
+              <button title="X" onclick="shareTest('${doc.id}', 'x')"><i class="fab fa-x-twitter"></i></button>
+              <button title="Instagram" onclick="shareTest('${doc.id}', 'instagram')"><i class="fab fa-instagram"></i></button>
+              <button title="Facebook" onclick="shareTest('${doc.id}', 'facebook')"><i class="fab fa-facebook"></i></button>
+              <button title="TikTok" onclick="shareTest('${doc.id}', 'tiktok')"><i class="fab fa-tiktok"></i></button>
+            </div>
+          </div>
+          `;
+        }
+      });
+      testDiv.innerHTML = html || "<div style='color:#bbb;'>Hiç test bulunamadı.</div>";
     }
+    // İlk yüklemede hepsini göster
+    loadTestList();
+
+    document.getElementById("searchInput").oninput = async function() {
+      const val = this.value.toLowerCase();
+      // Testleri filtrele
+      loadTestList(val);
+      // Kullanıcılar
+      let html = "";
+      const users = await db.collection("users").get();
+      users.forEach(doc=>{
+        const u = doc.data();
+        if ((u.displayName && u.displayName.toLowerCase().includes(val)) || (u.email && u.email.toLowerCase().includes(val))) {
+          html += `<tr><td>Kullanıcı</td><td>${u.displayName || u.email}</td></tr>`;
+        }
+      });
+      document.querySelector("#adminTable tbody").innerHTML = html || "<tr><td colspan=2 style='color:#bbb;'>Sonuç yok</td></tr>";
+    };
+
+    // Sosyal medya paylaşım butonları (demo: yeni sekmede açar, gerçek bot entegrasyonu ayrı JS dosyası ile yapılabilir)
+    window.shareTest = function(testId, platform) {
+      const url = `https://testlik.com/test-render.html?id=${testId}`;
+      let shareUrl = "";
+      switch(platform) {
+        case 'x':
+          shareUrl = `https://twitter.com/intent/tweet?text=Yeni testimi hemen çöz!&url=${encodeURIComponent(url)}`;
+          break;
+        case 'instagram':
+          alert("Instagram'da otomatik paylaşım API ile yapılabilir. Şimdilik manuel paylaşın.");
+          return;
+        case 'facebook':
+          shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+          break;
+        case 'tiktok':
+          alert("TikTok paylaşımı için video gereklidir. Otomasyon botu ayrı entegre edilir.");
+          return;
+      }
+      if(shareUrl) window.open(shareUrl, '_blank');
+    };
   </script>
 </body>
 </html>
