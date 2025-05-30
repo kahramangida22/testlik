@@ -3,82 +3,107 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Giriş Yap | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Giriş ve üye ol sayfası.">
+  <title>Giriş Yap / Üye Ol | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Giriş yap veya ücretsiz üye ol!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="firebase.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    .giris-container {max-width:380px;margin:60px auto;background:#fff;border-radius:22px;box-shadow:0 2px 20px #ed4a8812;padding:38px 28px;text-align:center;}
+    .giris-container input {width:98%;margin-bottom:13px;padding:10px 13px;border-radius:12px;border:1px solid #ddd;}
+    .giris-container button {width:100%;margin-top:5px;}
+    .giris-sekme {display:flex;justify-content:center;margin-bottom:25px;}
+    .giris-sekme button {margin:0 7px;}
+    .giris-title {color:#735aff;font-size:1.32em;font-weight:700;margin-bottom:8px;}
+  </style>
 </head>
 <body>
   <header>
-    <div class="container nav-flex">
+    <div class="container">
       <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
-        <a href="kategoriler.html">Kategoriler</a>
-        <a href="favoriler.html">Favoriler</a>
-        <a href="profil.html">Profil</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="akademi.html">Akademi</a>
-        <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link">Admin</a>
       </nav>
     </div>
   </header>
   <main>
-    <div class="test-card" style="max-width:350px;margin:2rem auto;">
-      <h2>Giriş Yap</h2>
-      <input id="email" type="email" placeholder="E-Posta" style="width:100%;margin-bottom:10px;">
-      <input id="password" type="password" placeholder="Şifre" style="width:100%;margin-bottom:10px;">
-      <button onclick="login()" class="cta-btn" style="width:100%;">Giriş Yap</button>
-      <div id="login-status" style="color:red;margin-top:10px;"></div>
-      <hr>
-      <button onclick="register()" style="width:100%;margin-top:10px;">Üye Ol</button>
+    <div class="giris-container" id="giris-area">
+      <div class="giris-title">Testlik.com</div>
+      <div class="giris-sekme">
+        <button class="cta-btn" id="uye-tab" onclick="sekme('uye')">Üye Ol</button>
+        <button class="cta-btn ghost-btn" id="giris-tab" onclick="sekme('giris')">Giriş Yap</button>
+      </div>
+      <form id="uyeForm">
+        <input id="uyeKullaniciAdi" type="text" placeholder="Kullanıcı Adı" required maxlength="16" />
+        <input id="uyeEmail" type="email" placeholder="E-posta" required />
+        <input id="uyeSifre" type="password" placeholder="Şifre" required minlength="6" />
+        <button type="submit" class="cta-btn">Üye Ol</button>
+      </form>
+      <form id="girisForm" style="display:none;">
+        <input id="girisEmail" type="email" placeholder="E-posta" required />
+        <input id="girisSifre" type="password" placeholder="Şifre" required />
+        <button type="submit" class="cta-btn">Giriş Yap</button>
+      </form>
+      <div id="girisMsg" style="min-height:20px;color:#ed4a88;font-weight:600;margin-top:13px;"></div>
     </div>
   </main>
-  <footer>
-    <div class="container footer-flex">
-      <p>&copy; 2025 Testlik.com</p>
-      <div class="odeme-logo">
-        <img src="img/wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
-        <img src="img/payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
-        <img src="img/iban.png" alt="IBAN" style="height:28px;"/>
-      </div>
-    </div>
-  </footer>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="firebase.js"></script>
   <script>
-    function login() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(() => { window.location.href = "index.html"; })
-        .catch(err => {
-          document.getElementById("login-status").innerText = err.message;
-        });
+    function sekme(t) {
+      document.getElementById("uyeForm").style.display = t=="uye" ? "block" : "none";
+      document.getElementById("girisForm").style.display = t=="giris" ? "block" : "none";
+      document.getElementById("uye-tab").classList.toggle("ghost-btn", t!="uye");
+      document.getElementById("giris-tab").classList.toggle("ghost-btn", t!="giris");
+      document.getElementById("girisMsg").innerText = "";
     }
-    function register() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(async (userCred) => {
-          await db.collection("users").doc(userCred.user.uid).set({
-            email,
-            displayName: "",
-            avatar: "",
-            points: 0,
-            favorites: [],
-            completedTests: [],
-            withdrawals: []
-          });
-          window.location.href = "index.html";
-        })
-        .catch(err => {
-          document.getElementById("login-status").innerText = err.message;
+    sekme('uye');
+
+    document.getElementById("uyeForm").onsubmit = async function(e) {
+      e.preventDefault();
+      const username = document.getElementById("uyeKullaniciAdi").value.trim();
+      const email = document.getElementById("uyeEmail").value.trim();
+      const sifre = document.getElementById("uyeSifre").value;
+      if (username.length < 3) {
+        document.getElementById("girisMsg").innerText = "Kullanıcı adı en az 3 harf olmalı!";
+        return;
+      }
+      // Kullanıcı adının benzersiz olup olmadığını kontrol et (isteğe bağlı)
+      const q = await db.collection("users").where("username", "==", username).get();
+      if (!q.empty) {
+        document.getElementById("girisMsg").innerText = "Bu kullanıcı adı zaten alınmış!";
+        return;
+      }
+      try {
+        const user = await firebase.auth().createUserWithEmailAndPassword(email, sifre);
+        await db.collection("users").doc(user.user.uid).set({
+          email,
+          username,
+          points: 0,
+          favorites: [],
+          completedTests: [],
+          friends: [],
+          createdAt: new Date(),
+          profilePic: "" // profil fotoğrafı için boş bırak
         });
-    }
+        window.location.href = "index.html";
+      } catch (err) {
+        document.getElementById("girisMsg").innerText = "Hata: " + err.message;
+      }
+    };
+    document.getElementById("girisForm").onsubmit = async function(e) {
+      e.preventDefault();
+      const email = document.getElementById("girisEmail").value.trim();
+      const sifre = document.getElementById("girisSifre").value;
+      try {
+        await firebase.auth().signInWithEmailAndPassword(email, sifre);
+        window.location.href = "index.html";
+      } catch (err) {
+        document.getElementById("girisMsg").innerText = "Hata: " + err.message;
+      }
+    };
   </script>
 </body>
 </html>
