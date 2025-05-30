@@ -3,10 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>İstatistiklerim | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Kullanıcı başarı istatistikleri, toplam puan, test geçmişi.">
+  <title>İstatistikler | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Başarı istatistiklerin ve gelişimin burada!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    .istatistik-card {background:#fff;border-radius:20px;box-shadow:0 2px 18px #735aff13;padding:38px 22px;max-width:440px;margin:44px auto 24px auto;text-align:center;}
+    .istatistik-ikon {font-size:2.3em;margin-bottom:9px;}
+    .istatistik-baslik {font-size:1.18em;color:#735aff;font-weight:700;margin-bottom:8px;}
+    .istatistik-deger {font-size:1.3em;color:#ed4a88;font-weight:700;}
+    .istatistik-row {display:flex;justify-content:space-between;margin:13px 0;}
+    .istatistik-label {color:#5a6cff;}
+    .istatistik-hr {border-top:1px dashed #e7d8ff;margin:24px 0;}
+  </style>
 </head>
 <body>
   <header>
@@ -15,6 +25,10 @@
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
+        <a href="sizdengelenler.html">Sizden Gelenler</a>
+        <a href="soru-uret.html">Soru Üret</a>
+        <a href="cark.html">Çarkıfelek</a>
+        <a href="video-izle.html">Video İzle Kazan</a>
         <a href="favoriler.html">Favoriler</a>
         <a href="profil.html">Profil</a>
         <a href="dashboard.html">Dashboard</a>
@@ -27,15 +41,14 @@
   </header>
   <main>
     <section>
-      <h1>Başarı İstatistiklerim</h1>
-      <div class="test-card" id="stats-area">
-        <p>İstatistikler yükleniyor...</p>
+      <div class="istatistik-card" id="istatistik-alani">
+        <div class="loader">İstatistikler yükleniyor...</div>
       </div>
     </section>
   </main>
   <footer>
     <div class="container">
-      <p>&copy; 2025 Testlik.com</p>
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
         <img src="img/wise.png" alt="Wise" />
         <img src="img/payoneer.png" alt="Payoneer" />
@@ -48,7 +61,6 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
-    // Çıkış butonu kontrolü
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
       if (logoutBtn) {
@@ -69,28 +81,45 @@
     });
 
     auth.onAuthStateChanged(async user => {
-      const stats = document.getElementById("stats-area");
+      const area = document.getElementById("istatistik-alani");
       if (!user) {
-        stats.innerHTML = `
-          <p>İstatistikleri görmek için giriş yapmalısın.</p>
-          <a href="giris.html" class="cta-btn">Giriş Yap</a>
-        `;
+        area.innerHTML = `<p>İstatistiklerini görmek için giriş yapmalısın.</p><a href="giris.html" class="cta-btn">Giriş Yap</a>`;
         return;
       }
       try {
         const doc = await db.collection("users").doc(user.uid).get();
         const u = doc.data();
-        stats.innerHTML = `
-          <p><b>Toplam Puan:</b> ${u.points || 0}</p>
-          <p><b>Çözülen Test Sayısı:</b> ${u.completedTests ? u.completedTests.length : 0}</p>
-          <p><b>Favori Test Sayısı:</b> ${u.favorites ? u.favorites.length : 0}</p>
-          <p><b>Son Çözülen Testler:</b></p>
-          <ul>
-            ${(u.completedTests || []).slice(-5).map(tid => `<li>${tid}</li>`).join('')}
-          </ul>
+        const points = u.points || 0;
+        const completed = u.completedTests ? u.completedTests.length : 0;
+        const favorites = u.favorites ? u.favorites.length : 0;
+        const enYuksek = u.highestScore || points;
+        area.innerHTML = `
+          <div class="istatistik-ikon">📊</div>
+          <div class="istatistik-baslik">Başarı İstatistiklerin</div>
+          <div class="istatistik-row">
+            <span class="istatistik-label">Toplam Puan:</span>
+            <span class="istatistik-deger">${points}</span>
+          </div>
+          <div class="istatistik-row">
+            <span class="istatistik-label">Çözülen Test:</span>
+            <span class="istatistik-deger">${completed}</span>
+          </div>
+          <div class="istatistik-row">
+            <span class="istatistik-label">Favori Test:</span>
+            <span class="istatistik-deger">${favorites}</span>
+          </div>
+          <div class="istatistik-row">
+            <span class="istatistik-label">En Yüksek Puan:</span>
+            <span class="istatistik-deger">${enYuksek}</span>
+          </div>
+          <div class="istatistik-hr"></div>
+          <div class="istatistik-row">
+            <span class="istatistik-label">Kullanıcı ID:</span>
+            <span style="color:#7ec8e3;font-weight:700;">${user.uid.slice(0,7)+"..."}</span>
+          </div>
         `;
       } catch (err) {
-        stats.innerHTML = "<p>İstatistikler yüklenemedi!</p>";
+        area.innerHTML = "<p>İstatistikler yüklenemedi!</p>";
         console.error(err);
       }
     });
