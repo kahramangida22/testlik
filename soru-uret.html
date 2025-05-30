@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Soru Üret | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Kendi testini kolayca oluştur, paylaş ve kazandır!">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="img/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    .soru-card { background:#fff; border-radius:18px; box-shadow:0 2px 10px #fd72ff23; padding:14px 15px 4px 15px; margin-bottom:20px;}
+    .soru-title {color:#735aff;font-weight:700;font-size:1.18em;margin-bottom:6px;}
+    .sil-btn {background:#ffd7ee;color:#ed4a88;border:none;border-radius:14px;padding:5px 11px;font-weight:600;cursor:pointer;}
+    .sil-btn:hover {background:#ed4a88;color:#fff;}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
+      <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="kategoriler.html">Kategoriler</a>
+        <a href="sizdengelenler.html">Sizden Gelenler</a>
+        <a href="soru-uret.html" class="active">Soru Üret</a>
+        <a href="cark.html">Çarkıfelek</a>
+        <a href="video-izle.html">Video İzle Kazan</a>
+        <a href="favoriler.html">Favoriler</a>
+        <a href="profil.html">Profil</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="akademi.html">Akademi</a>
+        <a href="istatistik.html">İstatistik</a>
+        <a href="admin.html" class="admin-link">Admin</a>
+        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="test-card" style="max-width:520px;margin-top:32px;">
+      <h2 style="color:#735aff;margin-bottom:10px;">Test Oluştur</h2>
+      <form id="testForm" autocomplete="off">
+        <input id="title" type="text" placeholder="Test Başlığı" required />
+        <input id="description" type="text" placeholder="Açıklama" required />
+        <select id="category" required>
+          <option value="">Kategori Seçiniz</option>
+          <option>Genel</option>
+          <option>Eğlence</option>
+          <option>Bilgi</option>
+          <option>Psikoloji</option>
+          <option>Tarih</option>
+          <option>Teknoloji</option>
+          <option>Diğer</option>
+        </select>
+        <div id="sorular">
+          <!-- Dinamik soru kutuları buraya eklenecek -->
+        </div>
+        <button type="button" class="cta-btn" onclick="yeniSoruEkle()">+ Soru Ekle</button>
+        <button type="submit" class="cta-btn ghost-btn" style="width:98%;margin-top:8px;">Testi Yayınla</button>
+        <div id="formMsg" style="color:#ed4a88;font-weight:600;margin-top:8px;min-height:24px;"></div>
+      </form>
+    </section>
+  </main>
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
+      <div class="odeme-logo">
+        <img src="img/wise.png" alt="Wise" />
+        <img src="img/payoneer.png" alt="Payoneer" />
+        <img src="img/iban.png" alt="IBAN" />
+      </div>
+    </div>
+  </footer>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="firebase.js"></script>
+  <script>
+    firebase.auth().onAuthStateChanged(function(user) {
+      var logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        if (user) logoutBtn.style.display = 'inline-block';
+        else logoutBtn.style.display = 'none';
+      }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      var logoutBtnElem = document.getElementById('logout-btn');
+      if (logoutBtnElem) {
+        logoutBtnElem.onclick = function(e) {
+          e.preventDefault();
+          firebase.auth().signOut().then(() => {
+            window.location.href = "index.html";
+          });
+        }
+      }
+    });
+
+    let soruCount = 0;
+    function yeniSoruEkle() {
+      soruCount++;
+      const soruDiv = document.createElement("div");
+      soruDiv.className = "soru-card";
+      soruDiv.id = "soru" + soruCount;
+      soruDiv.innerHTML = `
+        <div class="soru-title">Soru ${soruCount} <button type="button" class="sil-btn" onclick="this.parentNode.parentNode.remove();">Sil</button></div>
+        <input type="text" placeholder="Soru metni" required class="soru-metin"/>
+        <div class="siklar">
+          <input type="text" placeholder="Şık 1" required class="sik"/>
+          <input type="text" placeholder="Şık 2" required class="sik"/>
+          <input type="text" placeholder="Şık 3" class="sik"/>
+          <input type="text" placeholder="Şık 4" class="sik"/>
+        </div>
+        <label style="font-size:0.96em;color:#8f7fff;">Doğru Şık:</label>
+        <select class="dogru-sik" required>
+          <option value="0">1</option>
+          <option value="1">2</option>
+          <option value="2">3</option>
+          <option value="3">4</option>
+        </select>
+      `;
+      document.getElementById("sorular").appendChild(soruDiv);
+    }
+    yeniSoruEkle(); // İlk soru otomatik gelsin
+
+    document.getElementById("testForm").onsubmit = async function(e) {
+      e.preventDefault();
+      const user = firebase.auth().currentUser;
+      if (!user) {
+        document.getElementById("formMsg").innerText = "Giriş yapmalısın!";
+        return;
+      }
+      const title = document.getElementById("title").value.trim();
+      const description = document.getElementById("description").value.trim();
+      const category = document.getElementById("category").value;
+      let questions = [];
+      const soruDivs = document.querySelectorAll(".soru-card");
+      for (const sDiv of soruDivs) {
+        const q = sDiv.querySelector(".soru-metin").value.trim();
+        const sikInputs = sDiv.querySelectorAll(".sik");
+        let options = [];
+        sikInputs.forEach(inp => { if (inp.value.trim()!="") options.push(inp.value.trim()); });
+        const dogru = parseInt(sDiv.querySelector(".dogru-sik").value);
+        if (!q || options.length<2) {
+          document.getElementById("formMsg").innerText = "Her soruda en az 2 şık ve soru metni olmalı!";
+          return;
+        }
+        questions.push({question:q, options, answer:dogru});
+      }
+      if (questions.length<1) {
+        document.getElementById("formMsg").innerText = "En az bir soru eklemelisin!";
+        return;
+      }
+      // Testi kaydet
+      try {
+        const newTest = {
+          title,
+          description,
+          category,
+          image: "img/soru-isareti.png",
+          questions,
+          likes: 0,
+          likedBy: [],
+          createdBy: user.uid,
+          createdAt: new Date()
+        };
+        await db.collection("tests").add(newTest);
+        document.getElementById("formMsg").style.color = "#13bd72";
+        document.getElementById("formMsg").innerText = "Test başarıyla eklendi!";
+        document.getElementById("testForm").reset();
+        document.getElementById("sorular").innerHTML = ""; soruCount=0; yeniSoruEkle();
+      } catch (err) {
+        document.getElementById("formMsg").style.color = "#ed4a88";
+        document.getElementById("formMsg").innerText = "Hata oluştu!";
+      }
+    };
+  </script>
+</body>
+</html>
