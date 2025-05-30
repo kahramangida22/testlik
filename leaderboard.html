@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Liderlik Tablosu | Testlik.com</title>
+  <meta name="description" content="Testlik.com - En çok puan toplayan kullanıcılar liderlik tablosu.">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="img/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    .leader-card {
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 2px 18px #735aff13;
+      padding: 18px 20px;
+      margin: 22px auto 11px auto;
+      max-width: 480px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .leader-rank {
+      background: linear-gradient(90deg,#fd72ff 0%, #735aff 100%);
+      color: #fff;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25em;
+      font-weight: 700;
+      box-shadow: 0 2px 12px #7c45e925;
+    }
+    .leader-avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 1px 7px #ed4a8812;
+      background: #faf4ff;
+      border: 2px solid #eee;
+    }
+    .leader-info {
+      flex: 1;
+      text-align: left;
+    }
+    .leader-name {
+      color: #735aff;
+      font-size: 1.13em;
+      font-weight: 700;
+    }
+    .leader-puan {
+      color: #ed4a88;
+      font-weight: 700;
+      font-size: 1.09em;
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav-flex">
+      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
+      <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="kategoriler.html">Kategoriler</a>
+        <a href="sizdengelenler.html">Sizden Gelenler</a>
+        <a href="soru-uret.html">Soru Üret</a>
+        <a href="cark.html">Çarkıfelek</a>
+        <a href="video-izle.html">Video İzle Kazan</a>
+        <a href="favoriler.html">Favoriler</a>
+        <a href="profil.html">Profil</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="akademi.html">Akademi</a>
+        <a href="istatistik.html">İstatistik</a>
+        <a href="admin.html" class="admin-link">Admin</a>
+        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section style="max-width:500px;margin:0 auto;">
+      <h1 style="color:#735aff;text-align:center;margin:34px 0 24px 0;font-weight:700;">
+        <span class="emoji">🏆</span> Liderlik Tablosu
+      </h1>
+      <div id="leaderboard-list"></div>
+    </section>
+  </main>
+  <footer>
+    <div class="container footer-flex">
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
+      <div class="odeme-logo">
+        <img src="img/wise.png" alt="Wise" />
+        <img src="img/payoneer.png" alt="Payoneer" />
+        <img src="img/iban.png" alt="IBAN" />
+      </div>
+    </div>
+  </footer>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="firebase.js"></script>
+  <script>
+    firebase.auth().onAuthStateChanged(function(user) {
+      var logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        if (user) logoutBtn.style.display = 'inline-block';
+        else logoutBtn.style.display = 'none';
+      }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      var logoutBtnElem = document.getElementById('logout-btn');
+      if (logoutBtnElem) {
+        logoutBtnElem.onclick = function(e) {
+          e.preventDefault();
+          firebase.auth().signOut().then(() => {
+            window.location.href = "index.html";
+          });
+        }
+      }
+    });
+
+    // Liderlik tablosunu çek
+    async function loadLeaderboard() {
+      const lbList = document.getElementById("leaderboard-list");
+      lbList.innerHTML = "<div style='text-align:center;color:#8f7fff;'>Yükleniyor...</div>";
+      const users = await db.collection("users").orderBy("points","desc").limit(20).get();
+      if (users.empty) {
+        lbList.innerHTML = "<div style='text-align:center;color:#bbb;'>Henüz veri yok.</div>";
+        return;
+      }
+      let rank = 1, html = "";
+      users.forEach(doc=>{
+        const u = doc.data();
+        html += `
+          <div class="leader-card">
+            <div class="leader-rank">${rank}</div>
+            <img class="leader-avatar" src="${u.avatar || 'img/default-profile.png'}" alt="Avatar"/>
+            <div class="leader-info">
+              <div class="leader-name">${u.displayName || u.email}</div>
+              <div class="leader-puan">${u.points || 0} puan</div>
+            </div>
+          </div>
+        `;
+        rank++;
+      });
+      lbList.innerHTML = html;
+    }
+    loadLeaderboard();
+  </script>
+</body>
+</html>
