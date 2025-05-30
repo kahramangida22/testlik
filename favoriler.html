@@ -4,9 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Favori Testlerim | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Favori testlerini burada görebilirsin.">
+  <meta name="description" content="Testlik.com - Favorilere eklediğin testler burada!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    .remove-fav-btn {
+      background:#ffd7ee;
+      color:#ed4a88;
+      border:none;
+      border-radius:18px;
+      padding:7px 18px;
+      font-weight:700;
+      font-size:1em;
+      cursor:pointer;
+      margin-top:10px;
+      transition:background .13s;
+    }
+    .remove-fav-btn:hover {background:#ed4a88;color:#fff;}
+  </style>
 </head>
 <body>
   <header>
@@ -15,6 +31,10 @@
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
+        <a href="sizdengelenler.html">Sizden Gelenler</a>
+        <a href="soru-uret.html">Soru Üret</a>
+        <a href="cark.html">Çarkıfelek</a>
+        <a href="video-izle.html">Video İzle Kazan</a>
         <a href="favoriler.html" class="active">Favoriler</a>
         <a href="profil.html">Profil</a>
         <a href="dashboard.html">Dashboard</a>
@@ -27,15 +47,15 @@
   </header>
   <main>
     <section>
-      <h1>Favori Testlerim</h1>
+      <h1 style="text-align:center;color:#735aff;font-weight:700;margin-top:34px;">Favori Testlerim <span class="emoji">💖</span></h1>
       <div id="favorites-list" class="test-list">
-        <p>Favoriler yükleniyor...</p>
+        <div class="loader">Favoriler yükleniyor...</div>
       </div>
     </section>
   </main>
   <footer>
     <div class="container">
-      <p>&copy; 2025 Testlik.com</p>
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
         <img src="img/wise.png" alt="Wise" />
         <img src="img/payoneer.png" alt="Payoneer" />
@@ -48,7 +68,6 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
-    // Çıkış butonu kontrolü
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
       if (logoutBtn) {
@@ -71,15 +90,15 @@
     auth.onAuthStateChanged(async user => {
       const favList = document.getElementById("favorites-list");
       if (!user) {
-        favList.innerHTML = "<p>Favori testlerini görmek için giriş yapmalısın.</p><a href='giris.html' class='cta-btn'>Giriş Yap</a>";
+        favList.innerHTML = "<div class='test-card'><p>Favori testlerini görmek için giriş yapmalısın.</p><a href='giris.html' class='cta-btn'>Giriş Yap</a></div>";
         return;
       }
-      favList.innerHTML = "<p>Favoriler yükleniyor...</p>";
+      favList.innerHTML = "<div class='loader'>Favoriler yükleniyor...</div>";
       try {
         const userDoc = await db.collection("users").doc(user.uid).get();
         const favorites = userDoc.data()?.favorites || [];
         if (favorites.length === 0) {
-          favList.innerHTML = "<p>Hiç favori testin yok!</p>";
+          favList.innerHTML = "<div class='test-card'><p>Hiç favori testin yok!</p></div>";
           return;
         }
         favList.innerHTML = "";
@@ -88,19 +107,19 @@
           if (testDoc.exists) {
             const t = testDoc.data();
             favList.innerHTML += `
-              <div class="test-card">
-                <img src="${t.image || 'img/test-category-default.png'}" alt="Test Görseli" loading="lazy" />
+              <div class="test-card" style="max-width:340px;">
+                <img src="${t.image || 'img/soru-isareti.png'}" alt="Test Görseli" loading="lazy" />
                 <div class="category">${t.category || 'Genel'}</div>
-                <h3>${t.title}</h3>
+                <h3 style="color:#735aff;">${t.title}</h3>
                 <p>${t.description || ''}</p>
-                <a href="test-render.html?id=${testDoc.id}" class="cta-btn">Testi Çöz</a>
-                <button onclick="removeFavorite('${testDoc.id}')" style="margin-top:10px;background:#ed143d;color:#fff;border:none;border-radius:18px;padding:7px 18px;cursor:pointer;">Favorilerden Kaldır</button>
+                <a href="test-render.html?id=${testDoc.id}" class="cta-btn animated-btn" style="margin-top:8px;">Testi Çöz</a>
+                <button onclick="removeFavorite('${testDoc.id}')" class="remove-fav-btn">Favorilerden Kaldır</button>
               </div>
             `;
           }
         }
       } catch (err) {
-        favList.innerHTML = "<p>Favoriler yüklenemedi!</p>";
+        favList.innerHTML = "<div class='test-card'><p>Favoriler yüklenemedi!</p></div>";
         console.error(err);
       }
     });
