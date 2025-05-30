@@ -4,10 +4,39 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Favorilerim | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Favori testlerini burada gör!">
+  <meta name="description" content="Testlik.com - Favori testlerin burada!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    .fav-flex {display:flex;gap:26px;flex-wrap:wrap;justify-content:center;margin:34px auto 14px auto;max-width:960px;}
+    .fav-card {
+      background:#fff;
+      border-radius:22px;
+      box-shadow:0 2px 18px #735aff13;
+      padding:24px 18px 18px 18px;
+      width:190px;min-width:150px;max-width:230px;
+      display:flex;flex-direction:column;align-items:center;
+      text-align:center;position:relative;transition:box-shadow .13s,transform .13s;
+    }
+    .fav-card:hover {box-shadow:0 6px 26px #735aff24;transform:translateY(-2px) scale(1.04);}
+    .fav-img {width:56px;height:56px;object-fit:contain;margin-bottom:10px;border-radius:13px;background:#faf4ff;box-shadow:0 1px 7px #ed4a8812;}
+    .fav-title {color:#735aff;font-size:1.13em;font-weight:700;}
+    .fav-desc {color:#876fa9;font-size:.98em;margin-top:2px;}
+    .fav-kat {color:#ed4a88;font-size:.97em;margin:5px 0 0 0;}
+    .fav-btn {
+      background:none;border:none;position:absolute;top:10px;right:11px;cursor:pointer;padding:0;
+    }
+    .fav-btn img {width:26px;}
+    .fav-link {
+      margin-top:12px;
+      background:linear-gradient(90deg,#fd72ff 0%, #735aff 100%);
+      color:#fff;padding:7px 17px;
+      border-radius:11px;font-weight:700;font-size:.99em;text-decoration:none;transition:background .13s;
+      box-shadow:0 2px 8px #735aff19;display:inline-block;
+    }
+    .fav-link:hover{background:#ed4a88;}
+  </style>
 </head>
 <body>
   <header>
@@ -31,10 +60,10 @@
     </div>
   </header>
   <main>
-    <h1 class="main-title"><span class="emoji">⭐</span> Favori Testlerim</h1>
-    <section class="testler-grid" id="favorites-list">
-      <!-- JS ile favoriler burada listelenir -->
-    </section>
+    <h1 class="main-title"><span class="emoji">⭐</span> Favorilerim</h1>
+    <div id="fav-list" class="fav-flex">
+      <div style="text-align:center;color:#8f7fff;width:100%;">Yükleniyor...</div>
+    </div>
   </main>
   <footer>
     <div class="footer-flex">
@@ -51,6 +80,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
+    // Navbar çıkış butonu
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
       if (logoutBtn) {
@@ -70,45 +100,50 @@
       }
     });
 
-    // FAVORİLERİ ÇEK VE LİSTELE
+    // Favori testler yükle
     firebase.auth().onAuthStateChanged(async user => {
-      const favList = document.getElementById("favorites-list");
+      const favList = document.getElementById("fav-list");
       if (!user) {
-        favList.innerHTML = `<p>Favorilerini görmek için giriş yapmalısın.</p><a href="giris.html" class="cta-btn">Giriş Yap</a>`;
+        favList.innerHTML = "<div style='color:#ed4a88;width:100%;'>Favorilerini görmek için giriş yapmalısın!</div>";
         return;
       }
       const userDoc = await db.collection("users").doc(user.uid).get();
-      const userData = userDoc.data();
-      const favorites = userData.favorites || [];
-      if (favorites.length === 0) {
-        favList.innerHTML = "<p>Henüz hiç favorin yok. Testleri çözerken favorilere ekleyebilirsin!</p>";
+      let favs = userDoc.data().favorites || [];
+      if (favs.length === 0) {
+        favList.innerHTML = "<div style='color:#bba5fa;width:100%;'>Hiç favorin yok!</div>";
         return;
       }
-      favList.innerHTML = "<p>Yükleniyor...</p>";
-      // Favori testleri sırayla getir ve listele
+      // Her favori testin detayını çek
       let html = "";
-      for (let testId of favorites) {
-        const testDoc = await db.collection("tests").doc(testId).get();
-        if (!testDoc.exists) continue;
-        const t = testDoc.data();
-        // Kategori ikonunu otomatik seç
-        let icon = "test-category-default.png";
-        if (t.category === "Genel") icon = "category-genel.png";
-        if (t.category === "Eğlence") icon = "category-eglence.png";
-        if (t.category === "Bilgi") icon = "category-bilgi.png";
-        if (t.category === "Psikoloji") icon = "category-psikoloji.png";
-        if (t.category === "Oyun") icon = "category-oyun.png";
+      for (let testId of favs) {
+        const tDoc = await db.collection("tests").doc(testId).get();
+        if (!tDoc.exists) continue;
+        const t = tDoc.data();
         html += `
-          <div class="test-card">
-            <img src="${icon}" alt="${t.category || ''}" />
-            <span>${t.title}</span>
-            <small>${t.description || ''}</small>
-            <a href="test-render.html?id=${testId}" class="cta-btn" style="margin-top:10px;">Testi Çöz</a>
+          <div class="fav-card" data-id="${testId}">
+            <button class="fav-btn" onclick="removeFav('${testId}')"><img src="favorite-active.png" alt="Kaldır"/></button>
+            <img src="${t.image || 'test-category-default.png'}" alt="Test" class="fav-img"/>
+            <div class="fav-title">${t.title || "Test"}</div>
+            <div class="fav-kat">${t.category || ""}</div>
+            <div class="fav-desc">${t.description || ""}</div>
+            <a href="test-render.html?id=${testId}" class="fav-link">Testi Çöz</a>
           </div>
         `;
       }
-      favList.innerHTML = html || "<p>Favorilerin bulunamadı.</p>";
+      favList.innerHTML = html;
     });
+
+    // Favoriden kaldır (sayfa reload gerektirmesin diye basit reload kullandık)
+    async function removeFav(testId) {
+      const user = firebase.auth().currentUser;
+      if (!user) return;
+      const userRef = db.collection("users").doc(user.uid);
+      const userDoc = await userRef.get();
+      let favs = userDoc.data().favorites || [];
+      favs = favs.filter(id => id !== testId);
+      await userRef.update({ favorites: favs });
+      location.reload();
+    }
   </script>
 </body>
 </html>
