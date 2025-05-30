@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Çarkıfelek | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Çarkı çevir, şansını dene ve puan kazan!">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="img/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
+      <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="kategoriler.html">Kategoriler</a>
+        <a href="sizdengelenler.html">Sizden Gelenler</a>
+        <a href="soru-uret.html">Soru Üret</a>
+        <a href="cark.html" class="active">Çarkıfelek</a>
+        <a href="video-izle.html">Video İzle Kazan</a>
+        <a href="favoriler.html">Favoriler</a>
+        <a href="profil.html">Profil</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="akademi.html">Akademi</a>
+        <a href="istatistik.html">İstatistik</a>
+        <a href="admin.html" class="admin-link">Admin</a>
+        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section>
+      <div class="wheel-container">
+        <div id="wheel-pointer"></div>
+        <canvas id="wheel" width="300" height="300"></canvas>
+        <button id="spin-btn" class="spin-btn">Çevir!</button>
+        <div id="spin-msg" style="font-weight:700;color:#ed4a88;margin-top:16px;min-height:24px;"></div>
+        <div id="spin-count" style="color:#7c45e9;font-weight:600;margin-top:6px;"></div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
+      <div class="odeme-logo">
+        <img src="img/wise.png" alt="Wise" />
+        <img src="img/payoneer.png" alt="Payoneer" />
+        <img src="img/iban.png" alt="IBAN" />
+      </div>
+    </div>
+  </footer>
+  <!-- Reklam Popupı -->
+  <div id="ad-popup" class="cookie-popup-bg" style="display:none;">
+    <div class="cookie-popup-card">
+      <h2 style="color:#735aff;">Reklam Arası</h2>
+      <p style="margin-bottom:12px;">
+        Çarkı tekrar çevirmeden önce lütfen aşağıdaki reklamı izleyin.<br>
+        (Desteğiniz için teşekkürler!)
+      </p>
+      <div class="ads-container" style="margin:18px auto;">
+        <!-- AdSense video/banner kodunu buraya ekle! -->
+        <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-XXXXXXXXXXXXXX"
+            data-ad-slot="XXXXXXXXXX"
+            data-ad-format="auto"></ins>
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+      <button id="ad-close" class="cta-btn" style="margin-top:14px;">Devam Et</button>
+    </div>
+  </div>
+  <!-- Firebase CDN ve çark kodu -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="firebase.js"></script>
+  <script>
+    // Navbar logout kontrolü
+    firebase.auth().onAuthStateChanged(function(user) {
+      var logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        if (user) logoutBtn.style.display = 'inline-block';
+        else logoutBtn.style.display = 'none';
+      }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      var logoutBtnElem = document.getElementById('logout-btn');
+      if (logoutBtnElem) {
+        logoutBtnElem.onclick = function(e) {
+          e.preventDefault();
+          firebase.auth().signOut().then(() => {
+            window.location.href = "index.html";
+          });
+        }
+      }
+    });
+
+    // Çark ayarları
+    const dilimler = [
+      {label: "+20", color: "#ffb0e5", val: 20},
+      {label: "İflas", color: "#ed4a88", val: "iflas"},
+      {label: "+50", color: "#7eb5ff", val: 50},
+      {label: "-10", color: "#ffe599", val: -10},
+      {label: "+10", color: "#99ffcc", val: 10},
+      {label: "-20", color: "#d7baff", val: -20},
+      {label: "Tekrar", color: "#fd72ff", val: "tekrar"},
+      {label: "+1", color: "#7ec8e3", val: 1}
+    ];
+    let angle = 0, spinning = false, spinCount = 0;
+    const wheel = document.getElementById('wheel');
+    const ctx = wheel.getContext('2d');
+    const pointer = document.getElementById('wheel-pointer');
+    const btn = document.getElementById('spin-btn');
+    const msg = document.getElementById('spin-msg');
+    const scount = document.getElementById('spin-count');
+    const adPopup = document.getElementById('ad-popup');
+    const adClose = document.getElementById('ad-close');
+    function drawWheel() {
+      const n = dilimler.length;
+      for(let i=0;i<n;i++) {
+        const start = angle + (i * 2*Math.PI/n);
+        const end = start + 2*Math.PI/n;
+        ctx.beginPath();
+        ctx.moveTo(150,150);
+        ctx.arc(150,150,150,start,end);
+        ctx.closePath();
+        ctx.fillStyle = dilimler[i].color;
+        ctx.fill();
+        ctx.save();
+        ctx.translate(150,150);
+        ctx.rotate(start+Math.PI/n);
+        ctx.textAlign="right";
+        ctx.font = "bold 22px Fredoka";
+        ctx.fillStyle="#444";
+        ctx.fillText(dilimler[i].label,135,10);
+        ctx.restore();
+      }
+    }
+    function spinWheel() {
+      if (spinning) return;
+      if (!firebase.auth().currentUser) {
+        msg.innerText = "Giriş yapmadan çark çeviremezsin!";
+        return;
+      }
+      spinning = true;
+      msg.innerText = "";
+      // 3. çevirmede reklam!
+      if ((spinCount+1)%3===0) {
+        adPopup.style.display = "flex";
+        adClose.onclick = function() {
+          adPopup.style.display = "none";
+          setTimeout(() => doSpin(), 500);
+        };
+        return;
+      }
+      doSpin();
+    }
+    function doSpin() {
+      // Animasyon
+      const n = dilimler.length;
+      const rand = Math.floor(Math.random()*n);
+      const extraSpin = 360*4; // min 4 tur
+      const newAngle = (360/n)*rand + (Math.random()*360/n); // rastgele dilim ortası
+      const finalAngle = extraSpin + 270 - ((360/n)*rand + (360/n)/2);
+      let step = 0, steps = 60, startAngle = angle*180/Math.PI;
+      function animate() {
+        step++;
+        angle = ((startAngle + (finalAngle-startAngle)*(step/steps))%360)*Math.PI/180;
+        ctx.clearRect(0,0,300,300);
+        drawWheel();
+        if(step<steps) requestAnimationFrame(animate);
+        else {
+          angle = (finalAngle%360)*Math.PI/180;
+          ctx.clearRect(0,0,300,300);
+          drawWheel();
+          setTimeout(()=> onSpinEnd(rand), 600);
+        }
+      }
+      animate();
+    }
+    function onSpinEnd(idx) {
+      spinning = false;
+      spinCount++;
+      scount.innerText = "Toplam Çevirme: " + spinCount;
+      const user = firebase.auth().currentUser;
+      if(!user) return;
+      let outcome = dilimler[idx].val;
+      if (outcome === "iflas") {
+        msg.innerHTML = "<span style='color:#ed4a88;font-weight:700;'>İflas! Tüm puanın sıfırlandı.</span>";
+        db.collection("users").doc(user.uid).update({points: 0});
+      } else if (outcome === "tekrar") {
+        msg.innerHTML = "<span style='color:#ffa800;font-weight:700;'>Şanslısın, tekrar çevir!</span>";
+      } else {
+        // sayı ise puanı ekle/çıkar
+        db.collection("users").doc(user.uid).get().then(doc=>{
+          let p = doc.data().points || 0;
+          let newp = p + outcome;
+          if(newp<0) newp=0;
+          db.collection("users").doc(user.uid).update({points: newp});
+          msg.innerHTML = `<span style='color:${outcome>0?"#13bd72":"#ed4a88"};font-weight:700;'>${outcome>0?"+":""}${outcome} puan!</span>`;
+        });
+      }
+    }
+    // İlk yükleme
+    ctx.clearRect(0,0,300,300); drawWheel();
+    btn.onclick = spinWheel;
+    scount.innerText = "Toplam Çevirme: 0";
+  </script>
+</body>
+</html>
