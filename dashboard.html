@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Puan durumu, ödül çekim ve işlem geçmişi.">
+  <meta name="description" content="Testlik.com - Puan durumun, IBAN ile ödül çekimi ve işlem geçmişi.">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
@@ -15,6 +16,10 @@
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
+        <a href="sizdengelenler.html">Sizden Gelenler</a>
+        <a href="soru-uret.html">Soru Üret</a>
+        <a href="cark.html">Çarkıfelek</a>
+        <a href="video-izle.html">Video İzle Kazan</a>
         <a href="favoriler.html">Favoriler</a>
         <a href="profil.html">Profil</a>
         <a href="dashboard.html" class="active">Dashboard</a>
@@ -26,16 +31,16 @@
     </div>
   </header>
   <main>
-    <section>
-      <h1>Dashboard</h1>
-      <div id="dashboard-area" class="test-card">
-        <p>Dashboard yükleniyor...</p>
+    <section style="margin-top:34px;">
+      <h1 style="text-align:center;color:#735aff;font-weight:700;">Dashboard <span class="emoji">💰</span></h1>
+      <div id="dashboard-area" class="test-card" style="max-width:430px;">
+        <div class="loader">Dashboard yükleniyor...</div>
       </div>
     </section>
   </main>
   <footer>
     <div class="container">
-      <p>&copy; 2025 Testlik.com</p>
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
         <img src="img/wise.png" alt="Wise" />
         <img src="img/payoneer.png" alt="Payoneer" />
@@ -81,22 +86,26 @@
         const doc = await db.collection("users").doc(user.uid).get();
         const u = doc.data();
         // Para çekim geçmişi
-        let txHtml = "<ul>";
-        (u.withdrawals || []).forEach(tx => {
-          txHtml += `<li>${tx.date || ""} - ${tx.amount} TL - ${tx.status || "Bekliyor"}</li>`;
+        let txHtml = "<ul style='padding-left:12px;text-align:left;'>";
+        (u.withdrawals || []).slice().reverse().forEach(tx => {
+          txHtml += `<li style="margin-bottom:6px;">
+            <span style="color:#735aff;font-weight:600;">${tx.date || ""}</span> 
+            - <b>${tx.amount} TL</b> 
+            - <span style="color:${tx.status==='Bekliyor'?'#ffa800':'#13bd72'};font-weight:700;">${tx.status || "Bekliyor"}</span>
+          </li>`;
         });
         txHtml += "</ul>";
         dArea.innerHTML = `
-          <p><b>Toplam Puanın:</b> <span style="font-size:2rem;">${u.points || 0}</span></p>
-          <form id="withdrawForm">
-            <label>Çekmek istediğin miktar (puan):</label>
-            <input type="number" id="amount" min="1" max="${u.points || 0}" required>
-            <label>IBAN:</label>
-            <input type="text" id="iban" placeholder="TR...">
-            <button type="submit" class="cta-btn">Çekim Talebi Gönder</button>
+          <p><b>Toplam Puanın:</b> <span style="font-size:2.1rem;color:#ed4a88;font-weight:700;">${u.points || 0}</span></p>
+          <form id="withdrawForm" style="margin:22px 0 13px 0;text-align:left;">
+            <label><b>Çekmek istediğin miktar (puan):</b></label>
+            <input type="number" id="amount" min="1" max="${u.points || 0}" required style="width:70%;margin-bottom:9px;">
+            <label><b>IBAN:</b></label>
+            <input type="text" id="iban" placeholder="TR..." style="width:95%;margin-bottom:10px;">
+            <button type="submit" class="cta-btn ghost-btn" style="width:100%;margin-top:9px;">Çekim Talebi Gönder</button>
           </form>
-          <hr/>
-          <h3>Çekim Geçmişi</h3>
+          <hr style="margin:19px 0 12px 0;"/>
+          <h3 style="margin-bottom:6px;color:#8f7fff;font-weight:700;">Çekim Geçmişi</h3>
           ${txHtml}
         `;
         document.getElementById("withdrawForm").onsubmit = async (e) => {
