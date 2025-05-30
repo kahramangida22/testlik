@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Testlik.com | Eğlenceli Testler ve Kazanç</title>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Testlik.com - Bilgi ve eğlence testleriyle puan kazan!">
-  <link rel="stylesheet" href="styles.css">
+  <title>Testlik.com | Eğlenceli Testler</title>
+  <meta name="description" content="Testlik.com - Eğlenceli bilgi ve ödüllü testler, kategorilere göre test çöz, puan topla, kazan!">
+  <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -30,54 +30,39 @@
       </nav>
     </div>
   </header>
-
   <main>
-    <h1 class="main-title"><span class="emoji">🎉</span> Testlik.com’a Hoş Geldin!</h1>
-    <div style="text-align:center;">
-      <a href="kategoriler.html" class="cta-btn">Test Çözmeye Başla!</a>
-    </div>
-    
-    <!-- KATEGORİLER -->
-    <section>
-      <h2 style="color:#735aff;text-align:center;margin-top:32px;font-size:1.4em;">Popüler Kategoriler</h2>
-      <div class="kategori-grid">
-        <div class="kategori-card" onclick="window.location='kategoriler.html?cat=Genel'">
-          <img src="category-genel.png" alt="Genel" />
-          <span>Genel</span>
-          <small>Gündemden her şey</small>
+    <section style="max-width:950px;margin:0 auto;">
+      <h1 style="color:#735aff;text-align:center;margin:38px 0 14px 0;font-size:2.5em;font-weight:800;letter-spacing:-.8px;">
+        <span class="emoji">🎉</span> Testlik.com’a Hoş Geldin!
+      </h1>
+      <button class="button-main" onclick="window.location.href='kategoriler.html'">Test Çözmeye Başla!</button>
+      <h2 style="text-align:center;color:#8b63e5;margin-top:40px;margin-bottom:12px;font-size:1.22em;font-weight:700;">
+        Popüler Kategoriler
+      </h2>
+      <div class="kategoriler-row">
+        <div class="kategori-card">
+          <img class="kategori-icon" src="category-genel.png" alt="Genel"/>
+          <div class="kategori-title">Genel</div>
+          <div class="kategori-desc">Gündemden her şey</div>
         </div>
-        <div class="kategori-card" onclick="window.location='kategoriler.html?cat=Eğlence'">
-          <img src="category-eglence.png" alt="Eğlence" />
-          <span>Eğlence</span>
-          <small>Keyifli, komik, özgün</small>
+        <div class="kategori-card">
+          <img class="kategori-icon" src="category-eglence.png" alt="Eğlence"/>
+          <div class="kategori-title">Eğlence</div>
+          <div class="kategori-desc">Keyifli, komik, özgün</div>
         </div>
-        <div class="kategori-card" onclick="window.location='kategoriler.html?cat=Bilgi'">
-          <img src="category-bilgi.png" alt="Bilgi" />
-          <span>Bilgi</span>
-          <small>Beyin yakan sorular</small>
+        <div class="kategori-card">
+          <img class="kategori-icon" src="category-bilgi.png" alt="Bilgi"/>
+          <div class="kategori-title">Bilgi</div>
+          <div class="kategori-desc">Beyin yakan sorular</div>
         </div>
-        <div class="kategori-card" onclick="window.location='kategoriler.html?cat=Psikoloji'">
-          <img src="category-psikoloji.png" alt="Psikoloji" />
-          <span>Psikoloji</span>
-          <small>Kişilik, zeka testleri</small>
+        <div class="kategori-card">
+          <img class="kategori-icon" src="category-psikoloji.png" alt="Psikoloji"/>
+          <div class="kategori-title">Psikoloji</div>
+          <div class="kategori-desc">Kişilik, zeka testleri</div>
         </div>
-        <div class="kategori-card" onclick="window.location='kategoriler.html?cat=Oyun'">
-          <img src="category-oyun.png" alt="Oyun" />
-          <span>Oyun</span>
-          <small>Gaming & trivia</small>
-        </div>
-      </div>
-    </section>
-
-    <!-- GÜNCEL TESTLER -->
-    <section>
-      <h2 style="color:#ed4a88;text-align:center;margin-top:38px;font-size:1.15em;">Son Eklenen Testler</h2>
-      <div id="test-list" class="home-testler">
-        <!-- Test kartları JS ile buraya gelir -->
       </div>
     </section>
   </main>
-
   <footer>
     <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
@@ -88,15 +73,11 @@
       </div>
     </div>
   </footer>
-
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
-  <script src="main.js"></script>
   <script>
-    // Navbar çıkış butonu
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
       if (logoutBtn) {
