@@ -1,26 +1,56 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Test Sonucu | Testlik.com</title>
-  <meta name="description" content="Test sonuçlarını gör ve başarıyı paylaş!">
+  <meta name="description" content="Testlik.com - Test sonucu ve puan ekranı.">
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="img/favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .sonuc-kart {background:#fff;border-radius:22px;box-shadow:0 2px 18px #735aff13;padding:34px 28px 22px 28px;max-width:430px;margin:52px auto 32px auto;text-align:center;}
-    .sonuc-puan {font-size:2.3em;color:#ed4a88;font-weight:800;margin:10px 0 16px 0;letter-spacing:.02em;}
-    .sonuc-img {width:160px;height:100px;object-fit:contain;margin:0 auto 20px auto;display:block;}
-    .sonuc-mesaj {color:#735aff;font-size:1.19em;font-weight:600;margin-bottom:18px;}
-    .paylas-btn {background:#f7e8ff;color:#735aff;font-weight:700;border:none;padding:9px 30px;border-radius:18px;font-size:1em;cursor:pointer;transition:background .13s;}
-    .paylas-btn:hover {background:#735aff;color:#fff;}
+    .sonuc-card {
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 2px 24px #735aff19;
+      padding: 38px 26px 32px 26px;
+      max-width: 420px;
+      margin: 40px auto 22px auto;
+      text-align: center;
+      font-size: 1.12em;
+      color: #4a306f;
+    }
+    .sonuc-img {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      border-radius: 26px;
+      background: #f9f6ff;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px #b69bfc19;
+    }
+    .puan-badge {
+      font-size: 1.23em;
+      color: #fff;
+      background: linear-gradient(90deg, #fd72ff 0%, #735aff 100%);
+      border-radius: 22px;
+      padding: 10px 30px;
+      font-weight: 700;
+      display: inline-block;
+      margin: 18px 0 8px 0;
+      letter-spacing: 0.02em;
+      box-shadow: 0 2px 12px #735aff29;
+    }
+    .sonuc-title {color: #735aff; font-size: 1.22em; font-weight:700;margin-bottom:11px;}
+    .sonuc-detail {color: #876fa9;}
+    .sonuc-btns {margin-top:28px;display:flex;gap:12px;justify-content:center;}
+    .sonuc-btns .cta-btn {padding:10px 25px;font-size:1em;margin:0;}
   </style>
 </head>
 <body>
   <header>
-    <div class="container">
-      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
+    <div class="nav-flex">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
@@ -39,19 +69,15 @@
     </div>
   </header>
   <main>
-    <section>
-      <div class="sonuc-kart" id="sonuc-alani">
-        <div class="loader">Sonuç yükleniyor...</div>
-      </div>
-    </section>
+    <div id="sonuc-alani"></div>
   </main>
   <footer>
-    <div class="container">
+    <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
-        <img src="img/wise.png" alt="Wise" />
-        <img src="img/payoneer.png" alt="Payoneer" />
-        <img src="img/iban.png" alt="IBAN" />
+        <img src="wise.png" alt="Wise" />
+        <img src="payoneer.png" alt="Payoneer" />
+        <img src="iban.png" alt="IBAN" />
       </div>
     </div>
   </footer>
@@ -79,67 +105,63 @@
       }
     });
 
-    // Sonucu göster
-    const urlParams = new URLSearchParams(window.location.search);
-    const testId = urlParams.get("id");
-    const puan = Number(urlParams.get("puan"));
-    let sonucGorseller = [
-      {min:0, max:0, img:"img/result-fail.png", mesaj:"Üzgünüm! Hiç doğru cevap yok. Yeniden dene!"},
-      {min:1, max:2, img:"img/result-medium.png", mesaj:"Fena değil! Daha iyisini yapabilirsin."},
-      {min:3, max:100, img:"img/result-success.png", mesaj:"Mükemmel! Gerçek bir test ustasısın!"}
-    ];
-    async function sonucuYaz() {
-      let gorsel = sonucGorseller[0];
-      for (const g of sonucGorseller) {
-        if (puan >= g.min && puan <= g.max) gorsel = g;
+    // SONUÇ HESAPLA
+    async function loadResult() {
+      const sonuc = document.getElementById("sonuc-alani");
+      const urlParams = new URLSearchParams(window.location.search);
+      const testId = urlParams.get('id');
+      let answers;
+      try {
+        answers = JSON.parse(decodeURIComponent(urlParams.get('answers') || "[]"));
+      } catch { answers = []; }
+      if (!testId) {
+        sonuc.innerHTML = "<p>Test sonucu bulunamadı.</p>";
+        return;
       }
-      // Testin başlığı ve kategorisi için firestore'dan çek
-      let title = "Test Sonucu";
-      let kategori = "Genel";
-      if (testId) {
-        const doc = await db.collection("tests").doc(testId).get();
-        if (doc.exists) {
-          title = doc.data().title || title;
-          kategori = doc.data().category || kategori;
-        }
+      const testDoc = await db.collection("tests").doc(testId).get();
+      if (!testDoc.exists) {
+        sonuc.innerHTML = "<p>Test sonucu bulunamadı.</p>";
+        return;
       }
-      document.getElementById("sonuc-alani").innerHTML = `
-        <h2 style="color:#735aff;">${title}</h2>
-        <img src="${gorsel.img}" alt="Sonuç Görseli" class="sonuc-img" />
-        <div class="sonuc-puan">${puan} Doğru</div>
-        <div class="sonuc-mesaj">${gorsel.mesaj}</div>
-        <button class="paylas-btn" onclick="paylas()">Sonucu Paylaş</button>
-        <a href="index.html" class="cta-btn ghost-btn" style="margin-top:12px;">Ana Sayfaya Dön</a>
-        <button class="cta-btn" id="sonrakiKategoriTestBtn" style="margin-top:10px;">Sıradaki Kategori Testine Geç</button>
+      const testData = testDoc.data();
+      // Basit puanlama: Doğru cevaplar 1'er puan, sonuç metni testData.results arrayinden alınır (puan aralığına göre)
+      let point = 0;
+      for (let i = 0; i < (testData.questions || []).length; i++) {
+        const correct = testData.questions[i].correct; // Doğru şık indexi
+        if (typeof correct !== "undefined" && answers[i] == correct) point++;
+      }
+      // Sonuç metni/görseli:
+      let resultObj = (testData.results || []).find(r => point >= (r.min||0) && point <= (r.max||99));
+      if (!resultObj) resultObj = { text: "Tebrikler, sonucu başarıyla tamamladın!", image: "success.png" };
+      // Puan rozet rengi/grafiği
+      sonuc.innerHTML = `
+        <div class="sonuc-card">
+          <img class="sonuc-img" src="${resultObj.image || 'success.png'}" alt="Sonuç" />
+          <div class="puan-badge">${point} Puan</div>
+          <div class="sonuc-title">${resultObj.title || "Sonuç"}</div>
+          <div class="sonuc-detail">${resultObj.text || ""}</div>
+          <div class="sonuc-btns">
+            <a href="test-render.html?id=${testId}" class="cta-btn">Tekrar Çöz</a>
+            <a href="index.html" class="cta-btn">Anasayfaya Dön</a>
+          </div>
+        </div>
       `;
-
-      // Buton fonksiyonu (kategori içinde sıradaki test)
-      document.getElementById("sonrakiKategoriTestBtn").onclick = async function() {
-        // O kategorideki tüm testleri sırayla çek
-        const tests = await db.collection("tests").where("category", "==", kategori).get();
-        let found = false, nextId = null, firstId = null;
-        tests.forEach(d => {
-          if (!firstId) firstId = d.id;
-          if (found && !nextId) nextId = d.id;
-          if (d.id === testId) found = true;
-        });
-        // Sonraki test yoksa başa döner
-        window.location.href = "test-render.html?id=" + (nextId || firstId);
-      }
+      // Kullanıcı giriş yaptıysa puanı güncelle
+      firebase.auth().onAuthStateChanged(async user => {
+        if (user) {
+          const userRef = db.collection("users").doc(user.uid);
+          const userDoc = await userRef.get();
+          let prev = userDoc.data().completedTests || [];
+          if (!prev.includes(testId)) {
+            await userRef.update({
+              completedTests: [...prev, testId],
+              points: (userDoc.data().points || 0) + point
+            });
+          }
+        }
+      });
     }
-    function paylas() {
-      const url = window.location.href;
-      if (navigator.share) {
-        navigator.share({
-          title: document.title,
-          text: "Test sonucumu gör! Sen de testlik.com'da hemen dene.",
-          url
-        });
-      } else {
-        prompt("Sonucu arkadaşlarınla paylaşmak için linki kopyala:", url);
-      }
-    }
-    sonucuYaz();
+    loadResult();
   </script>
 </body>
 </html>
