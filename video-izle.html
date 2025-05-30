@@ -1,73 +1,135 @@
-<!-- video-izle.html -->
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Video İzle, Kazan | Testlik.com</title>
+  <meta name="description" content="Video izle, anında puan topla! Sponsor videoları izleyerek kazanç sağla.">
   <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="img/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header> ...navbar... </header>
+  <header>
+    <div class="container">
+      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
+      <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="kategoriler.html">Kategoriler</a>
+        <a href="sizdengelenler.html">Sizden Gelenler</a>
+        <a href="soru-uret.html">Soru Üret</a>
+        <a href="cark.html">Çarkıfelek</a>
+        <a href="video-izle.html" class="active">Video İzle Kazan</a>
+        <a href="favoriler.html">Favoriler</a>
+        <a href="profil.html">Profil</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="akademi.html">Akademi</a>
+        <a href="istatistik.html">İstatistik</a>
+        <a href="admin.html" class="admin-link">Admin</a>
+        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
+      </nav>
+    </div>
+  </header>
   <main>
-    <section class="video-kazan-container">
-      <div class="banner" id="banner-top"></div>
-      <div class="video-player-box">
-        <video id="rewardVideo" width="520" height="320" controls autoplay muted poster="img/soru-isareti.png">
+    <section class="video-kazan-container" style="margin-top:32px;text-align:center;">
+      <h1 style="color:#735aff;font-weight:700;margin-bottom:18px;">Video İzle, Kazan <span class="emoji">🎬</span></h1>
+      <div class="banner" id="banner-top" style="margin-bottom:8px;"></div>
+      <div class="video-player-box" style="background:#fff;border-radius:18px;box-shadow:0 4px 20px #735aff1a;display:inline-block;padding:16px 10px 10px 10px;">
+        <video id="rewardVideo" width="340" height="192" controls autoplay muted poster="img/soru-isareti.png" style="border-radius:10px;">
           <source src="videos/1.mp4" type="video/mp4">
-          <!-- Birden fazla video olacaksa bunların src’si değişecek -->
+          <!-- Sonraki videolara js ile geçilecek -->
         </video>
       </div>
-      <div class="banner" id="banner-bottom"></div>
-      <div id="video-kazan-sonuc" style="display:none;font-weight:700;color:#19bd63;font-size:1.15em;">Tebrikler! 10 puan kazandın 🎉</div>
+      <div class="banner" id="banner-bottom" style="margin-top:8px;"></div>
+      <div id="video-kazan-sonuc" style="display:none;font-weight:700;color:#13bd72;font-size:1.13em;margin-top:18px;">Tebrikler! 10 puan kazandın 🎉</div>
+      <div id="video-sayac" style="color:#735aff;font-weight:600;margin-top:14px;"></div>
     </section>
   </main>
-  <!-- Banner ve video kodları burada -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
+      <div class="odeme-logo">
+        <img src="img/wise.png" alt="Wise" />
+        <img src="img/payoneer.png" alt="Payoneer" />
+        <img src="img/iban.png" alt="IBAN" />
+      </div>
+    </div>
+  </footer>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="firebase.js"></script>
   <script>
-    // Örnek banner dizisi (gerçek reklam kodlarını sen eklersin)
+    // Navbar logout kontrolü
+    firebase.auth().onAuthStateChanged(function(user) {
+      var logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        if (user) logoutBtn.style.display = 'inline-block';
+        else logoutBtn.style.display = 'none';
+      }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      var logoutBtnElem = document.getElementById('logout-btn');
+      if (logoutBtnElem) {
+        logoutBtnElem.onclick = function(e) {
+          e.preventDefault();
+          firebase.auth().signOut().then(() => {
+            window.location.href = "index.html";
+          });
+        }
+      }
+    });
+
+    // Sponsor video ve bannerlar (mp4/YouTube embed ile kullanılabilir)
+    const videoList = [
+      {src: "videos/1.mp4"},
+      {src: "videos/2.mp4"},
+      {src: "videos/3.mp4"}
+      // Sponsor video, tanıtım veya YouTube embed kodları ile değiştirilebilir.
+    ];
+    // Banner/ad kodları, AdSense kodunu buraya ekleyebilirsin!
     const bannersTop = [
+      '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto"></ins>',
       '<img src="img/banner1.png" style="width:95%;border-radius:14px;">',
       '<img src="img/banner2.png" style="width:95%;border-radius:14px;">'
     ];
     const bannersBottom = [
+      '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto"></ins>',
       '<img src="img/banner3.png" style="width:95%;border-radius:14px;">',
       '<img src="img/banner4.png" style="width:95%;border-radius:14px;">'
     ];
-    const videoList = [
-      {src: "videos/1.mp4"},
-      {src: "videos/2.mp4"}
-      // Sponsor/ürün reklamları veya YouTube embed (YouTube’da autoplay ve onended kısıtlamaları var!)
-    ];
-    let currentIndex = 0;
-    let kazanildi = false;
-    const video = document.getElementById('rewardVideo');
-    function nextVideo() {
-      kazanildi = false;
-      currentIndex = (currentIndex+1) % videoList.length;
-      video.src = videoList[currentIndex].src;
-      document.getElementById('banner-top').innerHTML = bannersTop[currentIndex % bannersTop.length];
-      document.getElementById('banner-bottom').innerHTML = bannersBottom[currentIndex % bannersBottom.length];
+    let currentIndex = 0, kazanildi = false, toplamVideo = videoList.length;
+    let video = null, toplamIzlenen = 0;
+    function loadVideo(i) {
+      video = document.getElementById('rewardVideo');
+      video.src = videoList[i].src;
+      document.getElementById('banner-top').innerHTML = bannersTop[i % bannersTop.length];
+      document.getElementById('banner-bottom').innerHTML = bannersBottom[i % bannersBottom.length];
       document.getElementById('video-kazan-sonuc').style.display = 'none';
+      if (window.adsbygoogle) (adsbygoogle = window.adsbygoogle || []).push({});
+      kazanildi = false;
       video.load(); video.play();
+      document.getElementById('video-sayac').innerText = "İzlenen video: "+(i+1)+"/"+toplamVideo;
     }
-    video.onended = async function() {
-      if (kazanildi) return; kazanildi = true;
-      document.getElementById('video-kazan-sonuc').style.display = 'block';
-      // Firebase ile puan ekle:
-      if (window.auth && window.auth.currentUser) {
-        const uid = auth.currentUser.uid;
-        const userRef = db.collection("users").doc(uid);
-        const userDoc = await userRef.get();
-        const puan = (userDoc.data().points || 0) + 10;
-        await userRef.update({points: puan});
-      }
-      setTimeout(nextVideo, 2600);
-    };
-    // İlk başlatma:
-    window.onload = function() {
-      document.getElementById('banner-top').innerHTML = bannersTop[0];
-      document.getElementById('banner-bottom').innerHTML = bannersBottom[0];
-    };
+    window.onload = function() { loadVideo(0); };
+    document.addEventListener("DOMContentLoaded", () => {
+      video = document.getElementById('rewardVideo');
+      video.onended = async function() {
+        if (kazanildi) return; kazanildi = true; toplamIzlenen++;
+        document.getElementById('video-kazan-sonuc').style.display = 'block';
+        if (window.auth && window.auth.currentUser) {
+          const uid = auth.currentUser.uid;
+          const userRef = db.collection("users").doc(uid);
+          const userDoc = await userRef.get();
+          const puan = (userDoc.data().points || 0) + 10;
+          await userRef.update({points: puan});
+        }
+        setTimeout(function() {
+          currentIndex = (currentIndex+1)%videoList.length;
+          loadVideo(currentIndex);
+        }, 2200);
+      };
+    });
   </script>
 </body>
 </html>
