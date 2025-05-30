@@ -4,9 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Test Çöz | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Soruları tek tek çöz, puan kazan!">
+  <meta name="description" content="Test çözerek puan topla ve başarıya ulaş!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    .soru-kart {background:#fff;border-radius:20px;box-shadow:0 2px 18px #735aff13;padding:32px 18px;max-width:450px;margin:40px auto;text-align:left;}
+    .soru-no {font-size:1.1em;color:#ed4a88;font-weight:700;margin-bottom:5px;}
+    .soru-metin {color:#735aff;font-size:1.2em;font-weight:700;margin-bottom:17px;}
+    .sik-btn {display:block;width:100%;margin:8px 0;padding:13px 15px;border:none;border-radius:16px;background:#f7e8ff;font-size:1.04em;color:#735aff;font-weight:600;transition:background .16s,color .15s;}
+    .sik-btn:hover,.sik-btn.selected {background:#735aff;color:#fff;}
+    .ilerle-btn {margin-top:18px;}
+    .test-bar {text-align:center;color:#ed4a88;margin-bottom:16px;font-weight:600;}
+  </style>
 </head>
 <body>
   <header>
@@ -15,25 +25,31 @@
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
+        <a href="sizdengelenler.html">Sizden Gelenler</a>
+        <a href="soru-uret.html">Soru Üret</a>
+        <a href="cark.html">Çarkıfelek</a>
+        <a href="video-izle.html">Video İzle Kazan</a>
         <a href="favoriler.html">Favoriler</a>
         <a href="profil.html">Profil</a>
         <a href="dashboard.html">Dashboard</a>
         <a href="akademi.html">Akademi</a>
         <a href="istatistik.html">İstatistik</a>
         <a href="admin.html" class="admin-link">Admin</a>
+        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
   <main>
+    <div class="test-bar" id="test-bar"></div>
     <section>
-      <div id="test-area">
-        <p>Test yükleniyor...</p>
+      <div class="soru-kart" id="soru-area">
+        <div class="loader">Test yükleniyor...</div>
       </div>
     </section>
   </main>
   <footer>
     <div class="container">
-      <p>&copy; 2025 Testlik.com</p>
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
         <img src="img/wise.png" alt="Wise" />
         <img src="img/payoneer.png" alt="Payoneer" />
@@ -41,51 +57,89 @@
       </div>
     </div>
   </footer>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const testId = urlParams.get('id');
-    let currentQ = 0, userAnswers = [], testData = null;
-
-    function showQuestion() {
-      if (!testData) return;
-      const area = document.getElementById("test-area");
-      const q = testData.questions[currentQ];
-      let html = `<h2>${testData.title}</h2>`;
-      html += `<div class="test-card">`;
-      html += `<img src="${testData.image || 'img/test-category-default.png'}" alt="Test Görseli" style="width:110px;height:80px;object-fit:cover;border-radius:12px;margin-bottom:14px;background:#e6eef7;" loading="lazy"/>`;
-      html += `<h3>${q.question}</h3>`;
-      q.options.forEach((opt, i) => {
-        html += `<div>
-          <input type="radio" id="opt${i}" name="option" value="${i}">
-          <label for="opt${i}">${opt}</label>
-        </div>`;
-      });
-      html += `<button onclick="submitAnswer()" class="cta-btn">Devam Et</button></div>`;
-      area.innerHTML = html;
-    }
-    function submitAnswer() {
-      const selected = document.querySelector('input[name="option"]:checked');
-      if (!selected) { alert("Bir seçenek seç!"); return; }
-      userAnswers.push(Number(selected.value));
-      currentQ++;
-      if (currentQ < testData.questions.length) showQuestion();
-      else goToResult();
-    }
-    function goToResult() {
-      const params = new URLSearchParams();
-      params.append('id', testId);
-      params.append('answers', userAnswers.join(','));
-      window.location.href = 'test-sonuc.html?' + params.toString();
-    }
-    db.collection("tests").doc(testId).get().then(doc => {
-      if (!doc.exists) {
-        document.getElementById("test-area").innerHTML = "<p>Test bulunamadı!</p>";
-      } else {
-        testData = doc.data();
-        showQuestion();
+    firebase.auth().onAuthStateChanged(function(user) {
+      var logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        if (user) logoutBtn.style.display = 'inline-block';
+        else logoutBtn.style.display = 'none';
       }
     });
+    document.addEventListener('DOMContentLoaded', function() {
+      var logoutBtnElem = document.getElementById('logout-btn');
+      if (logoutBtnElem) {
+        logoutBtnElem.onclick = function(e) {
+          e.preventDefault();
+          firebase.auth().signOut().then(() => {
+            window.location.href = "index.html";
+          });
+        }
+      }
+    });
+
+    // Testi Firestore'dan çek ve göster
+    let test=null, cevaplar=[], soruIndex=0;
+    const urlParams = new URLSearchParams(window.location.search);
+    const testId = urlParams.get("id");
+    async function testYukle() {
+      if (!testId) { document.getElementById("soru-area").innerHTML = "<p>Test bulunamadı!</p>"; return;}
+      const doc = await db.collection("tests").doc(testId).get();
+      if (!doc.exists) { document.getElementById("soru-area").innerHTML = "<p>Test bulunamadı!</p>"; return;}
+      test = doc.data();
+      cevaplar = [];
+      soruIndex = 0;
+      soruGoster();
+    }
+    function soruGoster() {
+      const soru = test.questions[soruIndex];
+      const area = document.getElementById("soru-area");
+      let html = `
+        <div class="soru-no">Soru ${soruIndex+1} / ${test.questions.length}</div>
+        <div class="soru-metin">${soru.question}</div>
+        <div>`;
+      soru.options.forEach((opt,i)=>{
+        html += `<button class="sik-btn${cevaplar[soruIndex]===i?" selected":""}" onclick="sikSec(${i})">${opt}</button>`;
+      });
+      html += `</div>
+        <button class="cta-btn ilerle-btn" onclick="sonrakiSoru()" style="width:100%;">${soruIndex===test.questions.length-1?"Bitir":"Devam Et"}</button>
+      `;
+      area.innerHTML = html;
+      document.getElementById("test-bar").innerHTML = `${test.title}`;
+    }
+    window.sikSec = function(i) {
+      cevaplar[soruIndex] = i;
+      soruGoster();
+    }
+    window.sonrakiSoru = function() {
+      if (typeof cevaplar[soruIndex] === "undefined") {
+        alert("Bir şık seçmelisin!"); return;
+      }
+      if (soruIndex < test.questions.length-1) {
+        soruIndex++; soruGoster();
+      } else {
+        // Son soru bitince sonucu hesapla ve yönlendir
+        let puan = 0;
+        test.questions.forEach((q,i)=>{
+          if (cevaplar[i]===q.answer) puan++;
+        });
+        // Kullanıcının completedTests'ine ekle
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            const userRef = db.collection("users").doc(user.uid);
+            userRef.update({
+              completedTests: firebase.firestore.FieldValue.arrayUnion(testId),
+              points: firebase.firestore.FieldValue.increment(puan)
+            });
+          }
+        });
+        window.location.href = "test-sonuc.html?id="+testId+"&puan="+puan;
+      }
+    }
+    testYukle();
   </script>
 </body>
 </html>
