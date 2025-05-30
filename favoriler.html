@@ -3,30 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Favori Testlerim | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Favorilere eklediğin testler burada!">
+  <title>Favorilerim | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Favori testlerini burada gör!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    .remove-fav-btn {
-      background:#ffd7ee;
-      color:#ed4a88;
-      border:none;
-      border-radius:18px;
-      padding:7px 18px;
-      font-weight:700;
-      font-size:1em;
-      cursor:pointer;
-      margin-top:10px;
-      transition:background .13s;
-    }
-    .remove-fav-btn:hover {background:#ed4a88;color:#fff;}
-  </style>
 </head>
 <body>
   <header>
-    <div class="container">
+    <div class="container nav-flex">
       <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
@@ -46,15 +31,13 @@
     </div>
   </header>
   <main>
-    <section>
-      <h1 style="text-align:center;color:#735aff;font-weight:700;margin-top:34px;">Favori Testlerim <span class="emoji">💖</span></h1>
-      <div id="favorites-list" class="test-list">
-        <div class="loader">Favoriler yükleniyor...</div>
-      </div>
+    <section class="hero" style="padding-bottom:18px;">
+      <h1><span class="emoji">⭐</span> Favori Testlerim</h1>
+      <div class="test-list" id="favorites-list"></div>
     </section>
   </main>
   <footer>
-    <div class="container">
+    <div class="container footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
         <img src="img/wise.png" alt="Wise" />
@@ -87,53 +70,39 @@
       }
     });
 
-    auth.onAuthStateChanged(async user => {
+    // FAVORİLERİ ÇEK VE LİSTELE
+    firebase.auth().onAuthStateChanged(async user => {
       const favList = document.getElementById("favorites-list");
       if (!user) {
-        favList.innerHTML = "<div class='test-card'><p>Favori testlerini görmek için giriş yapmalısın.</p><a href='giris.html' class='cta-btn'>Giriş Yap</a></div>";
+        favList.innerHTML = `<p>Favorilerini görmek için giriş yapmalısın.</p><a href="giris.html" class="cta-btn">Giriş Yap</a>`;
         return;
       }
-      favList.innerHTML = "<div class='loader'>Favoriler yükleniyor...</div>";
-      try {
-        const userDoc = await db.collection("users").doc(user.uid).get();
-        const favorites = userDoc.data()?.favorites || [];
-        if (favorites.length === 0) {
-          favList.innerHTML = "<div class='test-card'><p>Hiç favori testin yok!</p></div>";
-          return;
-        }
-        favList.innerHTML = "";
-        for (let testId of favorites) {
-          const testDoc = await db.collection("tests").doc(testId).get();
-          if (testDoc.exists) {
-            const t = testDoc.data();
-            favList.innerHTML += `
-              <div class="test-card" style="max-width:340px;">
-                <img src="${t.image || 'img/soru-isareti.png'}" alt="Test Görseli" loading="lazy" />
-                <div class="category">${t.category || 'Genel'}</div>
-                <h3 style="color:#735aff;">${t.title}</h3>
-                <p>${t.description || ''}</p>
-                <a href="test-render.html?id=${testDoc.id}" class="cta-btn animated-btn" style="margin-top:8px;">Testi Çöz</a>
-                <button onclick="removeFavorite('${testDoc.id}')" class="remove-fav-btn">Favorilerden Kaldır</button>
-              </div>
-            `;
-          }
-        }
-      } catch (err) {
-        favList.innerHTML = "<div class='test-card'><p>Favoriler yüklenemedi!</p></div>";
-        console.error(err);
+      const userDoc = await db.collection("users").doc(user.uid).get();
+      const userData = userDoc.data();
+      const favorites = userData.favorites || [];
+      if (favorites.length === 0) {
+        favList.innerHTML = "<p>Henüz hiç favorin yok. Testleri çözerken favorilere ekleyebilirsin!</p>";
+        return;
       }
+      favList.innerHTML = "<p>Yükleniyor...</p>";
+      // Favori testleri sırayla getir ve listele
+      let html = "";
+      for (let testId of favorites) {
+        const testDoc = await db.collection("tests").doc(testId).get();
+        if (!testDoc.exists) continue;
+        const t = testDoc.data();
+        html += `
+          <div class="test-card" style="max-width:360px;">
+            <img src="${t.image || 'img/test-category-default.png'}" alt="Test Görseli" loading="lazy"/>
+            <div class="category">${t.category || 'Genel'}</div>
+            <h3 style="color:#735aff;margin-bottom:7px;font-size:1.18em;">${t.title}</h3>
+            <p style="color:#8f7fff;font-size:.98em;min-height:30px;">${t.description || ''}</p>
+            <a href="test-render.html?id=${testId}" class="cta-btn" style="margin-top:10px;">Testi Çöz</a>
+          </div>
+        `;
+      }
+      favList.innerHTML = html || "<p>Favorilerin bulunamadı.</p>";
     });
-
-    async function removeFavorite(testId) {
-      const user = auth.currentUser;
-      if (!user) return;
-      const userRef = db.collection("users").doc(user.uid);
-      const userDoc = await userRef.get();
-      let favorites = userDoc.data().favorites || [];
-      favorites = favorites.filter(fav => fav !== testId);
-      await userRef.update({ favorites });
-      location.reload();
-    }
   </script>
 </body>
 </html>
