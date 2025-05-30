@@ -3,23 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Testlik Akademi | Rehber & Bilgilendirme</title>
-  <meta name="description" content="Testlik.com - Sistemi, ödül almayı, puan kazanmayı öğren!">
+  <title>Testlik Akademi | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Sistem ve kullanım rehberi, kazanç tüyoları, videolar ve ipuçları.">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    .akademi-section {max-width:540px;margin:44px auto 28px auto;background:#fff;border-radius:20px;box-shadow:0 2px 18px #735aff13;padding:36px 28px;}
-    .akademi-hdr {color:#735aff;font-weight:700;font-size:1.45em;margin-bottom:8px;}
-    .akademi-list li {margin-bottom:9px;font-size:1.08em;}
-    .soru-cv {margin-bottom:15px;}
-    .akademi-q {color:#ed4a88;font-weight:700;}
-    .akademi-a {color:#5a6cff;}
+    .akademi-card {
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 2px 18px #735aff13;
+      padding: 32px 26px;
+      max-width: 580px;
+      margin: 36px auto 18px auto;
+      text-align: left;
+      font-size: 1.09em;
+      color: #4a306f;
+    }
+    .akademi-card h2 {
+      color: #735aff;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+    .akademi-video {
+      width: 100%;
+      max-width: 440px;
+      margin: 20px auto;
+      border-radius: 18px;
+      box-shadow: 0 2px 16px #735aff13;
+      display: block;
+    }
+    .akademi-section-title {
+      color: #ed4a88;
+      font-size: 1.13em;
+      font-weight: 700;
+      margin-top: 22px;
+      margin-bottom: 7px;
+    }
+    .akademi-list li {margin-bottom: 7px;}
   </style>
 </head>
 <body>
   <header>
-    <div class="container">
+    <div class="container nav-flex">
       <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
@@ -39,42 +65,47 @@
     </div>
   </header>
   <main>
-    <section class="akademi-section">
-      <h1 class="akademi-hdr">Testlik Akademi <span class="emoji">🎓</span></h1>
-      <ul class="akademi-list">
-        <li><b>Test Çöz:</b> Tüm testlerde puan topla, profilini geliştir.</li>
-        <li><b>Çarkı Çevir:</b> Şansını dene, artı/eksi puan veya ödül kazan.</li>
-        <li><b>Video İzle:</b> Sponsor videoları izleyip ekstra puan topla.</li>
-        <li><b>Soru Üret:</b> Kendi testini kolayca ekle, binlerce kişiye ulaş.</li>
-        <li><b>Favoriler:</b> Sevdiğin testleri favorilere ekle, hızlı erişim sağla.</li>
-        <li><b>Çekim Talebi:</b> Puanlarınla IBAN üzerinden ödül iste, kolay ödeme.</li>
-      </ul>
-      <div style="margin:28px 0 15px 0;border-top:1.5px dashed #f3e8ff;"></div>
-      <h2 style="color:#ed4a88;font-weight:700;font-size:1.15em;margin-bottom:10px;">Sıkça Sorulan Sorular</h2>
-      <div class="soru-cv">
-        <span class="akademi-q">Puanlar nasıl toplanır?</span>
-        <div class="akademi-a">Test çözerek, çark çevirerek ve video izleyerek puan toplayabilirsin.</div>
-      </div>
-      <div class="soru-cv">
-        <span class="akademi-q">Çekim limiti var mı?</span>
-        <div class="akademi-a">Çekmek istediğin miktar kadar puanın olması yeterlidir. Ödeme IBAN'a yapılır.</div>
-      </div>
-      <div class="soru-cv">
-        <span class="akademi-q">Ekstra ödül kazanmak için ipucu var mı?</span>
-        <div class="akademi-a">Düzenli test çözmek, trend testleri beğenmek ve yeni test eklemek seni öne çıkarır!</div>
-      </div>
-      <div class="soru-cv">
-        <span class="akademi-q">Test eklediğimde onay gerekiyor mu?</span>
-        <div class="akademi-a">Testler otomatik olarak yayınlanır, gerekirse admin tarafından kontrol edilir.</div>
-      </div>
-      <div class="soru-cv">
-        <span class="akademi-q">Daha fazla soru?</span>
-        <div class="akademi-a">Bize <a href="mailto:destek@testlik.com" style="color:#735aff;">destek@testlik.com</a> adresinden ulaşabilirsin!</div>
+    <section>
+      <div class="akademi-card">
+        <h2>Testlik Akademi <span class="emoji">🎓</span></h2>
+        <p>
+          <b>Testlik.com</b>’da en çok merak edilen konular, kazanç yolları ve kullanıma dair rehberler burada!<br>
+          Siteyi en verimli şekilde kullanmak için aşağıdaki başlıklara göz atabilirsin.
+        </p>
+
+        <div class="akademi-section-title">Başlangıç Rehberi</div>
+        <ul class="akademi-list">
+          <li><b>Testleri çöz:</b> Her testi çözerek puan kazanırsın. Yanıtladıkça hem eğlen hem biriktir!</li>
+          <li><b>Puan biriktir:</b> Puanların, hesabında anlık olarak birikir.</li>
+          <li><b>Ödülünü çek:</b> Yeterli puana ulaştığında IBAN ile ödül talebi oluşturabilirsin.</li>
+          <li><b>Favorilere ekle:</b> En sevdiğin testleri kaydedebilir, profilinden erişebilirsin.</li>
+          <li><b>Arkadaşlarını davet et:</b> Daha fazla puan ve özel ödüller için davet sistemini takip et.</li>
+        </ul>
+
+        <div class="akademi-section-title">Kazanç Tüyoları</div>
+        <ul class="akademi-list">
+          <li>Her gün yeni testleri çözerek ekstra puan kazan.</li>
+          <li>Video izle veya çarkıfelek gibi ek özellikleri dene.</li>
+          <li>Profil bilgilerini eksiksiz doldur, daha fazla avantajdan yararlan.</li>
+          <li>Günlük/haftalık ödül ve kampanyalara göz at.</li>
+        </ul>
+
+        <div class="akademi-section-title">Kısa Tanıtım Videosu</div>
+        <!-- Kendi YouTube videonu veya tanıtım videosunu buraya ekleyebilirsin -->
+        <iframe class="akademi-video" src="https://www.youtube.com/embed/lHg98MR9NyE" title="Testlik Akademi Tanıtım" frameborder="0" allowfullscreen></iframe>
+
+        <div class="akademi-section-title">Sık Sorulanlar</div>
+        <ul class="akademi-list">
+          <li><b>Puanlarım ne zaman güncellenir?</b> Test tamamladığında veya ödül çektiğinde anında güncellenir.</li>
+          <li><b>Minimum çekim limiti var mı?</b> Evet, 100 puan ve üzeri için çekim talebi oluşturabilirsin.</li>
+          <li><b>Puanlar gerçek paraya çevriliyor mu?</b> Evet, IBAN ile ödeme alabilirsin.</li>
+          <li><b>Ekstra sorun olursa ne yapmalıyım?</b> Profilinden destek ekibine yazabilirsin!</li>
+        </ul>
       </div>
     </section>
   </main>
   <footer>
-    <div class="container">
+    <div class="container footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
         <img src="img/wise.png" alt="Wise" />
@@ -85,7 +116,6 @@
   </footer>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
     firebase.auth().onAuthStateChanged(function(user) {
