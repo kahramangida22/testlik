@@ -4,15 +4,72 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Profilim | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Kendi profilini, puanını ve başarılarını gör!">
+  <meta name="description" content="Testlik.com - Profil ve kullanıcı bilgileri.">
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="img/favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    .profil-card {
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 2px 24px #735aff19;
+      padding: 40px 28px 30px 28px;
+      max-width: 420px;
+      margin: 44px auto 22px auto;
+      text-align: center;
+      font-size: 1.11em;
+    }
+    .profil-avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #b69bfc;
+      background: #faf7ff;
+      margin-bottom: 18px;
+      box-shadow: 0 1px 8px #7a56ff12;
+    }
+    .profil-username {
+      color: #735aff;
+      font-size: 1.27em;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .profil-email {
+      color: #876fa9;
+      font-size: 1.03em;
+      margin-bottom: 7px;
+      word-break: break-all;
+    }
+    .profil-puan {
+      color: #ed4a88;
+      font-size: 1.15em;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    .profil-uye-tarih {color:#bba5fa;font-size:.99em;}
+    .profil-upload-btn {
+      margin-top: 10px;
+      background: #f7e8ff;
+      color: #735aff;
+      border-radius: 16px;
+      padding: 8px 17px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background .13s;
+    }
+    .profil-upload-btn:hover {
+      background: linear-gradient(90deg,#fd72ff 0%, #735aff 100%);
+      color:#fff;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <div class="container">
-      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
+    <div class="nav-flex">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
@@ -31,20 +88,23 @@
     </div>
   </header>
   <main>
-    <section class="profile-section" style="margin-top:36px;">
-      <h1 style="text-align:center;color:#735aff;font-weight:700;">Profilim <span class="emoji">🧑‍💻</span></h1>
-      <div class="test-card" id="profile-area" style="max-width:410px;">
-        <div class="loader">Profil yükleniyor...</div>
-      </div>
-    </section>
+    <div class="profil-card" id="profil-kart">
+      <img src="default-profile.png" alt="Profil Fotoğrafı" class="profil-avatar" id="avatar-img"/>
+      <input type="file" id="avatar-input" style="display:none;" accept="image/*" />
+      <button class="profil-upload-btn" id="avatar-btn">Profil Fotoğrafı Yükle</button>
+      <div class="profil-username" id="profil-username">Kullanıcı Adı</div>
+      <div class="profil-email" id="profil-email">E-posta</div>
+      <div class="profil-puan" id="profil-puan">0 Puan</div>
+      <div class="profil-uye-tarih" id="profil-uye-tarih">Üyelik: -</div>
+    </div>
   </main>
   <footer>
-    <div class="container">
+    <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
-        <img src="img/wise.png" alt="Wise" />
-        <img src="img/payoneer.png" alt="Payoneer" />
-        <img src="img/iban.png" alt="IBAN" />
+        <img src="wise.png" alt="Wise" />
+        <img src="payoneer.png" alt="Payoneer" />
+        <img src="iban.png" alt="IBAN" />
       </div>
     </div>
   </footer>
@@ -72,79 +132,42 @@
       }
     });
 
-    // PROFİL KARTI (Fotoğraf ve Kullanıcı Adı güncellemeli)
-    auth.onAuthStateChanged(async user => {
-      const area = document.getElementById("profile-area");
+    // Kullanıcı bilgilerini getir
+    firebase.auth().onAuthStateChanged(async user => {
       if (!user) {
-        area.innerHTML = `<p>Profilini görmek için giriş yapmalısın.</p><a href="giris.html" class="cta-btn">Giriş Yap</a>`;
+        document.getElementById('profil-kart').innerHTML = `
+          <p>Profil bilgilerini görmek için giriş yapmalısın.</p>
+          <a href="giris.html" class="cta-btn">Giriş Yap</a>
+        `;
         return;
       }
-      try {
-        const doc = await db.collection("users").doc(user.uid).get();
-        const u = doc.data();
-        area.innerHTML = `
-          <form id="profileForm" enctype="multipart/form-data" style="display:flex;flex-direction:column;align-items:center;">
-            <img src="${u.avatar || 'img/default-profile.png'}" alt="Profil Fotoğrafı" id="profile-avatar" style="width:90px; border-radius:50%; margin-bottom: 1.2rem;box-shadow:0 2px 14px #ffb2f85c;object-fit:cover;">
-            <input type="file" id="avatarInput" accept="image/*" style="margin-bottom:10px;"/>
-            <input type="text" id="displayName" value="${u.displayName || ''}" placeholder="Kullanıcı adı" style="margin-bottom:10px;width:70%;">
-            <button type="submit" class="cta-btn" style="width:100%;">Kaydet</button>
-          </form>
-          <p style="font-size:1.08em;"><b>Puan:</b> <span style="color:#ed4a88;font-weight:600;">${u.points || 0}</span></p>
-          <p><b>Favori Testler:</b> <span style="color:#735aff;">${u.favorites ? u.favorites.length : 0}</span></p>
-          <p><b>Çözülen Testler:</b> <span style="color:#5ab8ad;">${u.completedTests ? u.completedTests.length : 0}</span></p>
-          <div id="profileMsg"></div>
-        `;
-
-        // Profil fotoğrafı önizleme
-        document.getElementById("avatarInput").onchange = e => {
-          const file = e.target.files[0];
-          if (!file) return;
-          const reader = new FileReader();
-          reader.onload = ev => {
-            document.getElementById("profile-avatar").src = ev.target.result;
-          };
-          reader.readAsDataURL(file);
-        };
-
-        // Form kaydetme
-        document.getElementById("profileForm").onsubmit = async function(e) {
-          e.preventDefault();
-          const displayName = document.getElementById("displayName").value;
-          const fileInput = document.getElementById("avatarInput");
-          let avatarUrl = u.avatar || "";
-          if (fileInput.files[0]) {
-            // (Base64 olarak kaydedilir. Daha profesyonel için Firebase Storage önerilir.)
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            reader.onload = async function(ev) {
-              avatarUrl = ev.target.result;
-              await db.collection("users").doc(user.uid).update({ displayName, avatar: avatarUrl });
-              document.getElementById("profileMsg").innerHTML = '<span style="color:#13bd72;">Profil güncellendi!</span>';
-            };
-            reader.readAsDataURL(file);
-          } else {
-            await db.collection("users").doc(user.uid).update({ displayName });
-            document.getElementById("profileMsg").innerHTML = '<span style="color:#13bd72;">Profil güncellendi!</span>';
-          }
-        };
-      } catch (err) {
-        area.innerHTML = "<p>Profil yüklenemedi!</p>";
-        console.error(err);
-      }
+      const userDoc = await db.collection("users").doc(user.uid).get();
+      const d = userDoc.data();
+      document.getElementById("profil-username").innerText = d.displayName || "Kullanıcı Adı";
+      document.getElementById("profil-email").innerText = user.email || "-";
+      document.getElementById("profil-puan").innerText = (d.points || 0) + " Puan";
+      const tarih = user.metadata && user.metadata.creationTime ? new Date(user.metadata.creationTime) : null;
+      document.getElementById("profil-uye-tarih").innerText = "Üyelik: " + (tarih ? tarih.toLocaleDateString('tr-TR') : "-");
+      document.getElementById("avatar-img").src = d.avatar || "default-profile.png";
     });
+
+    // Profil fotoğrafı yükleme
+    document.getElementById('avatar-btn').onclick = () => document.getElementById('avatar-input').click();
+    document.getElementById('avatar-input').onchange = async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      // Kullanıcı giriş kontrolü
+      const user = firebase.auth().currentUser;
+      if (!user) return;
+      // Resmi base64 olarak kaydet (gelişmiş projelerde storage kullanılır)
+      const reader = new FileReader();
+      reader.onload = async function(event) {
+        const base64 = event.target.result;
+        await db.collection("users").doc(user.uid).update({ avatar: base64 });
+        document.getElementById("avatar-img").src = base64;
+      }
+      reader.readAsDataURL(file);
+    }
   </script>
-  <style>
-    .test-card input[type="file"] {
-      margin-bottom: 10px;
-      padding: 5px;
-      border-radius: 12px;
-      background: #f7e8ff;
-      color: #735aff;
-      border: 1.5px solid #d7caff;
-    }
-    .test-card input[type="text"] {
-      margin-bottom: 10px;
-    }
-  </style>
 </body>
 </html>
