@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Testi Çöz | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Online test çöz, bilgi ve eğlenceyle puan topla!">
+  <meta name="description" content="Testlik.com - Test çöz, bilginle yarış ve puan topla!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
     .secenekler {display:flex;flex-direction:column;gap:12px;}
     .secenek-btn {background:#f7e8ff;color:#735aff;font-weight:700;border:none;padding:14px 0;border-radius:16px;font-size:1em;cursor:pointer;transition:background .13s;}
     .secenek-btn:hover {background:#735aff;color:#fff;}
-    .devam-btn {margin-top:22px;}
+    .cozuldu-etiket {display:inline-block;background:#13bd72;color:#fff;font-weight:700;border-radius:16px;padding:7px 15px;margin-bottom:8px;font-size:1em;}
   </style>
 </head>
 <body>
@@ -28,15 +28,7 @@
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
         <a href="sizdengelenler.html">Sizden Gelenler</a>
-        <a href="soru-uret.html">Soru Üret</a>
-        <a href="cark.html">Çarkıfelek</a>
-        <a href="video-izle.html">Video İzle Kazan</a>
-        <a href="favoriler.html">Favoriler</a>
         <a href="profil.html">Profil</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="akademi.html">Akademi</a>
-        <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link">Admin</a>
         <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
@@ -50,39 +42,22 @@
   </main>
   <footer>
     <div class="container">
-      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
-      <div class="odeme-logo">
-        <img src="img/wise.png" alt="Wise" />
-        <img src="img/payoneer.png" alt="Payoneer" />
-        <img src="img/iban.png" alt="IBAN" />
-      </div>
+      <p>&copy; 2025 <b>Testlik.com</b></p>
     </div>
   </footer>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="main.js"></script>
   <script src="firebase.js"></script>
   <script>
+    // Kullanıcı oturum kontrolü + çıkış
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
-      if (logoutBtn) {
-        if (user) logoutBtn.style.display = 'inline-block';
-        else logoutBtn.style.display = 'none';
-      }
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-      var logoutBtnElem = document.getElementById('logout-btn');
-      if (logoutBtnElem) {
-        logoutBtnElem.onclick = function(e) {
-          e.preventDefault();
-          firebase.auth().signOut().then(() => {
-            window.location.href = "index.html";
-          });
-        }
-      }
+      if (logoutBtn) logoutBtn.style.display = user ? 'inline-block' : 'none';
     });
 
-    // TEST YÜKLEME VE ÇÖZME
+    // Test yükleme ve çözme
     const urlParams = new URLSearchParams(window.location.search);
     const testId = urlParams.get("id");
     let kategoriGlobal = "Genel";
@@ -103,12 +78,24 @@
       kategoriGlobal = testDoc.category || "Genel";
       soruIndex = 0;
       dogruSayisi = 0;
-      soruGoster();
+      await cozulduKontrolVeSoruGoster();
     }
 
-    function soruGoster() {
+    async function cozulduKontrolVeSoruGoster() {
+      // Çözüldü etiketi kontrolü (main.js fonksiyonu)
+      let cozdu = false;
+      try {
+        if (firebase.auth().currentUser) {
+          cozdu = await isTestSolved(testId);
+        }
+      } catch {}
+      soruGoster(cozdu);
+    }
+
+    function soruGoster(cozuldu) {
       if (soruIndex >= sorular.length) {
         // Test bitti, sonuç ekranına yönlendir
+        markTestAsSolved(testId); // main.js fonksiyonu ile çözüldü olarak işaretle
         window.location.href = `test-sonuc.html?id=${testId}&puan=${dogruSayisi}`;
         return;
       }
@@ -118,6 +105,7 @@
         secenekler += `<button class="secenek-btn" onclick="secenekSec(${i})">${op}</button>`;
       });
       document.getElementById("test-alani").innerHTML = `
+        ${cozuldu ? '<div class="cozuldu-etiket">✔️ Daha önce çözdün</div>' : ""}
         <img src="${testDoc.image || 'img/soru-isareti.png'}" class="test-img" alt="Test Görseli"/>
         <div class="test-baslik">${testDoc.title}</div>
         <div class="test-kategori">${testDoc.category}</div>
@@ -129,7 +117,7 @@
     window.secenekSec = function(i) {
       if (sorular[soruIndex].answer === i) dogruSayisi++;
       soruIndex++;
-      soruGoster();
+      soruGoster(false); // Yeni soruda çözüldü etiketi olmasın
     };
 
     // Başlat
