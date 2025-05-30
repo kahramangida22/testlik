@@ -89,16 +89,19 @@
       {min:3, max:100, img:"img/result-success.png", mesaj:"Mükemmel! Gerçek bir test ustasısın!"}
     ];
     async function sonucuYaz() {
-      // Testin toplam soru sayısına göre sonucu daha dinamik ayarlayabilirsin.
       let gorsel = sonucGorseller[0];
       for (const g of sonucGorseller) {
         if (puan >= g.min && puan <= g.max) gorsel = g;
       }
-      // Testin başlığı için firestore'dan çek
+      // Testin başlığı ve kategorisi için firestore'dan çek
       let title = "Test Sonucu";
+      let kategori = "Genel";
       if (testId) {
         const doc = await db.collection("tests").doc(testId).get();
-        if (doc.exists) title = doc.data().title || title;
+        if (doc.exists) {
+          title = doc.data().title || title;
+          kategori = doc.data().category || kategori;
+        }
       }
       document.getElementById("sonuc-alani").innerHTML = `
         <h2 style="color:#735aff;">${title}</h2>
@@ -107,7 +110,22 @@
         <div class="sonuc-mesaj">${gorsel.mesaj}</div>
         <button class="paylas-btn" onclick="paylas()">Sonucu Paylaş</button>
         <a href="index.html" class="cta-btn ghost-btn" style="margin-top:12px;">Ana Sayfaya Dön</a>
+        <button class="cta-btn" id="sonrakiKategoriTestBtn" style="margin-top:10px;">Sıradaki Kategori Testine Geç</button>
       `;
+
+      // Buton fonksiyonu (kategori içinde sıradaki test)
+      document.getElementById("sonrakiKategoriTestBtn").onclick = async function() {
+        // O kategorideki tüm testleri sırayla çek
+        const tests = await db.collection("tests").where("category", "==", kategori).get();
+        let found = false, nextId = null, firstId = null;
+        tests.forEach(d => {
+          if (!firstId) firstId = d.id;
+          if (found && !nextId) nextId = d.id;
+          if (d.id === testId) found = true;
+        });
+        // Sonraki test yoksa başa döner
+        window.location.href = "test-render.html?id=" + (nextId || firstId);
+      }
     }
     function paylas() {
       const url = window.location.href;
