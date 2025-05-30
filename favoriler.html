@@ -6,13 +6,13 @@
   <title>Favorilerim | Testlik.com</title>
   <meta name="description" content="Testlik.com - Favori testlerini burada gör!">
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="img/favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
-    <div class="container nav-flex">
-      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
+    <div class="nav-flex">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
@@ -31,18 +31,18 @@
     </div>
   </header>
   <main>
-    <section class="hero" style="padding-bottom:18px;">
-      <h1><span class="emoji">⭐</span> Favori Testlerim</h1>
-      <div class="test-list" id="favorites-list"></div>
+    <h1 class="main-title"><span class="emoji">⭐</span> Favori Testlerim</h1>
+    <section class="testler-grid" id="favorites-list">
+      <!-- JS ile favoriler burada listelenir -->
     </section>
   </main>
   <footer>
-    <div class="container footer-flex">
+    <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
-        <img src="img/wise.png" alt="Wise" />
-        <img src="img/payoneer.png" alt="Payoneer" />
-        <img src="img/iban.png" alt="IBAN" />
+        <img src="wise.png" alt="Wise" />
+        <img src="payoneer.png" alt="Payoneer" />
+        <img src="iban.png" alt="IBAN" />
       </div>
     </div>
   </footer>
@@ -91,12 +91,18 @@
         const testDoc = await db.collection("tests").doc(testId).get();
         if (!testDoc.exists) continue;
         const t = testDoc.data();
+        // Kategori ikonunu otomatik seç
+        let icon = "test-category-default.png";
+        if (t.category === "Genel") icon = "category-genel.png";
+        if (t.category === "Eğlence") icon = "category-eglence.png";
+        if (t.category === "Bilgi") icon = "category-bilgi.png";
+        if (t.category === "Psikoloji") icon = "category-psikoloji.png";
+        if (t.category === "Oyun") icon = "category-oyun.png";
         html += `
-          <div class="test-card" style="max-width:360px;">
-            <img src="${t.image || 'img/test-category-default.png'}" alt="Test Görseli" loading="lazy"/>
-            <div class="category">${t.category || 'Genel'}</div>
-            <h3 style="color:#735aff;margin-bottom:7px;font-size:1.18em;">${t.title}</h3>
-            <p style="color:#8f7fff;font-size:.98em;min-height:30px;">${t.description || ''}</p>
+          <div class="test-card">
+            <img src="${icon}" alt="${t.category || ''}" />
+            <span>${t.title}</span>
+            <small>${t.description || ''}</small>
             <a href="test-render.html?id=${testId}" class="cta-btn" style="margin-top:10px;">Testi Çöz</a>
           </div>
         `;
