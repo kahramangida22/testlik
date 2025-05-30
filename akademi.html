@@ -3,10 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Testlik Akademi | Bilgi & Rehber</title>
-  <meta name="description" content="Testlik.com - Sistem rehberi, kullanıcı bilgilendirme ve video içerikler.">
+  <title>Testlik Akademi | Rehber & Bilgilendirme</title>
+  <meta name="description" content="Testlik.com - Sistemi, ödül almayı, puan kazanmayı öğren!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    .akademi-section {max-width:540px;margin:44px auto 28px auto;background:#fff;border-radius:20px;box-shadow:0 2px 18px #735aff13;padding:36px 28px;}
+    .akademi-hdr {color:#735aff;font-weight:700;font-size:1.45em;margin-bottom:8px;}
+    .akademi-list li {margin-bottom:9px;font-size:1.08em;}
+    .soru-cv {margin-bottom:15px;}
+    .akademi-q {color:#ed4a88;font-weight:700;}
+    .akademi-a {color:#5a6cff;}
+  </style>
 </head>
 <body>
   <header>
@@ -15,6 +24,10 @@
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
+        <a href="sizdengelenler.html">Sizden Gelenler</a>
+        <a href="soru-uret.html">Soru Üret</a>
+        <a href="cark.html">Çarkıfelek</a>
+        <a href="video-izle.html">Video İzle Kazan</a>
         <a href="favoriler.html">Favoriler</a>
         <a href="profil.html">Profil</a>
         <a href="dashboard.html">Dashboard</a>
@@ -26,26 +39,43 @@
     </div>
   </header>
   <main>
-    <section class="profile-section">
-      <h1>Testlik Akademi</h1>
-      <div class="test-card">
-        <h3>Testlik.com Nasıl Çalışır?</h3>
-        <ul style="text-align:left;">
-          <li>Kategorilerden test seç, çözmeye başla.</li>
-          <li>Her doğru cevap puan kazandırır.</li>
-          <li>Puanlar biriktikçe ödül çekimi yapabilirsin.</li>
-          <li>Favori testlerini kaydedip sonra tekrar çözebilirsin.</li>
-          <li>Kazanç/çekim için IBAN, Wise, Payoneer gibi yöntemleri kullanabilirsin.</li>
-          <li>Sosyal medya üzerinden içerik ve kampanyaları takip et!</li>
-        </ul>
-        <h3>Bilgilendirici Videolar</h3>
-        <iframe width="100%" height="240" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" title="Testlik.com Rehber" frameborder="0" allowfullscreen></iframe>
+    <section class="akademi-section">
+      <h1 class="akademi-hdr">Testlik Akademi <span class="emoji">🎓</span></h1>
+      <ul class="akademi-list">
+        <li><b>Test Çöz:</b> Tüm testlerde puan topla, profilini geliştir.</li>
+        <li><b>Çarkı Çevir:</b> Şansını dene, artı/eksi puan veya ödül kazan.</li>
+        <li><b>Video İzle:</b> Sponsor videoları izleyip ekstra puan topla.</li>
+        <li><b>Soru Üret:</b> Kendi testini kolayca ekle, binlerce kişiye ulaş.</li>
+        <li><b>Favoriler:</b> Sevdiğin testleri favorilere ekle, hızlı erişim sağla.</li>
+        <li><b>Çekim Talebi:</b> Puanlarınla IBAN üzerinden ödül iste, kolay ödeme.</li>
+      </ul>
+      <div style="margin:28px 0 15px 0;border-top:1.5px dashed #f3e8ff;"></div>
+      <h2 style="color:#ed4a88;font-weight:700;font-size:1.15em;margin-bottom:10px;">Sıkça Sorulan Sorular</h2>
+      <div class="soru-cv">
+        <span class="akademi-q">Puanlar nasıl toplanır?</span>
+        <div class="akademi-a">Test çözerek, çark çevirerek ve video izleyerek puan toplayabilirsin.</div>
+      </div>
+      <div class="soru-cv">
+        <span class="akademi-q">Çekim limiti var mı?</span>
+        <div class="akademi-a">Çekmek istediğin miktar kadar puanın olması yeterlidir. Ödeme IBAN'a yapılır.</div>
+      </div>
+      <div class="soru-cv">
+        <span class="akademi-q">Ekstra ödül kazanmak için ipucu var mı?</span>
+        <div class="akademi-a">Düzenli test çözmek, trend testleri beğenmek ve yeni test eklemek seni öne çıkarır!</div>
+      </div>
+      <div class="soru-cv">
+        <span class="akademi-q">Test eklediğimde onay gerekiyor mu?</span>
+        <div class="akademi-a">Testler otomatik olarak yayınlanır, gerekirse admin tarafından kontrol edilir.</div>
+      </div>
+      <div class="soru-cv">
+        <span class="akademi-q">Daha fazla soru?</span>
+        <div class="akademi-a">Bize <a href="mailto:destek@testlik.com" style="color:#735aff;">destek@testlik.com</a> adresinden ulaşabilirsin!</div>
       </div>
     </section>
   </main>
   <footer>
     <div class="container">
-      <p>&copy; 2025 Testlik.com</p>
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
         <img src="img/wise.png" alt="Wise" />
         <img src="img/payoneer.png" alt="Payoneer" />
@@ -58,7 +88,6 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
-    // Çıkış butonu kontrolü
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
       if (logoutBtn) {
