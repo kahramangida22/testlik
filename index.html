@@ -3,35 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Testlik.com - Eğlenceli testler, puan toplama, ödüller ve kazanç sistemi!">
   <title>Testlik.com | Eğlenceli Testler ve Kazanç</title>
+  <meta name="description" content="Testlik.com - Test çöz, çark çevir, video izle, puan kazan!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
-  <!-- Google Fonts - daha eğlenceli tipografi -->
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- ANİMASYONLU BALONCUKLAR -->
-  <div class="bubbles-bg">
-    <div class="bubble" style="--i:1"></div>
-    <div class="bubble" style="--i:2"></div>
-    <div class="bubble" style="--i:3"></div>
-    <div class="bubble" style="--i:4"></div>
-    <div class="bubble" style="--i:5"></div>
-    <div class="bubble" style="--i:6"></div>
-    <div class="bubble" style="--i:7"></div>
-    <div class="bubble" style="--i:8"></div>
-    <div class="bubble" style="--i:9"></div>
-    <div class="bubble" style="--i:10"></div>
-  </div>
-
   <!-- Navbar -->
   <header>
     <div class="container nav-flex">
-      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" style="height:48px;"/>
+      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html" class="active">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
+        <a href="sizdengelenler.html">Sizden Gelenler</a>
+        <a href="soru-uret.html">Soru Üret</a>
+        <a href="cark.html">Çarkıfelek</a>
+        <a href="video-izle.html">Video İzle Kazan</a>
         <a href="favoriler.html">Favoriler</a>
         <a href="profil.html">Profil</a>
         <a href="dashboard.html">Dashboard</a>
@@ -50,27 +39,14 @@
         <span class="emoji">🎉</span>
         Testlik.com
         <span class="emoji">✨</span>
-        <br>
-        <span style="font-size:1.4rem; font-weight:400;">Eğlenceli Testler, Puanlar ve Ödüller!</span>
       </h1>
-      <p style="font-size:1.2rem;">Kategorilere göre <b>binlerce eğlenceli test</b>, anında puan ve kazanç sistemiyle!</p>
-      <a href="kategoriler.html" class="cta-btn animated-btn">Testleri Keşfet 🚀</a>
+      <p style="font-size:1.25rem;">Test çöz, çark çevir, video izle ve anında puan topla!  
+        <br>Ödülünü çek, eğlenirken kazan! 🚀
+      </p>
+      <a href="kategoriler.html" class="cta-btn animated-btn">Testleri Keşfet</a>
     </section>
-
-    <!-- Giriş/Üye Ol KUTUSU -->
-    <section id="login-section" class="login-card fancy-card">
-      <h2>Giriş Yap / Üye Ol</h2>
-      <input id="email" type="email" placeholder="E-Posta">
-      <input id="password" type="password" placeholder="Şifre">
-      <button onclick="login()" class="cta-btn" style="width:100%;">Giriş Yap</button>
-      <div id="login-status" style="color:red;margin-top:10px;"></div>
-      <button onclick="register()" class="cta-btn ghost-btn" style="width:100%;margin-top:10px;">Üye Ol</button>
-    </section>
-
-    <section class="test-list" id="test-list">
-      <!-- Testler dinamik olarak buraya yüklenecek -->
-      <div class="loader">Testler yükleniyor...</div>
-    </section>
+    <!-- Dinamik test listesi (isteğe bağlı) -->
+    <section class="test-list" id="test-list"></section>
   </main>
 
   <!-- Footer -->
@@ -85,27 +61,45 @@
     </div>
   </footer>
 
-  <!-- Firebase CDN’leri -->
+  <!-- Çerez + reklam popupı (sadece ana sayfada, günde 1 defa) -->
+  <div id="cookie-popup" class="cookie-popup-bg" style="display:none;">
+    <div class="cookie-popup-card">
+      <h2 style="color:#735aff;">Sitemize Hoşgeldin!</h2>
+      <p style="margin-bottom:12px;">
+        En iyi deneyim ve kişisel öneriler için çerezleri kullanıyoruz.<br>
+        Ayrıca aşağıda gerçek bir reklam göreceksin, izleyerek bize destek olabilirsin!
+      </p>
+      <div class="ads-container" style="margin:18px auto;">
+        <!-- AdSense video/banner kodunu buraya ekle! -->
+        <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-XXXXXXXXXXXXXX"
+            data-ad-slot="XXXXXXXXXX"
+            data-ad-format="auto"></ins>
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+      <button id="cookie-accept" class="cta-btn" style="margin-top:10px;">Çerezleri Kabul Et</button>
+      <button id="cookie-close" class="cta-btn ghost-btn" style="margin-top:8px;">Kapat</button>
+    </div>
+  </div>
+
+  <!-- Firebase ve main.js -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script src="main.js"></script>
   <script>
-    // Giriş yapan kullanıcıya giriş kutusunu gizle, çıkış butonunu göster!
+    // Çıkış butonu ve giriş-çıkış kontrolü
     firebase.auth().onAuthStateChanged(function(user) {
-      var loginSection = document.getElementById('login-section');
       var logoutBtn = document.getElementById('logout-btn');
-      if (user) {
-        if (loginSection) loginSection.style.display = 'none';
-        if (logoutBtn) logoutBtn.style.display = 'inline-block';
-      } else {
-        if (loginSection) loginSection.style.display = 'block';
-        if (logoutBtn) logoutBtn.style.display = 'none';
+      if (logoutBtn) {
+        if (user) logoutBtn.style.display = 'inline-block';
+        else logoutBtn.style.display = 'none';
       }
     });
-
-    // Çıkışa tıklanınca çıkış yap ve anasayfaya yönlendir
     document.addEventListener('DOMContentLoaded', function() {
       var logoutBtnElem = document.getElementById('logout-btn');
       if (logoutBtnElem) {
@@ -118,35 +112,27 @@
       }
     });
 
-    function login() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(() => { window.location.href = "index.html"; })
-        .catch(err => {
-          document.getElementById("login-status").innerText = err.message;
-        });
+    // Çerez + reklam popupı: sadece ana sayfada, günde 1 defa
+    function getTodayStr() {
+      const d = new Date();
+      return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
     }
-    function register() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(async (userCred) => {
-          await db.collection("users").doc(userCred.user.uid).set({
-            email,
-            displayName: "",
-            avatar: "",
-            points: 0,
-            favorites: [],
-            completedTests: [],
-            withdrawals: []
-          });
-          window.location.href = "index.html";
-        })
-        .catch(err => {
-          document.getElementById("login-status").innerText = err.message;
-        });
-    }
+    window.addEventListener("DOMContentLoaded", () => {
+      const lastShown = localStorage.getItem("popupDate");
+      const today = getTodayStr();
+      if (lastShown !== today) {
+        document.getElementById('cookie-popup').style.display = "flex";
+      }
+      document.getElementById('cookie-accept').onclick = function() {
+        localStorage.setItem("cookieAccepted", "true");
+        localStorage.setItem("popupDate", today);
+        document.getElementById('cookie-popup').style.display = "none";
+      }
+      document.getElementById('cookie-close').onclick = function() {
+        localStorage.setItem("popupDate", today);
+        document.getElementById('cookie-popup').style.display = "none";
+      }
+    });
   </script>
 </body>
 </html>
