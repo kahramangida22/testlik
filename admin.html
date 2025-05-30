@@ -106,7 +106,6 @@
         if (user) logoutBtn.style.display = 'inline-block';
         else logoutBtn.style.display = 'none';
       }
-      // Sadece admin (mail: admin@testlik.com gibi) görebilsin:
       if (!user || user.email !== "admin@testlik.com") {
         document.body.innerHTML = "<h2 style='text-align:center;margin-top:88px;color:#ed4a88;'>Bu panele erişim yetkiniz yok.</h2>";
       }
@@ -123,7 +122,7 @@
       }
     });
 
-    // Test ekleme
+    // Test ekleme (createdBy: "admin" ile kaydeder)
     document.getElementById("adminTestForm").onsubmit = async function(e) {
       e.preventDefault();
       const title = document.getElementById("a_title").value.trim();
@@ -135,12 +134,14 @@
         try { testData = JSON.parse(jsonRaw); } catch { document.getElementById("adminFormMsg").innerText = "Geçersiz JSON!"; return;}
         testData.title = title; testData.description = description; testData.category = category;
         testData.image = "img/soru-isareti.png";
+        testData.createdBy = "admin";
         if (!testData.likes) testData.likes = 0;
         if (!testData.likedBy) testData.likedBy = [];
       } else {
         testData = {
           title, description, category,
           image: "img/soru-isareti.png",
+          createdBy: "admin",
           likes: 0,
           likedBy: [],
           questions: [],
