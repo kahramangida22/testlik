@@ -4,31 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sizden Gelenler | Testlik.com</title>
-  <meta name="description" content="Kullanıcıların hazırladığı testler ve popüler içerikler.">
+  <meta name="description" content="Testlik.com - Topluluk tarafından eklenen testler!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    .like-btn {
-      background:#ffd7ee;
-      border:none;
-      border-radius:22px;
-      padding:6px 18px 6px 13px;
-      color:#ed4a88;
-      font-weight:700;
-      cursor:pointer;
-      font-size:1.05em;
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      transition: background 0.15s;
-    }
-    .like-btn.liked {background:#ed4a88;color:#fff;}
-    .like-heart {
-      font-size:1.3em;
-      transition: transform .16s;
-    }
-    .like-btn.liked .like-heart {transform:scale(1.2);}
+    .test-list {display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin:32px 0;}
+    .test-card {background:#fff;border-radius:20px;box-shadow:0 2px 18px #735aff13;padding:22px 16px;max-width:280px;width:100%;text-align:center;transition:box-shadow .13s,transform .12s;}
+    .test-card:hover {box-shadow:0 6px 28px #fd72ff2c;transform:scale(1.06) translateY(-2px);}
+    .test-img {width:100%;height:120px;object-fit:contain;border-radius:15px;}
+    .test-title {color:#735aff;font-size:1.07em;font-weight:700;margin:12px 0 5px 0;}
+    .test-category {font-size:.93em;color:#b69bfc;}
+    .test-desc {color:#5a6cff;font-size:.99em;margin-bottom:8px;}
   </style>
 </head>
 <body>
@@ -53,12 +40,8 @@
     </div>
   </header>
   <main>
-    <section>
-      <h1 style="text-align:center;color:#735aff;font-weight:700;margin-top:34px;">Sizden Gelenler <span class="emoji">👑</span></h1>
-      <div id="trend-list" class="test-list">
-        <div class="loader">Testler yükleniyor...</div>
-      </div>
-    </section>
+    <h2 style="text-align:center;color:#735aff;margin:38px 0 18px 0;">Sizden Gelen Testler <span class="emoji">🌐</span></h2>
+    <div class="test-list" id="user-test-list"></div>
   </main>
   <footer>
     <div class="container">
@@ -94,58 +77,25 @@
       }
     });
 
-    let currentUserId = null;
-    firebase.auth().onAuthStateChanged(user => {
-      currentUserId = user ? user.uid : null;
-      trendleriYukle();
-    });
-    async function trendleriYukle() {
-      const list = document.getElementById("trend-list");
-      list.innerHTML = "<div class='loader'>Testler yükleniyor...</div>";
-      const testsSnap = await db.collection("tests").orderBy("likes", "desc").get();
-      if (testsSnap.empty) {
-        list.innerHTML = "<div class='test-card'>Henüz hiç test eklenmedi!</div>";
-        return;
-      }
-      list.innerHTML = "";
-      testsSnap.forEach(doc=>{
+    // Sadece kullanıcıların eklediği testleri göster
+    db.collection("tests").where("createdBy", "!=", "admin").get().then(snapshot => {
+      let html = "";
+      snapshot.forEach(doc => {
         const t = doc.data();
-        // Sadece kullanıcıların eklediği testler filtrelenebilir, gerekirse: if (!t.createdBy) return;
-        list.innerHTML += `
-          <div class="test-card" style="max-width:340px;position:relative;">
-            <img src="${t.image || 'img/soru-isareti.png'}" alt="Test Görseli" loading="lazy" />
-            <div class="category">${t.category || 'Genel'}</div>
-            <h3 style="color:#735aff;">${t.title}</h3>
-            <p>${t.description || ''}</p>
-            <div style="margin:7px 0 0 0;">
-              <button class="like-btn ${currentUserId && t.likedBy && t.likedBy.includes(currentUserId) ? "liked" : ""}" onclick="begeniYap('${doc.id}', this)">
-                <span class="like-heart">${currentUserId && t.likedBy && t.likedBy.includes(currentUserId) ? "💖" : "🤍"}</span>
-                <span class="like-count">${t.likes || 0}</span>
-              </button>
-            </div>
-            <a href="test-render.html?id=${doc.id}" class="cta-btn animated-btn" style="margin-top:8px;">Testi Çöz</a>
-          </div>
-        `;
+        // Sadece admin olmayanların testleri:
+        if (t.createdBy && t.createdBy !== "admin") {
+          html += `
+          <div class="test-card">
+            <img src="${t.image || 'img/soru-isareti.png'}" class="test-img" alt="Test Görseli"/>
+            <div class="test-title">${t.title}</div>
+            <div class="test-category">${t.category}</div>
+            <div class="test-desc">${t.description}</div>
+            <a href="test-render.html?id=${doc.id}" class="cta-btn">Testi Çöz</a>
+          </div>`;
+        }
       });
-    }
-    async function begeniYap(testId, btn) {
-      if (!currentUserId) { alert("Giriş yapmalısın!"); return; }
-      const testRef = db.collection("tests").doc(testId);
-      const testDoc = await testRef.get();
-      let t = testDoc.data();
-      if (t.likedBy && t.likedBy.includes(currentUserId)) {
-        alert("Bu testi zaten beğendin!");
-        return;
-      }
-      await testRef.update({
-        likes: (t.likes || 0) + 1,
-        likedBy: firebase.firestore.FieldValue.arrayUnion(currentUserId)
-      });
-      btn.classList.add("liked");
-      btn.querySelector(".like-heart").innerText = "💖";
-      btn.querySelector(".like-count").innerText = (t.likes || 0) + 1;
-      trendleriYukle();
-    }
+      document.getElementById("user-test-list").innerHTML = html || "<p style='text-align:center;width:100%;'>Henüz topluluk tarafından eklenen test yok.</p>";
+    });
   </script>
 </body>
 </html>
