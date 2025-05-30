@@ -1,0 +1,73 @@
+<!-- video-izle.html -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Video İzle, Kazan | Testlik.com</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header> ...navbar... </header>
+  <main>
+    <section class="video-kazan-container">
+      <div class="banner" id="banner-top"></div>
+      <div class="video-player-box">
+        <video id="rewardVideo" width="520" height="320" controls autoplay muted poster="img/soru-isareti.png">
+          <source src="videos/1.mp4" type="video/mp4">
+          <!-- Birden fazla video olacaksa bunların src’si değişecek -->
+        </video>
+      </div>
+      <div class="banner" id="banner-bottom"></div>
+      <div id="video-kazan-sonuc" style="display:none;font-weight:700;color:#19bd63;font-size:1.15em;">Tebrikler! 10 puan kazandın 🎉</div>
+    </section>
+  </main>
+  <!-- Banner ve video kodları burada -->
+  <script>
+    // Örnek banner dizisi (gerçek reklam kodlarını sen eklersin)
+    const bannersTop = [
+      '<img src="img/banner1.png" style="width:95%;border-radius:14px;">',
+      '<img src="img/banner2.png" style="width:95%;border-radius:14px;">'
+    ];
+    const bannersBottom = [
+      '<img src="img/banner3.png" style="width:95%;border-radius:14px;">',
+      '<img src="img/banner4.png" style="width:95%;border-radius:14px;">'
+    ];
+    const videoList = [
+      {src: "videos/1.mp4"},
+      {src: "videos/2.mp4"}
+      // Sponsor/ürün reklamları veya YouTube embed (YouTube’da autoplay ve onended kısıtlamaları var!)
+    ];
+    let currentIndex = 0;
+    let kazanildi = false;
+    const video = document.getElementById('rewardVideo');
+    function nextVideo() {
+      kazanildi = false;
+      currentIndex = (currentIndex+1) % videoList.length;
+      video.src = videoList[currentIndex].src;
+      document.getElementById('banner-top').innerHTML = bannersTop[currentIndex % bannersTop.length];
+      document.getElementById('banner-bottom').innerHTML = bannersBottom[currentIndex % bannersBottom.length];
+      document.getElementById('video-kazan-sonuc').style.display = 'none';
+      video.load(); video.play();
+    }
+    video.onended = async function() {
+      if (kazanildi) return; kazanildi = true;
+      document.getElementById('video-kazan-sonuc').style.display = 'block';
+      // Firebase ile puan ekle:
+      if (window.auth && window.auth.currentUser) {
+        const uid = auth.currentUser.uid;
+        const userRef = db.collection("users").doc(uid);
+        const userDoc = await userRef.get();
+        const puan = (userDoc.data().points || 0) + 10;
+        await userRef.update({points: puan});
+      }
+      setTimeout(nextVideo, 2600);
+    };
+    // İlk başlatma:
+    window.onload = function() {
+      document.getElementById('banner-top').innerHTML = bannersTop[0];
+      document.getElementById('banner-bottom').innerHTML = bannersBottom[0];
+    };
+  </script>
+</body>
+</html>
