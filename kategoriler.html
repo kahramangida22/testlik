@@ -1,26 +1,17 @@
-<!-- kategoriler.html -->
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Kategoriler | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Test kategorilerini keşfet!">
+  <meta name="description" content="Testlik.com - Kategorilere göre eğlenceli testler.">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    .kategori-kart {background:#fff;border-radius:20px;box-shadow:0 2px 18px #735aff13;padding:28px 18px;margin:0;max-width:220px;width:100%;text-align:center;transition:box-shadow .13s,transform .12s;cursor:pointer;position:relative;}
-    .kategori-kart:hover {box-shadow:0 6px 28px #fd72ff2c;transform:scale(1.06) translateY(-2px);}
-    .kategori-ikon {font-size:2.3em;margin-bottom:14px;}
-    .kategori-adi {color:#735aff;font-size:1.13em;font-weight:700;margin-bottom:7px;}
-    .kategori-aciklama {color:#5a6cff;font-size:.97em;}
-    .kategori-listesi {display:flex;flex-wrap:wrap;gap:28px;justify-content:center;margin:40px 0;}
-  </style>
 </head>
 <body>
   <header>
-    <div class="container">
+    <div class="container nav-flex">
       <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
@@ -40,49 +31,23 @@
     </div>
   </header>
   <main>
-    <section>
-      <h1 style="text-align:center;color:#735aff;font-weight:700;margin-top:34px;">Kategoriler <span class="emoji">📚</span></h1>
-      <div class="kategori-listesi">
-        <div class="kategori-kart" onclick="kategoriyeGit('Genel')">
-          <div class="kategori-ikon">🌟</div>
-          <div class="kategori-adi">Genel</div>
-          <div class="kategori-aciklama">Her konudan testler!</div>
-        </div>
-        <div class="kategori-kart" onclick="kategoriyeGit('Eğlence')">
-          <div class="kategori-ikon">😂</div>
-          <div class="kategori-adi">Eğlence</div>
-          <div class="kategori-aciklama">Mizah, popüler kültür, capsler...</div>
-        </div>
-        <div class="kategori-kart" onclick="kategoriyeGit('Bilgi')">
-          <div class="kategori-ikon">🧠</div>
-          <div class="kategori-adi">Bilgi</div>
-          <div class="kategori-aciklama">Bilgi yarışmaları, IQ soruları...</div>
-        </div>
-        <div class="kategori-kart" onclick="kategoriyeGit('Psikoloji')">
-          <div class="kategori-ikon">🧘</div>
-          <div class="kategori-adi">Psikoloji</div>
-          <div class="kategori-aciklama">Kişilik, mizah, analiz testleri</div>
-        </div>
-        <div class="kategori-kart" onclick="kategoriyeGit('Tarih')">
-          <div class="kategori-ikon">🏺</div>
-          <div class="kategori-adi">Tarih</div>
-          <div class="kategori-aciklama">Geçmişe dair her şey!</div>
-        </div>
-        <div class="kategori-kart" onclick="kategoriyeGit('Teknoloji')">
-          <div class="kategori-ikon">💻</div>
-          <div class="kategori-adi">Teknoloji</div>
-          <div class="kategori-aciklama">Güncel teknoloji testleri</div>
-        </div>
-        <div class="kategori-kart" onclick="kategoriyeGit('Diğer')">
-          <div class="kategori-ikon">🌀</div>
-          <div class="kategori-adi">Diğer</div>
-          <div class="kategori-aciklama">Farklı, özel kategoriler</div>
-        </div>
+    <section class="hero" style="padding-bottom:20px;">
+      <h1><span class="emoji">📚</span> Kategoriler</h1>
+      <div style="margin:0 auto 20px auto;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <button class="cta-btn ghost-btn" onclick="filterCategory('')">Tümü</button>
+        <button class="cta-btn ghost-btn" onclick="filterCategory('Genel')">Genel</button>
+        <button class="cta-btn ghost-btn" onclick="filterCategory('Eğlence')">Eğlence</button>
+        <button class="cta-btn ghost-btn" onclick="filterCategory('Bilgi')">Bilgi</button>
+        <button class="cta-btn ghost-btn" onclick="filterCategory('Psikoloji')">Psikoloji</button>
+        <button class="cta-btn ghost-btn" onclick="filterCategory('Tarih')">Tarih</button>
+        <button class="cta-btn ghost-btn" onclick="filterCategory('Teknoloji')">Teknoloji</button>
+        <button class="cta-btn ghost-btn" onclick="filterCategory('Diğer')">Diğer</button>
       </div>
     </section>
+    <section class="test-list" id="test-list"></section>
   </main>
   <footer>
-    <div class="container">
+    <div class="container footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
         <img src="img/wise.png" alt="Wise" />
@@ -96,7 +61,6 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
-    // Navbar çıkış
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
       if (logoutBtn) {
@@ -116,10 +80,39 @@
       }
     });
 
-    // Kategori seçilince yeni kategori sayfasına yönlendir
-    function kategoriyeGit(kat) {
-      window.location.href = "kategori-testleri.html?cat=" + encodeURIComponent(kat);
+    // Kategori filtreleme ve testleri çekme
+    let currentCategory = '';
+    async function loadTests(category = '') {
+      const testList = document.getElementById("test-list");
+      testList.innerHTML = "<p>Testler yükleniyor...</p>";
+      let ref = db.collection("tests");
+      if (category) ref = ref.where("category", "==", category);
+      ref = ref.orderBy("createdAt", "desc");
+      const snapshot = await ref.get();
+      if (snapshot.empty) {
+        testList.innerHTML = "<p>Bu kategoride henüz test yok.</p>";
+        return;
+      }
+      testList.innerHTML = "";
+      snapshot.forEach(doc => {
+        const t = doc.data();
+        testList.innerHTML += `
+          <div class="test-card" style="max-width:360px;">
+            <img src="${t.image || 'img/test-category-default.png'}" alt="Test Görseli" loading="lazy"/>
+            <div class="category">${t.category || 'Genel'}</div>
+            <h3 style="color:#735aff;margin-bottom:7px;font-size:1.18em;">${t.title}</h3>
+            <p style="color:#8f7fff;font-size:.98em;min-height:30px;">${t.description || ''}</p>
+            <a href="test-render.html?id=${doc.id}" class="cta-btn" style="margin-top:10px;">Testi Çöz</a>
+          </div>
+        `;
+      });
     }
+    function filterCategory(cat) {
+      currentCategory = cat;
+      loadTests(cat);
+    }
+    // İlk açılışta tüm testler
+    loadTests();
   </script>
 </body>
 </html>
