@@ -1,3 +1,4 @@
+<!-- kategoriler.html -->
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -115,13 +116,9 @@
       }
     });
 
-    // Kategori seçilince o kategoriye ait testleri gösteren sayfaya yönlendirme (örnek)
+    // Kategori seçilince yeni kategori sayfasına yönlendir
     function kategoriyeGit(kat) {
-      // Eğer ayrı bir kategori-sayfa.html dosyası yaparsan buraya yönlendirme yazabilirsin:
-      // window.location.href = "kategori.html?kategori=" + encodeURIComponent(kat);
-
-      // Veya ana sayfa ya da sizdengelenler.html gibi test listesini filtreleyeceksen querystring ile gidebilirsin:
-      window.location.href = "sizdengelenler.html?kategori=" + encodeURIComponent(kat);
+      window.location.href = "kategori-testleri.html?cat=" + encodeURIComponent(kat);
     }
   </script>
 </body>
