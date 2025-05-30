@@ -4,21 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Panel | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Admin panel: test, kategori, sonuç yönetimi.">
+  <meta name="description" content="Testlik.com yönetici paneli. Test, kullanıcı ve bildirim yönetimi.">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="firebase.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    .admin-panel {max-width:700px;margin:46px auto 18px auto;background:#fff;border-radius:20px;box-shadow:0 2px 18px #735aff13;padding:38px 34px;}
+    .admin-hdr {color:#735aff;font-weight:700;font-size:1.33em;margin-bottom:18px;}
+    .admin-form input, .admin-form select, .admin-form textarea {width:100%;margin-bottom:7px;}
+    .admin-table {width:100%;margin:20px 0;border-collapse:collapse;}
+    .admin-table th, .admin-table td {padding:7px 9px;border-bottom:1px solid #eee;}
+    .admin-table th {color:#8f7fff;}
+    .bildirim-btn {background:#735aff;color:#fff;border:none;border-radius:15px;padding:7px 18px;font-weight:700;cursor:pointer;transition:background .13s;}
+    .bildirim-btn:hover {background:#ed4a88;}
+    .info-mini {font-size:.92em;color:#5a6cff;}
+  </style>
 </head>
 <body>
   <header>
-    <div class="container nav-flex">
+    <div class="container">
       <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
+        <a href="sizdengelenler.html">Sizden Gelenler</a>
+        <a href="soru-uret.html">Soru Üret</a>
+        <a href="cark.html">Çarkıfelek</a>
+        <a href="video-izle.html">Video İzle Kazan</a>
         <a href="favoriler.html">Favoriler</a>
         <a href="profil.html">Profil</a>
         <a href="dashboard.html">Dashboard</a>
@@ -30,30 +42,73 @@
     </div>
   </header>
   <main>
-    <section>
-      <h1>Admin Panel</h1>
-      <div class="test-card" id="admin-area">
-        <p>Yönetici girişinizi doğrulayın...</p>
-      </div>
+    <section class="admin-panel">
+      <h1 class="admin-hdr">Admin Panel <span class="emoji">🛠️</span></h1>
+      <div class="info-mini">Yalnızca yetkili kullanıcılar erişebilir.</div>
+      <hr style="margin:16px 0 24px 0;" />
+      <h3 style="color:#8f7fff;">Test Ekle (JSON veya Form ile)</h3>
+      <form class="admin-form" id="adminTestForm">
+        <input id="a_title" type="text" placeholder="Test Başlığı" required />
+        <input id="a_description" type="text" placeholder="Açıklama" required />
+        <select id="a_category" required>
+          <option value="">Kategori Seç</option>
+          <option>Genel</option>
+          <option>Eğlence</option>
+          <option>Bilgi</option>
+          <option>Psikoloji</option>
+          <option>Tarih</option>
+          <option>Teknoloji</option>
+          <option>Diğer</option>
+        </select>
+        <textarea id="a_json" placeholder="Testi JSON formatında gir (isteğe bağlı)"></textarea>
+        <button type="submit" class="cta-btn">Testi Kaydet</button>
+        <div id="adminFormMsg" style="min-height:18px;font-weight:600;margin-top:7px;"></div>
+      </form>
+      <hr style="margin:20px 0 14px 0;" />
+      <h3 style="color:#8f7fff;">Kullanıcıya Bildirim Gönder <span class="emoji">🔔</span></h3>
+      <form class="admin-form" id="notifForm">
+        <input id="notif_title" type="text" placeholder="Bildirim Başlığı" required />
+        <textarea id="notif_body" placeholder="Bildirim Mesajı" required></textarea>
+        <button type="submit" class="bildirim-btn">Tüm Kullanıcılara Gönder (Çerez onaylayanlar)</button>
+        <div id="notifMsg" style="min-height:18px;font-weight:600;margin-top:7px;"></div>
+      </form>
+      <hr style="margin:24px 0 12px 0;" />
+      <h3 style="color:#8f7fff;">Kullanıcı & Test Ara</h3>
+      <input type="text" id="searchInput" placeholder="Kullanıcı e-posta veya test başlığı ara" style="width:98%;margin-bottom:10px;">
+      <table class="admin-table" id="adminTable">
+        <thead>
+          <tr><th>Kullanıcı/Test</th><th>Bilgi</th></tr>
+        </thead>
+        <tbody>
+          <!-- Sonuçlar buraya gelecek -->
+        </tbody>
+      </table>
     </section>
   </main>
   <footer>
-    <div class="container footer-flex">
-      <p>&copy; 2025 Testlik.com</p>
+    <div class="container">
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
-        <img src="img/wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
-        <img src="img/payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
-        <img src="img/iban.png" alt="IBAN" style="height:28px;"/>
+        <img src="img/wise.png" alt="Wise" />
+        <img src="img/payoneer.png" alt="Payoneer" />
+        <img src="img/iban.png" alt="IBAN" />
       </div>
     </div>
   </footer>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="firebase.js"></script>
   <script>
-    // Çıkış butonu kontrolü
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged(async function(user) {
       var logoutBtn = document.getElementById('logout-btn');
       if (logoutBtn) {
         if (user) logoutBtn.style.display = 'inline-block';
         else logoutBtn.style.display = 'none';
+      }
+      // Sadece admin (mail: admin@testlik.com gibi) görebilsin:
+      if (!user || user.email !== "admin@testlik.com") {
+        document.body.innerHTML = "<h2 style='text-align:center;margin-top:88px;color:#ed4a88;'>Bu panele erişim yetkiniz yok.</h2>";
       }
     });
     document.addEventListener('DOMContentLoaded', function() {
@@ -68,84 +123,83 @@
       }
     });
 
-    firebase.auth().onAuthStateChanged(async function(user) {
-      const area = document.getElementById("admin-area");
-      if (!user) {
-        area.innerHTML = "<p>Bu alanı görmek için giriş yapın.</p>";
-        return;
+    // Test ekleme
+    document.getElementById("adminTestForm").onsubmit = async function(e) {
+      e.preventDefault();
+      const title = document.getElementById("a_title").value.trim();
+      const description = document.getElementById("a_description").value.trim();
+      const category = document.getElementById("a_category").value;
+      const jsonRaw = document.getElementById("a_json").value.trim();
+      let testData;
+      if (jsonRaw) {
+        try { testData = JSON.parse(jsonRaw); } catch { document.getElementById("adminFormMsg").innerText = "Geçersiz JSON!"; return;}
+        testData.title = title; testData.description = description; testData.category = category;
+        testData.image = "img/soru-isareti.png";
+        if (!testData.likes) testData.likes = 0;
+        if (!testData.likedBy) testData.likedBy = [];
+      } else {
+        testData = {
+          title, description, category,
+          image: "img/soru-isareti.png",
+          likes: 0,
+          likedBy: [],
+          questions: [],
+          createdAt: new Date()
+        };
       }
-      // Admin kontrolü: Firestore'da isAdmin alanı olmalı
-      const doc = await db.collection("users").doc(user.uid).get();
-      if (!doc.exists || !doc.data().isAdmin) {
-        area.innerHTML = "<p>Yetkiniz yok!</p>";
-        return;
+      try {
+        await db.collection("tests").add(testData);
+        document.getElementById("adminFormMsg").style.color = "#13bd72";
+        document.getElementById("adminFormMsg").innerText = "Test başarıyla eklendi!";
+        document.getElementById("adminTestForm").reset();
+      } catch (err) {
+        document.getElementById("adminFormMsg").style.color = "#ed4a88";
+        document.getElementById("adminFormMsg").innerText = "Hata!";
       }
-      // Form
-      area.innerHTML = `
-        <h3>Test Ekle</h3>
-        <form id="testForm">
-          <input type="text" id="title" placeholder="Test Başlığı" required><br>
-          <input type="text" id="image" placeholder="Görsel (URL veya img/...)"><br>
-          <select id="category">
-            <option value="Genel">Genel</option>
-            <option value="Kişilik">Kişilik</option>
-            <option value="Bilgi">Bilgi</option>
-          </select><br>
-          <textarea id="description" placeholder="Kısa Açıklama"></textarea><br>
-          <textarea id="questions" placeholder='Sorular (JSON format)' required rows="7"></textarea><br>
-          <textarea id="results" placeholder='Sonuçlar (JSON format)' rows="5"></textarea><br>
-          <button type="submit" class="cta-btn">Testi Kaydet</button>
-        </form>
-        <div id="admin-status"></div>
-        <div style="font-size:13px;margin-top:16px">
-          <b>Örnek Sorular JSON:</b>
-          <pre>[
-  {
-    "question": "Seni en iyi anlatan kelime?",
-    "options": ["Enerjik", "Duygusal", "Mantıklı", "Yaratıcı"]
-  },
-  {
-    "question": "En rahat hissettiğin ortam?",
-    "options": ["Kalabalık", "Doğa", "Ev", "Sahne"]
-  }
-]</pre>
-          <b>Örnek Sonuçlar JSON:</b>
-          <pre>[
-  {
-    "min": 0,
-    "max": 10,
-    "text": "Sen oldukça duygusal birisin!",
-    "image": "img/result-fail.png"
-  },
-  {
-    "min": 11,
-    "max": 20,
-    "text": "Sen çok mantıklı bir insansın!",
-    "image": "img/result-success.png"
-  }
-]</pre>
-        </div>
-      `;
-      // Form submit
-      document.getElementById("testForm").onsubmit = async function(e) {
-        e.preventDefault();
-        try {
-          const test = {
-            title: document.getElementById("title").value,
-            image: document.getElementById("image").value,
-            category: document.getElementById("category").value,
-            description: document.getElementById("description").value,
-            questions: JSON.parse(document.getElementById("questions").value),
-            results: document.getElementById("results").value ? JSON.parse(document.getElementById("results").value) : [],
-            createdAt: new Date()
-          };
-          await db.collection("tests").add(test);
-          document.getElementById("admin-status").innerHTML = "<b style='color:green'>Test kaydedildi!</b>";
-        } catch (err) {
-          document.getElementById("admin-status").innerHTML = "<b style='color:red'>Hata oluştu:</b> " + err.message;
+    };
+
+    // Bildirim gönderme (çerez kabul edenler)
+    document.getElementById("notifForm").onsubmit = async function(e) {
+      e.preventDefault();
+      const title = document.getElementById("notif_title").value.trim();
+      const body = document.getElementById("notif_body").value.trim();
+      // Çerez kabul edenleri Firestore'da bir "cookieAccepted:true" özelliğiyle işaretlemiş varsayıyoruz
+      // (Kendi kodunda çerez kabul edilince kullanıcıya kaydetmeyi unutma!)
+      const users = await db.collection("users").where("cookieAccepted", "==", true).get();
+      for (const doc of users.docs) {
+        await db.collection("users").doc(doc.id).update({
+          notifications: firebase.firestore.FieldValue.arrayUnion({
+            title, body, date: new Date().toLocaleString("tr-TR")
+          })
+        });
+      }
+      document.getElementById("notifMsg").style.color = "#13bd72";
+      document.getElementById("notifMsg").innerText = "Bildirimler gönderildi!";
+      document.getElementById("notifForm").reset();
+    };
+
+    // Kullanıcı/test arama
+    document.getElementById("searchInput").oninput = async function() {
+      const val = this.value.toLowerCase();
+      let html = "";
+      // Kullanıcılar
+      const users = await db.collection("users").get();
+      users.forEach(doc=>{
+        const u = doc.data();
+        if ((u.displayName && u.displayName.toLowerCase().includes(val)) || (u.email && u.email.toLowerCase().includes(val))) {
+          html += `<tr><td>Kullanıcı</td><td>${u.displayName || u.email}</td></tr>`;
         }
-      };
-    });
+      });
+      // Testler
+      const tests = await db.collection("tests").get();
+      tests.forEach(doc=>{
+        const t = doc.data();
+        if ((t.title && t.title.toLowerCase().includes(val)) || (t.description && t.description.toLowerCase().includes(val))) {
+          html += `<tr><td>Test</td><td>${t.title}</td></tr>`;
+        }
+      });
+      document.querySelector("#adminTable tbody").innerHTML = html || "<tr><td colspan=2 style='color:#bbb;'>Sonuç yok</td></tr>";
+    };
   </script>
 </body>
 </html>
