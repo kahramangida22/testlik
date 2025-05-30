@@ -21,6 +21,7 @@
         <a href="akademi.html">Akademi</a>
         <a href="istatistik.html">İstatistik</a>
         <a href="admin.html" class="admin-link">Admin</a>
+        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
@@ -42,8 +43,31 @@
       </div>
     </div>
   </footer>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
+    // Çıkış butonu kontrolü
+    firebase.auth().onAuthStateChanged(function(user) {
+      var logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        if (user) logoutBtn.style.display = 'inline-block';
+        else logoutBtn.style.display = 'none';
+      }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      var logoutBtnElem = document.getElementById('logout-btn');
+      if (logoutBtnElem) {
+        logoutBtnElem.onclick = function(e) {
+          e.preventDefault();
+          firebase.auth().signOut().then(() => {
+            window.location.href = "index.html";
+          });
+        }
+      }
+    });
+
     auth.onAuthStateChanged(async user => {
       const favList = document.getElementById("favorites-list");
       if (!user) {
