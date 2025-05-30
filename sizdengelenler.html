@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sizden Gelenler | Testlik.com</title>
+  <meta name="description" content="Kullanıcıların hazırladığı testler ve popüler içerikler.">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="img/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    .like-btn {
+      background:#ffd7ee;
+      border:none;
+      border-radius:22px;
+      padding:6px 18px 6px 13px;
+      color:#ed4a88;
+      font-weight:700;
+      cursor:pointer;
+      font-size:1.05em;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      transition: background 0.15s;
+    }
+    .like-btn.liked {background:#ed4a88;color:#fff;}
+    .like-heart {
+      font-size:1.3em;
+      transition: transform .16s;
+    }
+    .like-btn.liked .like-heart {transform:scale(1.2);}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
+      <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="kategoriler.html">Kategoriler</a>
+        <a href="sizdengelenler.html" class="active">Sizden Gelenler</a>
+        <a href="soru-uret.html">Soru Üret</a>
+        <a href="cark.html">Çarkıfelek</a>
+        <a href="video-izle.html">Video İzle Kazan</a>
+        <a href="favoriler.html">Favoriler</a>
+        <a href="profil.html">Profil</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="akademi.html">Akademi</a>
+        <a href="istatistik.html">İstatistik</a>
+        <a href="admin.html" class="admin-link">Admin</a>
+        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section>
+      <h1 style="text-align:center;color:#735aff;font-weight:700;margin-top:34px;">Sizden Gelenler <span class="emoji">👑</span></h1>
+      <div id="trend-list" class="test-list">
+        <div class="loader">Testler yükleniyor...</div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
+      <div class="odeme-logo">
+        <img src="img/wise.png" alt="Wise" />
+        <img src="img/payoneer.png" alt="Payoneer" />
+        <img src="img/iban.png" alt="IBAN" />
+      </div>
+    </div>
+  </footer>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="firebase.js"></script>
+  <script>
+    firebase.auth().onAuthStateChanged(function(user) {
+      var logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        if (user) logoutBtn.style.display = 'inline-block';
+        else logoutBtn.style.display = 'none';
+      }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      var logoutBtnElem = document.getElementById('logout-btn');
+      if (logoutBtnElem) {
+        logoutBtnElem.onclick = function(e) {
+          e.preventDefault();
+          firebase.auth().signOut().then(() => {
+            window.location.href = "index.html";
+          });
+        }
+      }
+    });
+
+    let currentUserId = null;
+    firebase.auth().onAuthStateChanged(user => {
+      currentUserId = user ? user.uid : null;
+      trendleriYukle();
+    });
+    async function trendleriYukle() {
+      const list = document.getElementById("trend-list");
+      list.innerHTML = "<div class='loader'>Testler yükleniyor...</div>";
+      const testsSnap = await db.collection("tests").orderBy("likes", "desc").get();
+      if (testsSnap.empty) {
+        list.innerHTML = "<div class='test-card'>Henüz hiç test eklenmedi!</div>";
+        return;
+      }
+      list.innerHTML = "";
+      testsSnap.forEach(doc=>{
+        const t = doc.data();
+        // Sadece kullanıcıların eklediği testler filtrelenebilir, gerekirse: if (!t.createdBy) return;
+        list.innerHTML += `
+          <div class="test-card" style="max-width:340px;position:relative;">
+            <img src="${t.image || 'img/soru-isareti.png'}" alt="Test Görseli" loading="lazy" />
+            <div class="category">${t.category || 'Genel'}</div>
+            <h3 style="color:#735aff;">${t.title}</h3>
+            <p>${t.description || ''}</p>
+            <div style="margin:7px 0 0 0;">
+              <button class="like-btn ${currentUserId && t.likedBy && t.likedBy.includes(currentUserId) ? "liked" : ""}" onclick="begeniYap('${doc.id}', this)">
+                <span class="like-heart">${currentUserId && t.likedBy && t.likedBy.includes(currentUserId) ? "💖" : "🤍"}</span>
+                <span class="like-count">${t.likes || 0}</span>
+              </button>
+            </div>
+            <a href="test-render.html?id=${doc.id}" class="cta-btn animated-btn" style="margin-top:8px;">Testi Çöz</a>
+          </div>
+        `;
+      });
+    }
+    async function begeniYap(testId, btn) {
+      if (!currentUserId) { alert("Giriş yapmalısın!"); return; }
+      const testRef = db.collection("tests").doc(testId);
+      const testDoc = await testRef.get();
+      let t = testDoc.data();
+      if (t.likedBy && t.likedBy.includes(currentUserId)) {
+        alert("Bu testi zaten beğendin!");
+        return;
+      }
+      await testRef.update({
+        likes: (t.likes || 0) + 1,
+        likedBy: firebase.firestore.FieldValue.arrayUnion(currentUserId)
+      });
+      btn.classList.add("liked");
+      btn.querySelector(".like-heart").innerText = "💖";
+      btn.querySelector(".like-count").innerText = (t.likes || 0) + 1;
+      trendleriYukle();
+    }
+  </script>
+</body>
+</html>
