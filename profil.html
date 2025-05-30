@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Profilim | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Kullanıcı profilin, favoriler ve başarılar.">
+  <meta name="description" content="Testlik.com - Kendi profilini, puanını ve başarılarını gör!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
@@ -15,6 +16,10 @@
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
+        <a href="sizdengelenler.html">Sizden Gelenler</a>
+        <a href="soru-uret.html">Soru Üret</a>
+        <a href="cark.html">Çarkıfelek</a>
+        <a href="video-izle.html">Video İzle Kazan</a>
         <a href="favoriler.html">Favoriler</a>
         <a href="profil.html" class="active">Profil</a>
         <a href="dashboard.html">Dashboard</a>
@@ -26,16 +31,16 @@
     </div>
   </header>
   <main>
-    <section class="profile-section">
-      <h1>Profilim</h1>
-      <div class="test-card" id="profile-area">
-        <p>Profil yükleniyor...</p>
+    <section class="profile-section" style="margin-top:36px;">
+      <h1 style="text-align:center;color:#735aff;font-weight:700;">Profilim <span class="emoji">🧑‍💻</span></h1>
+      <div class="test-card" id="profile-area" style="max-width:410px;">
+        <div class="loader">Profil yükleniyor...</div>
       </div>
     </section>
   </main>
   <footer>
     <div class="container">
-      <p>&copy; 2025 Testlik.com</p>
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
         <img src="img/wise.png" alt="Wise" />
         <img src="img/payoneer.png" alt="Payoneer" />
@@ -48,7 +53,6 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
-    // Çıkış butonu kontrolü
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
       if (logoutBtn) {
@@ -78,11 +82,11 @@
         const doc = await db.collection("users").doc(user.uid).get();
         const u = doc.data();
         area.innerHTML = `
-          <img src="${u.avatar || 'img/default-profile.png'}" alt="Profil Fotoğrafı" style="width:90px; border-radius:50%; margin-bottom: 1rem;">
-          <h2>${u.displayName || u.email}</h2>
-          <p><b>Puan:</b> ${u.points || 0}</p>
-          <p><b>Favori Testler:</b> ${u.favorites ? u.favorites.length : 0}</p>
-          <p><b>Çözülen Testler:</b> ${u.completedTests ? u.completedTests.length : 0}</p>
+          <img src="${u.avatar || 'img/default-profile.png'}" alt="Profil Fotoğrafı" style="width:90px; border-radius:50%; margin-bottom: 1.2rem;box-shadow:0 2px 14px #ffb2f85c;">
+          <h2 style="color:#8f7fff;font-size:1.23rem;">${u.displayName || u.email}</h2>
+          <p style="font-size:1.08em;"><b>Puan:</b> <span style="color:#ed4a88;font-weight:600;">${u.points || 0}</span></p>
+          <p><b>Favori Testler:</b> <span style="color:#735aff;">${u.favorites ? u.favorites.length : 0}</span></p>
+          <p><b>Çözülen Testler:</b> <span style="color:#5ab8ad;">${u.completedTests ? u.completedTests.length : 0}</span></p>
         `;
       } catch (err) {
         area.innerHTML = "<p>Profil yüklenemedi!</p>";
