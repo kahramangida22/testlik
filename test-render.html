@@ -3,19 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Test Çöz | Testlik.com</title>
-  <meta name="description" content="Test çözerek puan topla ve başarıya ulaş!">
+  <title>Testi Çöz | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Online test çöz, bilgi ve eğlenceyle puan topla!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    .soru-kart {background:#fff;border-radius:20px;box-shadow:0 2px 18px #735aff13;padding:32px 18px;max-width:450px;margin:40px auto;text-align:left;}
-    .soru-no {font-size:1.1em;color:#ed4a88;font-weight:700;margin-bottom:5px;}
-    .soru-metin {color:#735aff;font-size:1.2em;font-weight:700;margin-bottom:17px;}
-    .sik-btn {display:block;width:100%;margin:8px 0;padding:13px 15px;border:none;border-radius:16px;background:#f7e8ff;font-size:1.04em;color:#735aff;font-weight:600;transition:background .16s,color .15s;}
-    .sik-btn:hover,.sik-btn.selected {background:#735aff;color:#fff;}
-    .ilerle-btn {margin-top:18px;}
-    .test-bar {text-align:center;color:#ed4a88;margin-bottom:16px;font-weight:600;}
+    .test-kart {background:#fff;border-radius:22px;box-shadow:0 2px 18px #735aff13;padding:32px 24px;max-width:500px;margin:42px auto 24px auto;text-align:center;}
+    .test-img {width:100%;max-width:300px;height:140px;object-fit:contain;border-radius:16px;margin:0 auto 14px auto;display:block;}
+    .test-baslik {color:#735aff;font-size:1.35em;font-weight:700;margin-bottom:7px;}
+    .test-kategori {font-size:.99em;color:#b69bfc;}
+    .test-soru {margin:28px 0 16px 0;font-size:1.14em;font-weight:600;color:#ed4a88;}
+    .secenekler {display:flex;flex-direction:column;gap:12px;}
+    .secenek-btn {background:#f7e8ff;color:#735aff;font-weight:700;border:none;padding:14px 0;border-radius:16px;font-size:1em;cursor:pointer;transition:background .13s;}
+    .secenek-btn:hover {background:#735aff;color:#fff;}
+    .devam-btn {margin-top:22px;}
   </style>
 </head>
 <body>
@@ -40,9 +42,8 @@
     </div>
   </header>
   <main>
-    <div class="test-bar" id="test-bar"></div>
     <section>
-      <div class="soru-kart" id="soru-area">
+      <div class="test-kart" id="test-alani">
         <div class="loader">Test yükleniyor...</div>
       </div>
     </section>
@@ -81,64 +82,57 @@
       }
     });
 
-    // Testi Firestore'dan çek ve göster
-    let test=null, cevaplar=[], soruIndex=0;
+    // TEST YÜKLEME VE ÇÖZME
     const urlParams = new URLSearchParams(window.location.search);
     const testId = urlParams.get("id");
+    let kategoriGlobal = "Genel";
+    let testDoc, sorular, soruIndex = 0, dogruSayisi = 0;
+
     async function testYukle() {
-      if (!testId) { document.getElementById("soru-area").innerHTML = "<p>Test bulunamadı!</p>"; return;}
+      if (!testId) {
+        document.getElementById("test-alani").innerHTML = "<div style='color:#ed4a88;font-size:1.1em;'>Test bulunamadı!</div>";
+        return;
+      }
       const doc = await db.collection("tests").doc(testId).get();
-      if (!doc.exists) { document.getElementById("soru-area").innerHTML = "<p>Test bulunamadı!</p>"; return;}
-      test = doc.data();
-      cevaplar = [];
+      if (!doc.exists) {
+        document.getElementById("test-alani").innerHTML = "<div style='color:#ed4a88;font-size:1.1em;'>Test bulunamadı!</div>";
+        return;
+      }
+      testDoc = doc.data();
+      sorular = testDoc.questions;
+      kategoriGlobal = testDoc.category || "Genel";
       soruIndex = 0;
+      dogruSayisi = 0;
       soruGoster();
     }
+
     function soruGoster() {
-      const soru = test.questions[soruIndex];
-      const area = document.getElementById("soru-area");
-      let html = `
-        <div class="soru-no">Soru ${soruIndex+1} / ${test.questions.length}</div>
-        <div class="soru-metin">${soru.question}</div>
-        <div>`;
-      soru.options.forEach((opt,i)=>{
-        html += `<button class="sik-btn${cevaplar[soruIndex]===i?" selected":""}" onclick="sikSec(${i})">${opt}</button>`;
+      if (soruIndex >= sorular.length) {
+        // Test bitti, sonuç ekranına yönlendir
+        window.location.href = `test-sonuc.html?id=${testId}&puan=${dogruSayisi}`;
+        return;
+      }
+      const s = sorular[soruIndex];
+      let secenekler = "";
+      s.options.forEach((op, i) => {
+        secenekler += `<button class="secenek-btn" onclick="secenekSec(${i})">${op}</button>`;
       });
-      html += `</div>
-        <button class="cta-btn ilerle-btn" onclick="sonrakiSoru()" style="width:100%;">${soruIndex===test.questions.length-1?"Bitir":"Devam Et"}</button>
+      document.getElementById("test-alani").innerHTML = `
+        <img src="${testDoc.image || 'img/soru-isareti.png'}" class="test-img" alt="Test Görseli"/>
+        <div class="test-baslik">${testDoc.title}</div>
+        <div class="test-kategori">${testDoc.category}</div>
+        <div class="test-soru">Soru ${soruIndex+1}: ${s.question}</div>
+        <div class="secenekler">${secenekler}</div>
       `;
-      area.innerHTML = html;
-      document.getElementById("test-bar").innerHTML = `${test.title}`;
     }
-    window.sikSec = function(i) {
-      cevaplar[soruIndex] = i;
+
+    window.secenekSec = function(i) {
+      if (sorular[soruIndex].answer === i) dogruSayisi++;
+      soruIndex++;
       soruGoster();
-    }
-    window.sonrakiSoru = function() {
-      if (typeof cevaplar[soruIndex] === "undefined") {
-        alert("Bir şık seçmelisin!"); return;
-      }
-      if (soruIndex < test.questions.length-1) {
-        soruIndex++; soruGoster();
-      } else {
-        // Son soru bitince sonucu hesapla ve yönlendir
-        let puan = 0;
-        test.questions.forEach((q,i)=>{
-          if (cevaplar[i]===q.answer) puan++;
-        });
-        // Kullanıcının completedTests'ine ekle
-        firebase.auth().onAuthStateChanged(function(user) {
-          if (user) {
-            const userRef = db.collection("users").doc(user.uid);
-            userRef.update({
-              completedTests: firebase.firestore.FieldValue.arrayUnion(testId),
-              points: firebase.firestore.FieldValue.increment(puan)
-            });
-          }
-        });
-        window.location.href = "test-sonuc.html?id="+testId+"&puan="+puan;
-      }
-    }
+    };
+
+    // Başlat
     testYukle();
   </script>
 </body>
