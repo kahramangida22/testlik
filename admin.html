@@ -25,6 +25,7 @@
         <a href="akademi.html">Akademi</a>
         <a href="istatistik.html">İstatistik</a>
         <a href="admin.html" class="active admin-link">Admin</a>
+        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
@@ -47,6 +48,26 @@
     </div>
   </footer>
   <script>
+    // Çıkış butonu kontrolü
+    firebase.auth().onAuthStateChanged(function(user) {
+      var logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        if (user) logoutBtn.style.display = 'inline-block';
+        else logoutBtn.style.display = 'none';
+      }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      var logoutBtnElem = document.getElementById('logout-btn');
+      if (logoutBtnElem) {
+        logoutBtnElem.onclick = function(e) {
+          e.preventDefault();
+          firebase.auth().signOut().then(() => {
+            window.location.href = "index.html";
+          });
+        }
+      }
+    });
+
     firebase.auth().onAuthStateChanged(async function(user) {
       const area = document.getElementById("admin-area");
       if (!user) {
