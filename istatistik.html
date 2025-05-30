@@ -3,59 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Başarı İstatistiklerim | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Kullanıcı başarı istatistikleri ve site genel verileri.">
+  <title>İstatistiklerim | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Kişisel başarı istatistikleri ve analizler.">
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="img/favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    .istatistik-flex {display:flex;gap:28px;flex-wrap:wrap;justify-content:center;}
     .istatistik-card {
-      background: #fff;
-      border-radius: 22px;
-      box-shadow: 0 2px 18px #735aff13;
-      padding: 32px 26px;
-      max-width: 410px;
-      margin: 36px auto 18px auto;
-      text-align: center;
-    }
-    .istatistik-title {
-      color: #735aff;
-      font-weight: 700;
-      font-size: 1.23em;
-      margin-bottom: 16px;
-    }
-    .istatistik-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 1.05em;
-      margin-bottom: 9px;
-      color: #513a80;
-    }
-    .istatistik-val {
-      color: #ed4a88;
-      font-weight: 700;
-    }
-    .leaderboard-btn {
-      display:inline-block;
-      background:linear-gradient(90deg,#fd72ff 0%, #735aff 100%);
-      color:#fff;
-      border:none;
-      border-radius:18px;
-      padding:10px 28px;
+      background:#fff;
+      border-radius:28px;
+      box-shadow:0 2px 24px #735aff19;
+      padding:32px 26px 28px 26px;
+      max-width:350px;
+      min-width:230px;
+      text-align:center;
+      margin:18px 0;
       font-size:1.08em;
-      font-weight:700;
-      margin:22px 0 8px 0;
-      box-shadow:0 2px 12px #7c45e921;
-      cursor:pointer;
-      transition: background .14s, color .14s, box-shadow .13s;
+      flex:1;
     }
-    .leaderboard-btn:hover {background:#735aff;color:#fffbe6;}
+    .istatistik-title {color:#735aff;font-size:1.12em;font-weight:700;margin-bottom:8px;}
+    .istatistik-badge {
+      font-size:2.05em;color:#fff;
+      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
+      border-radius:18px;
+      padding:11px 28px;
+      font-weight:800;
+      letter-spacing:0.02em;
+      box-shadow:0 2px 12px #735aff29;
+      margin-bottom:12px;
+      display:inline-block;
+    }
+    .istatistik-kat-icon {
+      width:44px;height:44px;object-fit:contain;margin:0 5px -12px 0;background:#faf4ff;border-radius:12px;
+      box-shadow:0 2px 12px #b69bfc19;
+    }
   </style>
 </head>
 <body>
   <header>
-    <div class="container nav-flex">
-      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
+    <div class="nav-flex">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
@@ -74,22 +62,30 @@
     </div>
   </header>
   <main>
-    <section>
-      <div class="istatistik-card" id="istatistik-area">
-        <div class="loader">İstatistikler yükleniyor...</div>
+    <h1 class="main-title"><span class="emoji">📊</span> İstatistiklerim</h1>
+    <div class="istatistik-flex">
+      <div class="istatistik-card">
+        <div class="istatistik-title">Toplam Çözülen Test</div>
+        <div class="istatistik-badge" id="istatistik-test">0</div>
       </div>
-      <div style="text-align:center;">
-        <a href="leaderboard.html" class="leaderboard-btn">Liderlik Tablosunu Gör</a>
+      <div class="istatistik-card">
+        <div class="istatistik-title">Kazanılan Toplam Puan</div>
+        <div class="istatistik-badge" id="istatistik-puan">0</div>
       </div>
-    </section>
+      <div class="istatistik-card">
+        <div class="istatistik-title">En Çok Çözülen Kategori</div>
+        <img src="test-category-default.png" class="istatistik-kat-icon" id="istatistik-kat-img" alt="Kategori" />
+        <div id="istatistik-kat" style="color:#ed4a88;margin-top:8px;font-weight:700;">-</div>
+      </div>
+    </div>
   </main>
   <footer>
-    <div class="container footer-flex">
+    <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
-        <img src="img/wise.png" alt="Wise" />
-        <img src="img/payoneer.png" alt="Payoneer" />
-        <img src="img/iban.png" alt="IBAN" />
+        <img src="wise.png" alt="Wise" />
+        <img src="payoneer.png" alt="Payoneer" />
+        <img src="iban.png" alt="IBAN" />
       </div>
     </div>
   </footer>
@@ -117,28 +113,40 @@
       }
     });
 
+    // Kişisel istatistikleri getir
     firebase.auth().onAuthStateChanged(async user => {
-      const area = document.getElementById("istatistik-area");
       if (!user) {
-        area.innerHTML = `<p>İstatistiklerini görmek için giriş yapmalısın.</p><a href="giris.html" class="cta-btn">Giriş Yap</a>`;
+        document.querySelector('.istatistik-flex').innerHTML = `
+          <div class="istatistik-card"><p>İstatistiklerini görmek için giriş yapmalısın.</p><a href="giris.html" class="cta-btn">Giriş Yap</a></div>
+        `;
         return;
       }
       const userDoc = await db.collection("users").doc(user.uid).get();
-      const u = userDoc.data();
-      // Genel verileri almak için testler ve toplam kullanıcılar
-      const [testSnap, userSnap] = await Promise.all([
-        db.collection("tests").get(),
-        db.collection("users").get()
-      ]);
-      area.innerHTML = `
-        <div class="istatistik-title">Kişisel Başarı İstatistiklerim</div>
-        <div class="istatistik-row"><span>Çözdüğüm Test:</span> <span class="istatistik-val">${u.completedTests?.length || 0}</span></div>
-        <div class="istatistik-row"><span>Favori Testim:</span> <span class="istatistik-val">${u.favorites?.length || 0}</span></div>
-        <div class="istatistik-row"><span>En Yüksek Puanım:</span> <span class="istatistik-val">${u.points || 0}</span></div>
-        <div class="istatistik-title" style="margin-top:26px;font-size:1.11em;color:#8f7fff;">Site Genel İstatistikleri</div>
-        <div class="istatistik-row"><span>Toplam Test:</span> <span class="istatistik-val">${testSnap.size}</span></div>
-        <div class="istatistik-row"><span>Toplam Üye:</span> <span class="istatistik-val">${userSnap.size}</span></div>
-      `;
+      const d = userDoc.data();
+      document.getElementById("istatistik-test").innerText = (d.completedTests || []).length;
+      document.getElementById("istatistik-puan").innerText = d.points || 0;
+
+      // En çok çözülen kategori hesaplama (örnek amaçlı completedCategories array’i)
+      let catCounts = {};
+      (d.completedCategories || []).forEach(cat => {
+        catCounts[cat] = (catCounts[cat] || 0) + 1;
+      });
+      let maxCat = "-";
+      let maxCount = 0;
+      for (let c in catCounts) {
+        if (catCounts[c] > maxCount) {
+          maxCat = c;
+          maxCount = catCounts[c];
+        }
+      }
+      let catImg = "test-category-default.png";
+      if (maxCat === "Genel") catImg = "category-genel.png";
+      if (maxCat === "Eğlence") catImg = "category-eglence.png";
+      if (maxCat === "Bilgi") catImg = "category-bilgi.png";
+      if (maxCat === "Psikoloji") catImg = "category-psikoloji.png";
+      if (maxCat === "Oyun") catImg = "category-oyun.png";
+      document.getElementById("istatistik-kat-img").src = catImg;
+      document.getElementById("istatistik-kat").innerText = maxCat !== "-" ? maxCat : "-";
     });
   </script>
 </body>
