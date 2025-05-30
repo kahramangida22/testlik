@@ -3,41 +3,60 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Testlik.com | Eğlenceli Testler Çöz</title>
-  <meta name="description" content="Testlik.com - Online test çöz, puan topla, ödül kazan. Eğlenceli ve bilgi dolu testler!">
+  <title>Testlik.com | Eğlenceli Testler ve Kazanç</title>
+  <meta name="description" content="Testlik.com - Test çöz, çark çevir, video izle, puan kazan!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- Navbar -->
   <header>
-    <div class="container">
+    <div class="container nav-flex">
       <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
-        <a href="index.html" class="active">Anasayfa</a>
-        <a href="kategoriler.html">Kategoriler</a>
-        <a href="sizdengelenler.html">Sizden Gelenler</a>
-        <a href="profil.html">Profil</a>
-        <a href="dashboard.html">Dashboard</a>
+        <a href="index.html" class="active nav-home">Anasayfa</a>
+        <a href="kategoriler.html" class="nav-categories">Kategoriler</a>
+        <a href="sizdengelenler.html" class="nav-fromyou">Sizden Gelenler</a>
+        <a href="soru-uret.html" class="nav-genq">Soru Üret</a>
+        <a href="cark.html" class="nav-wheel">Çarkıfelek</a>
+        <a href="video-izle.html" class="nav-video">Video İzle Kazan</a>
+        <a href="favoriler.html" class="nav-favs">Favoriler</a>
+        <a href="profil.html" class="nav-profile">Profil</a>
+        <a href="dashboard.html" class="nav-dashboard">Dashboard</a>
+        <a href="akademi.html" class="nav-academy">Akademi</a>
+        <a href="istatistik.html" class="nav-stats">İstatistik</a>
+        <a href="admin.html" class="admin-link">Admin</a>
         <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
+        <select id="langSelect" style="margin-left:18px; padding:6px 11px; border-radius:12px; background:#fff3; color:#735aff; font-weight:600;">
+          <option value="tr">TR</option>
+          <option value="en">EN</option>
+        </select>
       </nav>
     </div>
   </header>
+
+  <!-- Hero Section -->
   <main>
-    <section style="text-align:center;margin:46px 0 28px 0;">
-      <h1 style="color:#735aff;font-weight:700;">Testlik.com'a Hoş Geldin!</h1>
-      <p style="color:#5a6cff;">En eğlenceli testleri keşfet, puan topla, ödül kazan!</p>
-      <!-- Kullanıcı adıyla arama kutusu -->
-      <div style="margin:22px auto 10px auto;max-width:360px;">
-        <input type="text" id="kullaniciAraInput" placeholder="Kullanıcı adı ara..." style="width:80%;padding:9px 13px;border-radius:12px;border:1px solid #ddd;">
-        <button class="cta-btn" id="kullaniciAraBtn">Ara</button>
-      </div>
-      <div id="kullaniciAraSonuc" style="margin:10px auto;color:#735aff;font-weight:600;"></div>
+    <section class="hero">
+      <h1>
+        <span class="emoji">🎉</span>
+        <span id="mainTitle">Testlik.com</span>
+        <span class="emoji">✨</span>
+      </h1>
+      <p id="mainSubtitle" style="font-size:1.25rem;">
+        Test çöz, çark çevir, video izle ve anında puan topla!  
+        <br>Ödülünü çek, eğlenirken kazan! 🚀
+      </p>
+      <a href="kategoriler.html" class="cta-btn animated-btn" id="exploreBtn">Testleri Keşfet</a>
     </section>
-    <section id="testListesi" style="display:flex;flex-wrap:wrap;gap:24px;justify-content:center;"></section>
+    <!-- Dinamik test listesi (isteğe bağlı) -->
+    <section class="test-list" id="test-list"></section>
   </main>
+
+  <!-- Footer -->
   <footer>
-    <div class="container">
+    <div class="container footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
         <img src="img/wise.png" alt="Wise" />
@@ -46,60 +65,124 @@
       </div>
     </div>
   </footer>
+
+  <!-- Çerez + reklam popupı (sadece ana sayfada, günde 1 defa) -->
+  <div id="cookie-popup" class="cookie-popup-bg" style="display:none;">
+    <div class="cookie-popup-card">
+      <h2 id="cookieTitle" style="color:#735aff;">Sitemize Hoşgeldin!</h2>
+      <p id="cookieText" style="margin-bottom:12px;">
+        En iyi deneyim ve kişisel öneriler için çerezleri kullanıyoruz.<br>
+        Ayrıca aşağıda gerçek bir reklam göreceksin, izleyerek bize destek olabilirsin!
+      </p>
+      <div class="ads-container" style="margin:18px auto;">
+        <!-- AdSense video/banner kodunu buraya ekle! -->
+        <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-XXXXXXXXXXXXXX"
+            data-ad-slot="XXXXXXXXXX"
+            data-ad-format="auto"></ins>
+        <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+      <button id="cookie-accept" class="cta-btn" style="margin-top:10px;">Çerezleri Kabul Et</button>
+      <button id="cookie-close" class="cta-btn ghost-btn" style="margin-top:8px;">Kapat</button>
+    </div>
+  </div>
+
+  <!-- Firebase ve main.js -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="main.js"></script>
   <script src="firebase.js"></script>
+  <script src="main.js"></script>
   <script>
-    // Otomatik dil algılama (main.js ile de çağrılıyor, burada yedeği var)
-    function detectLanguage() {
-      const userLang = navigator.language || navigator.userLanguage;
-      if (userLang.startsWith('tr')) document.documentElement.lang = 'tr';
-      else document.documentElement.lang = 'en';
-    }
-    detectLanguage();
-
-    // Çıkış butonu
+    // Çıkış butonu ve giriş-çıkış kontrolü
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
-      if (logoutBtn) logoutBtn.style.display = user ? 'inline-block' : 'none';
+      if (logoutBtn) {
+        if (user) logoutBtn.style.display = 'inline-block';
+        else logoutBtn.style.display = 'none';
+      }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      var logoutBtnElem = document.getElementById('logout-btn');
+      if (logoutBtnElem) {
+        logoutBtnElem.onclick = function(e) {
+          e.preventDefault();
+          firebase.auth().signOut().then(() => {
+            window.location.href = "index.html";
+          });
+        }
+      }
     });
 
-    // Kullanıcı adı ile arama
-    document.getElementById("kullaniciAraBtn").onclick = async function() {
-      const val = document.getElementById("kullaniciAraInput").value.trim();
-      if (!val) return;
-      const q = await db.collection("users").where("username", "==", val).get();
-      let html = "";
-      if (q.empty) html = "Kullanıcı bulunamadı.";
-      else q.forEach(doc=>{
-        const u = doc.data();
-        html += `<div>
-          <img src="${u.profilePic || 'img/default-profile.png'}" alt="Profil" style="width:44px;height:44px;border-radius:50%;vertical-align:middle;">
-          <span style="margin-left:10px;">${u.username}</span>
-          <button class="cta-btn" style="margin-left:18px;" onclick="window.location.href='profil.html?uid=${doc.id}'">Profili Gör</button>
-        </div>`;
-      });
-      document.getElementById("kullaniciAraSonuc").innerHTML = html;
-    };
+    // Çerez + reklam popupı: sadece ana sayfada, günde 1 defa
+    function getTodayStr() {
+      const d = new Date();
+      return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
+    }
+    window.addEventListener("DOMContentLoaded", () => {
+      const lastShown = localStorage.getItem("popupDate");
+      const today = getTodayStr();
+      if (lastShown !== today) {
+        document.getElementById('cookie-popup').style.display = "flex";
+      }
+      document.getElementById('cookie-accept').onclick = function() {
+        localStorage.setItem("cookieAccepted", "true");
+        localStorage.setItem("popupDate", today);
+        document.getElementById('cookie-popup').style.display = "none";
+      }
+      document.getElementById('cookie-close').onclick = function() {
+        localStorage.setItem("popupDate", today);
+        document.getElementById('cookie-popup').style.display = "none";
+      }
+    });
 
-    // Anasayfada son testleri göster (örnek)
-    db.collection("tests").orderBy("createdAt","desc").limit(10).get().then(snapshot => {
-      let html = "";
-      snapshot.forEach(doc=>{
-        const t = doc.data();
-        html += `
-          <div class="test-card">
-            <img src="${t.image || 'img/soru-isareti.png'}" class="test-img" alt="Test Görseli"/>
-            <div class="test-title">${t.title}</div>
-            <div class="test-category">${t.category}</div>
-            <div class="test-desc">${t.description}</div>
-            <a href="test-render.html?id=${doc.id}" class="cta-btn">Testi Çöz</a>
-          </div>
-        `;
+    // --- DİL DESTEĞİ: Otomatik Algılama + Kullanıcı Seçimi ---
+    const translations = {
+      tr: {
+        mainTitle: "Testlik.com",
+        mainSubtitle: "Test çöz, çark çevir, video izle ve anında puan topla!<br>Ödülünü çek, eğlenirken kazan! 🚀",
+        exploreBtn: "Testleri Keşfet",
+        nav: ["Anasayfa", "Kategoriler", "Sizden Gelenler", "Soru Üret", "Çarkıfelek", "Video İzle Kazan", "Favoriler", "Profil", "Dashboard", "Akademi", "İstatistik", "Admin"],
+        cookieTitle: "Sitemize Hoşgeldin!",
+        cookieText: "En iyi deneyim ve kişisel öneriler için çerezleri kullanıyoruz.<br>Ayrıca aşağıda gerçek bir reklam göreceksin, izleyerek bize destek olabilirsin!"
+      },
+      en: {
+        mainTitle: "Testlik.com",
+        mainSubtitle: "Solve quizzes, spin the wheel, watch videos, and earn points instantly!<br>Withdraw your prize while having fun! 🚀",
+        exploreBtn: "Explore Quizzes",
+        nav: ["Home", "Categories", "From Users", "Generate Question", "Wheel of Fortune", "Watch & Earn", "Favorites", "Profile", "Dashboard", "Academy", "Statistics", "Admin"],
+        cookieTitle: "Welcome!",
+        cookieText: "We use cookies for the best experience and personal recommendations.<br>You will also see a real ad below; you can support us by watching!"
+      }
+    };
+    function setLang(lang) {
+      lang = lang || 'tr';
+      document.getElementById("mainTitle").innerHTML = translations[lang].mainTitle;
+      document.getElementById("mainSubtitle").innerHTML = translations[lang].mainSubtitle;
+      document.getElementById("exploreBtn").innerHTML = translations[lang].exploreBtn;
+      // Navbar
+      const navClasses = ['nav-home','nav-categories','nav-fromyou','nav-genq','nav-wheel','nav-video','nav-favs','nav-profile','nav-dashboard','nav-academy','nav-stats','admin-link'];
+      navClasses.forEach((cls, i) => {
+        let el = document.querySelector(`.${cls}`);
+        if(el) el.innerHTML = translations[lang].nav[i];
       });
-      document.getElementById("testListesi").innerHTML = html || "<p>Test bulunamadı.</p>";
+      // Cookie popup
+      document.getElementById("cookieTitle").innerHTML = translations[lang].cookieTitle;
+      document.getElementById("cookieText").innerHTML = translations[lang].cookieText;
+    }
+    // Otomatik algılama ve seçim
+    window.addEventListener("DOMContentLoaded", () => {
+      let lang = localStorage.getItem("lang") || navigator.language.slice(0,2).toLowerCase();
+      if (!["tr","en"].includes(lang)) lang = "tr";
+      setLang(lang);
+      document.getElementById("langSelect").value = lang;
+      document.getElementById("langSelect").onchange = function() {
+        setLang(this.value);
+        localStorage.setItem("lang", this.value);
+      };
     });
   </script>
 </body>
