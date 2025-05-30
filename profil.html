@@ -4,10 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Profilim | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Kendi profilini, puanını ve başarılarını gör!">
+  <meta name="description" content="Testlik.com profil sayfan. Profil fotoğrafı ve kullanıcı adı güncelle.">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    .profil-icerik {max-width:420px;margin:52px auto 22px auto;background:#fff;border-radius:22px;box-shadow:0 2px 18px #735aff13;padding:38px 28px;text-align:center;}
+    .profil-foto {width:108px;height:108px;object-fit:cover;border-radius:50%;border:3px solid #ed4a88;margin-bottom:16px;}
+    .profil-bilgi {color:#735aff;font-size:1.08em;font-weight:600;margin-bottom:10px;}
+    .profil-input {width:88%;margin:8px auto 14px auto;padding:8px 14px;border-radius:12px;border:1px solid #ddd;}
+    .profil-btn {margin:10px auto 5px auto;}
+  </style>
 </head>
 <body>
   <header>
@@ -15,84 +22,97 @@
       <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
-        <a href="kategoriler.html">Kategoriler</a>
-        <a href="sizdengelenler.html">Sizden Gelenler</a>
-        <a href="soru-uret.html">Soru Üret</a>
-        <a href="cark.html">Çarkıfelek</a>
-        <a href="video-izle.html">Video İzle Kazan</a>
-        <a href="favoriler.html">Favoriler</a>
         <a href="profil.html" class="active">Profil</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="akademi.html">Akademi</a>
-        <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link">Admin</a>
-        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
   <main>
-    <section class="profile-section" style="margin-top:36px;">
-      <h1 style="text-align:center;color:#735aff;font-weight:700;">Profilim <span class="emoji">🧑‍💻</span></h1>
-      <div class="test-card" id="profile-area" style="max-width:410px;">
-        <div class="loader">Profil yükleniyor...</div>
-      </div>
-    </section>
+    <div class="profil-icerik">
+      <img id="profilFoto" src="img/default-profile.png" class="profil-foto" alt="Profil Fotoğrafı" />
+      <br />
+      <input type="file" id="profilFotoInput" accept="image/*" style="margin-bottom:12px;" />
+      <div class="profil-bilgi">Kullanıcı Adı: <span id="profilKullaniciAdi"></span></div>
+      <input id="profilKullaniciAdiInput" class="profil-input" type="text" placeholder="Kullanıcı adını güncelle" maxlength="16" />
+      <button id="kullaniciAdiGuncelleBtn" class="cta-btn profil-btn">Kullanıcı Adını Güncelle</button>
+      <div class="profil-bilgi">E-posta: <span id="profilEmail"></span></div>
+      <div id="profilMesaj" style="min-height:20px;color:#ed4a88;font-weight:600;margin-top:8px;"></div>
+    </div>
   </main>
   <footer>
     <div class="container">
-      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
-      <div class="odeme-logo">
-        <img src="img/wise.png" alt="Wise" />
-        <img src="img/payoneer.png" alt="Payoneer" />
-        <img src="img/iban.png" alt="IBAN" />
-      </div>
+      <p>&copy; 2025 <b>Testlik.com</b></p>
     </div>
   </footer>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
   <script src="firebase.js"></script>
   <script>
-    firebase.auth().onAuthStateChanged(function(user) {
-      var logoutBtn = document.getElementById('logout-btn');
-      if (logoutBtn) {
-        if (user) logoutBtn.style.display = 'inline-block';
-        else logoutBtn.style.display = 'none';
+    let currentUid;
+    firebase.auth().onAuthStateChanged(async function(user) {
+      if (!user) {
+        window.location.href = "giris.html";
+        return;
       }
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-      var logoutBtnElem = document.getElementById('logout-btn');
-      if (logoutBtnElem) {
-        logoutBtnElem.onclick = function(e) {
-          e.preventDefault();
-          firebase.auth().signOut().then(() => {
-            window.location.href = "index.html";
-          });
-        }
+      currentUid = user.uid;
+      const userDoc = await db.collection("users").doc(user.uid).get();
+      if (userDoc.exists) {
+        const data = userDoc.data();
+        document.getElementById("profilKullaniciAdi").innerText = data.username || "(Yok)";
+        document.getElementById("profilKullaniciAdiInput").value = data.username || "";
+        document.getElementById("profilEmail").innerText = data.email || "";
+        document.getElementById("profilFoto").src = data.profilePic ? data.profilePic : "img/default-profile.png";
       }
     });
 
-    auth.onAuthStateChanged(async user => {
-      const area = document.getElementById("profile-area");
-      if (!user) {
-        area.innerHTML = `<p>Profilini görmek için giriş yapmalısın.</p><a href="giris.html" class="cta-btn">Giriş Yap</a>`;
-        return;
-      }
+    // Profil fotoğrafı yükle
+    document.getElementById("profilFotoInput").addEventListener("change", async function(event) {
+      if (!currentUid) return;
+      const file = event.target.files[0];
+      if (!file) return;
+      const storageRef = firebase.storage().ref();
+      const profileImageRef = storageRef.child('profile_images/' + currentUid + '.jpg');
       try {
-        const doc = await db.collection("users").doc(user.uid).get();
-        const u = doc.data();
-        area.innerHTML = `
-          <img src="${u.avatar || 'img/default-profile.png'}" alt="Profil Fotoğrafı" style="width:90px; border-radius:50%; margin-bottom: 1.2rem;box-shadow:0 2px 14px #ffb2f85c;">
-          <h2 style="color:#8f7fff;font-size:1.23rem;">${u.displayName || u.email}</h2>
-          <p style="font-size:1.08em;"><b>Puan:</b> <span style="color:#ed4a88;font-weight:600;">${u.points || 0}</span></p>
-          <p><b>Favori Testler:</b> <span style="color:#735aff;">${u.favorites ? u.favorites.length : 0}</span></p>
-          <p><b>Çözülen Testler:</b> <span style="color:#5ab8ad;">${u.completedTests ? u.completedTests.length : 0}</span></p>
-        `;
+        await profileImageRef.put(file);
+        const downloadURL = await profileImageRef.getDownloadURL();
+        await db.collection("users").doc(currentUid).update({ profilePic: downloadURL });
+        document.getElementById("profilFoto").src = downloadURL;
+        document.getElementById("profilMesaj").style.color = "#13bd72";
+        document.getElementById("profilMesaj").innerText = "Profil fotoğrafı güncellendi!";
       } catch (err) {
-        area.innerHTML = "<p>Profil yüklenemedi!</p>";
-        console.error(err);
+        document.getElementById("profilMesaj").style.color = "#ed4a88";
+        document.getElementById("profilMesaj").innerText = "Hata oluştu.";
       }
     });
+
+    // Kullanıcı adı güncelle
+    document.getElementById("kullaniciAdiGuncelleBtn").onclick = async function() {
+      const yeniAd = document.getElementById("profilKullaniciAdiInput").value.trim();
+      if (yeniAd.length < 3) {
+        document.getElementById("profilMesaj").innerText = "Kullanıcı adı en az 3 harf olmalı!";
+        return;
+      }
+      // Başkasında var mı kontrol et
+      const q = await db.collection("users").where("username", "==", yeniAd).get();
+      if (!q.empty) {
+        let kendiMi = false;
+        q.forEach(doc=>{if(doc.id===currentUid) kendiMi=true;});
+        if (!kendiMi) {
+          document.getElementById("profilMesaj").innerText = "Bu kullanıcı adı zaten alınmış!";
+          return;
+        }
+      }
+      try {
+        await db.collection("users").doc(currentUid).update({ username: yeniAd });
+        document.getElementById("profilMesaj").style.color = "#13bd72";
+        document.getElementById("profilMesaj").innerText = "Kullanıcı adı güncellendi!";
+        document.getElementById("profilKullaniciAdi").innerText = yeniAd;
+      } catch (err) {
+        document.getElementById("profilMesaj").style.color = "#ed4a88";
+        document.getElementById("profilMesaj").innerText = "Hata oluştu.";
+      }
+    };
   </script>
 </body>
 </html>
