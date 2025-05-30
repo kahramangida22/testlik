@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Testi Çöz | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Test çöz, bilginle yarış ve puan topla!">
+  <meta name="description" content="Testlik.com - Online test çöz, bilgi ve eğlenceyle puan topla!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
@@ -17,7 +17,33 @@
     .secenekler {display:flex;flex-direction:column;gap:12px;}
     .secenek-btn {background:#f7e8ff;color:#735aff;font-weight:700;border:none;padding:14px 0;border-radius:16px;font-size:1em;cursor:pointer;transition:background .13s;}
     .secenek-btn:hover {background:#735aff;color:#fff;}
-    .cozuldu-etiket {display:inline-block;background:#13bd72;color:#fff;font-weight:700;border-radius:16px;padding:7px 15px;margin-bottom:8px;font-size:1em;}
+    .devam-btn {margin-top:22px;}
+    .fav-btn {
+      background: linear-gradient(90deg,#fd72ff 0%, #735aff 100%);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 22px;
+      font-size: 1.02rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      cursor: pointer;
+      box-shadow: 0 2px 10px #7c45e927;
+      transition: background .14s, color .14s, box-shadow .13s;
+      display:inline-block;
+    }
+    .fav-btn.favorited { background: #735aff; color: #fffbe6;}
+    .cozuldu-badge {
+      display: inline-block;
+      background: #13bd72;
+      color: #fff;
+      font-size: .93em;
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 2px 13px;
+      margin-left: 7px;
+      vertical-align: middle;
+    }
   </style>
 </head>
 <body>
@@ -28,7 +54,15 @@
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
         <a href="sizdengelenler.html">Sizden Gelenler</a>
+        <a href="soru-uret.html">Soru Üret</a>
+        <a href="cark.html">Çarkıfelek</a>
+        <a href="video-izle.html">Video İzle Kazan</a>
+        <a href="favoriler.html">Favoriler</a>
         <a href="profil.html">Profil</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="akademi.html">Akademi</a>
+        <a href="istatistik.html">İstatistik</a>
+        <a href="admin.html" class="admin-link">Admin</a>
         <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
@@ -42,26 +76,58 @@
   </main>
   <footer>
     <div class="container">
-      <p>&copy; 2025 <b>Testlik.com</b></p>
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
+      <div class="odeme-logo">
+        <img src="img/wise.png" alt="Wise" />
+        <img src="img/payoneer.png" alt="Payoneer" />
+        <img src="img/iban.png" alt="IBAN" />
+      </div>
     </div>
   </footer>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="main.js"></script>
   <script src="firebase.js"></script>
   <script>
-    // Kullanıcı oturum kontrolü + çıkış
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
-      if (logoutBtn) logoutBtn.style.display = user ? 'inline-block' : 'none';
+      if (logoutBtn) {
+        if (user) logoutBtn.style.display = 'inline-block';
+        else logoutBtn.style.display = 'none';
+      }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      var logoutBtnElem = document.getElementById('logout-btn');
+      if (logoutBtnElem) {
+        logoutBtnElem.onclick = function(e) {
+          e.preventDefault();
+          firebase.auth().signOut().then(() => {
+            window.location.href = "index.html";
+          });
+        }
+      }
     });
 
-    // Test yükleme ve çözme
+    // TEST YÜKLEME VE ÇÖZME + FAVORİ + ÇÖZÜLDÜ
     const urlParams = new URLSearchParams(window.location.search);
     const testId = urlParams.get("id");
     let kategoriGlobal = "Genel";
     let testDoc, sorular, soruIndex = 0, dogruSayisi = 0;
+    let currentUser = null;
+    let isFavorited = false;
+    let isSolved = false;
+
+    firebase.auth().onAuthStateChanged(async user => {
+      currentUser = user;
+      if (user && testId) {
+        // Kullanıcı favori ve çözdü mü?
+        const userDoc = await db.collection("users").doc(user.uid).get();
+        const userData = userDoc.data();
+        isFavorited = userData.favorites && userData.favorites.includes(testId);
+        isSolved = userData.completedTests && userData.completedTests.includes(testId);
+      }
+      testYukle();
+    });
 
     async function testYukle() {
       if (!testId) {
@@ -78,24 +144,21 @@
       kategoriGlobal = testDoc.category || "Genel";
       soruIndex = 0;
       dogruSayisi = 0;
-      await cozulduKontrolVeSoruGoster();
+      soruGoster();
     }
 
-    async function cozulduKontrolVeSoruGoster() {
-      // Çözüldü etiketi kontrolü (main.js fonksiyonu)
-      let cozdu = false;
-      try {
-        if (firebase.auth().currentUser) {
-          cozdu = await isTestSolved(testId);
-        }
-      } catch {}
-      soruGoster(cozdu);
+    function renderFavButton() {
+      if (!currentUser) return "";
+      return `<button class="fav-btn${isFavorited ? ' favorited' : ''}" onclick="toggleFav()">${isFavorited ? "Favorilerden Çıkar" : "Favorilere Ekle"}</button>`;
+    }
+    function renderSolvedBadge() {
+      if (isSolved) return `<span class="cozuldu-badge">Çözüldü</span>`;
+      return "";
     }
 
-    function soruGoster(cozuldu) {
+    function soruGoster() {
       if (soruIndex >= sorular.length) {
         // Test bitti, sonuç ekranına yönlendir
-        markTestAsSolved(testId); // main.js fonksiyonu ile çözüldü olarak işaretle
         window.location.href = `test-sonuc.html?id=${testId}&puan=${dogruSayisi}`;
         return;
       }
@@ -105,9 +168,9 @@
         secenekler += `<button class="secenek-btn" onclick="secenekSec(${i})">${op}</button>`;
       });
       document.getElementById("test-alani").innerHTML = `
-        ${cozuldu ? '<div class="cozuldu-etiket">✔️ Daha önce çözdün</div>' : ""}
+        ${renderFavButton()}
         <img src="${testDoc.image || 'img/soru-isareti.png'}" class="test-img" alt="Test Görseli"/>
-        <div class="test-baslik">${testDoc.title}</div>
+        <div class="test-baslik">${testDoc.title} ${renderSolvedBadge()}</div>
         <div class="test-kategori">${testDoc.category}</div>
         <div class="test-soru">Soru ${soruIndex+1}: ${s.question}</div>
         <div class="secenekler">${secenekler}</div>
@@ -117,11 +180,33 @@
     window.secenekSec = function(i) {
       if (sorular[soruIndex].answer === i) dogruSayisi++;
       soruIndex++;
-      soruGoster(false); // Yeni soruda çözüldü etiketi olmasın
+      soruGoster();
+    };
+
+    // FAVORİ EKLE/ÇIKAR
+    window.toggleFav = async function() {
+      if (!currentUser) {
+        alert("Favorilere eklemek için giriş yapmalısın!");
+        window.location.href = "giris.html";
+        return;
+      }
+      const userRef = db.collection("users").doc(currentUser.uid);
+      if (isFavorited) {
+        await userRef.update({
+          favorites: firebase.firestore.FieldValue.arrayRemove(testId)
+        });
+        isFavorited = false;
+      } else {
+        await userRef.update({
+          favorites: firebase.firestore.FieldValue.arrayUnion(testId)
+        });
+        isFavorited = true;
+      }
+      soruGoster();
     };
 
     // Başlat
-    testYukle();
+    // testYukle(); // Artık auth değişimini bekliyor!
   </script>
 </body>
 </html>
