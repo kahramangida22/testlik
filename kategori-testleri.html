@@ -4,24 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Kategori Testleri | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Kategoriye özel testleri keşfet!">
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="img/favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    .kategori-test-listesi {display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin:32px 0;}
-    .test-card {background:#fff;border-radius:20px;box-shadow:0 2px 18px #735aff13;padding:22px 16px;max-width:280px;width:100%;text-align:center;transition:box-shadow .13s,transform .12s;}
-    .test-card:hover {box-shadow:0 6px 28px #fd72ff2c;transform:scale(1.06) translateY(-2px);}
-    .test-img {width:100%;height:120px;object-fit:contain;border-radius:15px;}
-    .test-title {color:#735aff;font-size:1.07em;font-weight:700;margin:12px 0 5px 0;}
-    .test-category {font-size:.93em;color:#b69bfc;}
-    .test-desc {color:#5a6cff;font-size:.99em;margin-bottom:8px;}
-  </style>
+  <meta name="description" content="Testlik.com - Seçili kategoriye ait eğlenceli testler.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
-    <div class="container">
-      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
+    <div class="nav-flex">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html" class="active">Kategoriler</a>
@@ -39,25 +30,32 @@
       </nav>
     </div>
   </header>
+
   <main>
-    <h2 id="kategori-baslik" style="text-align:center;color:#735aff;margin:38px 0 18px 0;"></h2>
-    <div class="kategori-test-listesi" id="kategori-test-list"></div>
+    <h1 class="main-title" id="cat-title"><span class="emoji">📂</span> Kategori</h1>
+    <section class="testler-grid" id="cat-test-list">
+      <!-- JS ile testler buraya gelecek -->
+    </section>
   </main>
+
   <footer>
-    <div class="container">
+    <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
-        <img src="img/wise.png" alt="Wise" />
-        <img src="img/payoneer.png" alt="Payoneer" />
-        <img src="img/iban.png" alt="IBAN" />
+        <img src="wise.png" alt="Wise" />
+        <img src="payoneer.png" alt="Payoneer" />
+        <img src="iban.png" alt="IBAN" />
       </div>
     </div>
   </footer>
+
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
+    // Navbar çıkış butonu
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
       if (logoutBtn) {
@@ -77,27 +75,40 @@
       }
     });
 
-    // Kategori adını url'den al ve başlığa yaz
-    const urlParams = new URLSearchParams(window.location.search);
-    const kategori = urlParams.get("cat") || "Genel";
-    document.getElementById("kategori-baslik").innerText = kategori + " Testleri";
+    // Kategori adını ve testleri getir
+    let category = new URLSearchParams(window.location.search).get('cat') || "Genel";
+    document.getElementById('cat-title').innerHTML = `<span class="emoji">📂</span> ${category} Testleri`;
 
-    // Sadece o kategoriye ait testleri çek ve göster
-    db.collection("tests").where("category", "==", kategori).get().then(snapshot => {
-      let html = "";
+    async function loadCategoryTests() {
+      const testList = document.getElementById("cat-test-list");
+      testList.innerHTML = "<p>Testler yükleniyor...</p>";
+      let ref = db.collection("tests").where("category", "==", category).orderBy("createdAt", "desc");
+      const snapshot = await ref.get();
+      if (snapshot.empty) {
+        testList.innerHTML = "<p>Bu kategoride henüz test yok.</p>";
+        return;
+      }
+      testList.innerHTML = "";
       snapshot.forEach(doc => {
         const t = doc.data();
-        html += `
-        <div class="test-card">
-          <img src="${t.image || 'img/soru-isareti.png'}" class="test-img" alt="Test Görseli"/>
-          <div class="test-title">${t.title}</div>
-          <div class="test-category">${t.category}</div>
-          <div class="test-desc">${t.description}</div>
-          <a href="test-render.html?id=${doc.id}" class="cta-btn">Testi Çöz</a>
-        </div>`;
+        // Kategori ikonunu otomatik çek
+        let icon = "test-category-default.png";
+        if (t.category === "Genel") icon = "category-genel.png";
+        if (t.category === "Eğlence") icon = "category-eglence.png";
+        if (t.category === "Bilgi") icon = "category-bilgi.png";
+        if (t.category === "Psikoloji") icon = "category-psikoloji.png";
+        if (t.category === "Oyun") icon = "category-oyun.png";
+        testList.innerHTML += `
+          <div class="test-card">
+            <img src="${icon}" alt="${t.category || ''}"/>
+            <span>${t.title}</span>
+            <small>${t.description || ''}</small>
+            <a href="test-render.html?id=${doc.id}" class="cta-btn" style="margin-top:13px;">Testi Çöz</a>
+          </div>
+        `;
       });
-      document.getElementById("kategori-test-list").innerHTML = html || "<p style='text-align:center;width:100%;'>Bu kategoride henüz test yok.</p>";
-    });
+    }
+    loadCategoryTests();
   </script>
 </body>
 </html>
