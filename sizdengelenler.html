@@ -1,13 +1,43 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Sizden Gelenler | Testlik.com</title>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Testlik.com - Topluluk tarafından gönderilen testler ve sorular.">
-  <link rel="stylesheet" href="styles.css">
+  <title>Sizden Gelenler | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Kullanıcılar tarafından önerilen testler ve sorular.">
+  <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    .sg-container {max-width:640px;margin:40px auto;}
+    .sg-card {
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 2px 18px #735aff13;
+      padding: 20px 22px 16px 22px;
+      margin: 20px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap:wrap;
+    }
+    .sg-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      object-fit: contain;
+      background: #faf4ff;
+      box-shadow: 0 1px 7px #ed4a8812;
+      margin-right:8px;
+      flex-shrink:0;
+      display:inline-block;
+    }
+    .sg-content {flex:1;}
+    .sg-title {color: #735aff;font-size:1.19em;font-weight:700;margin-bottom:4px;}
+    .sg-desc {color:#876fa9;margin-bottom:6px;}
+    .sg-date {color:#bba5fa;font-size:.98em;}
+    @media (max-width:680px){.sg-card{flex-direction:column;align-items:center;text-align:center;}}
+  </style>
 </head>
 <body>
   <header>
@@ -30,17 +60,12 @@
       </nav>
     </div>
   </header>
-
   <main>
-    <h1 class="main-title"><span class="emoji">🤝</span> Sizden Gelenler</h1>
-    <div style="text-align:center;margin-bottom:30px;">
-      <a href="soru-uret.html" class="cta-btn">Sen de Test/Öneri Gönder</a>
+    <h1 class="main-title"><span class="emoji">💡</span> Sizden Gelenler</h1>
+    <div class="sg-container" id="sg-list">
+      <div style="text-align:center;color:#8f7fff;">Yükleniyor...</div>
     </div>
-    <section class="testler-grid" id="gelenler-list">
-      <!-- JS ile gelenler buraya -->
-    </section>
   </main>
-
   <footer>
     <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
@@ -51,8 +76,6 @@
       </div>
     </div>
   </footer>
-
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -78,29 +101,31 @@
       }
     });
 
-    // Sizden Gelenler (Onaylanmış kullanıcı önerileri)
-    async function loadSizdenGelenler() {
-      const list = document.getElementById("gelenler-list");
-      list.innerHTML = "<p>Yükleniyor...</p>";
-      const snap = await db.collection("suggestions").where("status","==","approved").orderBy("createdAt","desc").get();
+    // Öneri listesi çek
+    async function loadSG() {
+      const sgList = document.getElementById("sg-list");
+      const snap = await db.collection("suggestions").orderBy("createdAt", "desc").limit(30).get();
       if (snap.empty) {
-        list.innerHTML = "<p>Henüz topluluk önerisi yok.</p>";
+        sgList.innerHTML = "<div style='text-align:center;color:#bba5fa;'>Henüz öneri yok.</div>";
         return;
       }
-      list.innerHTML = "";
-      snap.forEach(doc => {
-        const s = doc.data();
-        list.innerHTML += `
-          <div class="test-card">
-            <img src="add.png" alt="Öneri"/>
-            <span>${s.title}</span>
-            <small>${s.desc || ''}</small>
-            <div style="font-size:.98em;color:#876fa9;margin:6px 0 0 0;">${s.detail || ''}</div>
+      let html = "";
+      snap.forEach(doc=>{
+        const d = doc.data();
+        html += `
+          <div class="sg-card">
+            <img src="soru-isareti.png" alt="Soru" class="sg-icon" />
+            <div class="sg-content">
+              <div class="sg-title">${d.title || "Başlıksız Öneri"}</div>
+              <div class="sg-desc">${d.desc || ""}</div>
+              <div class="sg-date">${d.createdAt ? new Date(d.createdAt.seconds*1000 || d.createdAt).toLocaleString("tr-TR") : "-"}</div>
+            </div>
           </div>
         `;
       });
+      sgList.innerHTML = html;
     }
-    loadSizdenGelenler();
+    loadSG();
   </script>
 </body>
 </html>
