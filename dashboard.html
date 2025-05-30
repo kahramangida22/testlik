@@ -4,53 +4,59 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Puanlarını ve işlemlerini yönet!">
+  <meta name="description" content="Testlik.com - Puan, ödeme ve işlem geçmişi.">
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="img/favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    .dash-flex {display:flex;gap:28px;flex-wrap:wrap;justify-content:center;}
     .dash-card {
-      background: #fff;
-      border-radius: 22px;
-      box-shadow: 0 2px 18px #735aff13;
-      padding: 28px 22px;
-      max-width: 410px;
-      margin: 38px auto 18px auto;
-      text-align: center;
+      background:#fff;
+      border-radius:28px;
+      box-shadow:0 2px 24px #735aff19;
+      padding:32px 26px 28px 26px;
+      max-width:370px;
+      min-width:260px;
+      text-align:center;
+      margin:18px 0;
+      font-size:1.08em;
+      flex:1;
     }
-    .iban-input {
-      margin-top: 15px;
-      margin-bottom: 12px;
-      width: 95%;
-      padding: 9px 12px;
-      border-radius: 14px;
-      border: 1.5px solid #b69bfc;
-      background: #f7e8ff;
-      font-size: 1.1em;
+    .dash-title {color:#735aff;font-size:1.17em;font-weight:700;margin-bottom:8px;}
+    .dash-badge {
+      font-size:2.05em;color:#fff;
+      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
+      border-radius:18px;
+      padding:11px 28px;
+      font-weight:800;
+      letter-spacing:0.02em;
+      box-shadow:0 2px 12px #735aff29;
+      margin-bottom:12px;
+      display:inline-block;
     }
-    .tx-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 18px;
-      font-size: 1em;
+    .iban-inp {width:90%;max-width:320px;padding:9px;border-radius:12px;border:1.2px solid #b69bfc;margin-bottom:10px;}
+    .odeme-gonder-btn {
+      background:#ed4a88;color:#fff;font-weight:700;
+      border:none;border-radius:15px;
+      padding:9px 22px;margin-top:9px;cursor:pointer;
+      transition:background .13s;
     }
-    .tx-table th, .tx-table td {
-      padding: 7px 6px;
-      border-bottom: 1px solid #eee;
-      text-align: center;
+    .odeme-gonder-btn:hover {background:#735aff;}
+    .islem-card {
+      background:#f7e8ff;border-radius:14px;
+      padding:13px 12px;margin-bottom:7px;
+      color:#513a80;text-align:left;font-size:.99em;
+      box-shadow:0 1px 7px #735aff12;
+      display:flex;justify-content:space-between;align-items:center;gap:8px;
     }
-    .tx-table th {
-      color: #735aff;
-    }
-    .badge-wait { background:#ffe082;color:#755b00;padding:3px 11px;border-radius:9px;font-size:.97em;}
-    .badge-ok { background:#13bd72;color:#fff;padding:3px 13px;border-radius:10px;font-size:.97em;}
-    .badge-rej { background:#ed4a88;color:#fff;padding:3px 13px;border-radius:10px;font-size:.97em;}
+    .islem-odendi {color:#13bd72;}
+    .islem-bekliyor {color:#fd72ff;}
   </style>
 </head>
 <body>
   <header>
-    <div class="container nav-flex">
-      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
+    <div class="nav-flex">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
@@ -69,19 +75,35 @@
     </div>
   </header>
   <main>
-    <section>
-      <div class="dash-card" id="dashboard-area">
-        <div class="loader">Yükleniyor...</div>
+    <h1 class="main-title"><span class="emoji">💸</span> Dashboard & Kazançlar</h1>
+    <div class="dash-flex">
+      <!-- Puan kartı -->
+      <div class="dash-card">
+        <div class="dash-title">Toplam Puanım</div>
+        <div class="dash-badge" id="user-puan">0</div>
+        <div style="color:#876fa9;margin-top:7px;">Test çözerek daha fazla puan kazan!</div>
       </div>
-    </section>
+      <!-- Para çekme kartı -->
+      <div class="dash-card">
+        <div class="dash-title">IBAN ile Para Çek</div>
+        <input type="text" class="iban-inp" id="iban-inp" placeholder="TRxxxxxxxxxxxx" maxlength="26"/>
+        <button class="odeme-gonder-btn" id="odeme-btn">Çekim Talebi Gönder</button>
+        <div id="odeme-msg" style="margin-top:8px;min-height:18px;"></div>
+      </div>
+      <!-- Geçmiş işlemler kartı -->
+      <div class="dash-card" style="min-width:340px;max-width:420px;">
+        <div class="dash-title">İşlem Geçmişim</div>
+        <div id="islem-list"></div>
+      </div>
+    </div>
   </main>
   <footer>
-    <div class="container footer-flex">
+    <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
-        <img src="img/wise.png" alt="Wise" />
-        <img src="img/payoneer.png" alt="Payoneer" />
-        <img src="img/iban.png" alt="IBAN" />
+        <img src="wise.png" alt="Wise" />
+        <img src="payoneer.png" alt="Payoneer" />
+        <img src="iban.png" alt="IBAN" />
       </div>
     </div>
   </footer>
@@ -109,47 +131,62 @@
       }
     });
 
+    // Kullanıcı puanı, işlem geçmişi
     firebase.auth().onAuthStateChanged(async user => {
-      const area = document.getElementById("dashboard-area");
       if (!user) {
-        area.innerHTML = `<p>Paneli görmek için giriş yapmalısın.</p><a href="giris.html" class="cta-btn">Giriş Yap</a>`;
+        document.querySelector('.dash-flex').innerHTML = `
+          <div class="dash-card"><p>Dashboard’u görmek için giriş yapmalısın.</p><a href="giris.html" class="cta-btn">Giriş Yap</a></div>
+        `;
         return;
       }
       const userDoc = await db.collection("users").doc(user.uid).get();
-      const u = userDoc.data();
-      area.innerHTML = `
-        <h2 style="color:#735aff;margin-bottom:7px;">Puanım: <span style="color:#ed4a88;font-weight:700;">${u.points || 0}</span></h2>
-        <form id="ibanForm" style="margin-top:18px;">
-          <input type="text" id="iban" maxlength="34" class="iban-input" placeholder="IBAN ile para çek (örn. TR...)">
-          <button type="submit" class="cta-btn" style="width:100%;">Çekim Talebi Oluştur</button>
-        </form>
-        <div id="ibanMsg" style="min-height:18px;font-weight:600;margin-top:7px;"></div>
-        <h3 style="color:#735aff;margin-top:22px;">Geçmiş İşlemlerim</h3>
-        <table class="tx-table">
-          <thead>
-            <tr>
-              <th>Tarih</th>
-              <th>Tutar</th>
-              <th>IBAN</th>
-              <th>Durum</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${
-              (u.withdrawals && u.withdrawals.length > 0)
-              ? u.withdrawals.map(w => `
-                  <tr>
-                    <td>${w.date}</td>
-                    <td>${w.amount}₺</td>
-                    <td>${w.iban}</td>
-                    <td>
-                      ${
-                        w.status == 'waiting'
-                        ? '<span class="badge-wait">Bekliyor</span>'
-                        : w.status == 'ok'
-                        ? '<span class="badge-ok">Onaylandı</span>'
-                        : '<span class="badge-rej">Reddedildi</span>'
-                      }
-                    </td>
-                  </tr>
-                `).join('
+      const d = userDoc.data();
+      document.getElementById("user-puan").innerText = d.points || 0;
+      // Geçmiş işlemler
+      const islemList = document.getElementById("islem-list");
+      let islemler = d.transactions || [];
+      if (islemler.length === 0) {
+        islemList.innerHTML = "<div style='color:#bba5fa;'>Henüz işlem yok.</div>";
+      } else {
+        islemList.innerHTML = "";
+        for (let tx of islemler.slice(-10).reverse()) {
+          islemList.innerHTML += `
+            <div class="islem-card">
+              <span>${tx.date ? new Date(tx.date).toLocaleDateString('tr-TR') : '-'}</span>
+              <span>${tx.amount || 0} TL</span>
+              <span class="${tx.status === 'paid' ? 'islem-odendi' : 'islem-bekliyor'}">
+                ${tx.status === 'paid' ? 'Ödendi' : 'Beklemede'}
+              </span>
+            </div>
+          `;
+        }
+      }
+    });
+
+    // Para çekme talebi
+    document.getElementById('odeme-btn').onclick = async function() {
+      const iban = document.getElementById('iban-inp').value.trim().toUpperCase();
+      const odemeMsg = document.getElementById('odeme-msg');
+      if (!iban.startsWith("TR") || iban.length !== 26) {
+        odemeMsg.innerHTML = "<span style='color:#ed4a88;'>Geçerli bir IBAN giriniz.</span>";
+        return;
+      }
+      const user = firebase.auth().currentUser;
+      if (!user) return;
+      // Basit: her talep anında eklenir, admin panelden işlenir
+      const userRef = db.collection("users").doc(user.uid);
+      const userDoc = await userRef.get();
+      let islemler = userDoc.data().transactions || [];
+      islemler.push({
+        date: Date.now(),
+        iban,
+        amount: userDoc.data().points || 0,
+        status: "waiting"
+      });
+      await userRef.update({ transactions: islemler, points: 0 });
+      odemeMsg.innerHTML = "<span style='color:#13bd72;'>Talebin alındı! Ödeme birkaç gün içinde gerçekleşecek.</span>";
+      document.getElementById("user-puan").innerText = "0";
+    };
+  </script>
+</body>
+</html>
