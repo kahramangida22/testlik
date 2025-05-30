@@ -4,14 +4,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Puan durumun, IBAN ile ödül çekimi ve işlem geçmişi.">
+  <meta name="description" content="Testlik.com - Puanlarını ve işlemlerini yönet!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="img/favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    .dash-card {
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 2px 18px #735aff13;
+      padding: 28px 22px;
+      max-width: 410px;
+      margin: 38px auto 18px auto;
+      text-align: center;
+    }
+    .iban-input {
+      margin-top: 15px;
+      margin-bottom: 12px;
+      width: 95%;
+      padding: 9px 12px;
+      border-radius: 14px;
+      border: 1.5px solid #b69bfc;
+      background: #f7e8ff;
+      font-size: 1.1em;
+    }
+    .tx-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 18px;
+      font-size: 1em;
+    }
+    .tx-table th, .tx-table td {
+      padding: 7px 6px;
+      border-bottom: 1px solid #eee;
+      text-align: center;
+    }
+    .tx-table th {
+      color: #735aff;
+    }
+    .badge-wait { background:#ffe082;color:#755b00;padding:3px 11px;border-radius:9px;font-size:.97em;}
+    .badge-ok { background:#13bd72;color:#fff;padding:3px 13px;border-radius:10px;font-size:.97em;}
+    .badge-rej { background:#ed4a88;color:#fff;padding:3px 13px;border-radius:10px;font-size:.97em;}
+  </style>
 </head>
 <body>
   <header>
-    <div class="container">
+    <div class="container nav-flex">
       <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
@@ -31,15 +69,14 @@
     </div>
   </header>
   <main>
-    <section style="margin-top:34px;">
-      <h1 style="text-align:center;color:#735aff;font-weight:700;">Dashboard <span class="emoji">💰</span></h1>
-      <div id="dashboard-area" class="test-card" style="max-width:430px;">
-        <div class="loader">Dashboard yükleniyor...</div>
+    <section>
+      <div class="dash-card" id="dashboard-area">
+        <div class="loader">Yükleniyor...</div>
       </div>
     </section>
   </main>
   <footer>
-    <div class="container">
+    <div class="container footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
         <img src="img/wise.png" alt="Wise" />
@@ -53,7 +90,6 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
-    // Çıkış butonu kontrolü
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
       if (logoutBtn) {
@@ -73,70 +109,47 @@
       }
     });
 
-    auth.onAuthStateChanged(async user => {
-      const dArea = document.getElementById("dashboard-area");
+    firebase.auth().onAuthStateChanged(async user => {
+      const area = document.getElementById("dashboard-area");
       if (!user) {
-        dArea.innerHTML = `
-          <p>Bilgileri görmek için giriş yapmalısın.</p>
-          <a href="giris.html" class="cta-btn">Giriş Yap</a>
-        `;
+        area.innerHTML = `<p>Paneli görmek için giriş yapmalısın.</p><a href="giris.html" class="cta-btn">Giriş Yap</a>`;
         return;
       }
-      try {
-        const doc = await db.collection("users").doc(user.uid).get();
-        const u = doc.data();
-        // Para çekim geçmişi
-        let txHtml = "<ul style='padding-left:12px;text-align:left;'>";
-        (u.withdrawals || []).slice().reverse().forEach(tx => {
-          txHtml += `<li style="margin-bottom:6px;">
-            <span style="color:#735aff;font-weight:600;">${tx.date || ""}</span> 
-            - <b>${tx.amount} TL</b> 
-            - <span style="color:${tx.status==='Bekliyor'?'#ffa800':'#13bd72'};font-weight:700;">${tx.status || "Bekliyor"}</span>
-          </li>`;
-        });
-        txHtml += "</ul>";
-        dArea.innerHTML = `
-          <p><b>Toplam Puanın:</b> <span style="font-size:2.1rem;color:#ed4a88;font-weight:700;">${u.points || 0}</span></p>
-          <form id="withdrawForm" style="margin:22px 0 13px 0;text-align:left;">
-            <label><b>Çekmek istediğin miktar (puan):</b></label>
-            <input type="number" id="amount" min="1" max="${u.points || 0}" required style="width:70%;margin-bottom:9px;">
-            <label><b>IBAN:</b></label>
-            <input type="text" id="iban" placeholder="TR..." style="width:95%;margin-bottom:10px;">
-            <button type="submit" class="cta-btn ghost-btn" style="width:100%;margin-top:9px;">Çekim Talebi Gönder</button>
-          </form>
-          <hr style="margin:19px 0 12px 0;"/>
-          <h3 style="margin-bottom:6px;color:#8f7fff;font-weight:700;">Çekim Geçmişi</h3>
-          ${txHtml}
-        `;
-        document.getElementById("withdrawForm").onsubmit = async (e) => {
-          e.preventDefault();
-          const amount = Number(document.getElementById("amount").value);
-          const iban = document.getElementById("iban").value.trim();
-          if (!iban.startsWith("TR") || iban.length < 16) {
-            alert("Geçerli bir IBAN girin!");
-            return;
-          }
-          if (amount < 1 || amount > (u.points || 0)) {
-            alert("Geçerli bir miktar girin!");
-            return;
-          }
-          await db.collection("users").doc(user.uid).update({
-            points: (u.points || 0) - amount,
-            withdrawals: firebase.firestore.FieldValue.arrayUnion({
-              date: new Date().toLocaleString("tr-TR"),
-              amount,
-              iban,
-              status: "Bekliyor"
-            })
-          });
-          alert("Çekim talebin alındı!");
-          location.reload();
-        };
-      } catch (err) {
-        dArea.innerHTML = "<p>Dashboard yüklenemedi!</p>";
-        console.error(err);
-      }
-    });
-  </script>
-</body>
-</html>
+      const userDoc = await db.collection("users").doc(user.uid).get();
+      const u = userDoc.data();
+      area.innerHTML = `
+        <h2 style="color:#735aff;margin-bottom:7px;">Puanım: <span style="color:#ed4a88;font-weight:700;">${u.points || 0}</span></h2>
+        <form id="ibanForm" style="margin-top:18px;">
+          <input type="text" id="iban" maxlength="34" class="iban-input" placeholder="IBAN ile para çek (örn. TR...)">
+          <button type="submit" class="cta-btn" style="width:100%;">Çekim Talebi Oluştur</button>
+        </form>
+        <div id="ibanMsg" style="min-height:18px;font-weight:600;margin-top:7px;"></div>
+        <h3 style="color:#735aff;margin-top:22px;">Geçmiş İşlemlerim</h3>
+        <table class="tx-table">
+          <thead>
+            <tr>
+              <th>Tarih</th>
+              <th>Tutar</th>
+              <th>IBAN</th>
+              <th>Durum</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${
+              (u.withdrawals && u.withdrawals.length > 0)
+              ? u.withdrawals.map(w => `
+                  <tr>
+                    <td>${w.date}</td>
+                    <td>${w.amount}₺</td>
+                    <td>${w.iban}</td>
+                    <td>
+                      ${
+                        w.status == 'waiting'
+                        ? '<span class="badge-wait">Bekliyor</span>'
+                        : w.status == 'ok'
+                        ? '<span class="badge-ok">Onaylandı</span>'
+                        : '<span class="badge-rej">Reddedildi</span>'
+                      }
+                    </td>
+                  </tr>
+                `).join('
