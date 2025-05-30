@@ -1,55 +1,84 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Testi Çöz | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Online test çöz, bilgi ve eğlenceyle puan topla!">
+  <meta name="description" content="Testlik.com - Test çöz ve puan kazan!">
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="img/favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .test-kart {background:#fff;border-radius:22px;box-shadow:0 2px 18px #735aff13;padding:32px 24px;max-width:500px;margin:42px auto 24px auto;text-align:center;}
-    .test-img {width:100%;max-width:300px;height:140px;object-fit:contain;border-radius:16px;margin:0 auto 14px auto;display:block;}
-    .test-baslik {color:#735aff;font-size:1.35em;font-weight:700;margin-bottom:7px;}
-    .test-kategori {font-size:.99em;color:#b69bfc;}
-    .test-soru {margin:28px 0 16px 0;font-size:1.14em;font-weight:600;color:#ed4a88;}
-    .secenekler {display:flex;flex-direction:column;gap:12px;}
-    .secenek-btn {background:#f7e8ff;color:#735aff;font-weight:700;border:none;padding:14px 0;border-radius:16px;font-size:1em;cursor:pointer;transition:background .13s;}
-    .secenek-btn:hover {background:#735aff;color:#fff;}
-    .devam-btn {margin-top:22px;}
-    .fav-btn {
+    .test-header-card {
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 2px 22px #735aff14;
+      padding: 32px 16px 22px 16px;
+      max-width: 410px;
+      margin: 30px auto 22px auto;
+      text-align: center;
+    }
+    .test-header-card img {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      margin-bottom: 11px;
+      border-radius: 22px;
+      background: #faf7ff;
+      box-shadow: 0 2px 12px #b69bfc19;
+    }
+    .test-fav-btn {
+      background: none;
+      border: none;
+      margin-left: 8px;
+      cursor: pointer;
+      vertical-align: middle;
+    }
+    .test-fav-btn img {
+      width: 34px;
+      height: 34px;
+      vertical-align: middle;
+      transition: filter .15s;
+    }
+    .test-question-card {
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 2px 22px #735aff14;
+      padding: 30px 18px 22px 18px;
+      max-width: 410px;
+      margin: 18px auto 22px auto;
+      text-align: left;
+      font-size: 1.08em;
+    }
+    .option-btn {
+      width: 100%;
+      margin: 8px 0;
+      border: none;
+      border-radius: 16px;
+      padding: 15px 8px;
+      background: #f7e8ff;
+      font-weight: 700;
+      color: #735aff;
+      font-size: 1.13em;
+      box-shadow: 0 1px 7px #735aff13;
+      cursor: pointer;
+      transition: background .14s, color .13s;
+    }
+    .option-btn.selected,
+    .option-btn:active {
       background: linear-gradient(90deg,#fd72ff 0%, #735aff 100%);
       color: #fff;
-      border: none;
-      border-radius: 20px;
-      padding: 8px 22px;
-      font-size: 1.02rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-      cursor: pointer;
-      box-shadow: 0 2px 10px #7c45e927;
-      transition: background .14s, color .14s, box-shadow .13s;
-      display:inline-block;
     }
-    .fav-btn.favorited { background: #735aff; color: #fffbe6;}
-    .cozuldu-badge {
-      display: inline-block;
-      background: #13bd72;
-      color: #fff;
-      font-size: .93em;
-      font-weight: 700;
-      border-radius: 10px;
-      padding: 2px 13px;
-      margin-left: 7px;
-      vertical-align: middle;
+    .next-btn {
+      width: 100%;
+      margin-top: 18px;
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="container">
-      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
+    <div class="nav-flex">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
@@ -68,19 +97,15 @@
     </div>
   </header>
   <main>
-    <section>
-      <div class="test-kart" id="test-alani">
-        <div class="loader">Test yükleniyor...</div>
-      </div>
-    </section>
+    <div id="test-area"></div>
   </main>
   <footer>
-    <div class="container">
+    <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
-        <img src="img/wise.png" alt="Wise" />
-        <img src="img/payoneer.png" alt="Payoneer" />
-        <img src="img/iban.png" alt="IBAN" />
+        <img src="wise.png" alt="Wise" />
+        <img src="payoneer.png" alt="Payoneer" />
+        <img src="iban.png" alt="IBAN" />
       </div>
     </div>
   </footer>
@@ -89,6 +114,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
+    // Navbar çıkış butonu
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
       if (logoutBtn) {
@@ -108,105 +134,111 @@
       }
     });
 
-    // TEST YÜKLEME VE ÇÖZME + FAVORİ + ÇÖZÜLDÜ
-    const urlParams = new URLSearchParams(window.location.search);
-    const testId = urlParams.get("id");
-    let kategoriGlobal = "Genel";
-    let testDoc, sorular, soruIndex = 0, dogruSayisi = 0;
-    let currentUser = null;
-    let isFavorited = false;
-    let isSolved = false;
+    // TESTİ GETİR, FAV BUTON, SORULAR/ŞIKLAR
+    let testId = new URLSearchParams(window.location.search).get('id');
+    let testData = null, currentQ = 0, userAnswers = [];
+    let user, isFavorite = false;
 
-    firebase.auth().onAuthStateChanged(async user => {
-      currentUser = user;
-      if (user && testId) {
-        // Kullanıcı favori ve çözdü mü?
-        const userDoc = await db.collection("users").doc(user.uid).get();
-        const userData = userDoc.data();
-        isFavorited = userData.favorites && userData.favorites.includes(testId);
-        isSolved = userData.completedTests && userData.completedTests.includes(testId);
+    firebase.auth().onAuthStateChanged(async _user => {
+      user = _user;
+      if (!testId) {
+        document.getElementById('test-area').innerHTML = "<p>Test bulunamadı.</p>";
+        return;
       }
-      testYukle();
+      const testDoc = await db.collection("tests").doc(testId).get();
+      if (!testDoc.exists) {
+        document.getElementById('test-area').innerHTML = "<p>Test bulunamadı.</p>";
+        return;
+      }
+      testData = testDoc.data();
+      if (!testData) return;
+      // Favori kontrol
+      if (user) {
+        const userDoc = await db.collection("users").doc(user.uid).get();
+        const favorites = userDoc.data().favorites || [];
+        isFavorite = favorites.includes(testId);
+      }
+      renderTest();
     });
 
-    async function testYukle() {
-      if (!testId) {
-        document.getElementById("test-alani").innerHTML = "<div style='color:#ed4a88;font-size:1.1em;'>Test bulunamadı!</div>";
-        return;
-      }
-      const doc = await db.collection("tests").doc(testId).get();
-      if (!doc.exists) {
-        document.getElementById("test-alani").innerHTML = "<div style='color:#ed4a88;font-size:1.1em;'>Test bulunamadı!</div>";
-        return;
-      }
-      testDoc = doc.data();
-      sorular = testDoc.questions;
-      kategoriGlobal = testDoc.category || "Genel";
-      soruIndex = 0;
-      dogruSayisi = 0;
-      soruGoster();
-    }
-
-    function renderFavButton() {
-      if (!currentUser) return "";
-      return `<button class="fav-btn${isFavorited ? ' favorited' : ''}" onclick="toggleFav()">${isFavorited ? "Favorilerden Çıkar" : "Favorilere Ekle"}</button>`;
-    }
-    function renderSolvedBadge() {
-      if (isSolved) return `<span class="cozuldu-badge">Çözüldü</span>`;
-      return "";
-    }
-
-    function soruGoster() {
-      if (soruIndex >= sorular.length) {
-        // Test bitti, sonuç ekranına yönlendir
-        window.location.href = `test-sonuc.html?id=${testId}&puan=${dogruSayisi}`;
-        return;
-      }
-      const s = sorular[soruIndex];
-      let secenekler = "";
-      s.options.forEach((op, i) => {
-        secenekler += `<button class="secenek-btn" onclick="secenekSec(${i})">${op}</button>`;
-      });
-      document.getElementById("test-alani").innerHTML = `
-        ${renderFavButton()}
-        <img src="${testDoc.image || 'img/soru-isareti.png'}" class="test-img" alt="Test Görseli"/>
-        <div class="test-baslik">${testDoc.title} ${renderSolvedBadge()}</div>
-        <div class="test-kategori">${testDoc.category}</div>
-        <div class="test-soru">Soru ${soruIndex+1}: ${s.question}</div>
-        <div class="secenekler">${secenekler}</div>
+    function renderTest() {
+      if (!testData) return;
+      // Test header kartı
+      let icon = "test-category-default.png";
+      if (testData.category === "Genel") icon = "category-genel.png";
+      if (testData.category === "Eğlence") icon = "category-eglence.png";
+      if (testData.category === "Bilgi") icon = "category-bilgi.png";
+      if (testData.category === "Psikoloji") icon = "category-psikoloji.png";
+      if (testData.category === "Oyun") icon = "category-oyun.png";
+      document.getElementById('test-area').innerHTML = `
+        <div class="test-header-card">
+          <img src="${icon}" alt="${testData.category || ''}" />
+          <h2 style="color:#735aff;margin-bottom:6px;">${testData.title}</h2>
+          <div style="color:#876fa9;font-size:1.05em;margin-bottom:7px;">${testData.description || ''}</div>
+          <button class="test-fav-btn" id="fav-btn" title="Favorilere ekle/kaldır">
+            <img src="${isFavorite ? 'favorite-active.png' : 'favorite-inactive.png'}" alt="Favori"/>
+          </button>
+        </div>
+        <div class="test-question-card" id="question-card"></div>
       `;
+      renderQuestion();
+      document.getElementById('fav-btn').onclick = toggleFavorite;
     }
 
-    window.secenekSec = function(i) {
-      if (sorular[soruIndex].answer === i) dogruSayisi++;
-      soruIndex++;
-      soruGoster();
-    };
+    function renderQuestion() {
+      if (!testData || !testData.questions) return;
+      const q = testData.questions[currentQ];
+      if (!q) {
+        // Bitti, sonuç sayfasına yönlendir
+        const answerStr = encodeURIComponent(JSON.stringify(userAnswers));
+        window.location.href = `test-sonuc.html?id=${testId}&answers=${answerStr}`;
+        return;
+      }
+      let optionsHtml = "";
+      q.options.forEach((opt, i) => {
+        optionsHtml += `<button class="option-btn" onclick="selectOption(${i})" id="opt${i}">${opt}</button>`;
+      });
+      document.getElementById('question-card').innerHTML = `
+        <div style="font-weight:700;color:#735aff;margin-bottom:8px;">Soru ${currentQ+1} / ${testData.questions.length}</div>
+        <div style="margin-bottom:13px;">${q.question}</div>
+        <div>${optionsHtml}</div>
+        <button class="cta-btn next-btn" id="nextBtn" disabled>Devam Et</button>
+      `;
+      // Option seçimi kontrolü
+      window.selectOption = function(idx) {
+        document.querySelectorAll('.option-btn').forEach(btn=>btn.classList.remove('selected'));
+        document.getElementById('opt'+idx).classList.add('selected');
+        document.getElementById('nextBtn').disabled = false;
+        window.selectedOpt = idx;
+      }
+      document.getElementById('nextBtn').onclick = function() {
+        userAnswers[currentQ] = typeof window.selectedOpt === "undefined" ? null : window.selectedOpt;
+        currentQ++;
+        window.selectedOpt = undefined;
+        renderQuestion();
+      }
+    }
 
-    // FAVORİ EKLE/ÇIKAR
-    window.toggleFav = async function() {
-      if (!currentUser) {
+    // Favori Ekle/Kaldır
+    async function toggleFavorite() {
+      if (!user) {
         alert("Favorilere eklemek için giriş yapmalısın!");
         window.location.href = "giris.html";
         return;
       }
-      const userRef = db.collection("users").doc(currentUser.uid);
-      if (isFavorited) {
-        await userRef.update({
-          favorites: firebase.firestore.FieldValue.arrayRemove(testId)
-        });
-        isFavorited = false;
+      const userRef = db.collection("users").doc(user.uid);
+      const userDoc = await userRef.get();
+      let favorites = userDoc.data().favorites || [];
+      if (isFavorite) {
+        favorites = favorites.filter(f => f !== testId);
+        isFavorite = false;
       } else {
-        await userRef.update({
-          favorites: firebase.firestore.FieldValue.arrayUnion(testId)
-        });
-        isFavorited = true;
+        favorites.push(testId);
+        isFavorite = true;
       }
-      soruGoster();
-    };
-
-    // Başlat
-    // testYukle(); // Artık auth değişimini bekliyor!
+      await userRef.update({ favorites });
+      renderTest();
+    }
   </script>
 </body>
 </html>
