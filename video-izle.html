@@ -3,16 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Video İzle, Kazan | Testlik.com</title>
-  <meta name="description" content="Video izle, anında puan topla! Sponsor videoları izleyerek kazanç sağla.">
+  <title>Video İzle Kazan | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Video izle, kolayca puan kazan!">
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="img/favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    .video-card {
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 2px 24px #735aff19;
+      padding: 36px 24px 34px 24px;
+      max-width: 440px;
+      margin: 44px auto 22px auto;
+      text-align: center;
+      font-size: 1.12em;
+    }
+    .video-embed {
+      width:100%;max-width:370px;
+      aspect-ratio:16/9;
+      margin:0 auto 18px auto;
+      border-radius:17px;
+      box-shadow:0 2px 12px #b69bfc19;
+      border:none;
+      background:#faf4ff;
+      display:block;
+    }
+    .video-btn {
+      margin-top: 15px;
+      font-size: 1.08em;
+      background: linear-gradient(90deg,#fd72ff 0%, #735aff 100%);
+      color: #fff;
+      border: none;
+      border-radius: 17px;
+      padding: 10px 33px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 10px #735aff29;
+      transition: background .13s;
+    }
+    .video-btn:disabled {background:#ccc;cursor:not-allowed;}
+    .video-result {margin-top:18px;color:#ed4a88;font-weight:700;min-height:24px;}
+  </style>
 </head>
 <body>
   <header>
-    <div class="container">
-      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
+    <div class="nav-flex">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
@@ -31,27 +68,23 @@
     </div>
   </header>
   <main>
-    <section class="video-kazan-container" style="margin-top:32px;text-align:center;">
-      <h1 style="color:#735aff;font-weight:700;margin-bottom:18px;">Video İzle, Kazan <span class="emoji">🎬</span></h1>
-      <div class="banner" id="banner-top" style="margin-bottom:8px;"></div>
-      <div class="video-player-box" style="background:#fff;border-radius:18px;box-shadow:0 4px 20px #735aff1a;display:inline-block;padding:16px 10px 10px 10px;">
-        <video id="rewardVideo" width="340" height="192" controls autoplay muted poster="img/soru-isareti.png" style="border-radius:10px;">
-          <source src="videos/1.mp4" type="video/mp4">
-          <!-- Sonraki videolara js ile geçilecek -->
-        </video>
-      </div>
-      <div class="banner" id="banner-bottom" style="margin-top:8px;"></div>
-      <div id="video-kazan-sonuc" style="display:none;font-weight:700;color:#13bd72;font-size:1.13em;margin-top:18px;">Tebrikler! 10 puan kazandın 🎉</div>
-      <div id="video-sayac" style="color:#735aff;font-weight:600;margin-top:14px;"></div>
-    </section>
+    <div class="video-card">
+      <div style="font-weight:700;color:#735aff;margin-bottom:14px;font-size:1.22em;">Video İzle, Anında Puan Kazan!</div>
+      <iframe class="video-embed" id="videoFrame"
+        src="https://www.youtube.com/embed/3V-dZB5TKss?enablejsapi=1&controls=1"
+        title="YouTube video player" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+      </iframe>
+      <button class="video-btn" id="videoCheckBtn" disabled>Video Bitince Puanı Al</button>
+      <div class="video-result" id="videoResult"></div>
+    </div>
   </main>
   <footer>
-    <div class="container">
+    <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
       <div class="odeme-logo">
-        <img src="img/wise.png" alt="Wise" />
-        <img src="img/payoneer.png" alt="Payoneer" />
-        <img src="img/iban.png" alt="IBAN" />
+        <img src="wise.png" alt="Wise" />
+        <img src="payoneer.png" alt="Payoneer" />
+        <img src="iban.png" alt="IBAN" />
       </div>
     </div>
   </footer>
@@ -59,8 +92,23 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
+  <!-- YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
   <script>
-    // Navbar logout kontrolü
+    var player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('videoFrame', {
+        events: {
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.ENDED) {
+        document.getElementById('videoCheckBtn').disabled = false;
+      }
+    }
+    // Navbar çıkış butonu
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
       if (logoutBtn) {
@@ -80,56 +128,31 @@
       }
     });
 
-    // Sponsor video ve bannerlar (mp4/YouTube embed ile kullanılabilir)
-    const videoList = [
-      {src: "videos/1.mp4"},
-      {src: "videos/2.mp4"},
-      {src: "videos/3.mp4"}
-      // Sponsor video, tanıtım veya YouTube embed kodları ile değiştirilebilir.
-    ];
-    // Banner/ad kodları, AdSense kodunu buraya ekleyebilirsin!
-    const bannersTop = [
-      '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto"></ins>',
-      '<img src="img/banner1.png" style="width:95%;border-radius:14px;">',
-      '<img src="img/banner2.png" style="width:95%;border-radius:14px;">'
-    ];
-    const bannersBottom = [
-      '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto"></ins>',
-      '<img src="img/banner3.png" style="width:95%;border-radius:14px;">',
-      '<img src="img/banner4.png" style="width:95%;border-radius:14px;">'
-    ];
-    let currentIndex = 0, kazanildi = false, toplamVideo = videoList.length;
-    let video = null, toplamIzlenen = 0;
-    function loadVideo(i) {
-      video = document.getElementById('rewardVideo');
-      video.src = videoList[i].src;
-      document.getElementById('banner-top').innerHTML = bannersTop[i % bannersTop.length];
-      document.getElementById('banner-bottom').innerHTML = bannersBottom[i % bannersBottom.length];
-      document.getElementById('video-kazan-sonuc').style.display = 'none';
-      if (window.adsbygoogle) (adsbygoogle = window.adsbygoogle || []).push({});
-      kazanildi = false;
-      video.load(); video.play();
-      document.getElementById('video-sayac').innerText = "İzlenen video: "+(i+1)+"/"+toplamVideo;
-    }
-    window.onload = function() { loadVideo(0); };
-    document.addEventListener("DOMContentLoaded", () => {
-      video = document.getElementById('rewardVideo');
-      video.onended = async function() {
-        if (kazanildi) return; kazanildi = true; toplamIzlenen++;
-        document.getElementById('video-kazan-sonuc').style.display = 'block';
-        if (window.auth && window.auth.currentUser) {
-          const uid = auth.currentUser.uid;
-          const userRef = db.collection("users").doc(uid);
-          const userDoc = await userRef.get();
-          const puan = (userDoc.data().points || 0) + 10;
-          await userRef.update({points: puan});
-        }
-        setTimeout(function() {
-          currentIndex = (currentIndex+1)%videoList.length;
-          loadVideo(currentIndex);
-        }, 2200);
-      };
-    });
+    // Video tamamlanınca puan ver
+    document.getElementById("videoCheckBtn").onclick = async function() {
+      const btn = document.getElementById("videoCheckBtn");
+      const res = document.getElementById("videoResult");
+      btn.disabled = true;
+      res.innerHTML = "İşleniyor...";
+      const user = firebase.auth().currentUser;
+      if (!user) {
+        res.innerHTML = "<span style='color:#ed4a88;'>Giriş yapmalısın!</span>";
+        return;
+      }
+      // Video ödülünü tekrar tekrar vermemek için "videoWatched" alanı kontrolü
+      const userRef = db.collection("users").doc(user.uid);
+      const userDoc = await userRef.get();
+      if (userDoc.data().videoWatched && (Date.now() - userDoc.data().videoWatched < 1000*60*60*24)) {
+        res.innerHTML = "<span style='color:#bba5fa;'>Bugün zaten izledin. Yarın tekrar izle!</span>";
+        return;
+      }
+      // Ödül ekle
+      await userRef.update({
+        points: (userDoc.data().points || 0) + 30,
+        videoWatched: Date.now()
+      });
+      res.innerHTML = "<span style='color:#13bd72;'>Tebrikler, 30 puan kazandın!</span>";
+    };
   </script>
 </body>
 </html>
