@@ -1,44 +1,64 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Panel | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Yönetici paneli, test ekle ve düzenle.">
+  <title>Admin Paneli | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Admin paneli: Test ekle, güncelle, sil!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .admin-flex {display:flex;gap:32px;flex-wrap:wrap;justify-content:center;}
-    .admin-card {
-      background:#fff;border-radius:28px;box-shadow:0 2px 24px #735aff19;
-      padding:34px 24px 30px 24px;max-width:430px;text-align:left;font-size:1.11em;margin:22px 0;flex:1;
+    .admin-wrap {
+      max-width: 780px;
+      margin: 35px auto 30px auto;
+      background: #fff;
+      border-radius: 23px;
+      box-shadow: 0 2px 22px #735aff1a;
+      padding: 38px 28px 28px 28px;
     }
-    .admin-title {color:#735aff;font-size:1.17em;font-weight:700;margin-bottom:10px;}
+    .admin-title {font-size:1.35em;color:#735aff;font-weight:800;margin-bottom:22px;}
+    .admin-input, .admin-select {
+      width: 100%; padding: 12px 9px; margin-bottom: 12px;
+      border-radius: 13px; border: 1.4px solid #d7c3f7; font-size:1.03em;
+      font-family:'Fredoka',Arial; background:#faf4ff;
+    }
     .admin-btn {
-      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);color:#fff;
-      border:none;border-radius:13px;padding:9px 20px;font-weight:700;font-size:1em;
-      cursor:pointer;margin-top:10px;margin-bottom:10px;transition:background .13s;
+      background: linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
+      color:#fff; font-weight:700; border-radius:15px; border:none;
+      padding:11px 38px;font-size:1.11em;cursor:pointer;margin-top:6px;
+      transition:background .13s;
     }
-    .admin-btn:active{background:#ed4a88;}
-    .admin-input, .admin-select, .admin-textarea {
-      width:98%;padding:7px 10px;margin-bottom:10px;
-      border-radius:11px;border:1.3px solid #b69bfc;font-size:1em;
-      background:#faf4ff;resize:vertical;
+    .admin-btn:active {background: #ed4a88;}
+    .admin-table {width:100%;margin-top:33px;border-collapse:collapse;}
+    .admin-table th, .admin-table td {padding:11px 6px;text-align:left;border-bottom:1.3px solid #eee;}
+    .admin-table th {background:#eee5ff;color:#735aff;}
+    .admin-table td {background:#faf7ff;}
+    .admin-action-btn {
+      background:#ed4a88;color:#fff;border:none;border-radius:8px;padding:5px 15px;font-weight:600;cursor:pointer;
+      margin-left:3px;font-size:.97em;
     }
-    .admin-textarea {min-height:44px;max-height:300px;}
-    .admin-table {width:100%;margin-top:12px;border-collapse:collapse;font-size:.97em;}
-    .admin-table th, .admin-table td {border:1px solid #e1dbf5;padding:8px;text-align:left;}
-    .admin-table th {background:#f7e8ff;color:#735aff;}
-    .admin-table tr:nth-child(even){background:#faf7ff;}
-    .admin-edit-btn, .admin-del-btn {
-      background:none;border:none;cursor:pointer;margin-right:4px;
-    }
-    .admin-edit-btn img, .admin-del-btn img {height:22px;}
-    .admin-section-title {color:#ed4a88;font-weight:700;margin-top:24px;margin-bottom:7px;}
   </style>
 </head>
 <body>
+  <!-- Giriş Modalı (her sayfada ortak) -->
+  <div class="modal-bg" id="login-modal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <h2>Testlik.com'a Giriş</h2>
+      <button class="modal-google" onclick="loginGoogle()">
+        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
+      </button>
+      <hr style="margin:23px 0 15px 0;opacity:.19;">
+      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
+      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
+      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
+      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
+      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
+      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
+    </div>
+  </div>
+  <!-- Header -->
   <header>
     <div class="nav-flex">
       <img src="logo.png" alt="Testlik.com Logo" class="logo" />
@@ -54,56 +74,44 @@
         <a href="dashboard.html">Dashboard</a>
         <a href="akademi.html">Akademi</a>
         <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link active">Admin</a>
+        <a href="admin.html" class="admin-link active" id="admin-link">Admin</a>
         <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
+  <!-- Main -->
   <main>
-    <h1 class="main-title"><span class="emoji">🛠️</span> Admin Paneli</h1>
-    <div class="admin-flex">
-      <!-- Test Ekleme Formu -->
-      <div class="admin-card">
-        <div class="admin-title">Yeni Test Ekle</div>
-        <input class="admin-input" id="test-title" placeholder="Test Başlığı" />
-        <input class="admin-input" id="test-desc" placeholder="Kısa Açıklama" />
-        <select class="admin-select" id="test-category">
-          <option value="Genel">Genel</option>
-          <option value="Eğlence">Eğlence</option>
-          <option value="Bilgi">Bilgi</option>
-          <option value="Psikoloji">Psikoloji</option>
-          <option value="Oyun">Oyun</option>
+    <div class="admin-wrap" id="admin-panel" style="display:none;">
+      <div class="admin-title">Admin Paneli</div>
+      <form id="test-ekle-form" onsubmit="return ekleTest();">
+        <input type="text" class="admin-input" id="test-title" placeholder="Test Başlığı" required>
+        <textarea class="admin-input" id="test-desc" placeholder="Açıklama" rows="2"></textarea>
+        <select class="admin-select" id="test-cat">
+          <option>Genel</option><option>Eğlence</option>
+          <option>Bilgi</option><option>Psikoloji</option>
+          <option>Oyun</option>
         </select>
-        <input class="admin-input" id="test-image" placeholder="Görsel linki (isteğe bağlı)" />
-        <textarea class="admin-textarea" id="test-questions" placeholder="Soruları JSON array olarak gir. (ör: [{question:'...',options:['a','b','c'],correct:0}, ...])"></textarea>
-        <textarea class="admin-textarea" id="test-results" placeholder="Sonuçları JSON array olarak gir. (ör: [{min:0,max:3,text:'...',image:'result-fail.png'}, ...])"></textarea>
-        <button class="admin-btn" onclick="addTest()">Testi Ekle</button>
-        <div id="add-test-msg" style="min-height:22px;margin-top:7px;"></div>
-      </div>
-      <!-- Test Listesi -->
-      <div class="admin-card" style="min-width:390px;">
-        <div class="admin-title">Tüm Testler</div>
-        <table class="admin-table" id="tests-table">
-          <thead>
-            <tr>
-              <th>Başlık</th><th>Kategori</th><th>Durum</th><th></th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-        <div class="admin-section-title">Kullanıcı Önerileri</div>
-        <table class="admin-table" id="sg-table">
-          <thead>
-            <tr>
-              <th>Başlık</th><th>Açıklama</th><th>Tarih</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+        <input type="text" class="admin-input" id="test-image" placeholder="Görsel URL (opsiyonel)">
+        <button type="submit" class="admin-btn">Test Ekle</button>
+      </form>
+      <div id="admin-hata" style="color:#ed4a88;min-height:23px;margin-top:9px;"></div>
+      <table class="admin-table" id="test-table">
+        <thead>
+          <tr><th>Başlık</th><th>Kategori</th><th>Açıklama</th><th>İşlem</th></tr>
+        </thead>
+        <tbody>
+          <!-- Testler buraya JS ile gelecek -->
+        </tbody>
+      </table>
+    </div>
+    <div id="admin-noauth" style="max-width:410px;margin:60px auto 40px auto;display:none;">
+      <div style="background:#fff;padding:32px 17px 28px 17px;border-radius:24px;box-shadow:0 2px 18px #735aff11;text-align:center;">
+        <span style="color:#ed4a88;font-size:2em;">🚫</span><br>
+        <b>Sadece admin yetkili kullanıcılar bu sayfayı görebilir!</b>
       </div>
     </div>
-    <!-- Test düzenleme popup'ı (isteğe bağlı genişletilebilir) -->
   </main>
+  <!-- Footer -->
   <footer>
     <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
@@ -114,107 +122,73 @@
       </div>
     </div>
   </footer>
+  <!-- Firebase/JS -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
+  <script src="main.js"></script>
   <script>
-    // Navbar çıkış butonu
+    // Sadece admin girebilir
     firebase.auth().onAuthStateChanged(function(user) {
-      var logoutBtn = document.getElementById('logout-btn');
-      if (logoutBtn) {
-        if (user) logoutBtn.style.display = 'inline-block';
-        else logoutBtn.style.display = 'none';
-      }
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-      var logoutBtnElem = document.getElementById('logout-btn');
-      if (logoutBtnElem) {
-        logoutBtnElem.onclick = function(e) {
-          e.preventDefault();
-          firebase.auth().signOut().then(() => {
-            window.location.href = "index.html";
-          });
-        }
-      }
+      if (!user) { openModal(); return; }
+      const isAdmin = user.email === "admin@testlik.com" || user.email === "seninadminmailin@...";
+      document.getElementById("admin-panel").style.display = isAdmin ? "block" : "none";
+      document.getElementById("admin-noauth").style.display = isAdmin ? "none" : "block";
+      var adminLink = document.getElementById('admin-link');
+      if (adminLink) adminLink.style.display = isAdmin ? "inline-block" : "none";
+      if (!isAdmin) return;
+
+      // Admin panel fonksiyonları (test ekle, göster, sil)
+      getirTestler();
     });
 
     // Test ekle
-    async function addTest() {
+    function ekleTest() {
       const title = document.getElementById("test-title").value.trim();
       const desc = document.getElementById("test-desc").value.trim();
-      const category = document.getElementById("test-category").value;
-      const image = document.getElementById("test-image").value.trim();
-      let questions, results;
-      try { questions = JSON.parse(document.getElementById("test-questions").value); } catch { questions = null; }
-      try { results = JSON.parse(document.getElementById("test-results").value); } catch { results = null; }
-      const msg = document.getElementById("add-test-msg");
-      if (!title || !desc || !questions || !Array.isArray(questions) || !results || !Array.isArray(results)) {
-        msg.innerHTML = "<span style='color:#ed4a88;'>Lütfen tüm alanları doğru doldurun!</span>";
-        return;
-      }
-      await db.collection("tests").add({
-        title, description: desc, category, image, questions, results, createdAt: Date.now()
+      const cat = document.getElementById("test-cat").value.trim();
+      const img = document.getElementById("test-image").value.trim();
+      db.collection("tests").add({
+        title, description: desc, category: cat,
+        image: img, createdAt: new Date(), solved: 0
+      }).then(() => {
+        document.getElementById("test-ekle-form").reset();
+        getirTestler();
+        document.getElementById("admin-hata").innerText = "Test başarıyla eklendi!";
+        setTimeout(()=>{document.getElementById("admin-hata").innerText = "";},2000);
+      }).catch(e => {
+        document.getElementById("admin-hata").innerText = "Ekleme başarısız!";
       });
-      msg.innerHTML = "<span style='color:#13bd72;'>Test başarıyla eklendi!</span>";
-      loadTests();
+      return false;
     }
-
-    // Test listesini çek
-    async function loadTests() {
-      const table = document.querySelector("#tests-table tbody");
-      const snap = await db.collection("tests").orderBy("createdAt", "desc").limit(50).get();
-      let html = "";
-      snap.forEach(doc => {
-        const d = doc.data();
-        html += `
-          <tr>
-            <td>${d.title || "-"}</td>
-            <td>${d.category || "-"}</td>
-            <td>${d.questions ? "Aktif" : "Eksik"}</td>
-            <td>
-              <button class="admin-edit-btn" onclick="editTest('${doc.id}')"><img src="edit.png" alt="Düzenle"/></button>
-              <button class="admin-del-btn" onclick="deleteTest('${doc.id}')"><img src="delete.png" alt="Sil"/></button>
-            </td>
-          </tr>
-        `;
+    // Testleri göster
+    function getirTestler() {
+      const tbody = document.getElementById("test-table").querySelector("tbody");
+      tbody.innerHTML = `<tr><td colspan="4" style="color:#bba5fa;">Yükleniyor...</td></tr>`;
+      db.collection("tests").orderBy("createdAt","desc").limit(25).get().then(snap => {
+        let html = "";
+        snap.forEach(doc => {
+          const t = doc.data();
+          html += `
+            <tr>
+              <td>${t.title}</td>
+              <td>${t.category}</td>
+              <td>${t.description || ""}</td>
+              <td>
+                <button class="admin-action-btn" onclick="silTest('${doc.id}')">Sil</button>
+              </td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = html || `<tr><td colspan="4" style="color:#ed4a88;">Test bulunamadı!</td></tr>`;
       });
-      table.innerHTML = html;
     }
-
     // Test sil
-    async function deleteTest(id) {
-      if (!confirm("Testi silmek istediğine emin misin?")) return;
-      await db.collection("tests").doc(id).delete();
-      loadTests();
+    function silTest(id) {
+      if (!confirm("Bu testi silmek istediğine emin misin?")) return;
+      db.collection("tests").doc(id).delete().then(getirTestler);
     }
-
-    // (Örnek) Test düzenle açılabilir
-    function editTest(id) {
-      alert("Düzenleme popup'ı eklenebilir (gelişmiş admin için)!");
-    }
-
-    // Kullanıcı önerilerini çek
-    async function loadSuggestions() {
-      const table = document.querySelector("#sg-table tbody");
-      const snap = await db.collection("suggestions").orderBy("createdAt","desc").limit(20).get();
-      let html = "";
-      snap.forEach(doc => {
-        const d = doc.data();
-        html += `
-          <tr>
-            <td>${d.title || "-"}</td>
-            <td>${d.desc || "-"}</td>
-            <td>${d.createdAt ? new Date(d.createdAt.seconds*1000 || d.createdAt).toLocaleDateString("tr-TR") : "-"}</td>
-          </tr>
-        `;
-      });
-      table.innerHTML = html;
-    }
-
-    // İlk yükleme
-    loadTests();
-    loadSuggestions();
   </script>
 </body>
 </html>
