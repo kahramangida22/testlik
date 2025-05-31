@@ -3,39 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Testlik Akademi | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Kullanıcı rehberi ve sistem açıklamaları.">
+  <title>Akademi | Testlik.com</title>
+  <meta name="description" content="Testlik.com Akademi - Sistem işleyişi, rehberler ve ipuçları.">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .akademi-card {
-      background:#fff;
-      border-radius:28px;
-      box-shadow:0 2px 24px #735aff19;
-      padding:32px 28px 28px 28px;
-      max-width:640px;
-      margin:44px auto 32px auto;
-      font-size:1.13em;
-      color:#4a306f;
+    .ak-wrap {max-width:760px;margin:37px auto 30px auto;}
+    .ak-title {color:#735aff;font-size:1.33em;font-weight:800;margin-bottom:18px;}
+    .ak-grid {display:grid;grid-template-columns:1fr 1fr;gap:25px;}
+    .ak-card {
+      background:#fff;border-radius:21px;box-shadow:0 2px 17px #735aff13;
+      padding:23px 18px 19px 18px;text-align:left;
+      display:flex;flex-direction:column;gap:9px;
     }
-    .akademi-title {
-      color:#735aff;font-size:1.26em;font-weight:800;margin-bottom:19px;text-align:center;
-      display:flex;align-items:center;gap:10px;justify-content:center;
-    }
-    .akademi-ss {
-      color:#ed4a88;font-size:1.04em;font-weight:700;margin:19px 0 6px 0;
-    }
-    .akademi-icon {
-      width:30px;height:30px;vertical-align:middle;margin-right:8px;
-      border-radius:9px;background:#faf7ff;padding:3px;
-    }
-    ul.akademi-list {margin-left:13px;}
-    ul.akademi-list li {margin-bottom:7px;}
-    @media (max-width:700px){.akademi-card{padding:18px 6vw 22px 6vw;}}
+    .ak-card h3 {color:#ed4a88;margin:0 0 7px 0;font-size:1.13em;}
+    .ak-card ul {margin:6px 0 0 16px;padding:0;font-size:1.06em;color:#735aff;}
+    .ak-card li {margin-bottom:7px;}
+    @media (max-width:900px){.ak-grid{grid-template-columns:1fr;}}
   </style>
 </head>
 <body>
+  <!-- Giriş Modalı -->
+  <div class="modal-bg" id="login-modal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <h2>Testlik.com'a Giriş</h2>
+      <button class="modal-google" onclick="loginGoogle()">
+        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
+      </button>
+      <hr style="margin:23px 0 15px 0;opacity:.19;">
+      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
+      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
+      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
+      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
+      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
+      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
+    </div>
+  </div>
+  <!-- Header -->
   <header>
     <div class="nav-flex">
       <img src="logo.png" alt="Testlik.com Logo" class="logo" />
@@ -51,35 +57,55 @@
         <a href="dashboard.html">Dashboard</a>
         <a href="akademi.html" class="active">Akademi</a>
         <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link">Admin</a>
+        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
         <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
+  <!-- Main -->
   <main>
-    <div class="akademi-card">
-      <div class="akademi-title"><img src="soru-isareti.png" class="akademi-icon" alt="Akademi" />Testlik Akademi - Kullanıcı Rehberi</div>
-      <div class="akademi-ss">Sistem Nasıl Çalışır?</div>
-      <ul class="akademi-list">
-        <li>Test çöz, her doğru cevap sana <b>puan</b> kazandırır.</li>
-        <li>Farklı kategorilerden testler seçebilirsin. <img src="category-genel.png" class="akademi-icon" alt="Genel" /></li>
-        <li>Puanların biriktikçe <b>dashboard</b> ekranında güncel puanını görebilirsin.</li>
-        <li>Puanlar belirli bir limite ulaştığında, IBAN ile ödeme talebinde bulunabilirsin.</li>
-        <li>Ödemen birkaç gün içinde hesabına geçer (Wise, Payoneer, IBAN vs.).</li>
-        <li>Kendi testini/sorunu önererek topluluğa katkı sağlayabilirsin.</li>
-        <li>Favori testlerini <img src="favorite-active.png" style="height:20px;" /> ile işaretleyebilirsin.</li>
-        <li>Profilinden <b>kullanıcı adını</b> ve <b>profil fotoğrafını</b> değiştirebilirsin.</li>
-      </ul>
-      <div class="akademi-ss">Sık Sorulanlar &amp; İpuçları</div>
-      <ul class="akademi-list">
-        <li><b>Puan kazanmak için giriş yapmalısın.</b></li>
-        <li>Testleri tekrar çözebilirsin ancak ilk çözümde kazandığın puan kalıcıdır.</li>
-        <li>Çekim talebi verirken IBAN’ını <b>doğru gir</b>, yanlış IBAN’a ödeme yapılamaz!</li>
-        <li>Topluluk kurallarına uygun olmayan testler yayınlanmaz.</li>
-        <li>Her türlü soru ve önerin için <b>info@testlik.com</b>’a mail atabilirsin.</li>
-      </ul>
+    <div class="ak-wrap">
+      <div class="ak-title">Testlik Akademi | Kullanıcı Rehberi</div>
+      <div class="ak-grid">
+        <div class="ak-card">
+          <h3>Nasıl Puan Toplanır?</h3>
+          <ul>
+            <li>Test çöz, doğru cevapladıkça puan kazan.</li>
+            <li>Çarkıfelek çevirerek anlık bonuslar elde et.</li>
+            <li>Video izleyerek ekstra puan alabilirsin.</li>
+            <li>Sosyal medyada paylaşım yap, etkinliklerden ödül kap.</li>
+          </ul>
+        </div>
+        <div class="ak-card">
+          <h3>Para Nasıl Çekilir?</h3>
+          <ul>
+            <li>Dashboard ekranında “Para Çekme Talebi” bölümünden IBAN veya diğer seçenekleri doldur.</li>
+            <li>Puanın TL karşılığı, minimum tutara ulaştığında çekebilirsin.</li>
+            <li>Talepler admin onayından geçtikten sonra ödeme yapılır.</li>
+            <li>Ödeme yöntemleri: IBAN, Wise, Payoneer.</li>
+          </ul>
+        </div>
+        <div class="ak-card">
+          <h3>Platformda Nelere Dikkat Et?</h3>
+          <ul>
+            <li>Çoklu hesap ve hile yapmaya çalışanların puanları silinir.</li>
+            <li>Sorulara veya testlere spam gönderme, reklam paylaşımı yasaktır.</li>
+            <li>Destek almak için profilinden mesaj atabilirsin.</li>
+          </ul>
+        </div>
+        <div class="ak-card">
+          <h3>Ekstra Bilgiler ve İpuçları</h3>
+          <ul>
+            <li>Kategorilerde daha fazla test çöz, daha fazla puan alırsın.</li>
+            <li>Favori testlerini kaydederek daha sonra tekrar çözebilirsin.</li>
+            <li>En çok puan kazananlar haftalık ödüllerde avantaj sağlar.</li>
+            <li>Sürpriz görev ve etkinlikleri takip et!</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </main>
+  <!-- Footer -->
   <footer>
     <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
@@ -90,28 +116,22 @@
       </div>
     </div>
   </footer>
+  <!-- Firebase/JS -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
+  <script src="main.js"></script>
   <script>
+    // Modal ve admin linki
     firebase.auth().onAuthStateChanged(function(user) {
-      var logoutBtn = document.getElementById('logout-btn');
-      if (logoutBtn) {
-        if (user) logoutBtn.style.display = 'inline-block';
-        else logoutBtn.style.display = 'none';
+      var adminLink = document.getElementById('admin-link');
+      if (adminLink) {
+        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
+        else adminLink.style.display = "none";
       }
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-      var logoutBtnElem = document.getElementById('logout-btn');
-      if (logoutBtnElem) {
-        logoutBtnElem.onclick = function(e) {
-          e.preventDefault();
-          firebase.auth().signOut().then(() => {
-            window.location.href = "index.html";
-          });
-        }
-      }
+      if (!user) openModal();
+      else closeModal();
     });
   </script>
 </body>
