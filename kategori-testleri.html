@@ -4,13 +4,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Kategori Testleri | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Seçtiğin kategoriye özel testleri çöz, puan topla!">
+  <meta name="description" content="Testlik.com - Seçili kategorideki tüm testleri keşfet ve çöz!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    .kt-wrap {max-width:900px;margin:38px auto 30px auto;}
+    .kt-title {color:#735aff;font-size:1.33em;font-weight:800;margin-bottom:23px;}
+    .kt-grid {display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px;}
+    .kt-card {
+      background:#fff;border-radius:21px;box-shadow:0 2px 15px #735aff11;
+      padding:18px 13px 22px 13px;text-align:left;display:flex;flex-direction:column;align-items:center;
+      transition:box-shadow .14s,transform .14s;position:relative;
+    }
+    .kt-card:hover {box-shadow:0 6px 21px #ed4a8822;transform:translateY(-4px) scale(1.03);}
+    .kt-img {width:68px;height:68px;object-fit:contain;margin-bottom:12px;}
+    .kt-name {color:#ed4a88;font-size:1.15em;font-weight:700;margin-bottom:5px;}
+    .kt-desc {color:#7a53c4;font-size:.98em;text-align:center;}
+    .kt-btn {
+      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
+      color:#fff;font-weight:700;border-radius:13px;border:none;box-shadow:0 2px 11px #735aff14;padding:8px 28px;font-size:1em;cursor:pointer;
+      margin-top:14px;transition:background .14s;
+    }
+    .kt-btn:active{background:#ed4a88;}
+    .kt-puan {position:absolute;top:17px;right:18px;background:#f5f0fa;color:#735aff;font-size:.99em;font-weight:700;padding:5px 12px;border-radius:11px;}
+    @media (max-width:1100px){.kt-grid{grid-template-columns:1fr 1fr;}}
+    @media (max-width:700px){.kt-grid{grid-template-columns:1fr;}}
+  </style>
 </head>
 <body>
-  <!-- Giriş Modalı (Tüm sayfalarda çalışacak!) -->
+  <!-- Giriş Modalı -->
   <div class="modal-bg" id="login-modal" style="display:none;">
     <div class="modal-card">
       <button class="modal-close" onclick="closeModal()">&times;</button>
@@ -33,7 +56,7 @@
       <img src="logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
-        <a href="kategoriler.html">Kategoriler</a>
+        <a href="kategoriler.html" class="active">Kategoriler</a>
         <a href="sizdengelenler.html">Sizden Gelenler</a>
         <a href="soru-uret.html">Soru Üret</a>
         <a href="cark.html">Çarkıfelek</a>
@@ -49,10 +72,12 @@
     </div>
   </header>
   <!-- Main -->
-  <main style="max-width:1100px;margin:0 auto;">
-    <h1 id="kategori-title" style="color:#735aff;margin:33px 0 15px 0;font-size:1.55em;font-weight:800;text-align:left;"></h1>
-    <div class="card-grid" id="kategori-testler">
-      <!-- Testler JS ile buraya gelecek -->
+  <main>
+    <div class="kt-wrap">
+      <div class="kt-title" id="kt-baslik">Kategori Testleri</div>
+      <div class="kt-grid" id="kt-list">
+        <!-- Testler JS ile gelecek -->
+      </div>
     </div>
   </main>
   <!-- Footer -->
@@ -73,43 +98,50 @@
   <script src="firebase.js"></script>
   <script src="main.js"></script>
   <script>
-    // --- Modal Kontrol ve Admin Butonu Aynı Mantık ---
+    // Modal ve admin linki
     firebase.auth().onAuthStateChanged(function(user) {
       var adminLink = document.getElementById('admin-link');
       if (adminLink) {
         if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
         else adminLink.style.display = "none";
       }
-      // Modal otomatik
       if (!user) openModal();
       else closeModal();
     });
 
-    // Kategori Adı ve Testleri Getir
-    const params = new URLSearchParams(window.location.search);
-    const kategori = params.get("cat") || "Genel";
-    document.getElementById("kategori-title").innerText = kategori + " Testleri";
+    // Kategoriyi URL'den bul
+    function getQueryParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name) || "";
+    }
+    const seciliKategori = getQueryParam("cat");
 
-    async function getKategoriTestler() {
-      const div = document.getElementById("kategori-testler");
-      div.innerHTML = `<div style="color:#bba5fa;width:100%;">Yükleniyor...</div>`;
-      // Firestore'dan kategoriye göre testler çek
-      const snap = await db.collection("tests").where("category","==",kategori).orderBy("createdAt","desc").limit(30).get();
+    // Sayfa başlığı
+    document.addEventListener("DOMContentLoaded", function(){
+      if(seciliKategori) document.getElementById("kt-baslik").innerText = seciliKategori+" Testleri";
+    });
+
+    // Testleri çek ve göster
+    async function getirKategoriTestleri() {
+      const ktDiv = document.getElementById("kt-list");
+      ktDiv.innerHTML = `<div style="color:#bba5fa;width:100%;">Yükleniyor...</div>`;
+      const snap = await db.collection("tests").where("category","==",seciliKategori).orderBy("createdAt","desc").limit(30).get();
       let html = "";
       snap.forEach(doc => {
         const t = doc.data();
         html += `
-          <div class="card" onclick="window.location.href='test-render.html?id=${doc.id}'" style="cursor:pointer;position:relative;">
-            <img src="${t.image || 'test-category-default.png'}" class="card-img" alt="Test" />
-            <div class="card-title">${t.title || "Test Başlığı"}</div>
-            <div class="card-desc">${t.description || ""}</div>
-            <div class="card-desc" style="font-size:.94em;color:#ed4a88;margin-top:7px;">${t.category || ""}</div>
+          <div class="kt-card">
+            <span class="kt-puan">${t.point || 10} puan</span>
+            <img src="${t.image || 'test-category-default.png'}" class="kt-img" alt="${t.title}" />
+            <div class="kt-name">${t.title}</div>
+            <div class="kt-desc">${t.description || ""}</div>
+            <button class="kt-btn" onclick="window.location.href='test-render.html?id=${doc.id}'">Teste Başla</button>
           </div>
         `;
       });
-      div.innerHTML = html || `<div style="color:#ed4a88;width:100%;">Bu kategoride henüz test yok!</div>`;
+      ktDiv.innerHTML = html || `<div style="color:#ed4a88;">Bu kategoride test yok!</div>`;
     }
-    getKategoriTestler();
+    getirKategoriTestleri();
   </script>
 </body>
 </html>
