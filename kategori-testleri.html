@@ -4,18 +4,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Kategori Testleri | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Seçili kategoriye ait eğlenceli testler.">
-  <link rel="stylesheet" href="styles.css">
+  <meta name="description" content="Testlik.com - Seçtiğin kategoriye özel testleri çöz, puan topla!">
+  <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- Giriş Modalı (Tüm sayfalarda çalışacak!) -->
+  <div class="modal-bg" id="login-modal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <h2>Testlik.com'a Giriş</h2>
+      <button class="modal-google" onclick="loginGoogle()">
+        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
+      </button>
+      <hr style="margin:23px 0 15px 0;opacity:.19;">
+      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
+      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
+      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
+      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
+      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
+      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
+    </div>
+  </div>
+  <!-- Header -->
   <header>
     <div class="nav-flex">
       <img src="logo.png" alt="Testlik.com Logo" class="logo" />
       <nav>
         <a href="index.html">Anasayfa</a>
-        <a href="kategoriler.html" class="active">Kategoriler</a>
+        <a href="kategoriler.html">Kategoriler</a>
         <a href="sizdengelenler.html">Sizden Gelenler</a>
         <a href="soru-uret.html">Soru Üret</a>
         <a href="cark.html">Çarkıfelek</a>
@@ -25,19 +43,19 @@
         <a href="dashboard.html">Dashboard</a>
         <a href="akademi.html">Akademi</a>
         <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link">Admin</a>
+        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
         <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
-
-  <main>
-    <h1 class="main-title" id="cat-title"><span class="emoji">📂</span> Kategori</h1>
-    <section class="testler-grid" id="cat-test-list">
-      <!-- JS ile testler buraya gelecek -->
-    </section>
+  <!-- Main -->
+  <main style="max-width:1100px;margin:0 auto;">
+    <h1 id="kategori-title" style="color:#735aff;margin:33px 0 15px 0;font-size:1.55em;font-weight:800;text-align:left;"></h1>
+    <div class="card-grid" id="kategori-testler">
+      <!-- Testler JS ile buraya gelecek -->
+    </div>
   </main>
-
+  <!-- Footer -->
   <footer>
     <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
@@ -48,67 +66,50 @@
       </div>
     </div>
   </footer>
-
-  <!-- Firebase -->
+  <!-- Firebase/JS -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
+  <script src="main.js"></script>
   <script>
-    // Navbar çıkış butonu
+    // --- Modal Kontrol ve Admin Butonu Aynı Mantık ---
     firebase.auth().onAuthStateChanged(function(user) {
-      var logoutBtn = document.getElementById('logout-btn');
-      if (logoutBtn) {
-        if (user) logoutBtn.style.display = 'inline-block';
-        else logoutBtn.style.display = 'none';
+      var adminLink = document.getElementById('admin-link');
+      if (adminLink) {
+        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
+        else adminLink.style.display = "none";
       }
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-      var logoutBtnElem = document.getElementById('logout-btn');
-      if (logoutBtnElem) {
-        logoutBtnElem.onclick = function(e) {
-          e.preventDefault();
-          firebase.auth().signOut().then(() => {
-            window.location.href = "index.html";
-          });
-        }
-      }
+      // Modal otomatik
+      if (!user) openModal();
+      else closeModal();
     });
 
-    // Kategori adını ve testleri getir
-    let category = new URLSearchParams(window.location.search).get('cat') || "Genel";
-    document.getElementById('cat-title').innerHTML = `<span class="emoji">📂</span> ${category} Testleri`;
+    // Kategori Adı ve Testleri Getir
+    const params = new URLSearchParams(window.location.search);
+    const kategori = params.get("cat") || "Genel";
+    document.getElementById("kategori-title").innerText = kategori + " Testleri";
 
-    async function loadCategoryTests() {
-      const testList = document.getElementById("cat-test-list");
-      testList.innerHTML = "<p>Testler yükleniyor...</p>";
-      let ref = db.collection("tests").where("category", "==", category).orderBy("createdAt", "desc");
-      const snapshot = await ref.get();
-      if (snapshot.empty) {
-        testList.innerHTML = "<p>Bu kategoride henüz test yok.</p>";
-        return;
-      }
-      testList.innerHTML = "";
-      snapshot.forEach(doc => {
+    async function getKategoriTestler() {
+      const div = document.getElementById("kategori-testler");
+      div.innerHTML = `<div style="color:#bba5fa;width:100%;">Yükleniyor...</div>`;
+      // Firestore'dan kategoriye göre testler çek
+      const snap = await db.collection("tests").where("category","==",kategori).orderBy("createdAt","desc").limit(30).get();
+      let html = "";
+      snap.forEach(doc => {
         const t = doc.data();
-        // Kategori ikonunu otomatik çek
-        let icon = "test-category-default.png";
-        if (t.category === "Genel") icon = "category-genel.png";
-        if (t.category === "Eğlence") icon = "category-eglence.png";
-        if (t.category === "Bilgi") icon = "category-bilgi.png";
-        if (t.category === "Psikoloji") icon = "category-psikoloji.png";
-        if (t.category === "Oyun") icon = "category-oyun.png";
-        testList.innerHTML += `
-          <div class="test-card">
-            <img src="${icon}" alt="${t.category || ''}"/>
-            <span>${t.title}</span>
-            <small>${t.description || ''}</small>
-            <a href="test-render.html?id=${doc.id}" class="cta-btn" style="margin-top:13px;">Testi Çöz</a>
+        html += `
+          <div class="card" onclick="window.location.href='test-render.html?id=${doc.id}'" style="cursor:pointer;position:relative;">
+            <img src="${t.image || 'test-category-default.png'}" class="card-img" alt="Test" />
+            <div class="card-title">${t.title || "Test Başlığı"}</div>
+            <div class="card-desc">${t.description || ""}</div>
+            <div class="card-desc" style="font-size:.94em;color:#ed4a88;margin-top:7px;">${t.category || ""}</div>
           </div>
         `;
       });
+      div.innerHTML = html || `<div style="color:#ed4a88;width:100%;">Bu kategoride henüz test yok!</div>`;
     }
-    loadCategoryTests();
+    getKategoriTestler();
   </script>
 </body>
 </html>
