@@ -1,62 +1,59 @@
+/* ———— GENEL BODY VE FONT ———— */
 body {
-  background: linear-gradient(120deg, #f8f4ff 0%, #e8e2ff 100%);
+  background: linear-gradient(120deg, #f9f7ff 0%, #ede5ff 100%);
   font-family: 'Fredoka', Arial, sans-serif;
   margin: 0;
-  color: #4a306f;
+  color: #3a2559;
+  font-size: 17px;
+  min-height: 100vh;
 }
 
+/* ———— HEADER / NAV ———— */
 header {
   background: linear-gradient(90deg, #a387ff 0%, #fd72ff 100%);
+  box-shadow: 0 3px 20px #735aff18;
   padding: 0;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  box-shadow: 0 4px 32px #735aff18;
+  position: sticky; top: 0; z-index: 99;
 }
-
 .nav-flex {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 20px;
   padding: 0 2vw;
   flex-wrap: wrap;
 }
-
 .logo {
-  height: 56px;
-  margin: 12px 30px 12px 0;
-  border-radius: 13px;
+  height: 54px;
+  margin: 12px 32px 12px 0;
+  border-radius: 14px;
   background: #fff;
-  padding: 7px 7px 7px 7px;
-  box-shadow: 0 2px 16px #735aff14;
+  padding: 6px 8px;
+  box-shadow: 0 2px 13px #735aff10;
 }
-
 nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 12px;
+  gap: 7px 14px;
   align-items: center;
-  margin-left: 20px;
+  margin-left: 8px;
   max-width: 100vw;
 }
-
-@media (max-width: 1350px) {
-  nav { max-width: 90vw; flex-wrap: wrap; }
-}
-@media (max-width: 900px) {
+@media (max-width: 1300px) { nav {max-width: 93vw;} }
+@media (max-width: 930px) {
   .nav-flex {flex-direction: column;align-items: stretch;}
   nav {flex-direction: column;align-items: stretch;gap:9px 0;}
 }
-
 nav a {
   padding: 8px 18px;
-  border-radius: 15px;
+  border-radius: 16px;
   background: none;
   color: #735aff;
   font-weight: 700;
-  font-size: 1.07em;
+  font-size: 1.06em;
   transition: background .15s, color .13s;
   text-decoration: none;
   display: inline-block;
+  letter-spacing: 0;
 }
 nav a.active, nav a:hover {
   background: linear-gradient(90deg, #fd72ff 0%, #735aff 100%);
@@ -66,66 +63,97 @@ nav a.admin-link {
   background: #ed4a88;
   color: #fff !important;
   font-weight: 800;
+  letter-spacing: 1px;
 }
 
-main {
-  min-height: 70vh;
+/* ———— KART & GRID SİSTEMİ ———— */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+  gap: 28px;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 0 10px;
 }
-
-.kategori-card {
+.card {
   background: #fff;
-  border-radius: 23px;
-  box-shadow: 0 2px 18px #735aff13;
-  padding: 23px 18px 17px 18px;
+  border-radius: 24px;
+  box-shadow: 0 2px 22px #735aff13;
+  padding: 25px 18px 18px 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 190px;
-  max-width: 260px;
-  margin: 22px 16px 12px 0;
-  transition: transform .08s;
+  min-width: 0;
+  transition: transform .10s, box-shadow .14s;
 }
-.kategori-card:hover { transform: translateY(-6px) scale(1.04); box-shadow: 0 6px 28px #735aff18; }
-.kategori-icon {
-  width: 66px; height: 66px; margin-bottom: 9px;
+.card:hover {
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 7px 30px #735aff1c;
+}
+.card-img {
+  width: 72px; height: 72px;
   object-fit: contain;
+  border-radius: 15px;
+  margin-bottom: 13px;
+  background: #faf4ff;
+  box-shadow: 0 1px 9px #bba5fa0e;
 }
-.kategori-title {
-  font-size: 1.17em;
+.card-title {
+  font-size: 1.16em;
   font-weight: 700;
   color: #735aff;
-  margin-bottom: 3px;
-}
-.kategori-desc {
-  font-size: .98em;
-  color: #7a53c4;
-  margin-bottom: 0;
-  font-weight: 500;
+  margin-bottom: 4px;
   text-align: center;
 }
-.kategoriler-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 16px;
+.card-desc {
+  font-size: 1em;
+  color: #7a53c4;
+  margin-bottom: 0;
+  text-align: center;
+  font-weight: 500;
+  min-height: 36px;
 }
-
-.button-main {
+.card-btn {
   background: linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
   color:#fff;
   font-weight:700;
-  border-radius:18px;
+  border-radius:15px;
   border:none;
-  box-shadow:0 2px 16px #735aff22;
-  padding:16px 38px;
-  font-size:1.17em;
+  box-shadow:0 2px 11px #735aff17;
+  padding:11px 32px;
+  font-size:1.08em;
   cursor:pointer;
-  margin:13px auto 0 auto;
-  display:block;
+  margin-top:13px;
   transition:transform .12s, box-shadow .12s;
 }
-.button-main:active {transform:scale(.98);box-shadow:0 2px 12px #735aff17;}
-/* Footer */
+.card-btn:active {transform:scale(.97);}
+.card-fav {
+  position: absolute; top: 14px; right: 18px; background: none; border: none; cursor: pointer;
+}
+
+/* Görsel (avatar, test görseli) için responsive oranlı kutu */
+.ratio-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  border-radius: 13px;
+  background: #faf4ff;
+  box-shadow: 0 1px 7px #bba5fa10;
+}
+
+/* ———— BLOKLAR ———— */
+.section-title {
+  text-align: left;
+  color: #735aff;
+  font-size: 1.32em;
+  font-weight: 800;
+  margin: 38px 0 13px 0;
+  letter-spacing: -.5px;
+}
+@media (max-width: 600px) { .section-title {font-size: 1.11em;} }
+
+/* ———— FOOTER ———— */
 footer {
   margin-top: 55px;
   padding: 24px 10px 19px 10px;
@@ -149,4 +177,57 @@ footer {
 @media (max-width: 700px) {
   .footer-flex {flex-direction:column;gap:9px;}
   .logo {height:38px;}
+}
+
+/* ———— POPUP / MODAL ———— */
+.modal-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: #31114e8a;
+  z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-card {
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 3px 28px #735aff29;
+  max-width: 99vw; width: 380px;
+  padding: 36px 32px 22px 32px;
+  text-align: center;
+  position: relative;
+  animation: modalIn .3s cubic-bezier(.4,1.4,.5,1.15);
+}
+@keyframes modalIn { from {transform:scale(.9);opacity:.7;} to{transform:scale(1);opacity:1;} }
+.modal-card h2 {color:#735aff;margin-bottom:17px;}
+.modal-close {
+  position: absolute; top: 16px; right: 20px; border: none; background: none;
+  font-size: 1.7em; color: #ed4a88; cursor: pointer;
+}
+.modal-btn, .modal-google, .modal-guest {
+  background: linear-gradient(90deg, #fd72ff 0%, #735aff 100%);
+  color: #fff; font-weight: 700;
+  border-radius: 13px; border: none;
+  box-shadow: 0 2px 11px #735aff11;
+  padding: 13px 25px;
+  font-size: 1.1em;
+  cursor: pointer;
+  margin-top: 13px;
+  transition: background .11s;
+  display: block; width: 100%;
+}
+.modal-btn:active { background: #ed4a88; }
+.modal-google { background: #fff; color: #735aff; border: 2px solid #735aff; }
+.modal-google:active { background: #735aff; color: #fff; }
+.modal-guest { background: #eee5ff; color: #735aff; border: 1.3px solid #9a79dd;}
+.modal-guest:active {background: #735aff; color:#fff;}
+
+/* ———— DİĞER KÜÇÜK ÖGELER ———— */
+.emoji { font-size: 1.27em; }
+::-webkit-scrollbar { width: 7px; background: #eee5ff;}
+::-webkit-scrollbar-thumb { background: #ccbaff; border-radius: 9px; }
+
+@media (max-width: 540px) {
+  .modal-card {padding: 23px 4vw;}
+  .card {padding: 17px 7px;}
 }
