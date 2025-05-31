@@ -1,81 +1,64 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Testi Çöz | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Test çöz ve puan kazan!">
+  <title>Test Çöz | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Testleri çöz, puan topla ve kazan!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .test-header-card {
-      background: #fff;
-      border-radius: 28px;
-      box-shadow: 0 2px 22px #735aff14;
-      padding: 32px 16px 22px 16px;
-      max-width: 410px;
-      margin: 30px auto 22px auto;
-      text-align: center;
+    .tr-wrap {max-width:530px;margin:38px auto 30px auto;background:#fff;border-radius:26px;box-shadow:0 2px 22px #735aff15;padding:33px 28px 26px 28px;}
+    .tr-title {color:#735aff;font-size:1.21em;font-weight:800;margin-bottom:19px;}
+    .tr-soru {color:#ed4a88;font-weight:700;font-size:1.17em;margin:13px 0 22px 0;}
+    .tr-sec-grid {display:grid;grid-template-columns:1fr;gap:13px;margin-bottom:18px;}
+    .tr-sec {
+      background:#faf4ff;border-radius:15px;box-shadow:0 2px 7px #735aff13;
+      color:#7a53c4;font-size:1.07em;font-weight:700;padding:14px 11px;text-align:left;cursor:pointer;
+      transition:background .14s, color .14s, box-shadow .14s;
+      border:2.5px solid #fff;
     }
-    .test-header-card img {
-      width: 90px;
-      height: 90px;
-      object-fit: contain;
-      margin-bottom: 11px;
-      border-radius: 22px;
-      background: #faf7ff;
-      box-shadow: 0 2px 12px #b69bfc19;
+    .tr-sec.selected, .tr-sec:active {
+      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
+      color:#fff;
+      border:2.5px solid #ed4a88;
+      box-shadow:0 2px 13px #ed4a8830;
     }
-    .test-fav-btn {
-      background: none;
-      border: none;
-      margin-left: 8px;
-      cursor: pointer;
-      vertical-align: middle;
+    .tr-btn {
+      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
+      color:#fff;font-weight:700;border-radius:14px;border:none;box-shadow:0 2px 11px #735aff14;padding:12px 38px;font-size:1.09em;cursor:pointer;
+      margin:17px auto 0 auto;display:block;
+      transition:background .13s;
     }
-    .test-fav-btn img {
-      width: 34px;
-      height: 34px;
-      vertical-align: middle;
-      transition: filter .15s;
+    .tr-btn:active{background:#ed4a88;}
+    .tr-progress {margin:0 0 14px 0;text-align:center;}
+    .tr-progress span {
+      display:inline-block;background:#f5f0fa;color:#735aff;font-weight:700;padding:6px 18px;border-radius:13px;font-size:1em;
     }
-    .test-question-card {
-      background: #fff;
-      border-radius: 28px;
-      box-shadow: 0 2px 22px #735aff14;
-      padding: 30px 18px 22px 18px;
-      max-width: 410px;
-      margin: 18px auto 22px auto;
-      text-align: left;
-      font-size: 1.08em;
-    }
-    .option-btn {
-      width: 100%;
-      margin: 8px 0;
-      border: none;
-      border-radius: 16px;
-      padding: 15px 8px;
-      background: #f7e8ff;
-      font-weight: 700;
-      color: #735aff;
-      font-size: 1.13em;
-      box-shadow: 0 1px 7px #735aff13;
-      cursor: pointer;
-      transition: background .14s, color .13s;
-    }
-    .option-btn.selected,
-    .option-btn:active {
-      background: linear-gradient(90deg,#fd72ff 0%, #735aff 100%);
-      color: #fff;
-    }
-    .next-btn {
-      width: 100%;
-      margin-top: 18px;
-    }
+    .tr-image {width:88px;height:88px;object-fit:cover;margin:0 auto 16px auto;display:block;border-radius:19px;box-shadow:0 1px 7px #ed4a8814;}
+    @media (max-width:600px){.tr-wrap{padding:19px 7px 13px 7px;}}
   </style>
 </head>
 <body>
+  <!-- Giriş Modalı -->
+  <div class="modal-bg" id="login-modal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <h2>Testlik.com'a Giriş</h2>
+      <button class="modal-google" onclick="loginGoogle()">
+        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
+      </button>
+      <hr style="margin:23px 0 15px 0;opacity:.19;">
+      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
+      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
+      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
+      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
+      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
+      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
+    </div>
+  </div>
+  <!-- Header -->
   <header>
     <div class="nav-flex">
       <img src="logo.png" alt="Testlik.com Logo" class="logo" />
@@ -91,14 +74,23 @@
         <a href="dashboard.html">Dashboard</a>
         <a href="akademi.html">Akademi</a>
         <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link">Admin</a>
+        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
         <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
+  <!-- Main -->
   <main>
-    <div id="test-area"></div>
+    <div class="tr-wrap">
+      <div class="tr-title" id="tr-baslik">Test Başlığı</div>
+      <div class="tr-progress"><span id="tr-progress">1 / 5</span></div>
+      <img src="" id="tr-image" class="tr-image" style="display:none;" alt="Soru görseli"/>
+      <div class="tr-soru" id="tr-soru"></div>
+      <div class="tr-sec-grid" id="tr-secenekler"></div>
+      <button class="tr-btn" id="tr-devam" disabled>Devam Et</button>
+    </div>
   </main>
+  <!-- Footer -->
   <footer>
     <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
@@ -109,136 +101,89 @@
       </div>
     </div>
   </footer>
+  <!-- Firebase/JS -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
+  <script src="main.js"></script>
   <script>
-    // Navbar çıkış butonu
+    // Modal ve admin linki
     firebase.auth().onAuthStateChanged(function(user) {
-      var logoutBtn = document.getElementById('logout-btn');
-      if (logoutBtn) {
-        if (user) logoutBtn.style.display = 'inline-block';
-        else logoutBtn.style.display = 'none';
+      var adminLink = document.getElementById('admin-link');
+      if (adminLink) {
+        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
+        else adminLink.style.display = "none";
       }
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-      var logoutBtnElem = document.getElementById('logout-btn');
-      if (logoutBtnElem) {
-        logoutBtnElem.onclick = function(e) {
-          e.preventDefault();
-          firebase.auth().signOut().then(() => {
-            window.location.href = "index.html";
-          });
-        }
-      }
+      if (!user) openModal();
+      else closeModal();
     });
 
-    // TESTİ GETİR, FAV BUTON, SORULAR/ŞIKLAR
-    let testId = new URLSearchParams(window.location.search).get('id');
-    let testData = null, currentQ = 0, userAnswers = [];
-    let user, isFavorite = false;
+    // Test ID
+    function getQueryParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name) || "";
+    }
+    const testId = getQueryParam("id");
+    let testData = null, currentSoru = 0, secimler = [];
 
-    firebase.auth().onAuthStateChanged(async _user => {
-      user = _user;
-      if (!testId) {
-        document.getElementById('test-area').innerHTML = "<p>Test bulunamadı.</p>";
+    // Testi çek ve başlat
+    async function getirTest() {
+      const doc = await db.collection("tests").doc(testId).get();
+      testData = doc.data();
+      if (!testData) {
+        document.getElementById("tr-baslik").innerText = "Test Bulunamadı!";
         return;
       }
-      const testDoc = await db.collection("tests").doc(testId).get();
-      if (!testDoc.exists) {
-        document.getElementById('test-area').innerHTML = "<p>Test bulunamadı.</p>";
-        return;
-      }
-      testData = testDoc.data();
-      if (!testData) return;
-      // Favori kontrol
-      if (user) {
-        const userDoc = await db.collection("users").doc(user.uid).get();
-        const favorites = userDoc.data().favorites || [];
-        isFavorite = favorites.includes(testId);
-      }
-      renderTest();
-    });
-
-    function renderTest() {
-      if (!testData) return;
-      // Test header kartı
-      let icon = "test-category-default.png";
-      if (testData.category === "Genel") icon = "category-genel.png";
-      if (testData.category === "Eğlence") icon = "category-eglence.png";
-      if (testData.category === "Bilgi") icon = "category-bilgi.png";
-      if (testData.category === "Psikoloji") icon = "category-psikoloji.png";
-      if (testData.category === "Oyun") icon = "category-oyun.png";
-      document.getElementById('test-area').innerHTML = `
-        <div class="test-header-card">
-          <img src="${icon}" alt="${testData.category || ''}" />
-          <h2 style="color:#735aff;margin-bottom:6px;">${testData.title}</h2>
-          <div style="color:#876fa9;font-size:1.05em;margin-bottom:7px;">${testData.description || ''}</div>
-          <button class="test-fav-btn" id="fav-btn" title="Favorilere ekle/kaldır">
-            <img src="${isFavorite ? 'favorite-active.png' : 'favorite-inactive.png'}" alt="Favori"/>
-          </button>
-        </div>
-        <div class="test-question-card" id="question-card"></div>
-      `;
-      renderQuestion();
-      document.getElementById('fav-btn').onclick = toggleFavorite;
+      document.getElementById("tr-baslik").innerText = testData.title;
+      secimler = new Array(testData.questions.length);
+      gosterSoru(0);
     }
 
-    function renderQuestion() {
-      if (!testData || !testData.questions) return;
-      const q = testData.questions[currentQ];
-      if (!q) {
-        // Bitti, sonuç sayfasına yönlendir
-        const answerStr = encodeURIComponent(JSON.stringify(userAnswers));
-        window.location.href = `test-sonuc.html?id=${testId}&answers=${answerStr}`;
-        return;
-      }
-      let optionsHtml = "";
-      q.options.forEach((opt, i) => {
-        optionsHtml += `<button class="option-btn" onclick="selectOption(${i})" id="opt${i}">${opt}</button>`;
-      });
-      document.getElementById('question-card').innerHTML = `
-        <div style="font-weight:700;color:#735aff;margin-bottom:8px;">Soru ${currentQ+1} / ${testData.questions.length}</div>
-        <div style="margin-bottom:13px;">${q.question}</div>
-        <div>${optionsHtml}</div>
-        <button class="cta-btn next-btn" id="nextBtn" disabled>Devam Et</button>
-      `;
-      // Option seçimi kontrolü
-      window.selectOption = function(idx) {
-        document.querySelectorAll('.option-btn').forEach(btn=>btn.classList.remove('selected'));
-        document.getElementById('opt'+idx).classList.add('selected');
-        document.getElementById('nextBtn').disabled = false;
-        window.selectedOpt = idx;
-      }
-      document.getElementById('nextBtn').onclick = function() {
-        userAnswers[currentQ] = typeof window.selectedOpt === "undefined" ? null : window.selectedOpt;
-        currentQ++;
-        window.selectedOpt = undefined;
-        renderQuestion();
-      }
-    }
-
-    // Favori Ekle/Kaldır
-    async function toggleFavorite() {
-      if (!user) {
-        alert("Favorilere eklemek için giriş yapmalısın!");
-        window.location.href = "giris.html";
-        return;
-      }
-      const userRef = db.collection("users").doc(user.uid);
-      const userDoc = await userRef.get();
-      let favorites = userDoc.data().favorites || [];
-      if (isFavorite) {
-        favorites = favorites.filter(f => f !== testId);
-        isFavorite = false;
+    // Soru göster
+    function gosterSoru(idx) {
+      currentSoru = idx;
+      let soru = testData.questions[idx];
+      // Progress
+      document.getElementById("tr-progress").innerHTML = `<span>${idx+1} / ${testData.questions.length}</span>`;
+      // Görsel varsa göster
+      if (soru.image) {
+        let img = document.getElementById("tr-image");
+        img.src = soru.image;
+        img.style.display = "block";
       } else {
-        favorites.push(testId);
-        isFavorite = true;
+        document.getElementById("tr-image").style.display = "none";
       }
-      await userRef.update({ favorites });
-      renderTest();
+      // Soru metni
+      document.getElementById("tr-soru").innerText = soru.text;
+      // Seçenekler
+      let secHtml = "";
+      soru.options.forEach((sec,i) => {
+        secHtml += `<div class="tr-sec" data-i="${i}" onclick="secenekSec(${i})">${sec}</div>`;
+      });
+      document.getElementById("tr-secenekler").innerHTML = secHtml;
+      document.getElementById("tr-devam").disabled = true;
     }
+
+    // Seçenek seç
+    window.secenekSec = function(i){
+      secimler[currentSoru] = i;
+      document.querySelectorAll(".tr-sec").forEach(e=>e.classList.remove("selected"));
+      document.querySelectorAll(".tr-sec")[i].classList.add("selected");
+      document.getElementById("tr-devam").disabled = false;
+    };
+
+    // Devam butonu
+    document.getElementById("tr-devam").onclick = function() {
+      if (currentSoru < testData.questions.length-1) {
+        gosterSoru(currentSoru+1);
+      } else {
+        // Sonuç sayfasına yönlendir
+        window.location.href = "test-sonuc.html?id=" + testId + "&answers=" + encodeURIComponent(JSON.stringify(secimler));
+      }
+    };
+
+    getirTest();
   </script>
 </body>
 </html>
