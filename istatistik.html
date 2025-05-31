@@ -3,28 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>İstatistikler | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Kişisel başarı istatistiklerin, çözüm oranların ve favori kategorilerin!">
+  <title>İstatistiklerim | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Kazanımların, başarıların, istatistiklerin burada!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .ist-wrap {max-width:670px;margin:40px auto 30px auto;background:#fff;border-radius:26px;box-shadow:0 2px 22px #735aff1a;padding:33px 28px 32px 28px;}
-    .ist-title {color:#735aff;font-size:1.32em;font-weight:800;margin-bottom:16px;}
-    .ist-row {display:grid;grid-template-columns:1fr 1fr;gap:23px;margin:16px 0;}
-    .ist-box {
-      background:linear-gradient(90deg,#fd72ff1c 0%,#735aff1a 100%);
-      border-radius:17px;
-      padding:22px 18px 17px 18px;
-      text-align:center;
-      color:#7a53c4;
-      font-weight:700;
-      font-size:1.17em;
-      box-shadow:0 2px 11px #735aff0d;
+    .ist-wrap {max-width:520px;margin:39px auto 30px auto;background:#fff;border-radius:26px;box-shadow:0 2px 22px #735aff15;padding:33px 28px 23px 28px;}
+    .ist-title {color:#735aff;font-size:1.25em;font-weight:800;margin-bottom:21px;}
+    .ist-kutu-grid {display:grid;grid-template-columns:1fr 1fr;gap:23px 21px;margin-bottom:25px;}
+    .ist-kutu {
+      background:#faf4ff;border-radius:15px;box-shadow:0 1px 7px #735aff13;padding:17px 14px;text-align:center;
+      display:flex;flex-direction:column;align-items:center;
     }
-    .ist-label {display:block;font-size:.97em;color:#735aff;margin-bottom:7px;font-weight:600;}
-    @media (max-width:700px){.ist-row{grid-template-columns:1fr;}}
+    .ist-kutu-label {color:#7a53c4;font-size:1em;font-weight:600;}
+    .ist-kutu-deger {color:#ed4a88;font-size:1.32em;font-weight:800;margin-top:6px;}
+    .ist-charts {margin-top:19px;}
+    @media (max-width:600px){.ist-wrap{padding:13px 5px 9px 5px;}.ist-kutu-grid{grid-template-columns:1fr;}}
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <!-- Giriş Modalı -->
@@ -68,26 +65,15 @@
   <!-- Main -->
   <main>
     <div class="ist-wrap">
-      <div class="ist-title">Başarı İstatistiklerin</div>
-      <div class="ist-row">
-        <div class="ist-box">
-          <span class="ist-label">Toplam Çözülen Test</span>
-          <span id="ist-toplam">0</span>
-        </div>
-        <div class="ist-box">
-          <span class="ist-label">Doğru Oranı</span>
-          <span id="ist-dogru">0%</span>
-        </div>
+      <div class="ist-title">Kişisel İstatistiklerim</div>
+      <div class="ist-kutu-grid">
+        <div class="ist-kutu"><div class="ist-kutu-label">Toplam Puan</div><div class="ist-kutu-deger" id="istat-puan">0</div></div>
+        <div class="ist-kutu"><div class="ist-kutu-label">Çözülen Test</div><div class="ist-kutu-deger" id="istat-coz">0</div></div>
+        <div class="ist-kutu"><div class="ist-kutu-label">Favori Test</div><div class="ist-kutu-deger" id="istat-fav">0</div></div>
+        <div class="ist-kutu"><div class="ist-kutu-label">Çark Çevirme</div><div class="ist-kutu-deger" id="istat-cark">0</div></div>
       </div>
-      <div class="ist-row">
-        <div class="ist-box">
-          <span class="ist-label">Yanlış Oranı</span>
-          <span id="ist-yanlis">0%</span>
-        </div>
-        <div class="ist-box">
-          <span class="ist-label">En Çok Puan Aldığın Kategori</span>
-          <span id="ist-kat">-</span>
-        </div>
+      <div class="ist-charts">
+        <canvas id="istatChart" width="350" height="170"></canvas>
       </div>
     </div>
   </main>
@@ -118,28 +104,34 @@
       }
       if (!user) openModal();
       else closeModal();
-    });
 
-    // İstatistikleri çek ve göster
-    firebase.auth().onAuthStateChanged(async function(user) {
-      if (!user) return;
-      let doc = await db.collection("users").doc(user.uid).get();
-      let data = doc.data() || {};
-      let stats = data.stats || {};
-      // Basit demo; kendi veritabanında stats alanı şu şekilde olmalı:
-      // stats = { total: 24, correct: 18, wrong: 6, catPoints: { "Genel": 170, "Eğlence": 90, ... } }
-      document.getElementById("ist-toplam").innerText = stats.total || 0;
-      let total = stats.total || 0, correct = stats.correct || 0, wrong = stats.wrong || 0;
-      document.getElementById("ist-dogru").innerText = total ? Math.round(correct/total*100) + "%" : "0%";
-      document.getElementById("ist-yanlis").innerText = total ? Math.round(wrong/total*100) + "%" : "0%";
-      // En çok puan aldığı kategori
-      let katPts = stats.catPoints || {};
-      let maxCat = "-";
-      let maxVal = 0;
-      Object.entries(katPts).forEach(([k,v]) => {
-        if (v > maxVal) { maxVal = v; maxCat = k; }
-      });
-      document.getElementById("ist-kat").innerText = maxCat;
+      if (user) {
+        db.collection("users").doc(user.uid).get().then(doc=>{
+          let d = doc.data()||{};
+          document.getElementById("istat-puan").innerText = d.points||0;
+          document.getElementById("istat-coz").innerText = (d.solvedTests||[]).length;
+          document.getElementById("istat-fav").innerText = (d.favorites||[]).length;
+          document.getElementById("istat-cark").innerText = d.carkCount||0;
+
+          // Grafik için örnek: son 6 test puanı veya son 6 çark sonucu
+          let testPuanlari = (d.sonTestPuanlari||[30,45,20,12,28,50]);
+          new Chart(document.getElementById("istatChart"), {
+            type: 'bar',
+            data: {
+              labels: ["Test-1","Test-2","Test-3","Test-4","Test-5","Test-6"],
+              datasets: [{
+                label: "Son Test Puanları",
+                data: testPuanlari,
+                backgroundColor: ["#735aff","#ed4a88","#fd72ff","#7a53c4","#f5f0fa","#ff69b4"]
+              }]
+            },
+            options: {
+              plugins: {legend:{display:false}},
+              scales: {y: {beginAtZero:true}}
+            }
+          });
+        });
+      }
     });
   </script>
 </body>
