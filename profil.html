@@ -3,70 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Profilim | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Profil ve kullanıcı bilgileri.">
+  <title>Profil | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Kullanıcı profilini görüntüle, bilgilerini güncelle!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .profil-card {
+    .profil-wrap {
+      max-width: 480px;
+      margin: 40px auto 30px auto;
       background: #fff;
-      border-radius: 28px;
-      box-shadow: 0 2px 24px #735aff19;
-      padding: 40px 28px 30px 28px;
-      max-width: 420px;
-      margin: 44px auto 22px auto;
+      border-radius: 27px;
+      box-shadow: 0 2px 22px #735aff1a;
+      padding: 35px 25px 28px 25px;
       text-align: center;
-      font-size: 1.11em;
+      position: relative;
     }
     .profil-avatar {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid #b69bfc;
-      background: #faf7ff;
-      margin-bottom: 18px;
-      box-shadow: 0 1px 8px #7a56ff12;
+      width: 104px; height: 104px; border-radius: 50%;
+      object-fit: cover; background: #faf4ff; border: 3px solid #735aff22;
+      margin-bottom: 13px; box-shadow: 0 1px 15px #bba5fa0e;
+    }
+    .profil-change {
+      margin-top: 6px; font-size: .97em; color: #ed4a88;
+      cursor: pointer; text-decoration: underline; background: none; border: none;
     }
     .profil-username {
-      color: #735aff;
-      font-size: 1.27em;
-      font-weight: 700;
-      margin-bottom: 4px;
+      color: #735aff; font-size: 1.17em; font-weight: 700; margin-bottom: 3px;
     }
     .profil-email {
-      color: #876fa9;
-      font-size: 1.03em;
-      margin-bottom: 7px;
+      color: #a387ff; font-size: 1.04em; font-weight: 600; margin-bottom: 7px;
       word-break: break-all;
     }
-    .profil-puan {
-      color: #ed4a88;
-      font-size: 1.15em;
-      font-weight: 700;
-      margin-bottom: 5px;
+    .profil-info-list {
+      margin: 17px auto 0 auto; display: flex; flex-direction:column; gap: 7px; font-size: 1.01em;
     }
-    .profil-uye-tarih {color:#bba5fa;font-size:.99em;}
-    .profil-upload-btn {
-      margin-top: 10px;
-      background: #f7e8ff;
-      color: #735aff;
-      border-radius: 16px;
-      padding: 8px 17px;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      font-size: 1em;
-      transition: background .13s;
-    }
-    .profil-upload-btn:hover {
-      background: linear-gradient(90deg,#fd72ff 0%, #735aff 100%);
-      color:#fff;
-    }
+    .profil-info-list span {color:#7a53c4;}
   </style>
 </head>
 <body>
+  <!-- Giriş Modalı (Her sayfada!) -->
+  <div class="modal-bg" id="login-modal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <h2>Testlik.com'a Giriş</h2>
+      <button class="modal-google" onclick="loginGoogle()">
+        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
+      </button>
+      <hr style="margin:23px 0 15px 0;opacity:.19;">
+      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
+      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
+      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
+      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
+      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
+      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
+    </div>
+  </div>
+  <!-- Header -->
   <header>
     <div class="nav-flex">
       <img src="logo.png" alt="Testlik.com Logo" class="logo" />
@@ -82,22 +75,26 @@
         <a href="dashboard.html">Dashboard</a>
         <a href="akademi.html">Akademi</a>
         <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link">Admin</a>
+        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
         <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
+  <!-- Main -->
   <main>
-    <div class="profil-card" id="profil-kart">
-      <img src="default-profile.png" alt="Profil Fotoğrafı" class="profil-avatar" id="avatar-img"/>
-      <input type="file" id="avatar-input" style="display:none;" accept="image/*" />
-      <button class="profil-upload-btn" id="avatar-btn">Profil Fotoğrafı Yükle</button>
+    <div class="profil-wrap" id="profil-card">
+      <img src="default-profile.png" id="profil-avatar" class="profil-avatar" alt="Profil Fotoğrafı" />
+      <input type="file" id="profil-input" accept="image/*" style="display:none;" />
+      <button class="profil-change" onclick="document.getElementById('profil-input').click();">Fotoğrafı Değiştir</button>
       <div class="profil-username" id="profil-username">Kullanıcı Adı</div>
-      <div class="profil-email" id="profil-email">E-posta</div>
-      <div class="profil-puan" id="profil-puan">0 Puan</div>
-      <div class="profil-uye-tarih" id="profil-uye-tarih">Üyelik: -</div>
+      <div class="profil-email" id="profil-email">kullanici@mail.com</div>
+      <div class="profil-info-list">
+        <div><span>Puan:</span> <b id="profil-puan">0</b></div>
+        <div><span>Favori Testler:</span> <b id="profil-favori">0</b></div>
+      </div>
     </div>
   </main>
+  <!-- Footer -->
   <footer>
     <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
@@ -108,66 +105,56 @@
       </div>
     </div>
   </footer>
+  <!-- Firebase/JS -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
+  <script src="main.js"></script>
   <script>
+    // Modal ve admin linki
     firebase.auth().onAuthStateChanged(function(user) {
-      var logoutBtn = document.getElementById('logout-btn');
-      if (logoutBtn) {
-        if (user) logoutBtn.style.display = 'inline-block';
-        else logoutBtn.style.display = 'none';
+      var adminLink = document.getElementById('admin-link');
+      if (adminLink) {
+        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
+        else adminLink.style.display = "none";
       }
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-      var logoutBtnElem = document.getElementById('logout-btn');
-      if (logoutBtnElem) {
-        logoutBtnElem.onclick = function(e) {
-          e.preventDefault();
-          firebase.auth().signOut().then(() => {
-            window.location.href = "index.html";
-          });
-        }
-      }
+      if (!user) openModal();
+      else closeModal();
     });
 
-    // Kullanıcı bilgilerini getir
-    firebase.auth().onAuthStateChanged(async user => {
-      if (!user) {
-        document.getElementById('profil-kart').innerHTML = `
-          <p>Profil bilgilerini görmek için giriş yapmalısın.</p>
-          <a href="giris.html" class="cta-btn">Giriş Yap</a>
-        `;
-        return;
-      }
-      const userDoc = await db.collection("users").doc(user.uid).get();
-      const d = userDoc.data();
-      document.getElementById("profil-username").innerText = d.displayName || "Kullanıcı Adı";
-      document.getElementById("profil-email").innerText = user.email || "-";
-      document.getElementById("profil-puan").innerText = (d.points || 0) + " Puan";
-      const tarih = user.metadata && user.metadata.creationTime ? new Date(user.metadata.creationTime) : null;
-      document.getElementById("profil-uye-tarih").innerText = "Üyelik: " + (tarih ? tarih.toLocaleDateString('tr-TR') : "-");
-      document.getElementById("avatar-img").src = d.avatar || "default-profile.png";
+    // Kullanıcı verisi çekme ve gösterme
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (!user) return;
+      let profilAvatar = document.getElementById("profil-avatar");
+      let profilUsername = document.getElementById("profil-username");
+      let profilEmail = document.getElementById("profil-email");
+      let profilPuan = document.getElementById("profil-puan");
+      let profilFavori = document.getElementById("profil-favori");
+      profilAvatar.src = user.photoURL || "default-profile.png";
+      profilUsername.innerText = user.displayName || "Kullanıcı";
+      profilEmail.innerText = user.email || "Misafir";
+      db.collection("users").doc(user.uid).get().then(doc => {
+        const data = doc.data() || {};
+        profilPuan.innerText = data.points || 0;
+        profilFavori.innerText = (data.favorites && data.favorites.length) || 0;
+      });
     });
 
     // Profil fotoğrafı yükleme
-    document.getElementById('avatar-btn').onclick = () => document.getElementById('avatar-input').click();
-    document.getElementById('avatar-input').onchange = async function(e) {
-      const file = e.target.files[0];
+    document.getElementById("profil-input").onchange = function(e) {
+      var file = e.target.files[0];
       if (!file) return;
-      // Kullanıcı giriş kontrolü
-      const user = firebase.auth().currentUser;
-      if (!user) return;
-      // Resmi base64 olarak kaydet (gelişmiş projelerde storage kullanılır)
-      const reader = new FileReader();
-      reader.onload = async function(event) {
-        const base64 = event.target.result;
-        await db.collection("users").doc(user.uid).update({ avatar: base64 });
-        document.getElementById("avatar-img").src = base64;
-      }
+      // Fotoğrafı yükle ve güncelle (ör: Firebase Storage ile)
+      // Bu örnekte sadece önizleme:
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        document.getElementById("profil-avatar").src = ev.target.result;
+        // Gerçek upload: Burada Firebase Storage ile yükleyip,
+        // ardından kullanıcı profilini ve db kaydını güncelleyebilirsin.
+      };
       reader.readAsDataURL(file);
-    }
+    };
   </script>
 </body>
 </html>
