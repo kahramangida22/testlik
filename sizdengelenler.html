@@ -4,42 +4,45 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sizden Gelenler | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Kullanıcılar tarafından önerilen testler ve sorular.">
+  <meta name="description" content="Testlik.com - Kullanıcılar tarafından önerilen testler ve gönderiler burada!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .sg-container {max-width:640px;margin:40px auto;}
+    .sg-wrap {max-width:760px;margin:36px auto 30px auto;}
+    .sg-title {color:#735aff;font-size:1.33em;font-weight:800;margin-bottom:19px;}
+    .sg-grid {display:grid;grid-template-columns:1fr 1fr;gap:27px;}
     .sg-card {
-      background: #fff;
-      border-radius: 22px;
-      box-shadow: 0 2px 18px #735aff13;
-      padding: 20px 22px 16px 22px;
-      margin: 20px 0;
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      flex-wrap:wrap;
+      background:#fff;border-radius:21px;box-shadow:0 2px 17px #735aff13;
+      padding:24px 17px 15px 17px;text-align:left;
+      display:flex;flex-direction:column;gap:9px;
+      position:relative;
     }
-    .sg-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 16px;
-      object-fit: contain;
-      background: #faf4ff;
-      box-shadow: 0 1px 7px #ed4a8812;
-      margin-right:8px;
-      flex-shrink:0;
-      display:inline-block;
-    }
-    .sg-content {flex:1;}
-    .sg-title {color: #735aff;font-size:1.19em;font-weight:700;margin-bottom:4px;}
-    .sg-desc {color:#876fa9;margin-bottom:6px;}
-    .sg-date {color:#bba5fa;font-size:.98em;}
-    @media (max-width:680px){.sg-card{flex-direction:column;align-items:center;text-align:center;}}
+    .sg-user {font-size:.99em;color:#7a53c4;margin-bottom:4px;}
+    .sg-text {font-size:1.09em;font-weight:700;color:#ed4a88;}
+    .sg-date {position:absolute;top:13px;right:17px;color:#a387ff;font-size:.93em;}
+    @media (max-width:900px){.sg-grid{grid-template-columns:1fr;}}
   </style>
 </head>
 <body>
+  <!-- Giriş Modalı -->
+  <div class="modal-bg" id="login-modal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <h2>Testlik.com'a Giriş</h2>
+      <button class="modal-google" onclick="loginGoogle()">
+        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
+      </button>
+      <hr style="margin:23px 0 15px 0;opacity:.19;">
+      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
+      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
+      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
+      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
+      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
+      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
+    </div>
+  </div>
+  <!-- Header -->
   <header>
     <div class="nav-flex">
       <img src="logo.png" alt="Testlik.com Logo" class="logo" />
@@ -55,17 +58,21 @@
         <a href="dashboard.html">Dashboard</a>
         <a href="akademi.html">Akademi</a>
         <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link">Admin</a>
+        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
         <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
+  <!-- Main -->
   <main>
-    <h1 class="main-title"><span class="emoji">💡</span> Sizden Gelenler</h1>
-    <div class="sg-container" id="sg-list">
-      <div style="text-align:center;color:#8f7fff;">Yükleniyor...</div>
+    <div class="sg-wrap">
+      <div class="sg-title">Kullanıcıdan Gelenler & Öneriler</div>
+      <div class="sg-grid" id="sg-list">
+        <!-- Kullanıcıdan gelenler JS ile buraya gelecek -->
+      </div>
     </div>
   </main>
+  <!-- Footer -->
   <footer>
     <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
@@ -76,56 +83,43 @@
       </div>
     </div>
   </footer>
+  <!-- Firebase/JS -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
+  <script src="main.js"></script>
   <script>
-    // Navbar çıkış butonu
+    // Modal ve admin
     firebase.auth().onAuthStateChanged(function(user) {
-      var logoutBtn = document.getElementById('logout-btn');
-      if (logoutBtn) {
-        if (user) logoutBtn.style.display = 'inline-block';
-        else logoutBtn.style.display = 'none';
+      var adminLink = document.getElementById('admin-link');
+      if (adminLink) {
+        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
+        else adminLink.style.display = "none";
       }
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-      var logoutBtnElem = document.getElementById('logout-btn');
-      if (logoutBtnElem) {
-        logoutBtnElem.onclick = function(e) {
-          e.preventDefault();
-          firebase.auth().signOut().then(() => {
-            window.location.href = "index.html";
-          });
-        }
-      }
+      if (!user) openModal();
+      else closeModal();
     });
 
-    // Öneri listesi çek
-    async function loadSG() {
-      const sgList = document.getElementById("sg-list");
-      const snap = await db.collection("suggestions").orderBy("createdAt", "desc").limit(30).get();
-      if (snap.empty) {
-        sgList.innerHTML = "<div style='text-align:center;color:#bba5fa;'>Henüz öneri yok.</div>";
-        return;
-      }
+    // Sizden gelenleri çek ve göster
+    async function getirSizdenGelenler() {
+      const sgDiv = document.getElementById("sg-list");
+      sgDiv.innerHTML = `<div style="color:#bba5fa;width:100%;">Yükleniyor...</div>`;
+      const snap = await db.collection("suggestions").orderBy("createdAt","desc").limit(20).get();
       let html = "";
-      snap.forEach(doc=>{
-        const d = doc.data();
+      snap.forEach(doc => {
+        const s = doc.data();
         html += `
           <div class="sg-card">
-            <img src="soru-isareti.png" alt="Soru" class="sg-icon" />
-            <div class="sg-content">
-              <div class="sg-title">${d.title || "Başlıksız Öneri"}</div>
-              <div class="sg-desc">${d.desc || ""}</div>
-              <div class="sg-date">${d.createdAt ? new Date(d.createdAt.seconds*1000 || d.createdAt).toLocaleString("tr-TR") : "-"}</div>
-            </div>
+            <div class="sg-user">${s.displayName || s.email || "Kullanıcı"}</div>
+            <div class="sg-text">${s.text || "Gönderi"}</div>
+            <div class="sg-date">${s.date || ""}</div>
           </div>
         `;
       });
-      sgList.innerHTML = html;
+      sgDiv.innerHTML = html || `<div style="color:#ed4a88;">Henüz gönderi yok!</div>`;
     }
-    loadSG();
+    getirSizdenGelenler();
   </script>
 </body>
 </html>
