@@ -3,44 +3,48 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>İstatistiklerim | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Kişisel başarı istatistikleri ve analizler.">
+  <title>İstatistikler | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Kişisel başarı istatistiklerin, çözüm oranların ve favori kategorilerin!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .istatistik-flex {display:flex;gap:28px;flex-wrap:wrap;justify-content:center;}
-    .istatistik-card {
-      background:#fff;
-      border-radius:28px;
-      box-shadow:0 2px 24px #735aff19;
-      padding:32px 26px 28px 26px;
-      max-width:350px;
-      min-width:230px;
+    .ist-wrap {max-width:670px;margin:40px auto 30px auto;background:#fff;border-radius:26px;box-shadow:0 2px 22px #735aff1a;padding:33px 28px 32px 28px;}
+    .ist-title {color:#735aff;font-size:1.32em;font-weight:800;margin-bottom:16px;}
+    .ist-row {display:grid;grid-template-columns:1fr 1fr;gap:23px;margin:16px 0;}
+    .ist-box {
+      background:linear-gradient(90deg,#fd72ff1c 0%,#735aff1a 100%);
+      border-radius:17px;
+      padding:22px 18px 17px 18px;
       text-align:center;
-      margin:18px 0;
-      font-size:1.08em;
-      flex:1;
+      color:#7a53c4;
+      font-weight:700;
+      font-size:1.17em;
+      box-shadow:0 2px 11px #735aff0d;
     }
-    .istatistik-title {color:#735aff;font-size:1.12em;font-weight:700;margin-bottom:8px;}
-    .istatistik-badge {
-      font-size:2.05em;color:#fff;
-      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
-      border-radius:18px;
-      padding:11px 28px;
-      font-weight:800;
-      letter-spacing:0.02em;
-      box-shadow:0 2px 12px #735aff29;
-      margin-bottom:12px;
-      display:inline-block;
-    }
-    .istatistik-kat-icon {
-      width:44px;height:44px;object-fit:contain;margin:0 5px -12px 0;background:#faf4ff;border-radius:12px;
-      box-shadow:0 2px 12px #b69bfc19;
-    }
+    .ist-label {display:block;font-size:.97em;color:#735aff;margin-bottom:7px;font-weight:600;}
+    @media (max-width:700px){.ist-row{grid-template-columns:1fr;}}
   </style>
 </head>
 <body>
+  <!-- Giriş Modalı -->
+  <div class="modal-bg" id="login-modal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <h2>Testlik.com'a Giriş</h2>
+      <button class="modal-google" onclick="loginGoogle()">
+        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
+      </button>
+      <hr style="margin:23px 0 15px 0;opacity:.19;">
+      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
+      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
+      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
+      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
+      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
+      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
+    </div>
+  </div>
+  <!-- Header -->
   <header>
     <div class="nav-flex">
       <img src="logo.png" alt="Testlik.com Logo" class="logo" />
@@ -56,29 +60,38 @@
         <a href="dashboard.html">Dashboard</a>
         <a href="akademi.html">Akademi</a>
         <a href="istatistik.html" class="active">İstatistik</a>
-        <a href="admin.html" class="admin-link">Admin</a>
+        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
         <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
+  <!-- Main -->
   <main>
-    <h1 class="main-title"><span class="emoji">📊</span> İstatistiklerim</h1>
-    <div class="istatistik-flex">
-      <div class="istatistik-card">
-        <div class="istatistik-title">Toplam Çözülen Test</div>
-        <div class="istatistik-badge" id="istatistik-test">0</div>
+    <div class="ist-wrap">
+      <div class="ist-title">Başarı İstatistiklerin</div>
+      <div class="ist-row">
+        <div class="ist-box">
+          <span class="ist-label">Toplam Çözülen Test</span>
+          <span id="ist-toplam">0</span>
+        </div>
+        <div class="ist-box">
+          <span class="ist-label">Doğru Oranı</span>
+          <span id="ist-dogru">0%</span>
+        </div>
       </div>
-      <div class="istatistik-card">
-        <div class="istatistik-title">Kazanılan Toplam Puan</div>
-        <div class="istatistik-badge" id="istatistik-puan">0</div>
-      </div>
-      <div class="istatistik-card">
-        <div class="istatistik-title">En Çok Çözülen Kategori</div>
-        <img src="test-category-default.png" class="istatistik-kat-icon" id="istatistik-kat-img" alt="Kategori" />
-        <div id="istatistik-kat" style="color:#ed4a88;margin-top:8px;font-weight:700;">-</div>
+      <div class="ist-row">
+        <div class="ist-box">
+          <span class="ist-label">Yanlış Oranı</span>
+          <span id="ist-yanlis">0%</span>
+        </div>
+        <div class="ist-box">
+          <span class="ist-label">En Çok Puan Aldığın Kategori</span>
+          <span id="ist-kat">-</span>
+        </div>
       </div>
     </div>
   </main>
+  <!-- Footer -->
   <footer>
     <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
@@ -89,64 +102,44 @@
       </div>
     </div>
   </footer>
+  <!-- Firebase/JS -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
+  <script src="main.js"></script>
   <script>
+    // Modal ve admin linki
     firebase.auth().onAuthStateChanged(function(user) {
-      var logoutBtn = document.getElementById('logout-btn');
-      if (logoutBtn) {
-        if (user) logoutBtn.style.display = 'inline-block';
-        else logoutBtn.style.display = 'none';
+      var adminLink = document.getElementById('admin-link');
+      if (adminLink) {
+        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
+        else adminLink.style.display = "none";
       }
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-      var logoutBtnElem = document.getElementById('logout-btn');
-      if (logoutBtnElem) {
-        logoutBtnElem.onclick = function(e) {
-          e.preventDefault();
-          firebase.auth().signOut().then(() => {
-            window.location.href = "index.html";
-          });
-        }
-      }
+      if (!user) openModal();
+      else closeModal();
     });
 
-    // Kişisel istatistikleri getir
-    firebase.auth().onAuthStateChanged(async user => {
-      if (!user) {
-        document.querySelector('.istatistik-flex').innerHTML = `
-          <div class="istatistik-card"><p>İstatistiklerini görmek için giriş yapmalısın.</p><a href="giris.html" class="cta-btn">Giriş Yap</a></div>
-        `;
-        return;
-      }
-      const userDoc = await db.collection("users").doc(user.uid).get();
-      const d = userDoc.data();
-      document.getElementById("istatistik-test").innerText = (d.completedTests || []).length;
-      document.getElementById("istatistik-puan").innerText = d.points || 0;
-
-      // En çok çözülen kategori hesaplama (örnek amaçlı completedCategories array’i)
-      let catCounts = {};
-      (d.completedCategories || []).forEach(cat => {
-        catCounts[cat] = (catCounts[cat] || 0) + 1;
-      });
+    // İstatistikleri çek ve göster
+    firebase.auth().onAuthStateChanged(async function(user) {
+      if (!user) return;
+      let doc = await db.collection("users").doc(user.uid).get();
+      let data = doc.data() || {};
+      let stats = data.stats || {};
+      // Basit demo; kendi veritabanında stats alanı şu şekilde olmalı:
+      // stats = { total: 24, correct: 18, wrong: 6, catPoints: { "Genel": 170, "Eğlence": 90, ... } }
+      document.getElementById("ist-toplam").innerText = stats.total || 0;
+      let total = stats.total || 0, correct = stats.correct || 0, wrong = stats.wrong || 0;
+      document.getElementById("ist-dogru").innerText = total ? Math.round(correct/total*100) + "%" : "0%";
+      document.getElementById("ist-yanlis").innerText = total ? Math.round(wrong/total*100) + "%" : "0%";
+      // En çok puan aldığı kategori
+      let katPts = stats.catPoints || {};
       let maxCat = "-";
-      let maxCount = 0;
-      for (let c in catCounts) {
-        if (catCounts[c] > maxCount) {
-          maxCat = c;
-          maxCount = catCounts[c];
-        }
-      }
-      let catImg = "test-category-default.png";
-      if (maxCat === "Genel") catImg = "category-genel.png";
-      if (maxCat === "Eğlence") catImg = "category-eglence.png";
-      if (maxCat === "Bilgi") catImg = "category-bilgi.png";
-      if (maxCat === "Psikoloji") catImg = "category-psikoloji.png";
-      if (maxCat === "Oyun") catImg = "category-oyun.png";
-      document.getElementById("istatistik-kat-img").src = catImg;
-      document.getElementById("istatistik-kat").innerText = maxCat !== "-" ? maxCat : "-";
+      let maxVal = 0;
+      Object.entries(katPts).forEach(([k,v]) => {
+        if (v > maxVal) { maxVal = v; maxCat = k; }
+      });
+      document.getElementById("ist-kat").innerText = maxCat;
     });
   </script>
 </body>
