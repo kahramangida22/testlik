@@ -4,132 +4,220 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Testlik.com | Eğlenceli Testler</title>
-  <meta name="description" content="Testlik.com - Eğlenceli bilgi ve ödüllü testler, kategorilere göre test çöz, puan topla, kazan!">
+  <meta name="description" content="Testlik.com – En eğlenceli ve kazandıran testler burada. Hemen çöz, puan topla, ödül kazan!">
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="favicon.png" />
+  <link rel="icon" href="img/favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
-</head>
-<body>
-  <!-- Giriş Modalı -->
-  <div class="modal-bg" id="login-modal" style="display:none;">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeModal()">&times;</button>
-      <h2>Testlik.com'a Giriş</h2>
-      <button class="modal-google" onclick="loginGoogle()">
-        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
-      </button>
-      <hr style="margin:23px 0 15px 0;opacity:.19;">
-      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
-      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
-      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
-      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
-      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
-      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
-    </div>
-  </div>
-  <!-- Header -->
-  <header>
-    <div class="nav-flex">
-      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
-      <nav id="main-nav">
-        <a href="index.html" class="active">Anasayfa</a>
-        <a href="kategoriler.html">Kategoriler</a>
-        <a href="sizdengelenler.html">Sizden Gelenler</a>
-        <a href="soru-uret.html">Soru Üret</a>
-        <a href="cark.html">Çarkıfelek</a>
-        <a href="video-izle.html">Video İzle Kazan</a>
-        <a href="favoriler.html">Favoriler</a>
-        <a href="profil.html">Profil</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="akademi.html">Akademi</a>
-        <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
-        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
-      </nav>
-    </div>
-  </header>
-  <!-- Main -->
-  <main style="max-width:1150px;margin:0 auto;">
-    <section>
-      <h1 style="color:#735aff;text-align:center;margin:34px 0 18px 0;font-size:2.3em;font-weight:800;">
-        <span class="emoji">🎉</span> Testlik.com’a Hoş Geldin!
-      </h1>
-      <div style="text-align:center;margin-bottom:14px;color:#8f7fff;">Test çöz, puan topla, kazan!</div>
-    </section>
-    <!-- Kategoriler -->
-    <section>
-      <div class="section-title">Kategoriler</div>
-      <div class="card-grid" id="kategori-grid">
-        <!-- JS ile kategoriler eklenecek -->
-      </div>
-    </section>
-    <!-- Yeni Testler -->
-    <section>
-      <div class="section-title">Yeni Testler</div>
-      <div class="card-grid" id="yeni-testler">
-        <!-- JS ile yeni testler eklenecek -->
-      </div>
-    </section>
-    <!-- Popüler Testler -->
-    <section>
-      <div class="section-title">Popüler Testler</div>
-      <div class="card-grid" id="populer-testler">
-        <!-- JS ile popüler testler eklenecek -->
-      </div>
-    </section>
-  </main>
-  <!-- Footer -->
-  <footer>
-    <div class="footer-flex">
-      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
-      <div class="odeme-logo">
-        <img src="wise.png" alt="Wise" />
-        <img src="payoneer.png" alt="Payoneer" />
-        <img src="iban.png" alt="IBAN" />
-      </div>
-    </div>
-  </footer>
-  <!-- Firebase ve JS -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
-  <script src="main.js"></script>
+  <style>
+    .nav-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+      justify-content: center;
+      margin: 0 0 3px 0;
+    }
+    .nav-row-break {
+      margin-bottom: 6px;
+    }
+    @media (max-width: 900px) {
+      .nav-row { flex-wrap: wrap; }
+    }
+    @media (max-width: 600px) {
+      .nav-row { flex-direction: column; align-items: stretch; }
+    }
+    .main-welcome {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 18px 0 0 0;
+      text-align: center;
+    }
+    .kategori-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+      margin: 36px 0 26px 0;
+    }
+    .kategori-card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 2px 14px #735aff1a;
+      width: 165px;
+      padding: 17px 6px 10px 6px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: transform .12s;
+      min-height: 145px;
+    }
+    .kategori-card:hover { transform: scale(1.05);}
+    .kategori-img { width: 54px; height:54px; margin-bottom:8px; object-fit:contain;}
+    .kategori-title { color: #735aff; font-weight:700; font-size:1.09em;}
+    .kategori-desc { color: #8a79bf; font-size:.98em; margin-top:2px;}
+    .section-title {
+      color: #735aff;
+      font-size: 1.37em;
+      font-weight: 700;
+      margin: 26px 0 16px 0;
+      text-align:left;
+    }
+    .testler-grid { margin-bottom:20px;}
+    .test-card .test-img { width:64px;height:64px;}
+    .test-card .test-title { font-size:1em;}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav-flex">
+      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
+      <div style="width:100%;">
+        <div class="nav-row nav-row-break">
+          <a href="index.html" class="active">Anasayfa</a>
+          <a href="kategoriler.html">Kategoriler</a>
+          <a href="sizdengelenler.html">Sizden Gelenler</a>
+          <a href="soru-uret.html">Soru Üret</a>
+          <a href="cark.html">Çarkıfelek</a>
+          <a href="video-izle.html">Video İzle Kazan</a>
+        </div>
+        <div class="nav-row">
+          <a href="favoriler.html">Favoriler</a>
+          <a href="profil.html">Profil</a>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="akademi.html">Akademi</a>
+          <a href="istatistik.html">İstatistik</a>
+          <a href="admin.html" class="admin-link" style="display:none;" id="admin-nav-link">Admin</a>
+          <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="main-welcome">
+      <h1 style="color:#735aff;font-weight:700;margin:40px 0 14px 0;">
+        <span class="emoji">🎉</span> Testlik.com’a Hoş Geldin!
+      </h1>
+      <button class="test-btn" onclick="window.location.href='kategoriler.html'">Test Çözmeye Başla!</button>
+    </section>
+
+    <section>
+      <div class="kategori-btns">
+        <div class="kategori-card" onclick="window.location.href='kategori-testleri.html?cat=Genel'">
+          <img src="img/category-genel.png" class="kategori-img" alt="Genel">
+          <div class="kategori-title">Genel</div>
+          <div class="kategori-desc">Gündemden her şey</div>
+        </div>
+        <div class="kategori-card" onclick="window.location.href='kategori-testleri.html?cat=Eğlence'">
+          <img src="img/category-eglence.png" class="kategori-img" alt="Eğlence">
+          <div class="kategori-title">Eğlence</div>
+          <div class="kategori-desc">Keyifli, komik, özgün</div>
+        </div>
+        <div class="kategori-card" onclick="window.location.href='kategori-testleri.html?cat=Bilgi'">
+          <img src="img/category-bilgi.png" class="kategori-img" alt="Bilgi">
+          <div class="kategori-title">Bilgi</div>
+          <div class="kategori-desc">Beyin yakan sorular</div>
+        </div>
+        <div class="kategori-card" onclick="window.location.href='kategori-testleri.html?cat=Psikoloji'">
+          <img src="img/category-psikoloji.png" class="kategori-img" alt="Psikoloji">
+          <div class="kategori-title">Psikoloji</div>
+          <div class="kategori-desc">Kişilik, zeka testleri</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-title">🆕 Yeni Testler</div>
+        <div class="testler-grid" id="yeni-testler"></div>
+
+        <div class="section-title">🔥 Popüler Testler</div>
+        <div class="testler-grid" id="populer-testler"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-flex">
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
+      <div class="odeme-logo">
+        <img src="img/wise.png" alt="Wise" />
+        <img src="img/payoneer.png" alt="Payoneer" />
+        <img src="img/iban.png" alt="IBAN" />
+      </div>
+    </div>
+  </footer>
+
   <script>
-    // Sayfa açılışında giriş kontrol
+    // Firebase giriş kontrolü ve admin linki gösterme
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
-      var adminLink = document.getElementById('admin-link');
+      var adminNavLink = document.getElementById('admin-nav-link');
       if (logoutBtn) {
         if (user) logoutBtn.style.display = 'inline-block';
         else logoutBtn.style.display = 'none';
       }
-      if (adminLink) {
-        // Admin kullanıcı ise göster (örnek e-posta: admin@testlik.com)
-        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
-        else adminLink.style.display = "none";
+      if (adminNavLink) {
+        if (user && user.email === "admin@testlik.com") adminNavLink.style.display = "inline-block";
+        else adminNavLink.style.display = "none";
       }
     });
 
-    // Popup kontrol
-    function closeModal() { document.getElementById("login-modal").style.display = "none"; }
-    function openModal() { document.getElementById("login-modal").style.display = "flex"; }
-
-    // Oturum kontrolü (ilk açılışta popup aç)
     document.addEventListener('DOMContentLoaded', function() {
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (!user) openModal();
-        else closeModal();
-      });
-      // Çıkış
       var logoutBtnElem = document.getElementById('logout-btn');
       if (logoutBtnElem) {
         logoutBtnElem.onclick = function(e) {
           e.preventDefault();
-          firebase.auth().signOut().then(() => { location.reload(); });
+          firebase.auth().signOut().then(() => {
+            window.location.href = "index.html";
+          });
         }
       }
     });
+
+    // Testler listesini çek ve doldur
+    async function testleriYukle() {
+      const yeniTestler = document.getElementById("yeni-testler");
+      const populerTestler = document.getElementById("populer-testler");
+
+      // En yeni 8 test
+      const yeniSnap = await db.collection("tests").orderBy("createdAt","desc").limit(8).get();
+      let htmlYeni = "";
+      yeniSnap.forEach(doc => {
+        const t = doc.data();
+        htmlYeni += `
+          <div class="test-card">
+            <img class="test-img" src="${t.image || 'img/soru-isareti.png'}" alt="Test Görseli"/>
+            <div class="test-title">${t.title || "Test Başlığı"}</div>
+            <div class="test-desc">${t.description || ""}</div>
+            <button class="test-btn" onclick="window.location.href='test-render.html?id=${doc.id}'">Teste Git</button>
+          </div>
+        `;
+      });
+      yeniTestler.innerHTML = htmlYeni || "<div>Test bulunamadı.</div>";
+
+      // Popüler testler (en çok çözülen 8 test)
+      const popSnap = await db.collection("tests").orderBy("solvedCount","desc").limit(8).get();
+      let htmlPop = "";
+      popSnap.forEach(doc => {
+        const t = doc.data();
+        htmlPop += `
+          <div class="test-card">
+            <img class="test-img" src="${t.image || 'img/soru-isareti.png'}" alt="Test Görseli"/>
+            <div class="test-title">${t.title || "Test Başlığı"}</div>
+            <div class="test-desc">${t.description || ""}</div>
+            <button class="test-btn" onclick="window.location.href='test-render.html?id=${doc.id}'">Teste Git</button>
+          </div>
+        `;
+      });
+      populerTestler.innerHTML = htmlPop || "<div>Test bulunamadı.</div>";
+    }
+    testleriYukle();
   </script>
 </body>
 </html>
