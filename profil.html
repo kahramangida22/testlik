@@ -3,46 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Profil | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Kullanıcı profilini görüntüle, bilgilerini güncelle!">
+  <title>Profilim | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Profilini görüntüle, düzenle, başarılarını takip et.">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .profil-wrap {
-      max-width: 480px;
-      margin: 40px auto 30px auto;
-      background: #fff;
-      border-radius: 27px;
-      box-shadow: 0 2px 22px #735aff1a;
-      padding: 35px 25px 28px 25px;
-      text-align: center;
-      position: relative;
+    .pr-wrap {max-width:440px;margin:39px auto 30px auto;background:#fff;border-radius:26px;box-shadow:0 2px 22px #735aff15;padding:33px 28px 23px 28px;}
+    .pr-header {display:flex;gap:21px;align-items:center;}
+    .pr-avatar {width:92px;height:92px;border-radius:50%;object-fit:cover;box-shadow:0 2px 14px #ed4a8830;border:3px solid #f5f0fa;}
+    .pr-name {color:#ed4a88;font-size:1.27em;font-weight:800;margin-bottom:5px;}
+    .pr-mail {color:#7a53c4;font-size:.97em;}
+    .pr-puan {background:#faf4ff;color:#735aff;font-size:1.05em;font-weight:700;padding:7px 18px;border-radius:13px;margin:17px 0 0 0;}
+    .pr-edit-btn {
+      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
+      color:#fff;font-weight:700;border-radius:13px;border:none;box-shadow:0 2px 11px #735aff14;padding:7px 22px;font-size:1.05em;cursor:pointer;
+      margin-top:7px;transition:background .13s;
     }
-    .profil-avatar {
-      width: 104px; height: 104px; border-radius: 50%;
-      object-fit: cover; background: #faf4ff; border: 3px solid #735aff22;
-      margin-bottom: 13px; box-shadow: 0 1px 15px #bba5fa0e;
+    .pr-edit-btn:active{background:#ed4a88;}
+    .pr-tests {margin-top:28px;}
+    .pr-t-title {color:#735aff;font-weight:700;font-size:1.1em;margin-bottom:11px;}
+    .pr-test-list {display:flex;flex-wrap:wrap;gap:13px;}
+    .pr-test-card {
+      background:#faf4ff;border-radius:12px;box-shadow:0 1px 7px #735aff13;padding:7px 11px;text-align:center;width:110px;
+      font-size:.98em;color:#ed4a88;font-weight:700;
     }
-    .profil-change {
-      margin-top: 6px; font-size: .97em; color: #ed4a88;
-      cursor: pointer; text-decoration: underline; background: none; border: none;
+    .pr-edit-modal-bg {display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:#735aff88;z-index:99;align-items:center;justify-content:center;}
+    .pr-edit-modal {
+      background:#fff;border-radius:19px;box-shadow:0 2px 17px #735aff22;padding:23px 19px;max-width:360px;width:90%;text-align:center;
+      display:flex;flex-direction:column;gap:11px;
     }
-    .profil-username {
-      color: #735aff; font-size: 1.17em; font-weight: 700; margin-bottom: 3px;
-    }
-    .profil-email {
-      color: #a387ff; font-size: 1.04em; font-weight: 600; margin-bottom: 7px;
-      word-break: break-all;
-    }
-    .profil-info-list {
-      margin: 17px auto 0 auto; display: flex; flex-direction:column; gap: 7px; font-size: 1.01em;
-    }
-    .profil-info-list span {color:#7a53c4;}
+    .pr-edit-modal input {padding:10px 7px;border-radius:8px;border:1.5px solid #ccbaff;margin-bottom:9px;}
+    .pr-edit-modal .modal-btn {background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);color:#fff;font-weight:700;border-radius:9px;border:none;padding:9px 14px;cursor:pointer;}
+    .pr-edit-modal .modal-btn:active{background:#ed4a88;}
+    @media (max-width:600px){.pr-wrap{padding:13px 5px 9px 5px;}}
   </style>
 </head>
 <body>
-  <!-- Giriş Modalı (Her sayfada!) -->
+  <!-- Giriş Modalı -->
   <div class="modal-bg" id="login-modal" style="display:none;">
     <div class="modal-card">
       <button class="modal-close" onclick="closeModal()">&times;</button>
@@ -57,6 +55,17 @@
       <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
       <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
       <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
+    </div>
+  </div>
+  <!-- Profil Edit Modal -->
+  <div class="pr-edit-modal-bg" id="pr-edit-modal-bg">
+    <div class="pr-edit-modal">
+      <h3>Profilini Düzenle</h3>
+      <input type="text" id="edit-name" placeholder="Kullanıcı adı">
+      <input type="file" id="edit-avatar" accept="image/*">
+      <button class="modal-btn" onclick="kaydetProfil()">Kaydet</button>
+      <button class="modal-btn" style="background:#bbb;color:#fff;" onclick="kapatEditModal()">Vazgeç</button>
+      <div id="edit-error" style="color:#ed4a88;font-size:.98em;min-height:18px;"></div>
     </div>
   </div>
   <!-- Header -->
@@ -82,15 +91,21 @@
   </header>
   <!-- Main -->
   <main>
-    <div class="profil-wrap" id="profil-card">
-      <img src="default-profile.png" id="profil-avatar" class="profil-avatar" alt="Profil Fotoğrafı" />
-      <input type="file" id="profil-input" accept="image/*" style="display:none;" />
-      <button class="profil-change" onclick="document.getElementById('profil-input').click();">Fotoğrafı Değiştir</button>
-      <div class="profil-username" id="profil-username">Kullanıcı Adı</div>
-      <div class="profil-email" id="profil-email">kullanici@mail.com</div>
-      <div class="profil-info-list">
-        <div><span>Puan:</span> <b id="profil-puan">0</b></div>
-        <div><span>Favori Testler:</span> <b id="profil-favori">0</b></div>
+    <div class="pr-wrap">
+      <div class="pr-header">
+        <img id="pr-avatar" class="pr-avatar" src="default-profile.png" alt="Profil Fotoğrafı"/>
+        <div>
+          <div class="pr-name" id="pr-name">Kullanıcı Adı</div>
+          <div class="pr-mail" id="pr-mail">kullanici@mail.com</div>
+          <div class="pr-puan" id="pr-puan">0 puan</div>
+          <button class="pr-edit-btn" onclick="acEditModal()">Düzenle</button>
+        </div>
+      </div>
+      <div class="pr-tests">
+        <div class="pr-t-title">Çözdüğün Testler</div>
+        <div class="pr-test-list" id="pr-test-list">
+          <!-- Çözülen testler JS ile gelecek -->
+        </div>
       </div>
     </div>
   </main>
@@ -121,40 +136,70 @@
       }
       if (!user) openModal();
       else closeModal();
+
+      if (user) {
+        // Profil bilgisi
+        db.collection("users").doc(user.uid).get().then(doc=>{
+          let d = doc.data()||{};
+          document.getElementById("pr-avatar").src = d.avatar || "default-profile.png";
+          document.getElementById("pr-name").innerText = d.displayName || user.displayName || "Kullanıcı";
+          document.getElementById("pr-mail").innerText = user.email;
+          document.getElementById("pr-puan").innerText = (d.points||0)+" puan";
+          // Çözülen testler
+          let testIDs = (d.solvedTests||[]);
+          if (!Array.isArray(testIDs) || testIDs.length==0) {
+            document.getElementById("pr-test-list").innerHTML = "<span style='color:#bbb;'>Henüz test çözmedin.</span>";
+          } else {
+            // Son 4 test kartı
+            db.collection("tests").where(firebase.firestore.FieldPath.documentId(),"in",testIDs.slice(-4)).get().then(qs=>{
+              let html = "";
+              qs.forEach(t=>{
+                let data = t.data();
+                html += `<div class="pr-test-card">${data.title||"Test"}</div>`;
+              });
+              document.getElementById("pr-test-list").innerHTML = html;
+            });
+          }
+        });
+      }
     });
 
-    // Kullanıcı verisi çekme ve gösterme
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (!user) return;
-      let profilAvatar = document.getElementById("profil-avatar");
-      let profilUsername = document.getElementById("profil-username");
-      let profilEmail = document.getElementById("profil-email");
-      let profilPuan = document.getElementById("profil-puan");
-      let profilFavori = document.getElementById("profil-favori");
-      profilAvatar.src = user.photoURL || "default-profile.png";
-      profilUsername.innerText = user.displayName || "Kullanıcı";
-      profilEmail.innerText = user.email || "Misafir";
-      db.collection("users").doc(user.uid).get().then(doc => {
-        const data = doc.data() || {};
-        profilPuan.innerText = data.points || 0;
-        profilFavori.innerText = (data.favorites && data.favorites.length) || 0;
+    // Profil edit modalı
+    function acEditModal(){
+      document.getElementById("pr-edit-modal-bg").style.display = "flex";
+      // Varsayılan isim ve resim getir
+      firebase.auth().onAuthStateChanged(function(user){
+        db.collection("users").doc(user.uid).get().then(doc=>{
+          let d = doc.data()||{};
+          document.getElementById("edit-name").value = d.displayName || user.displayName || "";
+        });
       });
-    });
-
-    // Profil fotoğrafı yükleme
-    document.getElementById("profil-input").onchange = function(e) {
-      var file = e.target.files[0];
-      if (!file) return;
-      // Fotoğrafı yükle ve güncelle (ör: Firebase Storage ile)
-      // Bu örnekte sadece önizleme:
-      var reader = new FileReader();
-      reader.onload = function(ev) {
-        document.getElementById("profil-avatar").src = ev.target.result;
-        // Gerçek upload: Burada Firebase Storage ile yükleyip,
-        // ardından kullanıcı profilini ve db kaydını güncelleyebilirsin.
-      };
-      reader.readAsDataURL(file);
-    };
+    }
+    function kapatEditModal(){
+      document.getElementById("pr-edit-modal-bg").style.display = "none";
+    }
+    // Profil kaydet
+    function kaydetProfil(){
+      firebase.auth().onAuthStateChanged(function(user){
+        let newName = document.getElementById("edit-name").value.trim();
+        let avatarFile = document.getElementById("edit-avatar").files[0];
+        if (!newName) { document.getElementById("edit-error").innerText = "Kullanıcı adı boş olamaz!"; return; }
+        // Sadece isim güncelle
+        db.collection("users").doc(user.uid).update({displayName: newName}).then(()=>{
+          document.getElementById("pr-name").innerText = newName;
+        });
+        // Profil fotoğrafı güncelle
+        if (avatarFile) {
+          const reader = new FileReader();
+          reader.onload = function(e){
+            db.collection("users").doc(user.uid).update({avatar: e.target.result}).then(()=>{
+              document.getElementById("pr-avatar").src = e.target.result;
+              kapatEditModal();
+            });
+          }; reader.readAsDataURL(avatarFile);
+        } else kapatEditModal();
+      });
+    }
   </script>
 </body>
 </html>
