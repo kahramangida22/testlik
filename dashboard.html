@@ -4,34 +4,31 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Kazançlarını takip et, para çekim taleplerini yönet!">
+  <meta name="description" content="Testlik.com - Puan durumu, para çekme ve ödeme geçmişi burada!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .db-wrap {max-width:510px;margin:38px auto 32px auto;background:#fff;border-radius:25px;box-shadow:0 2px 22px #735aff15;padding:33px 28px 26px 28px;}
-    .db-title {color:#735aff;font-size:1.23em;font-weight:800;margin-bottom:16px;}
-    .db-puan {
+    .dash-wrap {max-width:570px;margin:39px auto 30px auto;background:#fff;border-radius:26px;box-shadow:0 2px 22px #735aff15;padding:33px 28px 23px 28px;}
+    .dash-title {color:#735aff;font-size:1.25em;font-weight:800;margin-bottom:21px;}
+    .dash-kutu {background:#faf4ff;border-radius:18px;box-shadow:0 1px 10px #ed4a8813;padding:19px 17px;margin-bottom:19px;}
+    .dash-puan {color:#ed4a88;font-size:1.59em;font-weight:800;}
+    .dash-label {color:#7a53c4;font-size:1.07em;font-weight:600;}
+    .dash-form {margin-top:10px;}
+    .dash-form input, .dash-form select {padding:8px 10px;border-radius:8px;border:1.5px solid #ccbaff;margin-bottom:9px;width:100%;}
+    .dash-form button {
       background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
-      color:#fff;font-size:1.53em;font-weight:900;padding:18px 0;border-radius:17px;text-align:center;
-      margin-bottom:21px;box-shadow:0 2px 13px #735aff19;
+      color:#fff;font-weight:700;border-radius:13px;border:none;box-shadow:0 2px 11px #735aff14;padding:10px 23px;font-size:1.06em;cursor:pointer;
+      transition:background .13s;margin-top:4px;
     }
-    .db-subtitle {color:#ed4a88;font-weight:700;margin-top:8px;margin-bottom:3px;}
-    .db-history {margin:12px 0 14px 0;max-height:145px;overflow:auto;}
-    .db-history-item {color:#7a53c4;background:#faf4ff;padding:9px 14px;border-radius:13px;margin-bottom:8px;font-size:1em;}
-    .db-form {margin-top:17px;}
-    .db-label {display:block;margin-bottom:4px;color:#735aff;font-weight:600;}
-    .db-inp {
-      width:100%;padding:11px 8px;border-radius:11px;border:1.2px solid #ccbaff;font-size:1.04em;font-family:'Fredoka',Arial;background:#f5f0fa;
-      margin-bottom:7px;
-    }
-    .db-btn {
-      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
-      color:#fff;font-weight:700;border-radius:14px;border:none;box-shadow:0 2px 11px #735aff14;padding:10px 28px;font-size:1.08em;cursor:pointer;
-      transition:background .13s;
-      margin-top:5px;
-    }
-    .db-btn:active{background:#ed4a88;}
+    .dash-form button:active{background:#ed4a88;}
+    .dash-error {color:#ed4a88;font-size:1.02em;min-height:21px;margin-bottom:6px;}
+    .dash-g-table {width:100%;border-collapse:collapse;}
+    .dash-g-table th, .dash-g-table td {padding:7px 5px;text-align:left;font-size:.98em;}
+    .dash-g-table th {color:#7a53c4;}
+    .dash-g-table td {color:#735aff;}
+    .dash-g-table tr:nth-child(even){background:#f6f2fa;}
+    @media (max-width:600px){.dash-wrap{padding:13px 5px 9px 5px;}}
   </style>
 </head>
 <body>
@@ -45,7 +42,7 @@
       </button>
       <hr style="margin:23px 0 15px 0;opacity:.19;">
       <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
-      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
+      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1.5px solid #ccbaff;margin-top:8px;">
       <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
       <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
       <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
@@ -75,20 +72,37 @@
   </header>
   <!-- Main -->
   <main>
-    <div class="db-wrap">
-      <div class="db-title">Kullanıcı Puanı & Kazanç Paneli</div>
-      <div class="db-puan"><span id="db-puan">0</span> Puan</div>
-      <div class="db-subtitle">İşlem Geçmişi</div>
-      <div class="db-history" id="db-history"></div>
-      <div class="db-subtitle">Para Çekme Talebi (IBAN)</div>
-      <form class="db-form" id="db-form" onsubmit="return paraCekTalep();">
-        <label class="db-label" for="db-iban">IBAN Numarası</label>
-        <input class="db-inp" id="db-iban" maxlength="32" required placeholder="TR..." />
-        <label class="db-label" for="db-tutar">Tutar (₺)</label>
-        <input class="db-inp" id="db-tutar" type="number" min="10" max="10000" step="1" required placeholder="Çekmek istediğin tutar" />
-        <button class="db-btn" type="submit">Talep Oluştur</button>
-        <div id="db-sonuc" style="color:#ed4a88;font-size:1em;min-height:18px;margin-top:4px;"></div>
-      </form>
+    <div class="dash-wrap">
+      <div class="dash-title">Puan Durumu & Para Çekme</div>
+      <div class="dash-kutu" style="margin-bottom:22px;">
+        <div class="dash-label">Güncel Puanın</div>
+        <div class="dash-puan" id="puan">0</div>
+      </div>
+      <div class="dash-kutu">
+        <div class="dash-label">Para Çekme Talebi</div>
+        <form class="dash-form" id="cek-form" onsubmit="return false;">
+          <select id="cek-method">
+            <option value="iban">IBAN</option>
+            <option value="wise">Wise</option>
+            <option value="payoneer">Payoneer</option>
+          </select>
+          <input type="text" id="cek-bilgi" placeholder="IBAN veya hesap adresi" />
+          <input type="number" id="cek-tutar" placeholder="Çekmek istediğin tutar (TL)" min="10" step="1" />
+          <button type="submit">Talep Oluştur</button>
+          <div class="dash-error" id="cek-error"></div>
+        </form>
+      </div>
+      <div class="dash-kutu">
+        <div class="dash-label">Para Çekme Geçmişi</div>
+        <table class="dash-g-table" id="cek-gecmis">
+          <thead>
+            <tr><th>Tarih</th><th>Tutar</th><th>Yöntem</th><th>Durum</th></tr>
+          </thead>
+          <tbody>
+            <!-- Geçmiş talepler gelecek -->
+          </tbody>
+        </table>
+      </div>
     </div>
   </main>
   <!-- Footer -->
@@ -118,63 +132,47 @@
       }
       if (!user) openModal();
       else closeModal();
-    });
 
-    // Kullanıcı verileri ve geçmiş
-    firebase.auth().onAuthStateChanged(async function(user) {
-      if (!user) return;
-      // Puan göster
-      db.collection("users").doc(user.uid).get().then(doc => {
-        document.getElementById("db-puan").innerText = (doc.data() && doc.data().points) || 0;
-      });
-      // İşlem geçmişi göster (ör: çekim talepleri ve kazançlar)
-      let snap = await db.collection("users").doc(user.uid).collection("history").orderBy("createdAt", "desc").limit(30).get();
-      let html = "";
-      snap.forEach(doc => {
-        let h = doc.data();
-        html += `<div class="db-history-item">${h.type === "withdraw" ? "<b>Çekim Talebi:</b> " : "<b>Kazanç:</b> "} ${h.amount}₺ ${h.iban ? "→ " + h.iban : ""} <span style="color:#bba5fa;float:right;font-size:.97em;">${h.date || ""}</span></div>`;
-      });
-      document.getElementById("db-history").innerHTML = html || `<div style="color:#bba5fa;">Hiç işlem yok!</div>`;
+      if (user) {
+        // Puanı göster
+        db.collection("users").doc(user.uid).get().then(doc=>{
+          document.getElementById("puan").innerText = (doc.data()&&doc.data().points)||0;
+        });
+        // Çekim geçmişini göster
+        db.collection("withdraws").where("uid","==",user.uid).orderBy("createdAt","desc").limit(6).get().then(qs=>{
+          let html = "";
+          qs.forEach(w=>{
+            let d = w.data();
+            html += `<tr>
+              <td>${d.createdAt?.toDate?.().toLocaleString?.("tr-TR")||"-"}</td>
+              <td>${d.amount} TL</td>
+              <td>${d.method}</td>
+              <td>${d.status||"Beklemede"}</td>
+            </tr>`;
+          });
+          document.querySelector("#cek-gecmis tbody").innerHTML = html||"<tr><td colspan='4'>Kayıt yok</td></tr>";
+        });
+      }
     });
 
     // Para çekme talebi
-    function paraCekTalep() {
-      var iban = document.getElementById("db-iban").value.trim().toUpperCase();
-      var tutar = parseInt(document.getElementById("db-tutar").value);
-      var sonuc = document.getElementById("db-sonuc");
-      if (!iban.startsWith("TR") || iban.length < 15) {
-        sonuc.innerText = "Geçerli bir IBAN gir!";
+    document.getElementById("cek-form").onsubmit = function(){
+      const method = document.getElementById("cek-method").value;
+      const bilgi = document.getElementById("cek-bilgi").value.trim();
+      const tutar = Number(document.getElementById("cek-tutar").value);
+      if (!bilgi || !tutar || tutar<10) {
+        document.getElementById("cek-error").innerText = "Lütfen bilgileri doğru girin! (Min 10 TL)";
         return false;
       }
-      if (isNaN(tutar) || tutar < 10) {
-        sonuc.innerText = "En az 10 TL çekebilirsin!";
-        return false;
-      }
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (!user) return;
-        db.collection("users").doc(user.uid).get().then(doc => {
-          let mevcut = (doc.data() && doc.data().points) || 0;
-          if (mevcut < tutar) {
-            sonuc.innerText = "Yeterli puanın yok!";
-            return;
-          }
-          // Talep kaydet
-          db.collection("users").doc(user.uid).collection("history").add({
-            type: "withdraw",
-            amount: tutar,
-            iban,
-            createdAt: new Date(),
-            date: new Date().toLocaleString("tr-TR")
-          }).then(() => {
-            // Puanı düş
-            db.collection("users").doc(user.uid).update({points: mevcut - tutar});
-            sonuc.innerText = "Talebin başarıyla alındı!";
-            setTimeout(() => location.reload(), 1100);
-          });
+      firebase.auth().onAuthStateChanged(function(user){
+        db.collection("withdraws").add({
+          uid: user.uid, method, bilgi, amount: tutar, status:"Beklemede", createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(()=>{
+          document.getElementById("cek-error").innerText = "Talebin alındı, en kısa sürede incelenecek!";
         });
       });
       return false;
-    }
+    };
   </script>
 </body>
 </html>
