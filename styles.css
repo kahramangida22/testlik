@@ -1,103 +1,162 @@
 body {
   font-family: 'Fredoka', 'Segoe UI', Arial, sans-serif;
   margin: 0;
-  background: #f7f4ff;
+  background: #ece4ff;   /* Lila arka plan */
   color: #735aff;
-}
-a { color: #735aff; text-decoration: none; transition: color .15s;}
-a:hover { color: #ed4a88;}
-header { background: #fff; box-shadow: 0 2px 12px #735aff11; }
-.logo { height: 49px; vertical-align: middle; margin-right: 15px; }
-.nav-flex {
-  max-width: 980px;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  padding: 0 18px 0 18px;
-}
-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1rem;
-  margin-left: auto;
-  margin-right: 10px;
-}
-nav a {
-  padding: 11px 15px;
-  border-radius: 13px;
-  font-weight: 700;
-  font-size: 1.07em;
-  background: #f5f0fa;
-  color: #735aff;
-  margin-bottom: 5px;
-  transition: background .14s, color .14s;
-  box-shadow: 0 1px 5px #735aff0a;
-}
-nav a.active, nav a:hover {
-  background: linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
-  color: #fff;
-}
-.admin-link { background: #fffbe8 !important; color: #ed4a88 !important;}
-nav a#logout-btn { background: #f5f0fa; color: #ed4a88; }
-@media (max-width: 1000px) {
-  .nav-flex { flex-direction: column; align-items: stretch; }
-  nav { flex-wrap: wrap; justify-content: center; gap: 0.5rem 0.6rem; }
-}
-@media (max-width: 750px) {
-  nav { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; }
-}
-@media (max-width: 480px) {
-  nav { grid-template-columns: 1fr 1fr; }
-  .logo { height: 39px; margin-right: 6px; }
+  min-height: 100vh;
 }
 
-footer {
-  background: #fff;
-  box-shadow: 0 -1px 10px #735aff11;
-  margin-top: 43px;
-  padding: 18px 0 8px 0;
+header, footer {
+  background: linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
+  color: #fff;
+  box-shadow: 0 2px 14px #735aff0d;
 }
-.footer-flex {
-  max-width: 980px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 18px;
-  flex-wrap: wrap;
-  gap: 13px;
-}
-.odeme-logo img {
-  height: 29px;
-  margin-right: 8px;
+
+.logo {
+  height: 48px;
+  margin-right: 18px;
   vertical-align: middle;
 }
 
-::-webkit-scrollbar { width: 8px; background: #faf4ff; }
-::-webkit-scrollbar-thumb { background: #735aff22; border-radius: 6px; }
-::-webkit-scrollbar-thumb:hover { background: #ed4a8844; }
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: center;
+  padding: 18px 0 10px 0;
+}
 
-/* Popup/Modal kart stilleri (tüm sayfalarda kullanılabilir) */
-.modal-bg {
-  position: fixed; top:0; left:0; width:100vw; height:100vh;
-  background: #735aff77; z-index: 9999; display: flex; align-items: center; justify-content: center;
+nav a {
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  padding: 7px 20px;
+  border-radius: 12px;
+  transition: background 0.13s, color 0.13s;
+  font-size: 1.07em;
 }
-.modal-card {
-  background: #fff; border-radius: 18px; box-shadow: 0 3px 24px #735aff24;
-  padding: 33px 27px 29px 27px; max-width: 340px; width: 94%; position:relative; text-align:center;
+nav a:hover, nav .active {
+  background: #fff;
+  color: #735aff;
 }
-.modal-close {
-  position: absolute; top: 13px; right: 15px;
-  background: transparent; color: #735aff; font-size: 2em; border: none; cursor: pointer;
+nav .admin-link {
+  background: #ff69b425;
+  color: #fff;
 }
-.modal-inp { width:95%; padding:11px; border-radius:9px; border:1.5px solid #ccbaff; margin-bottom:6px; font-size:1.02em;}
-.modal-btn {
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.main-block {
+  background: #f6f2ff;
+  border-radius: 20px;
+  padding: 22px 15px 18px 15px;
+  margin: 0 6px;
+  box-shadow: 0 2px 14px #735aff18;
+  min-width: 220px;
+}
+
+h1, h2 {
+  font-family: 'Fredoka', Arial, sans-serif;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 2.2em;
+}
+
+h2 {
+  font-size: 1.4em;
+  margin-top: 0;
+}
+
+.testler-grid {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.test-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 14px #735aff18;
+  padding: 13px 12px;
+  width: 170px;
+  min-height: 215px;
+  text-align: center;
+  margin-bottom: 13px;
+  transition: transform .13s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.test-card:hover { transform: scale(1.04);}
+.test-img { width: 78px; height: 78px; object-fit:cover; border-radius:15px; margin-bottom:8px;}
+.test-title { font-weight:700; font-size:1.08em; margin-bottom:4px;}
+.test-desc { font-size:.96em; color:#8a79bf; margin-bottom:6px;}
+.test-btn {
   background: linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
-  color: #fff; font-weight:700; border-radius:9px; border:none; padding:10px 24px; font-size:1.06em; cursor:pointer; margin-top:4px; transition:background .13s;
+  color: #fff; font-weight:700; border-radius:9px; border:none;
+  padding:7px 18px; font-size:.99em; cursor:pointer;
+  margin-bottom:4px;
+  transition: filter .13s;
 }
-.modal-btn:active { background: #ed4a88; }
-.modal-google { background:#fff; color:#ed4a88; font-weight:700; border-radius:11px; border:2px solid #ed4a88; box-shadow:0 2px 9px #ed4a8820; padding:10px 10px; font-size:1.03em; cursor:pointer; margin:0 0 3px 0;}
-.modal-google:active{background:#f3e6ff;}
-.modal-guest {background:#bbb;color:#fff;border:none;border-radius:8px;font-weight:700;padding:8px 17px;margin-top:10px;}
-@media (max-width:480px) {.modal-card{padding:17px 5px 13px 5px;}}
+.test-btn:hover { filter: brightness(1.13); }
+
+.footer-flex, .nav-flex {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px 10px;
+}
+
+footer {
+  padding: 0 0 12px 0;
+  margin-top: 32px;
+}
+
+.odeme-logo img {
+  height: 30px;
+  margin-left: 10px;
+  background: #fff;
+  padding: 3px 10px;
+  border-radius: 7px;
+  box-shadow: 0 2px 8px #735aff15;
+  vertical-align: middle;
+}
+
+.emoji {
+  font-size: 1.4em;
+  vertical-align: -6px;
+}
+
+@media (max-width: 1200px) {
+  .container { max-width: 98%; }
+}
+
+@media (max-width: 900px) {
+  .main-block { min-width: 180px; }
+  .footer-flex, .nav-flex { flex-direction: column; gap: 4px; align-items: flex-start; }
+}
+
+@media (max-width: 700px) {
+  .testler-grid { justify-content:center; }
+  .main-block { margin-bottom: 22px; min-width: 120px; }
+  nav {
+    gap: 7px;
+    font-size: 0.98em;
+    flex-wrap: wrap;
+  }
+  .test-card { width: 98%; min-width: 140px; }
+  .footer-flex, .nav-flex { padding: 8px 3px; }
+}
+
+::-webkit-scrollbar { width: 7px; background:#e5d5ff;}
+::-webkit-scrollbar-thumb { background:#c9b1ff; border-radius:10px; }
