@@ -4,39 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Çarkıfelek | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Çarkı çevir, sürpriz puanlar kazan!">
+  <meta name="description" content="Testlik.com - Çarkı döndür, şansını dene, bonus puanlar kazan!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .cark-wrap {
-      display:flex;flex-direction:column;align-items:center;justify-content:center;margin:46px 0 22px 0;
-    }
-    .cark-canvas {
-      background: #fff; border-radius: 50%; box-shadow: 0 3px 30px #735aff21;
-      width: 340px; height: 340px; max-width:95vw; transition:.3s;
-      margin-bottom: 18px;
-      position:relative;
-    }
-    .cark-btn {
-      background: linear-gradient(90deg, #fd72ff 0%, #735aff 100%);
-      color: #fff; font-weight: 800; border-radius: 18px;
-      border: none; box-shadow: 0 2px 12px #735aff22;
-      padding: 16px 44px; font-size: 1.19em; cursor: pointer; margin: 18px 0 0 0;
-      letter-spacing: .5px;
-      transition: background .13s;
-    }
-    .cark-btn:active {background: #ed4a88;}
-    .cark-result {
-      font-size:1.13em;color:#ed4a88;font-weight:700;margin-top:15px;min-height:33px;text-align:center;
-      letter-spacing: .1px;
-    }
+    .cark-wrap {max-width:430px;margin:42px auto 30px auto;background:#fff;border-radius:26px;box-shadow:0 2px 22px #735aff15;padding:33px 28px 26px 28px;text-align:center;}
+    .cark-title {color:#735aff;font-size:1.21em;font-weight:800;margin-bottom:15px;}
+    .cark-canvas-wrap {position:relative;width:290px;height:290px;margin:18px auto;}
+    #cark-canvas {width:290px;height:290px;}
     .cark-pointer {
-      position:absolute;top:-28px;left:50%;transform:translateX(-50%);
-      width: 46px; height:46px; z-index:2;
-      pointer-events:none;
+      position:absolute;top:11px;left:50%;transform:translateX(-50%);
+      width:28px;height:28px;background:#ed4a88;border-radius:50%;box-shadow:0 2px 8px #ed4a8844;z-index:9;
+      display:flex;align-items:center;justify-content:center;
     }
-    @media (max-width:540px){.cark-canvas{width:99vw;height:99vw;max-width:370px;}}
+    .cark-pointer:after{
+      content:"";display:block;width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;
+      border-bottom:17px solid #fff;position:absolute;top:19px;left:1px;
+    }
+    .cark-spin-btn {
+      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
+      color:#fff;font-weight:700;border-radius:14px;border:none;box-shadow:0 2px 11px #735aff14;padding:13px 42px;font-size:1.11em;cursor:pointer;
+      margin:19px auto 0 auto;display:block;transition:background .13s;
+    }
+    .cark-spin-btn:active{background:#ed4a88;}
+    .cark-sonuc {color:#ed4a88;font-size:1.17em;font-weight:700;margin-top:19px;min-height:29px;}
+    @media (max-width:600px){.cark-wrap{padding:13px 5px 9px 5px;}}
   </style>
 </head>
 <body>
@@ -81,13 +74,13 @@
   <!-- Main -->
   <main>
     <div class="cark-wrap">
-      <h1 style="color:#735aff;font-size:1.49em;font-weight:800;margin-bottom:11px;">Çarkı Çevir, Şansını Deneyip Puan Kazan!</h1>
-      <div style="position:relative;">
-        <canvas class="cark-canvas" id="cark-canvas" width="340" height="340"></canvas>
-        <img src="soru-isareti.png" class="cark-pointer" alt="Pointer"/>
+      <div class="cark-title">Çarkıfelek: Şansını Dene!</div>
+      <div class="cark-canvas-wrap">
+        <div class="cark-pointer"></div>
+        <canvas id="cark-canvas" width="290" height="290"></canvas>
       </div>
-      <button class="cark-btn" id="spin-btn">Çarkı Döndür</button>
-      <div class="cark-result" id="cark-result"></div>
+      <button class="cark-spin-btn" id="spin-btn">Çevir</button>
+      <div class="cark-sonuc" id="cark-sonuc"></div>
     </div>
   </main>
   <!-- Footer -->
@@ -108,7 +101,7 @@
   <script src="firebase.js"></script>
   <script src="main.js"></script>
   <script>
-    // --- Modal ve Admin aynı mantık (her sayfa aynı!)
+    // Modal ve admin linki
     firebase.auth().onAuthStateChanged(function(user) {
       var adminLink = document.getElementById('admin-link');
       if (adminLink) {
@@ -119,79 +112,85 @@
       else closeModal();
     });
 
-    // Çark verileri
-    const slices = [
-      {label: "+100", color: "#735aff", result: 100},
-      {label: "İflas", color: "#ff4066", result: 0},
-      {label: "+250", color: "#a387ff", result: 250},
-      {label: "0", color: "#d2c0fa", result: 0},
-      {label: "+50", color: "#ff8ad8", result: 50},
-      {label: "+500", color: "#ed4a88", result: 500},
-      {label: "+25", color: "#13bd72", result: 25},
-      {label: "Boş", color: "#f7f4fd", result: 0}
+    // Çark segmentleri
+    const segmentler = [
+      {text:"10 PUAN", color:"#735aff", win:10},
+      {text:"5 PUAN", color:"#ed4a88", win:5},
+      {text:"20 PUAN", color:"#fd72ff", win:20},
+      {text:"İFLAS", color:"#f5f0fa", win:0},
+      {text:"0", color:"#d7c3f7", win:0},
+      {text:"25 PUAN", color:"#ed4a88", win:25},
+      {text:"15 PUAN", color:"#735aff", win:15},
+      {text:"30 PUAN", color:"#fd72ff", win:30}
     ];
 
-    let isSpinning = false, currentAngle = 0;
-    const canvas = document.getElementById("cark-canvas");
-    const ctx = canvas.getContext("2d");
-    const spinBtn = document.getElementById("spin-btn");
-    const resultDiv = document.getElementById("cark-result");
-
-    function drawWheel(angle=0) {
-      const cx = canvas.width/2, cy = canvas.height/2, r = canvas.width/2-8;
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      const n = slices.length;
-      for(let i=0;i<n;i++) {
-        const start = angle + (i*2*Math.PI/n);
-        const end = angle + ((i+1)*2*Math.PI/n);
+    // Çark çizimi
+    const canvas = document.getElementById('cark-canvas');
+    const ctx = canvas.getContext('2d');
+    const PI = Math.PI, ikiPI = 2 * PI, N = segmentler.length;
+    let aci = 0, spinning = false;
+    function cizCark() {
+      for(let i=0;i<N;i++){
+        let basla = aci + (ikiPI*i/N);
         ctx.beginPath();
-        ctx.moveTo(cx,cy);
-        ctx.arc(cx,cy,r,start,end,false);
-        ctx.fillStyle = slices[i].color;
+        ctx.moveTo(145,145);
+        ctx.arc(145,145,140,basla,basla+ikiPI/N);
+        ctx.closePath();
+        ctx.fillStyle = segmentler[i].color;
         ctx.fill();
         ctx.save();
-        ctx.translate(cx,cy);
-        ctx.rotate((start+end)/2-Math.PI/2);
-        ctx.textAlign="center"; ctx.textBaseline="middle";
-        ctx.font = "bold 1.1em Fredoka,Arial";
-        ctx.fillStyle = "#fff";
-        ctx.shadowColor="#735aff33";ctx.shadowBlur=6;
-        ctx.fillText(slices[i].label, r-55, 0);
+        ctx.translate(145,145);
+        ctx.rotate(basla+ikiPI/(2*N));
+        ctx.textAlign="center";ctx.textBaseline="middle";
+        ctx.font="bold 20px Fredoka";
+        ctx.fillStyle="#fff";
+        ctx.fillText(segmentler[i].text,88,0);
         ctx.restore();
       }
     }
-    drawWheel();
+    cizCark();
 
-    spinBtn.onclick = function() {
-      if(isSpinning) return;
-      isSpinning = true;
-      resultDiv.innerText = "";
-      let rotateTo = Math.floor(Math.random()*360 + 1800); // 5 tur+random
-      let finalAngle = (rotateTo%360)*Math.PI/180;
-      let t=0, speed=45, last=0;
-      function animate() {
-        t+=speed;
-        currentAngle += speed*Math.PI/180;
-        drawWheel(currentAngle);
-        speed *= .98; // yavaşlama
-        if(speed>1 || t<rotateTo) requestAnimationFrame(animate);
-        else {
-          currentAngle = finalAngle;
-          drawWheel(currentAngle);
-          // Sonuç hangi slice'da
-          let n = slices.length;
-          let anglePer = 2*Math.PI/n;
-          let win = (2*Math.PI - (currentAngle%(2*Math.PI)) + Math.PI/2)%(2*Math.PI);
-          let idx = Math.floor(win/anglePer)%n;
-          let res = slices[idx];
-          if(res.label === "İflas") resultDiv.innerHTML = `<span style="color:#ff4066;">İflas! Puan sıfırlandı 😥</span>`;
-          else if(res.label === "0" || res.label === "Boş") resultDiv.innerHTML = `<span style="color:#a3a3a3;">Bu sefer boş geçti!</span>`;
-          else resultDiv.innerHTML = `<span style="color:#13bd72;">Tebrikler! <b>+${res.result} puan</b> kazandın! 🎉</span>`;
-          isSpinning=false;
+    // Çevirme butonu
+    document.getElementById("spin-btn").onclick = function(){
+      if (spinning) return;
+      spinning = true;
+      document.getElementById("cark-sonuc").innerText = "";
+      let tur = Math.floor(Math.random()*4)+4; // 4-7 tur arası
+      let secim = Math.floor(Math.random()*N);
+      let hedef = ikiPI*tur + ikiPI*secim/N + ikiPI/(2*N);
+      let bas = aci, diff = hedef - aci, sure = 2300+Math.random()*700, baslangic = Date.now();
+      function anim(){
+        let gecen = Date.now()-baslangic;
+        if (gecen >= sure) {
+          aci = hedef % ikiPI;
+          cizCark();
+          spinning = false;
+          carkSonuc(secim);
+        } else {
+          aci = bas + diff*(gecen/sure) + 0.1*Math.sin((gecen/sure)*PI);
+          cizCark();
+          requestAnimationFrame(anim);
         }
       }
-      animate();
+      anim();
     };
+
+    // Sonuç işle
+    function carkSonuc(i){
+      let seg = segmentler[i];
+      let text = seg.text === "İFLAS" || seg.text === "0" ? "Üzgünüm, puan yok!" : `Tebrikler, ${seg.text} kazandın!`;
+      document.getElementById("cark-sonuc").innerText = text;
+      // Puan ekle
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) return;
+        if (seg.win > 0) {
+          db.collection("users").doc(user.uid).get().then(udoc=>{
+            let upuan = (udoc.data() && udoc.data().points) || 0;
+            db.collection("users").doc(user.uid).update({points: upuan+seg.win});
+          });
+        }
+      });
+    }
   </script>
 </body>
 </html>
