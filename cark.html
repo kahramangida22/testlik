@@ -4,57 +4,60 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Çarkıfelek | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Çarkıfelek ile günlük sürpriz puanlar kazan!">
+  <meta name="description" content="Testlik.com - Çarkı çevir, sürpriz puanlar kazan!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .cark-card {
-      background: #fff;
-      border-radius: 28px;
-      box-shadow: 0 2px 24px #735aff19;
-      padding: 36px 24px 34px 24px;
-      max-width: 410px;
-      margin: 44px auto 22px auto;
-      text-align: center;
-      font-size: 1.15em;
+    .cark-wrap {
+      display:flex;flex-direction:column;align-items:center;justify-content:center;margin:46px 0 22px 0;
     }
-    .cark-img {
-      width: 120px;
-      height: 120px;
-      margin-bottom: 19px;
-      border-radius: 22px;
-      background: #faf7ff;
-      box-shadow: 0 2px 12px #b69bfc19;
-      transition: transform 1.5s cubic-bezier(.44,1.7,.42,1);
+    .cark-canvas {
+      background: #fff; border-radius: 50%; box-shadow: 0 3px 30px #735aff21;
+      width: 340px; height: 340px; max-width:95vw; transition:.3s;
+      margin-bottom: 18px;
+      position:relative;
     }
     .cark-btn {
-      margin-top: 12px;
-      font-size: 1.1em;
-      background: linear-gradient(90deg,#fd72ff 0%, #735aff 100%);
-      color: #fff;
-      border: none;
-      border-radius: 17px;
-      padding: 12px 35px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 2px 10px #735aff29;
+      background: linear-gradient(90deg, #fd72ff 0%, #735aff 100%);
+      color: #fff; font-weight: 800; border-radius: 18px;
+      border: none; box-shadow: 0 2px 12px #735aff22;
+      padding: 16px 44px; font-size: 1.19em; cursor: pointer; margin: 18px 0 0 0;
+      letter-spacing: .5px;
       transition: background .13s;
     }
-    .cark-btn:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
+    .cark-btn:active {background: #ed4a88;}
     .cark-result {
-      margin-top: 18px;
-      font-size: 1.15em;
-      color: #ed4a88;
-      font-weight: 700;
-      min-height: 24px;
+      font-size:1.13em;color:#ed4a88;font-weight:700;margin-top:15px;min-height:33px;text-align:center;
+      letter-spacing: .1px;
     }
+    .cark-pointer {
+      position:absolute;top:-28px;left:50%;transform:translateX(-50%);
+      width: 46px; height:46px; z-index:2;
+      pointer-events:none;
+    }
+    @media (max-width:540px){.cark-canvas{width:99vw;height:99vw;max-width:370px;}}
   </style>
 </head>
 <body>
+  <!-- Giriş Modalı -->
+  <div class="modal-bg" id="login-modal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <h2>Testlik.com'a Giriş</h2>
+      <button class="modal-google" onclick="loginGoogle()">
+        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
+      </button>
+      <hr style="margin:23px 0 15px 0;opacity:.19;">
+      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
+      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
+      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
+      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
+      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
+      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
+    </div>
+  </div>
+  <!-- Header -->
   <header>
     <div class="nav-flex">
       <img src="logo.png" alt="Testlik.com Logo" class="logo" />
@@ -70,19 +73,24 @@
         <a href="dashboard.html">Dashboard</a>
         <a href="akademi.html">Akademi</a>
         <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link">Admin</a>
+        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
         <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
+  <!-- Main -->
   <main>
-    <div class="cark-card">
-      <img src="success.png" alt="Çarkıfelek" class="cark-img" id="cark-img"/>
-      <div>Günde 1 kez çarkı çevir, sürpriz puan kazan!</div>
-      <button class="cark-btn" id="cark-cevir-btn">Çarkı Çevir</button>
+    <div class="cark-wrap">
+      <h1 style="color:#735aff;font-size:1.49em;font-weight:800;margin-bottom:11px;">Çarkı Çevir, Şansını Deneyip Puan Kazan!</h1>
+      <div style="position:relative;">
+        <canvas class="cark-canvas" id="cark-canvas" width="340" height="340"></canvas>
+        <img src="soru-isareti.png" class="cark-pointer" alt="Pointer"/>
+      </div>
+      <button class="cark-btn" id="spin-btn">Çarkı Döndür</button>
       <div class="cark-result" id="cark-result"></div>
     </div>
   </main>
+  <!-- Footer -->
   <footer>
     <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
@@ -93,78 +101,97 @@
       </div>
     </div>
   </footer>
+  <!-- Firebase/JS -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
+  <script src="main.js"></script>
   <script>
-    // Navbar çıkış butonu
+    // --- Modal ve Admin aynı mantık (her sayfa aynı!)
     firebase.auth().onAuthStateChanged(function(user) {
-      var logoutBtn = document.getElementById('logout-btn');
-      if (logoutBtn) {
-        if (user) logoutBtn.style.display = 'inline-block';
-        else logoutBtn.style.display = 'none';
+      var adminLink = document.getElementById('admin-link');
+      if (adminLink) {
+        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
+        else adminLink.style.display = "none";
       }
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-      var logoutBtnElem = document.getElementById('logout-btn');
-      if (logoutBtnElem) {
-        logoutBtnElem.onclick = function(e) {
-          e.preventDefault();
-          firebase.auth().signOut().then(() => {
-            window.location.href = "index.html";
-          });
-        }
-      }
+      if (!user) openModal();
+      else closeModal();
     });
 
-    // Çarkıfelek sistemi
-    const oduller = [
-      {puan: 10,   text: "10 Puan! İyi başlangıç 🚀", img: "success.png"},
-      {puan: 25,   text: "25 Puan! Güzel 👏", img: "result-medium.png"},
-      {puan: 50,   text: "50 Puan! Şanslı günündesin 🎉", img: "result-success.png"},
-      {puan: 0,    text: "Maalesef bu sefer yok 😬", img: "error.png"},
-      {puan: 100,  text: "100 Puan! Efsane 🔥", img: "result-success.png"},
-      {puan: 5,    text: "5 Puan! Ufak da olsa ☺️", img: "success.png"},
-      {puan: 0,    text: "Boş! Bir dahaki sefere ✌️", img: "warning.png"},
-      {puan: 15,   text: "15 Puan! Fena değil 🙃", img: "result-medium.png"},
+    // Çark verileri
+    const slices = [
+      {label: "+100", color: "#735aff", result: 100},
+      {label: "İflas", color: "#ff4066", result: 0},
+      {label: "+250", color: "#a387ff", result: 250},
+      {label: "0", color: "#d2c0fa", result: 0},
+      {label: "+50", color: "#ff8ad8", result: 50},
+      {label: "+500", color: "#ed4a88", result: 500},
+      {label: "+25", color: "#13bd72", result: 25},
+      {label: "Boş", color: "#f7f4fd", result: 0}
     ];
 
-    firebase.auth().onAuthStateChanged(async user => {
-      const btn = document.getElementById("cark-cevir-btn");
-      const res = document.getElementById("cark-result");
-      const img = document.getElementById("cark-img");
-      if (!user) {
-        btn.disabled = true;
-        res.innerHTML = "<span style='color:#ed4a88'>Çarkı çevirmek için giriş yapmalısın.</span>";
-        return;
+    let isSpinning = false, currentAngle = 0;
+    const canvas = document.getElementById("cark-canvas");
+    const ctx = canvas.getContext("2d");
+    const spinBtn = document.getElementById("spin-btn");
+    const resultDiv = document.getElementById("cark-result");
+
+    function drawWheel(angle=0) {
+      const cx = canvas.width/2, cy = canvas.height/2, r = canvas.width/2-8;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      const n = slices.length;
+      for(let i=0;i<n;i++) {
+        const start = angle + (i*2*Math.PI/n);
+        const end = angle + ((i+1)*2*Math.PI/n);
+        ctx.beginPath();
+        ctx.moveTo(cx,cy);
+        ctx.arc(cx,cy,r,start,end,false);
+        ctx.fillStyle = slices[i].color;
+        ctx.fill();
+        ctx.save();
+        ctx.translate(cx,cy);
+        ctx.rotate((start+end)/2-Math.PI/2);
+        ctx.textAlign="center"; ctx.textBaseline="middle";
+        ctx.font = "bold 1.1em Fredoka,Arial";
+        ctx.fillStyle = "#fff";
+        ctx.shadowColor="#735aff33";ctx.shadowBlur=6;
+        ctx.fillText(slices[i].label, r-55, 0);
+        ctx.restore();
       }
-      const userRef = db.collection("users").doc(user.uid);
-      const userDoc = await userRef.get();
-      let lastSpin = userDoc.data().lastSpin || 0;
-      let now = Date.now();
-      // 24 saatlik blok
-      if (now - lastSpin < 1000 * 60 * 60 * 24) {
-        btn.disabled = true;
-        res.innerHTML = "Bugün çarkı zaten çevirdin! Yarın tekrar gel.";
-        return;
+    }
+    drawWheel();
+
+    spinBtn.onclick = function() {
+      if(isSpinning) return;
+      isSpinning = true;
+      resultDiv.innerText = "";
+      let rotateTo = Math.floor(Math.random()*360 + 1800); // 5 tur+random
+      let finalAngle = (rotateTo%360)*Math.PI/180;
+      let t=0, speed=45, last=0;
+      function animate() {
+        t+=speed;
+        currentAngle += speed*Math.PI/180;
+        drawWheel(currentAngle);
+        speed *= .98; // yavaşlama
+        if(speed>1 || t<rotateTo) requestAnimationFrame(animate);
+        else {
+          currentAngle = finalAngle;
+          drawWheel(currentAngle);
+          // Sonuç hangi slice'da
+          let n = slices.length;
+          let anglePer = 2*Math.PI/n;
+          let win = (2*Math.PI - (currentAngle%(2*Math.PI)) + Math.PI/2)%(2*Math.PI);
+          let idx = Math.floor(win/anglePer)%n;
+          let res = slices[idx];
+          if(res.label === "İflas") resultDiv.innerHTML = `<span style="color:#ff4066;">İflas! Puan sıfırlandı 😥</span>`;
+          else if(res.label === "0" || res.label === "Boş") resultDiv.innerHTML = `<span style="color:#a3a3a3;">Bu sefer boş geçti!</span>`;
+          else resultDiv.innerHTML = `<span style="color:#13bd72;">Tebrikler! <b>+${res.result} puan</b> kazandın! 🎉</span>`;
+          isSpinning=false;
+        }
       }
-      btn.disabled = false;
-      btn.onclick = async function() {
-        btn.disabled = true;
-        img.style.transform = "rotate(" + (720 + Math.floor(Math.random()*360)) + "deg)";
-        await new Promise(r => setTimeout(r, 1200));
-        // Ödül belirle
-        const odul = oduller[Math.floor(Math.random() * oduller.length)];
-        img.src = odul.img;
-        res.innerHTML = odul.text + (odul.puan > 0 ? ` (+${odul.puan} puan)` : "");
-        // Puan ekle ve son çevirme zamanını kaydet
-        await userRef.update({
-          points: (userDoc.data().points || 0) + odul.puan,
-          lastSpin: now
-        });
-      };
-    });
+      animate();
+    };
   </script>
 </body>
 </html>
