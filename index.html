@@ -10,10 +10,28 @@
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- Giriş Modalı -->
+  <div class="modal-bg" id="login-modal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <h2>Testlik.com'a Giriş</h2>
+      <button class="modal-google" onclick="loginGoogle()">
+        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
+      </button>
+      <hr style="margin:23px 0 15px 0;opacity:.19;">
+      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
+      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
+      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
+      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
+      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
+      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
+    </div>
+  </div>
+  <!-- Header -->
   <header>
     <div class="nav-flex">
       <img src="logo.png" alt="Testlik.com Logo" class="logo" />
-      <nav>
+      <nav id="main-nav">
         <a href="index.html" class="active">Anasayfa</a>
         <a href="kategoriler.html">Kategoriler</a>
         <a href="sizdengelenler.html">Sizden Gelenler</a>
@@ -25,44 +43,42 @@
         <a href="dashboard.html">Dashboard</a>
         <a href="akademi.html">Akademi</a>
         <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link">Admin</a>
+        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
         <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
-  <main>
-    <section style="max-width:950px;margin:0 auto;">
-      <h1 style="color:#735aff;text-align:center;margin:38px 0 14px 0;font-size:2.5em;font-weight:800;letter-spacing:-.8px;">
+  <!-- Main -->
+  <main style="max-width:1150px;margin:0 auto;">
+    <section>
+      <h1 style="color:#735aff;text-align:center;margin:34px 0 18px 0;font-size:2.3em;font-weight:800;">
         <span class="emoji">🎉</span> Testlik.com’a Hoş Geldin!
       </h1>
-      <button class="button-main" onclick="window.location.href='kategoriler.html'">Test Çözmeye Başla!</button>
-      <h2 style="text-align:center;color:#8b63e5;margin-top:40px;margin-bottom:12px;font-size:1.22em;font-weight:700;">
-        Popüler Kategoriler
-      </h2>
-      <div class="kategoriler-row">
-        <div class="kategori-card">
-          <img class="kategori-icon" src="category-genel.png" alt="Genel"/>
-          <div class="kategori-title">Genel</div>
-          <div class="kategori-desc">Gündemden her şey</div>
-        </div>
-        <div class="kategori-card">
-          <img class="kategori-icon" src="category-eglence.png" alt="Eğlence"/>
-          <div class="kategori-title">Eğlence</div>
-          <div class="kategori-desc">Keyifli, komik, özgün</div>
-        </div>
-        <div class="kategori-card">
-          <img class="kategori-icon" src="category-bilgi.png" alt="Bilgi"/>
-          <div class="kategori-title">Bilgi</div>
-          <div class="kategori-desc">Beyin yakan sorular</div>
-        </div>
-        <div class="kategori-card">
-          <img class="kategori-icon" src="category-psikoloji.png" alt="Psikoloji"/>
-          <div class="kategori-title">Psikoloji</div>
-          <div class="kategori-desc">Kişilik, zeka testleri</div>
-        </div>
+      <div style="text-align:center;margin-bottom:14px;color:#8f7fff;">Test çöz, puan topla, kazan!</div>
+    </section>
+    <!-- Kategoriler -->
+    <section>
+      <div class="section-title">Kategoriler</div>
+      <div class="card-grid" id="kategori-grid">
+        <!-- JS ile kategoriler eklenecek -->
+      </div>
+    </section>
+    <!-- Yeni Testler -->
+    <section>
+      <div class="section-title">Yeni Testler</div>
+      <div class="card-grid" id="yeni-testler">
+        <!-- JS ile yeni testler eklenecek -->
+      </div>
+    </section>
+    <!-- Popüler Testler -->
+    <section>
+      <div class="section-title">Popüler Testler</div>
+      <div class="card-grid" id="populer-testler">
+        <!-- JS ile popüler testler eklenecek -->
       </div>
     </section>
   </main>
+  <!-- Footer -->
   <footer>
     <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
@@ -73,26 +89,44 @@
       </div>
     </div>
   </footer>
+  <!-- Firebase ve JS -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
+  <script src="main.js"></script>
   <script>
+    // Sayfa açılışında giriş kontrol
     firebase.auth().onAuthStateChanged(function(user) {
       var logoutBtn = document.getElementById('logout-btn');
+      var adminLink = document.getElementById('admin-link');
       if (logoutBtn) {
         if (user) logoutBtn.style.display = 'inline-block';
         else logoutBtn.style.display = 'none';
       }
+      if (adminLink) {
+        // Admin kullanıcı ise göster (örnek e-posta: admin@testlik.com)
+        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
+        else adminLink.style.display = "none";
+      }
     });
+
+    // Popup kontrol
+    function closeModal() { document.getElementById("login-modal").style.display = "none"; }
+    function openModal() { document.getElementById("login-modal").style.display = "flex"; }
+
+    // Oturum kontrolü (ilk açılışta popup aç)
     document.addEventListener('DOMContentLoaded', function() {
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) openModal();
+        else closeModal();
+      });
+      // Çıkış
       var logoutBtnElem = document.getElementById('logout-btn');
       if (logoutBtnElem) {
         logoutBtnElem.onclick = function(e) {
           e.preventDefault();
-          firebase.auth().signOut().then(() => {
-            window.location.href = "index.html";
-          });
+          firebase.auth().signOut().then(() => { location.reload(); });
         }
       }
     });
