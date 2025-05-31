@@ -3,88 +3,91 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Giriş Yap | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Giriş ve üye ol sayfası.">
+  <title>Giriş | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Giriş yap, kayıt ol veya üyeliksiz devam et.">
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="img/favicon.png" />
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="firebase.js"></script>
+  <link rel="icon" href="favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {background:#f7f4ff;}
+    .giris-arka {
+      position:fixed;top:0;left:0;width:100vw;height:100vh;background:#735aff88;
+      z-index:99;display:flex;align-items:center;justify-content:center;
+    }
+    .giris-kart {
+      background:#fff;border-radius:23px;box-shadow:0 3px 25px #735aff33;
+      padding:36px 27px 31px 27px;max-width:360px;width:93%;text-align:center;position:relative;
+      display:flex;flex-direction:column;gap:19px;
+    }
+    .giris-logo {width:65px;margin:0 auto 12px auto;}
+    .giris-title {color:#735aff;font-size:1.33em;font-weight:800;margin-bottom:8px;}
+    .giris-google {
+      background:#fff;color:#ed4a88;font-weight:700;border-radius:11px;border:2px solid #ed4a88;
+      box-shadow:0 2px 9px #ed4a8820;padding:10px 10px;font-size:1.03em;cursor:pointer;
+      margin:0 0 3px 0;transition:background .13s;
+      display:flex;align-items:center;justify-content:center;gap:8px;
+    }
+    .giris-google:active{background:#f3e6ff;}
+    .giris-hr {margin:7px 0 12px 0;opacity:.19;}
+    .giris-inp {width:98%;padding:11px;border-radius:8px;border:1.5px solid #ccbaff;margin-bottom:6px;font-size:1.04em;}
+    .giris-btn {
+      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
+      color:#fff;font-weight:700;border-radius:9px;border:none;padding:10px 24px;font-size:1.05em;cursor:pointer;
+      margin-top:4px;transition:background .13s;
+    }
+    .giris-btn:active{background:#ed4a88;}
+    .giris-guest {background:#bbb;color:#fff;border:none;border-radius:8px;font-weight:700;padding:8px 17px;margin-top:10px;}
+    .giris-close {position:absolute;top:11px;right:13px;background:transparent;color:#735aff;font-size:2.15em;border:none;cursor:pointer;}
+    .giris-error {color:#ed4a88;font-size:.98em;min-height:22px;}
+    @media (max-width:520px){.giris-kart{padding:19px 5px 15px 5px;}}
+  </style>
 </head>
 <body>
-  <header>
-    <div class="container nav-flex">
-      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
-      <nav>
-        <a href="index.html">Anasayfa</a>
-        <a href="kategoriler.html">Kategoriler</a>
-        <a href="favoriler.html">Favoriler</a>
-        <a href="profil.html">Profil</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="akademi.html">Akademi</a>
-        <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link">Admin</a>
-      </nav>
+  <div class="giris-arka">
+    <div class="giris-kart">
+      <button class="giris-close" onclick="window.location.href='index.html'">&times;</button>
+      <img src="logo.png" class="giris-logo" alt="Testlik.com Logo"/>
+      <div class="giris-title">Testlik.com'a Giriş Yap</div>
+      <button class="giris-google" onclick="loginGoogle()">
+        <img src="google-icon.png" style="height:24px;vertical-align:middle;"> Google ile Giriş Yap
+      </button>
+      <hr class="giris-hr">
+      <input type="email" id="login-email" class="giris-inp" placeholder="E-posta">
+      <input type="password" id="login-pass" class="giris-inp" placeholder="Şifre">
+      <button class="giris-btn" onclick="loginEmail()">Giriş Yap</button>
+      <div id="login-error" class="giris-error"></div>
+      <button class="giris-btn" style="background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
+      <button class="giris-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
     </div>
-  </header>
-  <main>
-    <div class="test-card" style="max-width:350px;margin:2rem auto;">
-      <h2>Giriş Yap</h2>
-      <input id="email" type="email" placeholder="E-Posta" style="width:100%;margin-bottom:10px;">
-      <input id="password" type="password" placeholder="Şifre" style="width:100%;margin-bottom:10px;">
-      <button onclick="login()" class="cta-btn" style="width:100%;">Giriş Yap</button>
-      <div id="login-status" style="color:red;margin-top:10px;"></div>
-      <hr>
-      <h3 style="margin-bottom:7px;">Üye Ol</h3>
-      <input id="regDisplayName" type="text" placeholder="Kullanıcı Adı" style="width:100%;margin-bottom:10px;">
-      <button onclick="register()" style="width:100%;margin-top:2px;">Üye Ol</button>
-    </div>
-  </main>
-  <footer>
-    <div class="container footer-flex">
-      <p>&copy; 2025 Testlik.com</p>
-      <div class="odeme-logo">
-        <img src="img/wise.png" alt="Wise" style="height:28px; margin-right:10px;"/>
-        <img src="img/payoneer.png" alt="Payoneer" style="height:28px; margin-right:10px;"/>
-        <img src="img/iban.png" alt="IBAN" style="height:28px;"/>
-      </div>
-    </div>
-  </footer>
+  </div>
+  <!-- Firebase/JS -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="firebase.js"></script>
   <script>
-    function login() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(() => { window.location.href = "index.html"; })
-        .catch(err => {
-          document.getElementById("login-status").innerText = err.message;
-        });
+    // Google ile giriş
+    function loginGoogle(){
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider).then(()=>window.location.href="index.html")
+      .catch(e=>document.getElementById("login-error").innerText = e.message);
     }
-    function register() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const displayName = document.getElementById("regDisplayName").value;
-      if (!displayName) {
-        document.getElementById("login-status").innerText = "Kullanıcı adı zorunlu!";
-        return;
-      }
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(async (userCred) => {
-          await db.collection("users").doc(userCred.user.uid).set({
-            email,
-            displayName,
-            avatar: "",
-            points: 0,
-            favorites: [],
-            completedTests: [],
-            withdrawals: []
-          });
-          window.location.href = "index.html";
-        })
-        .catch(err => {
-          document.getElementById("login-status").innerText = err.message;
-        });
+    // E-posta ile giriş
+    function loginEmail(){
+      var mail = document.getElementById("login-email").value;
+      var pass = document.getElementById("login-pass").value;
+      firebase.auth().signInWithEmailAndPassword(mail,pass).then(()=>window.location.href="index.html")
+      .catch(e=>document.getElementById("login-error").innerText = e.message);
+    }
+    // Kayıt ol
+    function registerEmail(){
+      var mail = document.getElementById("login-email").value;
+      var pass = document.getElementById("login-pass").value;
+      firebase.auth().createUserWithEmailAndPassword(mail,pass).then(()=>window.location.href="index.html")
+      .catch(e=>document.getElementById("login-error").innerText = e.message);
+    }
+    // Üyeliksiz devam
+    function guestLogin(){
+      firebase.auth().signInAnonymously().then(()=>window.location.href="index.html");
     }
   </script>
 </body>
