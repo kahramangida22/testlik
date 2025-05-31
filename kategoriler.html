@@ -4,30 +4,47 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Kategoriler | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Tüm test kategorilerini keşfet.">
+  <meta name="description" content="Testlik.com - Kategorilere göre testleri keşfet, yeni testler çöz!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .kat-flex {
-      display:flex;gap:26px;flex-wrap:wrap;justify-content:center;margin:34px auto 14px auto;max-width:920px;
-    }
+    .kat-wrap {max-width:1000px;margin:38px auto 30px auto;}
+    .kat-title {color:#735aff;font-size:1.33em;font-weight:800;margin-bottom:23px;}
+    .kat-grid {display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:28px;}
     .kat-card {
-      background:#fff;
-      border-radius:22px;
-      box-shadow:0 2px 18px #735aff13;
-      padding:24px 20px 18px 20px;
-      width:170px;min-width:150px;max-width:200px;
-      display:flex;flex-direction:column;align-items:center;transition:box-shadow .13s,transform .14s;
-      text-align:center;cursor:pointer;text-decoration:none;
+      background:#fff;border-radius:21px;box-shadow:0 2px 15px #735aff11;
+      padding:17px 10px 18px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;
+      cursor:pointer;transition:box-shadow .14s,transform .14s;
     }
-    .kat-card:hover {box-shadow:0 6px 26px #735aff24;transform:translateY(-2px) scale(1.04);}
-    .kat-icon {width:58px;height:58px;object-fit:contain;margin-bottom:12px;border-radius:16px;background:#faf4ff;box-shadow:0 1px 7px #ed4a8812;}
-    .kat-title {color:#735aff;font-size:1.18em;font-weight:700;}
-    .kat-desc {color:#876fa9;margin:8px 0 0 0;font-size:.99em;}
+    .kat-card:hover {box-shadow:0 6px 21px #ed4a8822;transform:translateY(-4px) scale(1.04);}
+    .kat-img {width:69px;height:69px;object-fit:contain;margin-bottom:13px;}
+    .kat-name {color:#ed4a88;font-size:1.17em;font-weight:700;}
+    .kat-desc {color:#7a53c4;font-size:.98em;margin-top:7px;}
+    @media (max-width:1200px){.kat-grid{grid-template-columns:1fr 1fr 1fr;}}
+    @media (max-width:900px){.kat-grid{grid-template-columns:1fr 1fr;}}
+    @media (max-width:600px){.kat-grid{grid-template-columns:1fr;}}
   </style>
 </head>
 <body>
+  <!-- Giriş Modalı -->
+  <div class="modal-bg" id="login-modal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <h2>Testlik.com'a Giriş</h2>
+      <button class="modal-google" onclick="loginGoogle()">
+        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
+      </button>
+      <hr style="margin:23px 0 15px 0;opacity:.19;">
+      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
+      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
+      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
+      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
+      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
+      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
+    </div>
+  </div>
+  <!-- Header -->
   <header>
     <div class="nav-flex">
       <img src="logo.png" alt="Testlik.com Logo" class="logo" />
@@ -43,41 +60,21 @@
         <a href="dashboard.html">Dashboard</a>
         <a href="akademi.html">Akademi</a>
         <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link">Admin</a>
+        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
         <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
+  <!-- Main -->
   <main>
-    <h1 class="main-title"><span class="emoji">📁</span> Tüm Kategoriler</h1>
-    <div class="kat-flex">
-      <a class="kat-card" href="kategori-testleri.html?cat=Genel">
-        <img src="category-genel.png" class="kat-icon" alt="Genel"/>
-        <div class="kat-title">Genel</div>
-        <div class="kat-desc">Her konuda eğlenceli ve sürpriz testler!</div>
-      </a>
-      <a class="kat-card" href="kategori-testleri.html?cat=Eğlence">
-        <img src="category-eglence.png" class="kat-icon" alt="Eğlence"/>
-        <div class="kat-title">Eğlence</div>
-        <div class="kat-desc">Kahkaha garantili, arkadaş ortamının favorileri.</div>
-      </a>
-      <a class="kat-card" href="kategori-testleri.html?cat=Bilgi">
-        <img src="category-bilgi.png" class="kat-icon" alt="Bilgi"/>
-        <div class="kat-title">Bilgi</div>
-        <div class="kat-desc">Zekâ ve genel kültürünü test et, puanları kap!</div>
-      </a>
-      <a class="kat-card" href="kategori-testleri.html?cat=Psikoloji">
-        <img src="category-psikoloji.png" class="kat-icon" alt="Psikoloji"/>
-        <div class="kat-title">Psikoloji</div>
-        <div class="kat-desc">Kendini ve başkalarını keşfetmeye hazır mısın?</div>
-      </a>
-      <a class="kat-card" href="kategori-testleri.html?cat=Oyun">
-        <img src="category-oyun.png" class="kat-icon" alt="Oyun"/>
-        <div class="kat-title">Oyun</div>
-        <div class="kat-desc">En iyi gamer kim? Oyun testleri burada!</div>
-      </a>
+    <div class="kat-wrap">
+      <div class="kat-title">Test Kategorileri</div>
+      <div class="kat-grid" id="kat-list">
+        <!-- Kategoriler JS ile gelecek -->
+      </div>
     </div>
   </main>
+  <!-- Footer -->
   <footer>
     <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
@@ -88,28 +85,44 @@
       </div>
     </div>
   </footer>
+  <!-- Firebase/JS -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
+  <script src="main.js"></script>
   <script>
+    // Modal ve admin linki
     firebase.auth().onAuthStateChanged(function(user) {
-      var logoutBtn = document.getElementById('logout-btn');
-      if (logoutBtn) {
-        if (user) logoutBtn.style.display = 'inline-block';
-        else logoutBtn.style.display = 'none';
+      var adminLink = document.getElementById('admin-link');
+      if (adminLink) {
+        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
+        else adminLink.style.display = "none";
       }
+      if (!user) openModal();
+      else closeModal();
     });
-    document.addEventListener('DOMContentLoaded', function() {
-      var logoutBtnElem = document.getElementById('logout-btn');
-      if (logoutBtnElem) {
-        logoutBtnElem.onclick = function(e) {
-          e.preventDefault();
-          firebase.auth().signOut().then(() => {
-            window.location.href = "index.html";
-          });
-        }
-      }
+
+    // Kategorileri göster
+    document.addEventListener("DOMContentLoaded", function(){
+      const kategoriler = [
+        { id:"Genel",   ad:"Genel",      img:"category-genel.png",      desc:"Her türden eğlenceli, karışık testler." },
+        { id:"Eğlence", ad:"Eğlence",    img:"category-eglence.png",    desc:"Zevkli ve ilginç eğlence testleri." },
+        { id:"Bilgi",   ad:"Bilgi",      img:"category-bilgi.png",      desc:"Genel kültür, bilgi yarışmaları." },
+        { id:"Psikoloji",ad:"Psikoloji", img:"category-psikoloji.png",  desc:"Kişilik, karakter ve psikoloji testleri." },
+        { id:"Oyun",    ad:"Oyun",       img:"category-oyun.png",       desc:"Oyunlarla ilgili testler ve quizler." }
+      ];
+      let html = "";
+      kategoriler.forEach(kat=>{
+        html += `
+          <div class="kat-card" onclick="window.location.href='kategori-testleri.html?cat=${kat.id}'">
+            <img src="${kat.img}" class="kat-img" alt="${kat.ad}" />
+            <div class="kat-name">${kat.ad}</div>
+            <div class="kat-desc">${kat.desc}</div>
+          </div>
+        `;
+      });
+      document.getElementById("kat-list").innerHTML = html;
     });
   </script>
 </body>
