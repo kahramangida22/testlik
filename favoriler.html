@@ -4,41 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Favorilerim | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Favori testlerin burada!">
+  <meta name="description" content="Testlik.com - Favori testlerini görüntüle, tek tıkla teste ulaş!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    .fav-flex {display:flex;gap:26px;flex-wrap:wrap;justify-content:center;margin:34px auto 14px auto;max-width:960px;}
-    .fav-card {
-      background:#fff;
-      border-radius:22px;
-      box-shadow:0 2px 18px #735aff13;
-      padding:24px 18px 18px 18px;
-      width:190px;min-width:150px;max-width:230px;
-      display:flex;flex-direction:column;align-items:center;
-      text-align:center;position:relative;transition:box-shadow .13s,transform .13s;
-    }
-    .fav-card:hover {box-shadow:0 6px 26px #735aff24;transform:translateY(-2px) scale(1.04);}
-    .fav-img {width:56px;height:56px;object-fit:contain;margin-bottom:10px;border-radius:13px;background:#faf4ff;box-shadow:0 1px 7px #ed4a8812;}
-    .fav-title {color:#735aff;font-size:1.13em;font-weight:700;}
-    .fav-desc {color:#876fa9;font-size:.98em;margin-top:2px;}
-    .fav-kat {color:#ed4a88;font-size:.97em;margin:5px 0 0 0;}
-    .fav-btn {
-      background:none;border:none;position:absolute;top:10px;right:11px;cursor:pointer;padding:0;
-    }
-    .fav-btn img {width:26px;}
-    .fav-link {
-      margin-top:12px;
-      background:linear-gradient(90deg,#fd72ff 0%, #735aff 100%);
-      color:#fff;padding:7px 17px;
-      border-radius:11px;font-weight:700;font-size:.99em;text-decoration:none;transition:background .13s;
-      box-shadow:0 2px 8px #735aff19;display:inline-block;
-    }
-    .fav-link:hover{background:#ed4a88;}
-  </style>
 </head>
 <body>
+  <!-- Giriş Modalı (Her sayfa için ortak) -->
+  <div class="modal-bg" id="login-modal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <h2>Testlik.com'a Giriş</h2>
+      <button class="modal-google" onclick="loginGoogle()">
+        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
+      </button>
+      <hr style="margin:23px 0 15px 0;opacity:.19;">
+      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
+      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
+      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
+      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
+      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
+      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
+    </div>
+  </div>
+  <!-- Header -->
   <header>
     <div class="nav-flex">
       <img src="logo.png" alt="Testlik.com Logo" class="logo" />
@@ -54,17 +43,19 @@
         <a href="dashboard.html">Dashboard</a>
         <a href="akademi.html">Akademi</a>
         <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link">Admin</a>
+        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
         <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
       </nav>
     </div>
   </header>
-  <main>
-    <h1 class="main-title"><span class="emoji">⭐</span> Favorilerim</h1>
-    <div id="fav-list" class="fav-flex">
-      <div style="text-align:center;color:#8f7fff;width:100%;">Yükleniyor...</div>
+  <!-- Main -->
+  <main style="max-width:1100px;margin:0 auto;">
+    <h1 style="color:#735aff;font-size:1.35em;font-weight:800;margin:30px 0 15px 0;">Favori Testlerim</h1>
+    <div class="card-grid" id="favori-list">
+      <!-- Favori testler JS ile gelecek -->
     </div>
   </main>
+  <!-- Footer -->
   <footer>
     <div class="footer-flex">
       <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
@@ -75,74 +66,69 @@
       </div>
     </div>
   </footer>
+  <!-- Firebase/JS -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
+  <script src="main.js"></script>
   <script>
-    // Navbar çıkış butonu
+    // Modal ve admin
     firebase.auth().onAuthStateChanged(function(user) {
-      var logoutBtn = document.getElementById('logout-btn');
-      if (logoutBtn) {
-        if (user) logoutBtn.style.display = 'inline-block';
-        else logoutBtn.style.display = 'none';
+      var adminLink = document.getElementById('admin-link');
+      if (adminLink) {
+        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
+        else adminLink.style.display = "none";
       }
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-      var logoutBtnElem = document.getElementById('logout-btn');
-      if (logoutBtnElem) {
-        logoutBtnElem.onclick = function(e) {
-          e.preventDefault();
-          firebase.auth().signOut().then(() => {
-            window.location.href = "index.html";
-          });
-        }
-      }
+      if (!user) openModal();
+      else closeModal();
     });
 
-    // Favori testler yükle
-    firebase.auth().onAuthStateChanged(async user => {
-      const favList = document.getElementById("fav-list");
-      if (!user) {
-        favList.innerHTML = "<div style='color:#ed4a88;width:100%;'>Favorilerini görmek için giriş yapmalısın!</div>";
+    // Favoriler listesi
+    firebase.auth().onAuthStateChanged(async function(user) {
+      if (!user) return;
+      const favDiv = document.getElementById("favori-list");
+      favDiv.innerHTML = `<div style="color:#bba5fa;width:100%;">Yükleniyor...</div>`;
+      let doc = await db.collection("users").doc(user.uid).get();
+      let favs = (doc.data() && doc.data().favorites) || [];
+      if (!favs.length) {
+        favDiv.innerHTML = `<div style="color:#ed4a88;width:100%;">Hiç favori testin yok!</div>`;
         return;
       }
-      const userDoc = await db.collection("users").doc(user.uid).get();
-      let favs = userDoc.data().favorites || [];
-      if (favs.length === 0) {
-        favList.innerHTML = "<div style='color:#bba5fa;width:100%;'>Hiç favorin yok!</div>";
-        return;
-      }
-      // Her favori testin detayını çek
+      // Testlerin tamamını çekip göster
+      let promises = favs.map(id => db.collection("tests").doc(id).get());
+      let testler = await Promise.all(promises);
       let html = "";
-      for (let testId of favs) {
-        const tDoc = await db.collection("tests").doc(testId).get();
-        if (!tDoc.exists) continue;
-        const t = tDoc.data();
+      testler.forEach(tdoc => {
+        if (!tdoc.exists) return;
+        let t = tdoc.data();
         html += `
-          <div class="fav-card" data-id="${testId}">
-            <button class="fav-btn" onclick="removeFav('${testId}')"><img src="favorite-active.png" alt="Kaldır"/></button>
-            <img src="${t.image || 'test-category-default.png'}" alt="Test" class="fav-img"/>
-            <div class="fav-title">${t.title || "Test"}</div>
-            <div class="fav-kat">${t.category || ""}</div>
-            <div class="fav-desc">${t.description || ""}</div>
-            <a href="test-render.html?id=${testId}" class="fav-link">Testi Çöz</a>
+          <div class="card" style="position:relative;">
+            <img src="${t.image || 'test-category-default.png'}" class="card-img" alt="Test" onclick="window.location.href='test-render.html?id=${tdoc.id}'" style="cursor:pointer;" />
+            <div class="card-title">${t.title || "Test Başlığı"}</div>
+            <div class="card-desc">${t.description || ""}</div>
+            <div class="card-desc" style="font-size:.94em;color:#ed4a88;margin-top:7px;">${t.category || ""}</div>
+            <button class="card-fav" onclick="removeFav('${tdoc.id}', event)">
+              <img src="favorite-active.png" alt="Favorilerden çıkar" style="width:32px;height:32px;">
+            </button>
           </div>
         `;
-      }
-      favList.innerHTML = html;
+      });
+      favDiv.innerHTML = html;
     });
 
-    // Favoriden kaldır (sayfa reload gerektirmesin diye basit reload kullandık)
-    async function removeFav(testId) {
-      const user = firebase.auth().currentUser;
-      if (!user) return;
-      const userRef = db.collection("users").doc(user.uid);
-      const userDoc = await userRef.get();
-      let favs = userDoc.data().favorites || [];
-      favs = favs.filter(id => id !== testId);
-      await userRef.update({ favorites: favs });
-      location.reload();
+    // Favori kaldırma
+    function removeFav(id, e) {
+      e.stopPropagation();
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) return;
+        let userRef = db.collection("users").doc(user.uid);
+        userRef.get().then(doc => {
+          let favs = (doc.data() && doc.data().favorites) || [];
+          favs = favs.filter(f => f !== id);
+          userRef.update({favorites: favs}).then(() => location.reload());
+        });
+      });
     }
   </script>
 </body>
