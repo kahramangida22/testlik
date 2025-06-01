@@ -31,18 +31,19 @@ main {
 h1.center {
   text-align: center;
 }
-.haber-listesi {
-  max-width: 800px;
+.kategori-galeri {
+  max-width: 1000px;
   margin: auto;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.5rem;
 }
-.haber-karti {
+.kategori-karti {
   background: white;
-  padding: 1.5rem;
+  padding: 1rem;
   border-radius: 1rem;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: center;
 }
 .btn {
   display: inline-block;
