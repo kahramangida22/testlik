@@ -4,120 +4,64 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Profilim | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Profilini görüntüle, düzenle, başarılarını takip et.">
+  <meta name="description" content="Testlik.com - Kendi profil bilgilerini görüntüle ve güncelle!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    .pr-wrap {max-width:440px;margin:39px auto 30px auto;background:#fff;border-radius:26px;box-shadow:0 2px 22px #735aff15;padding:33px 28px 23px 28px;}
-    .pr-header {display:flex;gap:21px;align-items:center;}
-    .pr-avatar {width:92px;height:92px;border-radius:50%;object-fit:cover;box-shadow:0 2px 14px #ed4a8830;border:3px solid #f5f0fa;}
-    .pr-name {color:#ed4a88;font-size:1.27em;font-weight:800;margin-bottom:5px;}
-    .pr-mail {color:#7a53c4;font-size:.97em;}
-    .pr-puan {background:#faf4ff;color:#735aff;font-size:1.05em;font-weight:700;padding:7px 18px;border-radius:13px;margin:17px 0 0 0;}
-    .pr-edit-btn {
-      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
-      color:#fff;font-weight:700;border-radius:13px;border:none;box-shadow:0 2px 11px #735aff14;padding:7px 22px;font-size:1.05em;cursor:pointer;
-      margin-top:7px;transition:background .13s;
-    }
-    .pr-edit-btn:active{background:#ed4a88;}
-    .pr-tests {margin-top:28px;}
-    .pr-t-title {color:#735aff;font-weight:700;font-size:1.1em;margin-bottom:11px;}
-    .pr-test-list {display:flex;flex-wrap:wrap;gap:13px;}
-    .pr-test-card {
-      background:#faf4ff;border-radius:12px;box-shadow:0 1px 7px #735aff13;padding:7px 11px;text-align:center;width:110px;
-      font-size:.98em;color:#ed4a88;font-weight:700;
-    }
-    .pr-edit-modal-bg {display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:#735aff88;z-index:99;align-items:center;justify-content:center;}
-    .pr-edit-modal {
-      background:#fff;border-radius:19px;box-shadow:0 2px 17px #735aff22;padding:23px 19px;max-width:360px;width:90%;text-align:center;
-      display:flex;flex-direction:column;gap:11px;
-    }
-    .pr-edit-modal input {padding:10px 7px;border-radius:8px;border:1.5px solid #ccbaff;margin-bottom:9px;}
-    .pr-edit-modal .modal-btn {background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);color:#fff;font-weight:700;border-radius:9px;border:none;padding:9px 14px;cursor:pointer;}
-    .pr-edit-modal .modal-btn:active{background:#ed4a88;}
-    @media (max-width:600px){.pr-wrap{padding:13px 5px 9px 5px;}}
-  </style>
 </head>
 <body>
-  <!-- Giriş Modalı -->
-  <div class="modal-bg" id="login-modal" style="display:none;">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeModal()">&times;</button>
-      <h2>Testlik.com'a Giriş</h2>
-      <button class="modal-google" onclick="loginGoogle()">
-        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
-      </button>
-      <hr style="margin:23px 0 15px 0;opacity:.19;">
-      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
-      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
-      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
-      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
-      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
-      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
-    </div>
-  </div>
-  <!-- Profil Edit Modal -->
-  <div class="pr-edit-modal-bg" id="pr-edit-modal-bg">
-    <div class="pr-edit-modal">
-      <h3>Profilini Düzenle</h3>
-      <input type="text" id="edit-name" placeholder="Kullanıcı adı">
-      <input type="file" id="edit-avatar" accept="image/*">
-      <button class="modal-btn" onclick="kaydetProfil()">Kaydet</button>
-      <button class="modal-btn" style="background:#bbb;color:#fff;" onclick="kapatEditModal()">Vazgeç</button>
-      <div id="edit-error" style="color:#ed4a88;font-size:.98em;min-height:18px;"></div>
-    </div>
-  </div>
   <!-- Header -->
   <header>
-    <div class="nav-flex">
-      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
-      <nav>
-        <a href="index.html">Anasayfa</a>
-        <a href="kategoriler.html">Kategoriler</a>
-        <a href="sizdengelenler.html">Sizden Gelenler</a>
-        <a href="soru-uret.html">Soru Üret</a>
-        <a href="cark.html">Çarkıfelek</a>
-        <a href="video-izle.html">Video İzle Kazan</a>
-        <a href="favoriler.html">Favoriler</a>
-        <a href="profil.html" class="active">Profil</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="akademi.html">Akademi</a>
-        <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
-        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
-      </nav>
-    </div>
+    <div class="logo"><img src="logo.png" alt="Testlik.com" style="height:32px;vertical-align:middle;"> Testlik.com</div>
+    <nav class="nav-links">
+      <a href="index.html">Anasayfa</a>
+      <a href="kategoriler.html">Kategoriler</a>
+      <a href="sizdengelenler.html">Sizden Gelenler</a>
+      <a href="soru-uret.html">Soru Üret</a>
+      <a href="cark.html">Çarkıfelek</a>
+      <a href="video-izle.html">Video İzle Kazan</a>
+      <a href="favoriler.html">Favoriler</a>
+      <a href="profil.html" class="active">Profil</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="akademi.html">Akademi</a>
+      <a href="istatistik.html">İstatistik</a>
+      <a href="leaderboard.html">Liderlik</a>
+      <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
+      <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
+    </nav>
   </header>
   <!-- Main -->
   <main>
-    <div class="pr-wrap">
-      <div class="pr-header">
-        <img id="pr-avatar" class="pr-avatar" src="default-profile.png" alt="Profil Fotoğrafı"/>
-        <div>
-          <div class="pr-name" id="pr-name">Kullanıcı Adı</div>
-          <div class="pr-mail" id="pr-mail">kullanici@mail.com</div>
-          <div class="pr-puan" id="pr-puan">0 puan</div>
-          <button class="pr-edit-btn" onclick="acEditModal()">Düzenle</button>
+    <section style="max-width:440px;margin:36px auto 30px auto;">
+      <div class="profile-wrap">
+        <h2 style="color:#735aff;text-align:center;font-weight:900;margin-bottom:18px;">Profilim</h2>
+        <div id="profil-bilgiler">
+          <div style="text-align:center;margin-bottom:17px;">
+            <img id="profil-foto" src="img/soru-isareti.png" alt="Profil Fotoğrafı" style="width:80px;height:80px;border-radius:40px;box-shadow:0 2px 14px #735aff17;">
+            <br>
+            <input type="file" id="profilFotoInput" accept="image/*" style="margin-top:7px;"/>
+            <button class="btn" style="padding:5px 13px;font-size:.93em;margin-top:5px;" onclick="profilFotoYukle()">Fotoğrafı Yükle</button>
+          </div>
+          <label>Kullanıcı Adı</label>
+          <input type="text" id="displayName" maxlength="24">
+          <label>E-posta</label>
+          <input type="email" id="email" disabled>
+          <div style="margin:9px 0 3px 0;font-size:1.03em;color:#735aff;">
+            <b id="puan">0</b> puan • <b id="cozum">0</b> test çözüldü
+          </div>
+          <button class="btn" onclick="profilGuncelle()">Kaydet</button>
+          <div id="profil-sonuc" style="margin-top:10px;color:#7a53c4;font-weight:700;min-height:20px;"></div>
         </div>
       </div>
-      <div class="pr-tests">
-        <div class="pr-t-title">Çözdüğün Testler</div>
-        <div class="pr-test-list" id="pr-test-list">
-          <!-- Çözülen testler JS ile gelecek -->
-        </div>
-      </div>
-    </div>
+    </section>
   </main>
   <!-- Footer -->
   <footer>
-    <div class="footer-flex">
-      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
-      <div class="odeme-logo">
-        <img src="wise.png" alt="Wise" />
-        <img src="payoneer.png" alt="Payoneer" />
-        <img src="iban.png" alt="IBAN" />
-      </div>
+    <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
+    <div class="odeme-logo">
+      <img src="wise.png" alt="Wise" />
+      <img src="payoneer.png" alt="Payoneer" />
+      <img src="iban.png" alt="IBAN" />
     </div>
   </footer>
   <!-- Firebase/JS -->
@@ -127,78 +71,56 @@
   <script src="firebase.js"></script>
   <script src="main.js"></script>
   <script>
-    // Modal ve admin linki
-    firebase.auth().onAuthStateChanged(function(user) {
+    let currentUid = "";
+    firebase.auth().onAuthStateChanged(async function(user) {
       var adminLink = document.getElementById('admin-link');
       if (adminLink) {
-        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
+        if (user && user.email === "admin@testlik.com") adminLink.style.display = "inline-block";
         else adminLink.style.display = "none";
       }
-      if (!user) openModal();
-      else closeModal();
-
       if (user) {
-        // Profil bilgisi
-        db.collection("users").doc(user.uid).get().then(doc=>{
-          let d = doc.data()||{};
-          document.getElementById("pr-avatar").src = d.avatar || "default-profile.png";
-          document.getElementById("pr-name").innerText = d.displayName || user.displayName || "Kullanıcı";
-          document.getElementById("pr-mail").innerText = user.email;
-          document.getElementById("pr-puan").innerText = (d.points||0)+" puan";
-          // Çözülen testler
-          let testIDs = (d.solvedTests||[]);
-          if (!Array.isArray(testIDs) || testIDs.length==0) {
-            document.getElementById("pr-test-list").innerHTML = "<span style='color:#bbb;'>Henüz test çözmedin.</span>";
-          } else {
-            // Son 4 test kartı
-            db.collection("tests").where(firebase.firestore.FieldPath.documentId(),"in",testIDs.slice(-4)).get().then(qs=>{
-              let html = "";
-              qs.forEach(t=>{
-                let data = t.data();
-                html += `<div class="pr-test-card">${data.title||"Test"}</div>`;
-              });
-              document.getElementById("pr-test-list").innerHTML = html;
-            });
-          }
-        });
+        currentUid = user.uid;
+        document.getElementById("email").value = user.email;
+        // Firestore'dan profil bilgisi çek
+        const doc = await db.collection("users").doc(user.uid).get();
+        const data = doc.data();
+        document.getElementById("displayName").value = data.displayName || "";
+        document.getElementById("puan").innerText = data.point || 0;
+        document.getElementById("cozum").innerText = data.solvedTests ? data.solvedTests.length : 0;
+        // Profil fotoğrafı (isteğe bağlı)
+        if (data.profilePhoto) document.getElementById("profil-foto").src = data.profilePhoto;
+      } else {
+        document.getElementById("profil-bilgiler").innerHTML = "<div style='color:#bbb;text-align:center;'>Giriş yapmadan profil görüntülenemez.</div>";
       }
     });
 
-    // Profil edit modalı
-    function acEditModal(){
-      document.getElementById("pr-edit-modal-bg").style.display = "flex";
-      // Varsayılan isim ve resim getir
-      firebase.auth().onAuthStateChanged(function(user){
-        db.collection("users").doc(user.uid).get().then(doc=>{
-          let d = doc.data()||{};
-          document.getElementById("edit-name").value = d.displayName || user.displayName || "";
-        });
-      });
+    // Profil güncelle
+    async function profilGuncelle() {
+      if (!currentUid) return;
+      const displayName = document.getElementById("displayName").value.trim();
+      if (!displayName) {
+        document.getElementById("profil-sonuc").innerText = "Kullanıcı adı boş olamaz!";
+        return;
+      }
+      await db.collection("users").doc(currentUid).update({ displayName });
+      const user = firebase.auth().currentUser;
+      await user.updateProfile({ displayName });
+      document.getElementById("profil-sonuc").innerText = "Profil güncellendi!";
     }
-    function kapatEditModal(){
-      document.getElementById("pr-edit-modal-bg").style.display = "none";
-    }
-    // Profil kaydet
-    function kaydetProfil(){
-      firebase.auth().onAuthStateChanged(function(user){
-        let newName = document.getElementById("edit-name").value.trim();
-        let avatarFile = document.getElementById("edit-avatar").files[0];
-        if (!newName) { document.getElementById("edit-error").innerText = "Kullanıcı adı boş olamaz!"; return; }
-        // Sadece isim güncelle
-        db.collection("users").doc(user.uid).update({displayName: newName}).then(()=>{
-          document.getElementById("pr-name").innerText = newName;
-        });
-        // Profil fotoğrafı güncelle
-        if (avatarFile) {
-          const reader = new FileReader();
-          reader.onload = function(e){
-            db.collection("users").doc(user.uid).update({avatar: e.target.result}).then(()=>{
-              document.getElementById("pr-avatar").src = e.target.result;
-              kapatEditModal();
-            });
-          }; reader.readAsDataURL(avatarFile);
-        } else kapatEditModal();
-      });
+
+    // Profil fotoğrafı yükle (base64 ile - demo, gerçek projede storage kullanılması tavsiye edilir)
+    function profilFotoYukle() {
+      const input = document.getElementById("profilFotoInput");
+      if (!input.files.length) return alert("Bir fotoğraf seçin.");
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const imgBase64 = e.target.result;
+        db.collection("users").doc(currentUid).update({ profilePhoto: imgBase64 });
+        document.getElementById("profil-foto").src = imgBase64;
+        document.getElementById("profil-sonuc").innerText = "Fotoğraf güncellendi!";
+      };
+      reader.readAsDataURL(file);
     }
   </script>
 </body>
