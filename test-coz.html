@@ -1,58 +1,40 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Test Çöz - Testlik</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header>
-    <div class="logo">Testlik</div>
-    <nav>
-      <a href="index.html">Ana Sayfa</a>
-      <a href="testler.html" class="active">Testler</a>
-    </nav>
+    <div class="logo">Testlik Test</div>
   </header>
 
   <main>
-    <h1 class="center">📝 Test Başlığı</h1>
-    <form id="quiz-form" class="quiz-form">
+    <h2>🧠 Test Başlığı</h2>
+    <form id="quizForm">
       <div class="question">
-        <p>1. Sabah kalktığında ilk düşündüğün şey nedir?</p>
-        <label><input type="radio" name="q1" value="a" /> Kahve</label><br/>
-        <label><input type="radio" name="q1" value="b" /> İş/Görevler</label><br/>
-        <label><input type="radio" name="q1" value="c" /> Sosyal Medya</label>
+        <p>Soru 1: Testlik ne amaçla kullanılır?</p>
+        <label><input type="radio" name="q1" value="a"> Eğlenmek</label><br>
+        <label><input type="radio" name="q1" value="b"> Öğrenmek</label><br>
+        <label><input type="radio" name="q1" value="c"> Para kazanmak</label>
       </div>
 
-      <div class="question">
-        <p>2. Tatil deyince aklına ne gelir?</p>
-        <label><input type="radio" name="q2" value="a" /> Deniz</label><br/>
-        <label><input type="radio" name="q2" value="b" /> Dağ</label><br/>
-        <label><input type="radio" name="q2" value="c" /> Evde kalmak</label>
-      </div>
-
-      <div class="question">
-        <p>3. En sevdiğin mevsim?</p>
-        <label><input type="radio" name="q3" value="a" /> Yaz</label><br/>
-        <label><input type="radio" name="q3" value="b" /> Kış</label><br/>
-        <label><input type="radio" name="q3" value="c" /> Bahar</label>
-      </div>
-
-      <button type="submit" class="btn">Testi Bitir</button>
+      <button type="submit">Cevapları Gönder</button>
     </form>
+    <p id="result"></p>
   </main>
 
   <footer>
-    <p>© 2025 Testlik - Test Çöz</p>
+    <p>© 2025 Testlik</p>
   </footer>
 
   <script>
-    document.getElementById("quiz-form").addEventListener("submit", function(e) {
+    document.getElementById("quizForm").onsubmit = function(e) {
       e.preventDefault();
-      // basit yönlendirme
-      window.location.href = "test-sonuc.html";
-    });
+      document.getElementById("result").innerText = "Cevaplarınız alındı! 🎉";
+    };
   </script>
 </body>
 </html>
