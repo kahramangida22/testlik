@@ -3,117 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Akademi | Testlik.com</title>
-  <meta name="description" content="Testlik.com Akademi - Sistem işleyişi, rehberler ve ipuçları.">
+  <title>Testlik Akademi | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Sistem rehberi, puan ve ödül kazanmanın yolları!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    .ak-wrap {max-width:760px;margin:37px auto 30px auto;}
-    .ak-title {color:#735aff;font-size:1.33em;font-weight:800;margin-bottom:18px;}
-    .ak-grid {display:grid;grid-template-columns:1fr 1fr;gap:25px;}
-    .ak-card {
-      background:#fff;border-radius:21px;box-shadow:0 2px 17px #735aff13;
-      padding:23px 18px 19px 18px;text-align:left;
-      display:flex;flex-direction:column;gap:9px;
-    }
-    .ak-card h3 {color:#ed4a88;margin:0 0 7px 0;font-size:1.13em;}
-    .ak-card ul {margin:6px 0 0 16px;padding:0;font-size:1.06em;color:#735aff;}
-    .ak-card li {margin-bottom:7px;}
-    @media (max-width:900px){.ak-grid{grid-template-columns:1fr;}}
-  </style>
 </head>
 <body>
-  <!-- Giriş Modalı -->
-  <div class="modal-bg" id="login-modal" style="display:none;">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeModal()">&times;</button>
-      <h2>Testlik.com'a Giriş</h2>
-      <button class="modal-google" onclick="loginGoogle()">
-        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
-      </button>
-      <hr style="margin:23px 0 15px 0;opacity:.19;">
-      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
-      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
-      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
-      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
-      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
-      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
-    </div>
-  </div>
   <!-- Header -->
   <header>
-    <div class="nav-flex">
-      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
-      <nav>
-        <a href="index.html">Anasayfa</a>
-        <a href="kategoriler.html">Kategoriler</a>
-        <a href="sizdengelenler.html">Sizden Gelenler</a>
-        <a href="soru-uret.html">Soru Üret</a>
-        <a href="cark.html">Çarkıfelek</a>
-        <a href="video-izle.html">Video İzle Kazan</a>
-        <a href="favoriler.html">Favoriler</a>
-        <a href="profil.html">Profil</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="akademi.html" class="active">Akademi</a>
-        <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
-        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
-      </nav>
-    </div>
+    <div class="logo"><img src="logo.png" alt="Testlik.com" style="height:32px;vertical-align:middle;"> Testlik.com</div>
+    <nav class="nav-links">
+      <a href="index.html">Anasayfa</a>
+      <a href="kategoriler.html">Kategoriler</a>
+      <a href="sizdengelenler.html">Sizden Gelenler</a>
+      <a href="soru-uret.html">Soru Üret</a>
+      <a href="cark.html">Çarkıfelek</a>
+      <a href="video-izle.html">Video İzle Kazan</a>
+      <a href="favoriler.html">Favoriler</a>
+      <a href="profil.html">Profil</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="akademi.html" class="active">Akademi</a>
+      <a href="istatistik.html">İstatistik</a>
+      <a href="leaderboard.html">Liderlik</a>
+      <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
+      <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
+    </nav>
   </header>
   <!-- Main -->
   <main>
-    <div class="ak-wrap">
-      <div class="ak-title">Testlik Akademi | Kullanıcı Rehberi</div>
-      <div class="ak-grid">
-        <div class="ak-card">
-          <h3>Nasıl Puan Toplanır?</h3>
-          <ul>
-            <li>Test çöz, doğru cevapladıkça puan kazan.</li>
-            <li>Çarkıfelek çevirerek anlık bonuslar elde et.</li>
-            <li>Video izleyerek ekstra puan alabilirsin.</li>
-            <li>Sosyal medyada paylaşım yap, etkinliklerden ödül kap.</li>
-          </ul>
-        </div>
-        <div class="ak-card">
-          <h3>Para Nasıl Çekilir?</h3>
-          <ul>
-            <li>Dashboard ekranında “Para Çekme Talebi” bölümünden IBAN veya diğer seçenekleri doldur.</li>
-            <li>Puanın TL karşılığı, minimum tutara ulaştığında çekebilirsin.</li>
-            <li>Talepler admin onayından geçtikten sonra ödeme yapılır.</li>
-            <li>Ödeme yöntemleri: IBAN, Wise, Payoneer.</li>
-          </ul>
-        </div>
-        <div class="ak-card">
-          <h3>Platformda Nelere Dikkat Et?</h3>
-          <ul>
-            <li>Çoklu hesap ve hile yapmaya çalışanların puanları silinir.</li>
-            <li>Sorulara veya testlere spam gönderme, reklam paylaşımı yasaktır.</li>
-            <li>Destek almak için profilinden mesaj atabilirsin.</li>
-          </ul>
-        </div>
-        <div class="ak-card">
-          <h3>Ekstra Bilgiler ve İpuçları</h3>
-          <ul>
-            <li>Kategorilerde daha fazla test çöz, daha fazla puan alırsın.</li>
-            <li>Favori testlerini kaydederek daha sonra tekrar çözebilirsin.</li>
-            <li>En çok puan kazananlar haftalık ödüllerde avantaj sağlar.</li>
-            <li>Sürpriz görev ve etkinlikleri takip et!</li>
-          </ul>
+    <section style="max-width:520px;margin:36px auto 30px auto;">
+      <div class="akademi-wrap">
+        <h2 style="color:#735aff;text-align:center;font-weight:900;margin-bottom:15px;">Testlik Akademi</h2>
+        <h3 style="color:#ed4a88;font-size:1.13em;margin-top:17px;">Nasıl Puan Kazanırım?</h3>
+        <ul style="margin-bottom:13px;">
+          <li>Test çözerek doğru cevaplardan puan kazan.</li>
+          <li>Çarkıfelek çevirerek bonus puanlar al.</li>
+          <li>Video izleyerek ekstra puanlar elde et.</li>
+          <li>Arkadaşlarını davet ederek referans puanları kazan.</li>
+        </ul>
+        <h3 style="color:#ed4a88;font-size:1.13em;">Sistem Nasıl Çalışır?</h3>
+        <ul style="margin-bottom:13px;">
+          <li>Ücretsiz kaydol, giriş yap.</li>
+          <li>Kategorilerden ilgini çeken testi seç.</li>
+          <li>Testi çöz, sonucu hemen gör ve puanını biriktir.</li>
+          <li>Biriken puanlarını IBAN’ına veya diğer ödeme yöntemlerine çekebilirsin.</li>
+        </ul>
+        <h3 style="color:#ed4a88;font-size:1.13em;">Sık Sorulan Sorular</h3>
+        <ul>
+          <li><b>Puanlarım ne zaman ödenir?</b> — Her hafta sonu, talebin onaylandığında.</li>
+          <li><b>Yanlış cevap verirsem puan kaybeder miyim?</b> — Hayır, sadece doğru cevaplardan puan alırsın.</li>
+          <li><b>Çarkıfelek ve video izle puanları hemen hesabıma geçer mi?</b> — Evet, anında eklenir.</li>
+        </ul>
+        <div style="color:#7a53c4;font-size:1.07em;text-align:center;margin-top:18px;">
+          Daha fazla bilgi için <b>destek@testlik.com</b> adresine e-posta gönderebilirsin!
         </div>
       </div>
-    </div>
+    </section>
   </main>
   <!-- Footer -->
   <footer>
-    <div class="footer-flex">
-      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
-      <div class="odeme-logo">
-        <img src="wise.png" alt="Wise" />
-        <img src="payoneer.png" alt="Payoneer" />
-        <img src="iban.png" alt="IBAN" />
-      </div>
+    <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
+    <div class="odeme-logo">
+      <img src="wise.png" alt="Wise" />
+      <img src="payoneer.png" alt="Payoneer" />
+      <img src="iban.png" alt="IBAN" />
     </div>
   </footer>
   <!-- Firebase/JS -->
@@ -123,15 +77,12 @@
   <script src="firebase.js"></script>
   <script src="main.js"></script>
   <script>
-    // Modal ve admin linki
     firebase.auth().onAuthStateChanged(function(user) {
       var adminLink = document.getElementById('admin-link');
       if (adminLink) {
-        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
+        if (user && user.email === "admin@testlik.com") adminLink.style.display = "inline-block";
         else adminLink.style.display = "none";
       }
-      if (!user) openModal();
-      else closeModal();
     });
   </script>
 </body>
