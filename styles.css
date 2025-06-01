@@ -1,138 +1,68 @@
 
 body {
   margin: 0;
-  font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;
-  background: linear-gradient(to bottom right, #fff5e6, #ffe0f0);
+  font-family: 'Segoe UI', sans-serif;
+  background: #fafafa;
   color: #333;
 }
-
 header {
-  background-color: #ff8fab;
-  padding: 1.2rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to right, #ec407a, #ab47bc);
+  padding: 1rem 2rem;
+  color: white;
+}
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+nav a {
+  margin: 0 1rem;
+  color: white;
+  text-decoration: none;
+}
+.actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  gap: 1rem;
 }
-
-header img {
-  height: 45px;
-}
-
-nav a {
-  margin-left: 1rem;
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-  font-size: 1rem;
-}
-
-main {
-  padding: 2rem 1rem;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-footer {
-  background-color: #ffb3c6;
-  padding: 1rem;
-  text-align: center;
-  color: #444;
-  font-size: 0.9rem;
-  margin-top: 3rem;
-  border-top: 3px dashed #ff69b4;
-}
-
-.card {
-  background-color: #fff;
-  border-radius: 25px;
-  box-shadow: 0 8px 20px rgba(255, 105, 180, 0.2);
-  padding: 2rem;
-  margin-bottom: 2rem;
-  border: 3px dashed #ff8fab;
-  transition: transform 0.2s ease;
-}
-
-.card:hover {
-  transform: scale(1.02);
-}
-
-.center {
-  text-align: center;
-}
-
 .btn {
-  background-color: #ff69b4;
-  border: none;
-  color: #fff;
-  padding: 0.8rem 2rem;
-  font-size: 1rem;
-  border-radius: 30px;
-  cursor: pointer;
-  margin-top: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-.btn:hover {
-  background-color: #ff1493;
-}
-
-input[type="text"], input[type="email"], input[type="password"], select, textarea {
-  width: 100%;
-  padding: 0.9rem;
-  margin: 0.5rem 0 1rem;
-  border: 2px dashed #ffb3c6;
-  border-radius: 12px;
-  font-size: 1rem;
-  background-color: #fff0f5;
-  box-sizing: border-box;
-}
-
-img {
-  border-radius: 15px;
-}
-
-.grid-3 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-
-.test-img {
-  width: 100%;
+  background: white;
+  color: #ec407a;
   border-radius: 20px;
+  padding: 0.4rem 1rem;
+  text-decoration: none;
 }
-
-.profil-avatar {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 1rem;
+main {
+  padding: 2rem;
 }
-
-@media (max-width: 768px) {
-  nav {
-    margin-top: 0.5rem;
-  }
-
-  nav a {
-    display: inline-block;
-    margin: 0.5rem 0.5rem 0 0;
-  }
-
-  .btn {
-    width: 100%;
-  }
+.hero {
+  text-align: center;
+  padding: 2rem 1rem;
+  background: #fce4ec;
+  border-radius: 1rem;
 }
-
-
+.cards {
+  margin-top: 3rem;
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
 .card {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.6s ease;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+  font-weight: bold;
 }
-
-.card:hover {
-  transform: scale(1.03);
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: #f8bbd0;
+  margin-top: 2rem;
 }

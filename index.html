@@ -1,59 +1,65 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Testlik - Eğlenceli Testler</title>
-  <link rel="stylesheet" href="styles.css"/>
+  <title>Testlik - Eğlenceli Testler, Oyunlar, Haberler</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="hero">
-    <div class="hero-content">
-      <h1>🎉 Ne Kadar Eğlencelisin?</h1>
-      <p>Testleri çöz, çarkı çevir, ödülleri kazan!</p>
+  <header>
+    <div class="logo">Testlik</div>
+    <nav>
+      <a href="testler.html">Testler</a>
+      <a href="oyunlar.html">Oyunlar</a>
+      <a href="haberler.html">Haberler</a>
+    </nav>
+    <div class="actions">
+      <button id="toggle-theme">🌗</button>
+      <select id="lang">
+        <option value="tr">TR</option>
+        <option value="en">EN</option>
+      </select>
       <a href="giris.html" class="btn">Giriş Yap</a>
     </div>
-    <img src="hero-girl.png" alt="Eğlenceli Kız" class="hero-image"/>
   </header>
 
   <main>
-    <section class="test-section">
-      <h2>❤️ Aşk & Kişilik Testleri</h2>
-      <div class="grid-3">
-        <div class="card">
-          <img src="test1.jpg" alt="Test 1" class="test-img"/>
-          <h3>💘 Gerçek Aşk Tipin Kim?</h3>
-          <a href="test-render.html?id=test-1" class="btn">Teste Git</a>
-        </div>
-        <div class="card">
-          <img src="test2.jpg" alt="Test 2" class="test-img"/>
-          <h3>😇 Ne Kadar Safsın?</h3>
-          <a href="test-render.html?id=test-2" class="btn">Teste Git</a>
-        </div>
-        <div class="card">
-          <img src="test3.jpg" alt="Test 3" class="test-img"/>
-          <h3>🔥 İçindeki Deli Ne Kadar Baskın?</h3>
-          <a href="test-render.html?id=test-3" class="btn">Teste Git</a>
-        </div>
+    <section class="hero">
+      <h1>Test Çöz, Oyun Oyna, Eğlen!</h1>
+      <p>Her gün onlarca eğlenceli test, oyun ve haber seni bekliyor.</p>
+    </section>
+
+    <section class="cards">
+      <h2>🧠 Popüler Testler</h2>
+      <div class="card-grid">
+        <div class="card">Hangi Film Karakterisin?</div>
+        <div class="card">Zeka Seviyeni Ölç!</div>
+        <div class="card">Ruh Eşin Kim?</div>
       </div>
     </section>
 
-    <section class="card center">
-      <h2>💬 Kullanıcı Yorumları</h2>
-      <p>⭐⭐⭐⭐⭐ “Kendimi yeniden keşfettim!”</p>
-      <p>⭐⭐⭐⭐ “Çok tatlı bir tasarım olmuş.”</p>
-      <p>⭐⭐⭐⭐⭐ “Çark olayı çok bağımlılık yapıyor 😍”</p>
+    <section class="cards">
+      <h2>🎮 En Çok Oynanan Oyunlar</h2>
+      <div class="card-grid">
+        <div class="card">Hafıza Kartı</div>
+        <div class="card">Refleks Testi</div>
+        <div class="card">Renk Eşleştirme</div>
+      </div>
     </section>
 
-    <section class="center">
-      <h2>🎡 Şansını Dene!</h2>
-      <a href="cark.html" class="btn">Çarkı Çevir</a>
+    <section class="cards">
+      <h2>📰 Günün Haberleri</h2>
+      <div class="card-grid">
+        <div class="card">Uzayda Yeni Keşifler</div>
+        <div class="card">Z kuşağının yeni trendi</div>
+        <div class="card">Yapay zekâ sanatı dönüştürüyor</div>
+      </div>
     </section>
   </main>
 
   <footer>
-    © 2025 Testlik | Tüm hakları saklıdır.
+    <p>© 2025 Testlik - Eğlence Fabrikası</p>
   </footer>
 </body>
 </html>
