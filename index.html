@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,6 +14,7 @@
       <li><a href="#tests">Testler</a></li>
       <li><a href="#leaderboard">Lider Tablosu</a></li>
       <li><a href="#login">Giriş</a></li>
+      <li><a href="#admin">Admin Panel</a></li>
     </ul>
   </nav>
 
@@ -22,101 +23,17 @@
     <p>Yapay zeka destekli testler çöz, puan topla, ödüller kazan!</p>
   </header>
 
-  
-<div class="ad-slot">
-  <!-- Google AdSense reklam alanı (örnek) -->
-  <p>Reklam Alanı</p>
-</div>
-
-<section id="tests">
-<div class="ad-slot">
-  <!-- Google AdSense reklam alanı (örnek) -->
-  <p>Reklam Alanı</p>
-</div>
-
+  <section id="tests">
     <h2>Testler</h2>
     <div id="test-container">Yükleniyor...</div>
-
-<script type="module">
-  import { showTestResult } from './app.js';
-
-  const sampleTest = {
-    title: "Karakter Testi",
-    questions: [
-      {
-        question: "Sence hangisi seni daha iyi tanımlar?",
-        image: "https://source.unsplash.com/400x200/?personality",
-        options: [
-          { text: "Lider", image: "https://source.unsplash.com/100x100/?lion" },
-          { text: "Sanatçı", image: "https://source.unsplash.com/100x100/?paint" },
-          { text: "Bilimci", image: "https://source.unsplash.com/100x100/?science" }
-        ]
-      }
-    ]
-  };
-
-  function renderTest(test) {
-    const container = document.getElementById("test-container");
-    container.innerHTML = `<h3>${test.title}</h3>`;
-    test.questions.forEach((q, i) => {
-      const section = document.createElement("div");
-      section.className = "question-block";
-      section.innerHTML = `
-        <h4>${q.question}</h4>
-        <img src="${q.image}" class="question-image" />
-        <div class="options">
-          ${q.options.map(opt => `
-            <div class="option">
-              <img src="${opt.image}" />
-              <p>${opt.text}</p>
-            </div>
-          `).join("")}
-        </div>
-      `;
-      container.appendChild(section);
-    });
-
-    const button = document.createElement("button");
-    button.textContent = "Testi Bitir";
-    button.onclick = () => {
-      showTestResult();
-    };
-    container.appendChild(button);
-  }
-
-  renderTest(sampleTest);
-</script>
-
   </section>
 
-  
-<div class="ad-slot">
-  <!-- Google AdSense reklam alanı (örnek) -->
-  <p>Reklam Alanı</p>
-</div>
-
-<section id="leaderboard">
-<div class="ad-slot">
-  <!-- Google AdSense reklam alanı (örnek) -->
-  <p>Reklam Alanı</p>
-</div>
-
+  <section id="leaderboard">
     <h2>Lider Tablosu</h2>
     <ol id="leaderboard-list"></ol>
   </section>
 
-  
-<div class="ad-slot">
-  <!-- Google AdSense reklam alanı (örnek) -->
-  <p>Reklam Alanı</p>
-</div>
-
-<section id="login">
-<div class="ad-slot">
-  <!-- Google AdSense reklam alanı (örnek) -->
-  <p>Reklam Alanı</p>
-</div>
-
+  <section id="login">
     <h2>Giriş / Kayıt</h2>
     <div id="auth-box">
       <input type="email" placeholder="Email" id="email" />
@@ -126,10 +43,37 @@
     </div>
   </section>
 
+  <section id="admin" style="display: none;">
+    <h2>Admin Paneli</h2>
+    <div id="admin-panel">
+      <h3>Yeni Test Ekle</h3>
+      <input type="text" placeholder="Test Başlığı" id="newTestTitle" />
+      <textarea placeholder='Soru ve Seçenekler JSON formatında' id="newTestData" rows="6"></textarea>
+      <button onclick="addNewTest()">Testi Ekle</button>
+
+      <h3>Kullanıcıları Listele</h3>
+      <button onclick="listUsers()">Kullanıcıları Göster</button>
+      <ul id="userList"></ul>
+
+      <h3>Lider Tablosunu Sıfırla</h3>
+      <button onclick="resetLeaderboard()">Sıfırla</button>
+    </div>
+  </section>
+
+  <section id="test-result" style="display: none;">
+    <h2>Sonucun</h2>
+    <div id="result-card" class="result-card">
+      <p id="result-text"></p>
+      <button onclick="downloadResultImage()" style="margin-top: 1rem;">
+        Sonucu Görsel Olarak Kaydet
+      </button>
+    </div>
+  </section>
+
   <footer>
     <p>&copy; 2025 Testlik.com</p>
   </footer>
 
-  <script src="app.js" type="module"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
