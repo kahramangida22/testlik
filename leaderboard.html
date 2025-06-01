@@ -4,123 +4,50 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Liderlik Tablosu | Testlik.com</title>
-  <meta name="description" content="Testlik.com - En çok puan toplayan kullanıcılar liderlik tablosu.">
+  <meta name="description" content="Testlik.com - En çok puan toplayanlar, liderlik tablosu!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    .leader-card {
-      background: #fff;
-      border-radius: 22px;
-      box-shadow: 0 2px 18px #735aff13;
-      padding: 18px 20px;
-      margin: 22px auto 11px auto;
-      max-width: 480px;
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
-    .leader-rank {
-      background: linear-gradient(90deg,#fd72ff 0%, #735aff 100%);
-      color: #fff;
-      border-radius: 50%;
-      width: 42px;
-      height: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.25em;
-      font-weight: 700;
-      box-shadow: 0 2px 12px #7c45e925;
-    }
-    .leader-avatar {
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      object-fit: cover;
-      box-shadow: 0 1px 7px #ed4a8812;
-      background: #faf4ff;
-      border: 2px solid #eee;
-    }
-    .leader-info {
-      flex: 1;
-      text-align: left;
-    }
-    .leader-name {
-      color: #735aff;
-      font-size: 1.13em;
-      font-weight: 700;
-    }
-    .leader-puan {
-      color: #ed4a88;
-      font-weight: 700;
-      font-size: 1.09em;
-      margin-top: 2px;
-    }
-    @media (max-width:600px){
-      .leader-card {max-width:97vw;padding:13px 7px;}
-      .leader-avatar {width:39px;height:39px;}
-      .leader-rank {width:33px;height:33px;font-size:1em;}
-    }
-  </style>
 </head>
 <body>
-  <!-- Giriş Modalı -->
-  <div class="modal-bg" id="login-modal" style="display:none;">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeModal()">&times;</button>
-      <h2>Testlik.com'a Giriş</h2>
-      <button class="modal-google" onclick="loginGoogle()">
-        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
-      </button>
-      <hr style="margin:23px 0 15px 0;opacity:.19;">
-      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
-      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
-      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
-      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
-      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
-      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
-    </div>
-  </div>
   <!-- Header -->
   <header>
-    <div class="nav-flex">
-      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
-      <nav>
-        <a href="index.html">Anasayfa</a>
-        <a href="kategoriler.html">Kategoriler</a>
-        <a href="sizdengelenler.html">Sizden Gelenler</a>
-        <a href="soru-uret.html">Soru Üret</a>
-        <a href="cark.html">Çarkıfelek</a>
-        <a href="video-izle.html">Video İzle Kazan</a>
-        <a href="favoriler.html">Favoriler</a>
-        <a href="profil.html">Profil</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="akademi.html">Akademi</a>
-        <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
-        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
-      </nav>
-    </div>
+    <div class="logo"><img src="logo.png" alt="Testlik.com" style="height:32px;vertical-align:middle;"> Testlik.com</div>
+    <nav class="nav-links">
+      <a href="index.html">Anasayfa</a>
+      <a href="kategoriler.html">Kategoriler</a>
+      <a href="sizdengelenler.html">Sizden Gelenler</a>
+      <a href="soru-uret.html">Soru Üret</a>
+      <a href="cark.html">Çarkıfelek</a>
+      <a href="video-izle.html">Video İzle Kazan</a>
+      <a href="favoriler.html">Favoriler</a>
+      <a href="profil.html">Profil</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="akademi.html">Akademi</a>
+      <a href="istatistik.html">İstatistik</a>
+      <a href="leaderboard.html" class="active">Liderlik</a>
+      <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
+      <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
+    </nav>
   </header>
   <!-- Main -->
   <main>
-    <section style="max-width:500px;margin:0 auto;">
-      <h1 style="color:#735aff;text-align:center;margin:34px 0 24px 0;font-weight:700;">
-        <span class="emoji">🏆</span> Liderlik Tablosu
-      </h1>
-      <div id="leaderboard-list"></div>
+    <section style="max-width:470px;margin:36px auto 30px auto;">
+      <div class="lead-wrap">
+        <h2 style="color:#735aff;text-align:center;font-weight:900;margin-bottom:18px;">Liderlik Tablosu</h2>
+        <div id="liderlik-listesi">
+          <!-- Liderler burada listelenecek -->
+        </div>
+      </div>
     </section>
   </main>
   <!-- Footer -->
   <footer>
-    <div class="footer-flex">
-      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
-      <div class="odeme-logo">
-        <img src="wise.png" alt="Wise" />
-        <img src="payoneer.png" alt="Payoneer" />
-        <img src="iban.png" alt="IBAN" />
-      </div>
+    <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
+    <div class="odeme-logo">
+      <img src="wise.png" alt="Wise" />
+      <img src="payoneer.png" alt="Payoneer" />
+      <img src="iban.png" alt="IBAN" />
     </div>
   </footer>
   <!-- Firebase/JS -->
@@ -130,44 +57,37 @@
   <script src="firebase.js"></script>
   <script src="main.js"></script>
   <script>
-    // Modal ve admin
+    // Admin linki kontrolü
     firebase.auth().onAuthStateChanged(function(user) {
       var adminLink = document.getElementById('admin-link');
       if (adminLink) {
-        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
+        if (user && user.email === "admin@testlik.com") adminLink.style.display = "inline-block";
         else adminLink.style.display = "none";
       }
-      if (!user) openModal();
-      else closeModal();
     });
 
-    // Liderlik tablosunu çek
-    async function loadLeaderboard() {
-      const lbList = document.getElementById("leaderboard-list");
-      lbList.innerHTML = "<div style='text-align:center;color:#8f7fff;'>Yükleniyor...</div>";
-      const users = await db.collection("users").orderBy("points","desc").limit(20).get();
-      if (users.empty) {
-        lbList.innerHTML = "<div style='text-align:center;color:#bbb;'>Henüz veri yok.</div>";
-        return;
-      }
-      let rank = 1, html = "";
-      users.forEach(doc=>{
-        const u = doc.data();
-        html += `
-          <div class="leader-card">
-            <div class="leader-rank">${rank}</div>
-            <img class="leader-avatar" src="${u.avatar || 'default-profile.png'}" alt="Avatar"/>
-            <div class="leader-info">
-              <div class="leader-name">${u.displayName || u.email || "Kullanıcı"}</div>
-              <div class="leader-puan">${u.points || 0} puan</div>
-            </div>
-          </div>
-        `;
-        rank++;
+    // Liderlik tablosu: En çok puana sahip ilk 10 kullanıcıyı göster
+    async function yukleLiderlik() {
+      const snap = await db.collection("users")
+        .orderBy("point", "desc").limit(10).get();
+      let html = "<ol style='padding-left:18px;'>";
+      let idx = 1;
+      snap.forEach(doc => {
+        const data = doc.data();
+        let ad = data.displayName || data.email.split("@")[0];
+        let puan = data.point || 0;
+        html += `<li style="margin-bottom:10px;">
+          <span style="font-weight:700;color:${idx===1 ? '#ed4a88' : '#735aff'};">${ad}</span>
+          <span style="color:#7a53c4;margin-left:10px;">${puan} puan</span>
+          ${idx===1 ? " 🥇" : idx===2 ? " 🥈" : idx===3 ? " 🥉" : ""}
+        </li>`;
+        idx++;
       });
-      lbList.innerHTML = html;
+      html += "</ol>";
+      document.getElementById("liderlik-listesi").innerHTML = html;
     }
-    loadLeaderboard();
+
+    document.addEventListener("DOMContentLoaded", yukleLiderlik);
   </script>
 </body>
 </html>
