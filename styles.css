@@ -22,20 +22,32 @@ nav a {
   color: white;
   text-decoration: none;
 }
-main.result {
+nav a.active {
+  text-decoration: underline;
+}
+main {
   padding: 2rem;
+}
+h1.center {
   text-align: center;
 }
-.result-card {
-  background: white;
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+.game-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: auto;
 }
-.share-buttons {
-  margin: 1rem 0;
+.game-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.game-card img {
+  width: 100%;
+  border-radius: 1rem;
 }
 .btn {
   display: inline-block;
@@ -44,8 +56,9 @@ main.result {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 30px;
-  margin: 0.25rem;
+  margin-top: 0.5rem;
   cursor: pointer;
+  text-decoration: none;
 }
 footer {
   text-align: center;
