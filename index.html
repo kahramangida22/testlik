@@ -1,76 +1,72 @@
 <!DOCTYPE html>
+
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Testlik.com</title>
-  <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Testlik.com</title>
+<link href="styles.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&amp;display=swap" rel="stylesheet"/>
 </head>
 <body>
-  <header class="navbar">
-    <div class="logo">Testlik.com</div>
-    <nav class="nav-links">
-      <a href="index.html" class="active">Anasayfa</a>
-      <a href="kategoriler.html">Kategoriler</a>
-      <a href="sizdengelenler.html">Sizden Gelenler</a>
-      <a href="soru-uret.html">Soru Üret</a>
-      <a href="favoriler.html">Favoriler</a>
-      <a href="istatistik.html">İstatistik</a>
-      <a href="akademi.html">Akademi</a>
-      <a href="giris.html" id="giris-btn">Giriş Yap</a>
-    </nav>
-  </header>
-
-  <main class="hero">
-    <h1>Testlik.com'a Hoş Geldin! ✨</h1>
-    <p>Eğlenceli testler, çark çevir ve video izle kazan sistemiyle puan topla!</p>
-    <a href="test-render.html" class="cta-button">Hemen Test Çözmeye Başla</a>
-
-    <section class="kategori-grid">
-      <div class="kategori-card">
-        <img src="img/category-genel.png" alt="Genel">
-        <h3>Genel</h3>
-        <p>Gündemden testler</p>
-      </div>
-      <div class="kategori-card">
-        <img src="img/category-eglence.png" alt="Eglence">
-        <h3>Eğlence</h3>
-        <p>Keyifli ve özgün içerikler</p>
-      </div>
-      <div class="kategori-card">
-        <img src="img/category-bilgi.png" alt="Bilgi">
-        <h3>Bilgi</h3>
-        <p>Beyin yakan sorular</p>
-      </div>
-      <div class="kategori-card">
-        <img src="img/category-psikoloji.png" alt="Psikoloji">
-        <h3>Psikoloji</h3>
-        <p>Kişilik analizleri</p>
-      </div>
-    </section>
-
-    <section class="bonus-grid">
-      <div class="bonus-card">
-        <a href="cark.html">
-          <img src="img/cark.png" alt="Çark">
-          <h4>🌐 Çark Çevir</h4>
-        </a>
-      </div>
-      <div class="bonus-card">
-        <a href="video-izle.html">
-          <img src="img/video.png" alt="Video">
-          <h4>🎥 Video İzle</h4>
-        </a>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Testlik.com | Tüm Hakları Saklıdır</p>
-  </footer>
-
-  <script>
+<header class="navbar">
+<div class="logo">Testlik.com</div>
+<nav class="nav-links">
+<a class="active" href="index.html">Anasayfa</a>
+<a href="kategoriler.html">Kategoriler</a>
+<a href="sizdengelenler.html">Sizden Gelenler</a>
+<a href="soru-uret.html">Soru Üret</a>
+<a href="favoriler.html">Favoriler</a>
+<a href="istatistik.html">İstatistik</a>
+<a href="akademi.html">Akademi</a>
+<a href="giris.html" id="giris-btn">Giriş Yap</a>
+</nav>
+</header>
+<main class="hero">
+<h1>Testlik.com'a Hoş Geldin! ✨</h1>
+<p>Eğlenceli testler, çark çevir ve video izle kazan sistemiyle puan topla!</p>
+<a class="cta-button" href="test-render.html">Hemen Test Çözmeye Başla</a>
+<section class="kategori-grid">
+<div class="kategori-card">
+<img alt="Genel" src="img/category-genel.png" style="max-width: 400px; width: 90%; margin: 2rem auto; display: block; border-radius: 20px;"/>
+<h3>Genel</h3>
+<p>Gündemden testler</p>
+</div>
+<div class="kategori-card">
+<img alt="Eglence" src="img/category-eglence.png"/>
+<h3>Eğlence</h3>
+<p>Keyifli ve özgün içerikler</p>
+</div>
+<div class="kategori-card">
+<img alt="Bilgi" src="img/category-bilgi.png"/>
+<h3>Bilgi</h3>
+<p>Beyin yakan sorular</p>
+</div>
+<div class="kategori-card">
+<img alt="Psikoloji" src="img/category-psikoloji.png"/>
+<h3>Psikoloji</h3>
+<p>Kişilik analizleri</p>
+</div>
+</section>
+<section class="bonus-grid">
+<div class="bonus-card">
+<a href="cark.html">
+<img alt="Çark" src="img/cark.png"/>
+<h4>🌐 Çark Çevir</h4>
+</a>
+</div>
+<div class="bonus-card">
+<a href="video-izle.html">
+<img alt="Video" src="img/video.png"/>
+<h4>🎥 Video İzle</h4>
+</a>
+</div>
+</section>
+</main>
+<footer>
+<p>© 2025 Testlik.com | Tüm Hakları Saklıdır</p>
+</footer>
+<script>
     // Giriş yaptıysa bazı bağlantıları göster
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
