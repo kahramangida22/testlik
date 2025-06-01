@@ -3,97 +3,104 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Giriş Yap / Kayıt Ol | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Hemen üye ol, giriş yap, ödüllü testleri çözmeye başla!">
+  <title>Giriş Yap | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Hemen giriş yap veya ücretsiz kayıt ol!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .giris-wrap {max-width:370px;margin:40px auto 30px auto;background:#fff;border-radius:22px;box-shadow:0 2px 22px #735aff15;padding:28px 24px 18px 24px;}
-    .giris-title {color:#735aff;font-size:1.18em;font-weight:800;margin-bottom:13px;text-align:center;}
-    .giris-form label {color:#ed4a88;font-weight:700;display:block;margin-bottom:7px;}
-    .giris-form input {width:100%;border-radius:10px;border:1.5px solid #ccbaff;padding:8px 10px;margin-bottom:12px;font-family:inherit;font-size:1em;}
-    .giris-btn {background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);color:#fff;font-weight:700;border-radius:13px;border:none;box-shadow:0 2px 11px #735aff14;padding:10px 24px;font-size:1.06em;cursor:pointer;transition:background .13s;margin-bottom:9px;}
-    .giris-btn:active{background:#ed4a88;}
-    .giris-switch {text-align:center;margin:13px 0 7px 0;}
-    .giris-error {color:#ed4a88;margin-bottom:13px;min-height:20px;font-weight:600;text-align:center;}
-    @media (max-width:600px){.giris-wrap{padding:13px 5px 7px 5px;}}
+    .giris-kutu {background:#fff;max-width:350px;border-radius:23px;box-shadow:0 2px 22px #735aff13;margin:60px auto 40px auto;padding:39px 16px 31px 16px;}
+    .giris-btn {width:100%;margin-bottom:9px;}
+    .tablar {display:flex;justify-content:space-between;}
+    .tablar div {cursor:pointer;font-weight:700;padding:8px 16px;border-radius:8px;}
+    .tablar .aktif {background:#ed4a88;color:#fff;}
   </style>
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <div class="logo"><img src="logo.png" alt="Testlik.com" style="height:32px;vertical-align:middle;"> Testlik.com</div>
-  </header>
-  <!-- Main -->
   <main>
-    <div class="giris-wrap">
-      <div class="giris-title" id="giris-title">Giriş Yap</div>
-      <form class="giris-form" id="giris-form">
-        <label for="email">E-Posta</label>
-        <input type="email" id="email" name="email" required autocomplete="username">
-        <label for="password">Şifre</label>
-        <input type="password" id="password" name="password" required autocomplete="current-password">
-        <input type="text" id="displayName" name="displayName" maxlength="25" placeholder="Kullanıcı Adı (Kayıt için zorunlu)" style="display:none;">
-        <div class="giris-error" id="giris-error"></div>
-        <button class="giris-btn" type="submit">Giriş Yap</button>
-      </form>
-      <div class="giris-switch" id="giris-switch">
-        Hesabın yok mu? <a href="#" onclick="switchMode();return false;">Kayıt Ol</a>
+    <div class="giris-kutu">
+      <div style="text-align:center;margin-bottom:12px;">
+        <img src="logo.png" alt="Testlik.com" style="height:43px;">
       </div>
+      <div class="tablar" style="margin-bottom:13px;">
+        <div id="tab-giris" class="aktif">Giriş Yap</div>
+        <div id="tab-kayit">Kayıt Ol</div>
+      </div>
+      <form id="form-giris">
+        <input type="email" id="email-giris" placeholder="E-posta" required>
+        <input type="password" id="pass-giris" placeholder="Şifre" required>
+        <button class="btn giris-btn" type="submit">Giriş Yap</button>
+        <div id="giris-hata" style="color:#ed4a88;text-align:center;margin-top:8px;min-height:20px;"></div>
+      </form>
+      <form id="form-kayit" style="display:none;">
+        <input type="text" id="ad-kayit" placeholder="Kullanıcı Adı" required maxlength="22">
+        <input type="email" id="email-kayit" placeholder="E-posta" required>
+        <input type="password" id="pass-kayit" placeholder="Şifre" required>
+        <button class="btn giris-btn" type="submit">Kayıt Ol</button>
+        <div id="kayit-hata" style="color:#ed4a88;text-align:center;margin-top:8px;min-height:20px;"></div>
+      </form>
     </div>
   </main>
-  <!-- Footer -->
   <footer>
-    <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
+    <p style="text-align:center;color:#7a53c4;font-size:.98em;">&copy; 2025 <b>Testlik.com</b> | Tüm Hakları Saklıdır</p>
   </footer>
-  <!-- Firebase/JS -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
-    let mode = "login"; // "register"
-    function switchMode(){
-      mode = mode === "login" ? "register" : "login";
-      document.getElementById("giris-title").innerText = mode === "login" ? "Giriş Yap" : "Kayıt Ol";
-      document.querySelector(".giris-btn").innerText = mode === "login" ? "Giriş Yap" : "Kayıt Ol";
-      document.getElementById("giris-switch").innerHTML =
-        mode === "login"
-          ? 'Hesabın yok mu? <a href="#" onclick="switchMode();return false;">Kayıt Ol</a>'
-          : 'Zaten üye misin? <a href="#" onclick="switchMode();return false;">Giriş Yap</a>';
-      document.getElementById("displayName").style.display = mode === "register" ? "block" : "none";
-    }
-    document.getElementById("giris-form").onsubmit = async function(e){
+    // Tab geçişleri
+    document.getElementById("tab-giris").onclick = function(){
+      this.classList.add("aktif");
+      document.getElementById("tab-kayit").classList.remove("aktif");
+      document.getElementById("form-giris").style.display = "block";
+      document.getElementById("form-kayit").style.display = "none";
+    };
+    document.getElementById("tab-kayit").onclick = function(){
+      this.classList.add("aktif");
+      document.getElementById("tab-giris").classList.remove("aktif");
+      document.getElementById("form-giris").style.display = "none";
+      document.getElementById("form-kayit").style.display = "block";
+    };
+
+    // Giriş işlemi
+    document.getElementById("form-giris").onsubmit = function(e){
       e.preventDefault();
-      document.getElementById("giris-error").innerText = "";
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-      if(mode === "login"){
-        try {
-          await firebase.auth().signInWithEmailAndPassword(email, password);
-          window.location.href = "index.html";
-        } catch(err){
-          document.getElementById("giris-error").innerText = "Giriş başarısız: " + (err.message || "Bilinmeyen hata");
-        }
-      } else {
-        const displayName = document.getElementById("displayName").value.trim();
-        if(!displayName) {
-          document.getElementById("giris-error").innerText = "Kullanıcı adı zorunlu!";
-          return;
-        }
-        try {
-          const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-          await userCredential.user.updateProfile({displayName});
-          // Kullanıcıyı Firestore'a ekle
-          await firebase.firestore().collection("users").doc(userCredential.user.uid).set({
-            email, displayName, point:0, favorites:[], solvedTests:[], withdrawn:0, createdAt: new Date()
-          });
-          window.location.href = "index.html";
-        } catch(err){
-          document.getElementById("giris-error").innerText = "Kayıt başarısız: " + (err.message || "Bilinmeyen hata");
-        }
+      const email = document.getElementById("email-giris").value.trim();
+      const pass = document.getElementById("pass-giris").value;
+      firebase.auth().signInWithEmailAndPassword(email, pass)
+      .then(()=>window.location.href="index.html")
+      .catch(err=>{
+        document.getElementById("giris-hata").innerText = "Giriş başarısız: " + (err.message || "");
+      });
+    };
+
+    // Kayıt işlemi
+    document.getElementById("form-kayit").onsubmit = function(e){
+      e.preventDefault();
+      const ad = document.getElementById("ad-kayit").value.trim();
+      const email = document.getElementById("email-kayit").value.trim();
+      const pass = document.getElementById("pass-kayit").value;
+      if(ad.length < 3){
+        document.getElementById("kayit-hata").innerText = "Kullanıcı adı en az 3 karakter olmalı!";
+        return;
       }
+      firebase.auth().createUserWithEmailAndPassword(email, pass)
+      .then(cred=>{
+        return firebase.firestore().collection("users").doc(cred.user.uid).set({
+          displayName: ad,
+          email,
+          point: 0,
+          solvedTests: [],
+          favorites: [],
+          createdAt: new Date()
+        }).then(()=>{
+          return cred.user.updateProfile({ displayName: ad });
+        }).then(()=>window.location.href="index.html");
+      })
+      .catch(err=>{
+        document.getElementById("kayit-hata").innerText = "Kayıt başarısız: " + (err.message || "");
+      });
     };
   </script>
 </body>
