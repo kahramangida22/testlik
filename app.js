@@ -134,3 +134,56 @@ document.addEventListener("click", function (e) {
     e.target.closest(".option").classList.add("selected");
   }
 });
+
+window.downloadResultImage = function () {
+  const canvas = document.createElement("canvas");
+  canvas.width = 800;
+  canvas.height = 400;
+  const ctx = canvas.getContext("2d");
+
+  const resultText = document.getElementById("result-text").innerText;
+  const resultCard = document.getElementById("result-card");
+  const resultImgEl = resultCard.querySelector("img");
+  const resultImgUrl = resultImgEl ? resultImgEl.src : "";
+
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.src = resultImgUrl;
+
+  img.onload = function () {
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.drawImage(img, 0, 0, 800, 200);
+
+    ctx.fillStyle = "#000000";
+    ctx.font = "20px Arial";
+    ctx.fillText("Test Sonucun:", 30, 240);
+
+    ctx.font = "bold 22px Arial";
+    wrapText(ctx, resultText, 30, 270, 740, 26);
+
+    const link = document.createElement("a");
+    link.download = "testlik_sonuc.png";
+    link.href = canvas.toDataURL();
+    link.click();
+  };
+
+  function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    const words = text.split(' ');
+    let line = '';
+    for (let n = 0; n < words.length; n++) {
+      const testLine = line + words[n] + ' ';
+      const metrics = ctx.measureText(testLine);
+      const testWidth = metrics.width;
+      if (testWidth > maxWidth && n > 0) {
+        ctx.fillText(line, x, y);
+        line = words[n] + ' ';
+        y += lineHeight;
+      } else {
+        line = testLine;
+      }
+    }
+    ctx.fillText(line, x, y);
+  }
+};

@@ -1,114 +1,72 @@
 
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(to bottom right, #fce4ec, #e1bee7);
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: linear-gradient(to bottom right, #ffccf9, #bdb2ff);
   color: #333;
 }
 
 nav {
-  background-color: #ba68c8;
+  background-color: #9c27b0;
   color: white;
   padding: 1em;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-nav ul {
-  list-style-type: none;
-  display: flex;
-  gap: 1em;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 nav ul li a {
   color: white;
   text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
 }
 
-header {
-  padding: 2em;
-  text-align: center;
-  background-color: #f8bbd0;
+nav ul li a:hover {
+  color: #ffeb3b;
+}
+
+button {
+  background-color: #ff4081;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #f50057;
+}
+
+input, textarea {
+  border: 2px solid #ce93d8;
+  border-radius: 10px;
+  padding: 0.5em;
+  width: 100%;
+  max-width: 400px;
 }
 
 section {
   padding: 2em;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  margin: 2em auto;
+  max-width: 900px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 footer {
-  background-color: #ba68c8;
+  background-color: #7b1fa2;
   color: white;
   text-align: center;
   padding: 1em;
-  position: relative;
-  bottom: 0;
-  width: 100%;
-}
-
-input, button {
-  display: block;
-  margin: 0.5em 0;
-  padding: 0.5em;
-}
-
-.ad-slot {
-  margin: 1em 0;
-  padding: 1em;
-  background-color: #fff3e0;
-  text-align: center;
-  border: 1px dashed #ff9800;
+  border-top: 4px solid #ba68c8;
 }
 
 .result-card {
-  background: white;
-  border-radius: 1rem;
-  padding: 2rem;
-  margin: 2rem auto;
-  width: 80%;
-  max-width: 500px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  text-align: center;
-  animation: pop 0.5s ease-out;
-}
-
-@keyframes pop {
-  0% { transform: scale(0.8); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-.question-block {
-  margin-bottom: 2rem;
-}
-
-.question-image {
-  width: 100%;
-  max-width: 400px;
-  height: auto;
-  border-radius: 10px;
-  margin: 1em 0;
-}
-
-.options {
-  display: flex;
-  justify-content: space-around;
-  gap: 1rem;
-}
-
-.option {
-  text-align: center;
-}
-
-.option img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.option.selected {
-  border: 2px solid #8e24aa;
-  background-color: #f3e5f5;
-  border-radius: 10px;
+  background: #fff3e0;
+  border: 3px dashed #ff9800;
 }
