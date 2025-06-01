@@ -14,7 +14,6 @@
       <li><a href="#tests">Testler</a></li>
       <li><a href="#leaderboard">Lider Tablosu</a></li>
       <li><a href="#login">Giriş</a></li>
-      <li><a href="#admin">Admin Panel</a></li>
     </ul>
   </nav>
 
@@ -43,6 +42,11 @@
     </div>
   </section>
 
+  <!-- Admin geçiş butonu -->
+  <button id="go-admin-btn" style="display: none; margin: 1rem auto; display: block;" onclick="document.getElementById('admin').scrollIntoView({ behavior: 'smooth' })">
+    Admin Paneline Git
+  </button>
+
   <section id="admin" style="display: none;">
     <h2>Admin Paneli</h2>
     <div id="admin-panel">
@@ -64,9 +68,7 @@
     <h2>Sonucun</h2>
     <div id="result-card" class="result-card">
       <p id="result-text"></p>
-      <button onclick="downloadResultImage()" style="margin-top: 1rem;">
-        Sonucu Görsel Olarak Kaydet
-      </button>
+      <button onclick="downloadResultImage()" style="margin-top: 1rem;">Sonucu Görsel Olarak Kaydet</button>
     </div>
   </section>
 
