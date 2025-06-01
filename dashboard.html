@@ -4,116 +4,62 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Puan durumu, para çekme ve ödeme geçmişi burada!">
+  <meta name="description" content="Testlik.com - Puanlar, ödemeler ve geçmiş işlemler paneli!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    .dash-wrap {max-width:570px;margin:39px auto 30px auto;background:#fff;border-radius:26px;box-shadow:0 2px 22px #735aff15;padding:33px 28px 23px 28px;}
-    .dash-title {color:#735aff;font-size:1.25em;font-weight:800;margin-bottom:21px;}
-    .dash-kutu {background:#faf4ff;border-radius:18px;box-shadow:0 1px 10px #ed4a8813;padding:19px 17px;margin-bottom:19px;}
-    .dash-puan {color:#ed4a88;font-size:1.59em;font-weight:800;}
-    .dash-label {color:#7a53c4;font-size:1.07em;font-weight:600;}
-    .dash-form {margin-top:10px;}
-    .dash-form input, .dash-form select {padding:8px 10px;border-radius:8px;border:1.5px solid #ccbaff;margin-bottom:9px;width:100%;}
-    .dash-form button {
-      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
-      color:#fff;font-weight:700;border-radius:13px;border:none;box-shadow:0 2px 11px #735aff14;padding:10px 23px;font-size:1.06em;cursor:pointer;
-      transition:background .13s;margin-top:4px;
-    }
-    .dash-form button:active{background:#ed4a88;}
-    .dash-error {color:#ed4a88;font-size:1.02em;min-height:21px;margin-bottom:6px;}
-    .dash-g-table {width:100%;border-collapse:collapse;}
-    .dash-g-table th, .dash-g-table td {padding:7px 5px;text-align:left;font-size:.98em;}
-    .dash-g-table th {color:#7a53c4;}
-    .dash-g-table td {color:#735aff;}
-    .dash-g-table tr:nth-child(even){background:#f6f2fa;}
-    @media (max-width:600px){.dash-wrap{padding:13px 5px 9px 5px;}}
-  </style>
 </head>
 <body>
-  <!-- Giriş Modalı -->
-  <div class="modal-bg" id="login-modal" style="display:none;">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeModal()">&times;</button>
-      <h2>Testlik.com'a Giriş</h2>
-      <button class="modal-google" onclick="loginGoogle()">
-        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
-      </button>
-      <hr style="margin:23px 0 15px 0;opacity:.19;">
-      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
-      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1.5px solid #ccbaff;margin-top:8px;">
-      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
-      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
-      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
-      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
-    </div>
-  </div>
   <!-- Header -->
   <header>
-    <div class="nav-flex">
-      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
-      <nav>
-        <a href="index.html">Anasayfa</a>
-        <a href="kategoriler.html">Kategoriler</a>
-        <a href="sizdengelenler.html">Sizden Gelenler</a>
-        <a href="soru-uret.html">Soru Üret</a>
-        <a href="cark.html">Çarkıfelek</a>
-        <a href="video-izle.html">Video İzle Kazan</a>
-        <a href="favoriler.html">Favoriler</a>
-        <a href="profil.html">Profil</a>
-        <a href="dashboard.html" class="active">Dashboard</a>
-        <a href="akademi.html">Akademi</a>
-        <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
-        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
-      </nav>
-    </div>
+    <div class="logo"><img src="logo.png" alt="Testlik.com" style="height:32px;vertical-align:middle;"> Testlik.com</div>
+    <nav class="nav-links">
+      <a href="index.html">Anasayfa</a>
+      <a href="kategoriler.html">Kategoriler</a>
+      <a href="sizdengelenler.html">Sizden Gelenler</a>
+      <a href="soru-uret.html">Soru Üret</a>
+      <a href="cark.html">Çarkıfelek</a>
+      <a href="video-izle.html">Video İzle Kazan</a>
+      <a href="favoriler.html">Favoriler</a>
+      <a href="profil.html">Profil</a>
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="akademi.html">Akademi</a>
+      <a href="istatistik.html">İstatistik</a>
+      <a href="leaderboard.html">Liderlik</a>
+      <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
+      <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
+    </nav>
   </header>
   <!-- Main -->
   <main>
-    <div class="dash-wrap">
-      <div class="dash-title">Puan Durumu & Para Çekme</div>
-      <div class="dash-kutu" style="margin-bottom:22px;">
-        <div class="dash-label">Güncel Puanın</div>
-        <div class="dash-puan" id="puan">0</div>
+    <section style="max-width:440px;margin:36px auto 30px auto;">
+      <div class="dashboard-wrap">
+        <h2 style="color:#735aff;text-align:center;font-weight:900;margin-bottom:18px;">Puan ve Ödeme Paneli</h2>
+        <div id="dashboard-bilgi">
+          <div style="text-align:center;margin-bottom:15px;">
+            <span style="color:#ed4a88;font-size:1.26em;font-weight:800;">Puanın: </span>
+            <span id="puan" style="font-size:1.18em;color:#7a53c4;font-weight:700;">0</span>
+          </div>
+          <label>IBAN Bilgisi (TR)</label>
+          <input type="text" id="iban" maxlength="30" placeholder="TR...">
+          <button class="btn" onclick="ibanGuncelle()">IBAN Kaydet</button>
+          <div style="margin:18px 0 7px 0;font-size:1.07em;font-weight:700;color:#735aff;">Çekim Talebi</div>
+          <input type="number" id="cekimMiktar" min="10" max="1000000" placeholder="Çekmek istediğin miktar">
+          <button class="btn" onclick="cekimTalep()">Çekim Talep Et</button>
+          <div id="dashboard-sonuc" style="margin-top:10px;color:#7a53c4;font-weight:700;min-height:20px;"></div>
+          <div style="margin:21px 0 9px 0;font-size:1.07em;font-weight:700;color:#735aff;">Geçmiş İşlemler</div>
+          <div id="dashboard-gecmis" style="font-size:.99em;"></div>
+        </div>
       </div>
-      <div class="dash-kutu">
-        <div class="dash-label">Para Çekme Talebi</div>
-        <form class="dash-form" id="cek-form" onsubmit="return false;">
-          <select id="cek-method">
-            <option value="iban">IBAN</option>
-            <option value="wise">Wise</option>
-            <option value="payoneer">Payoneer</option>
-          </select>
-          <input type="text" id="cek-bilgi" placeholder="IBAN veya hesap adresi" />
-          <input type="number" id="cek-tutar" placeholder="Çekmek istediğin tutar (TL)" min="10" step="1" />
-          <button type="submit">Talep Oluştur</button>
-          <div class="dash-error" id="cek-error"></div>
-        </form>
-      </div>
-      <div class="dash-kutu">
-        <div class="dash-label">Para Çekme Geçmişi</div>
-        <table class="dash-g-table" id="cek-gecmis">
-          <thead>
-            <tr><th>Tarih</th><th>Tutar</th><th>Yöntem</th><th>Durum</th></tr>
-          </thead>
-          <tbody>
-            <!-- Geçmiş talepler gelecek -->
-          </tbody>
-        </table>
-      </div>
-    </div>
+    </section>
   </main>
   <!-- Footer -->
   <footer>
-    <div class="footer-flex">
-      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
-      <div class="odeme-logo">
-        <img src="wise.png" alt="Wise" />
-        <img src="payoneer.png" alt="Payoneer" />
-        <img src="iban.png" alt="IBAN" />
-      </div>
+    <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
+    <div class="odeme-logo">
+      <img src="wise.png" alt="Wise" />
+      <img src="payoneer.png" alt="Payoneer" />
+      <img src="iban.png" alt="IBAN" />
     </div>
   </footer>
   <!-- Firebase/JS -->
@@ -123,56 +69,83 @@
   <script src="firebase.js"></script>
   <script src="main.js"></script>
   <script>
-    // Modal ve admin linki
-    firebase.auth().onAuthStateChanged(function(user) {
+    let currentUid = "";
+    firebase.auth().onAuthStateChanged(async function(user) {
       var adminLink = document.getElementById('admin-link');
       if (adminLink) {
-        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
+        if (user && user.email === "admin@testlik.com") adminLink.style.display = "inline-block";
         else adminLink.style.display = "none";
       }
-      if (!user) openModal();
-      else closeModal();
-
       if (user) {
-        // Puanı göster
-        db.collection("users").doc(user.uid).get().then(doc=>{
-          document.getElementById("puan").innerText = (doc.data()&&doc.data().points)||0;
-        });
-        // Çekim geçmişini göster
-        db.collection("withdraws").where("uid","==",user.uid).orderBy("createdAt","desc").limit(6).get().then(qs=>{
-          let html = "";
-          qs.forEach(w=>{
-            let d = w.data();
-            html += `<tr>
-              <td>${d.createdAt?.toDate?.().toLocaleString?.("tr-TR")||"-"}</td>
-              <td>${d.amount} TL</td>
-              <td>${d.method}</td>
-              <td>${d.status||"Beklemede"}</td>
-            </tr>`;
-          });
-          document.querySelector("#cek-gecmis tbody").innerHTML = html||"<tr><td colspan='4'>Kayıt yok</td></tr>";
-        });
+        currentUid = user.uid;
+        const doc = await db.collection("users").doc(user.uid).get();
+        const data = doc.data();
+        document.getElementById("puan").innerText = data.point || 0;
+        document.getElementById("iban").value = data.iban || "";
+        gecmisiYukle();
+      } else {
+        document.getElementById("dashboard-bilgi").innerHTML = "<div style='color:#bbb;text-align:center;'>Giriş yapmadan bu sayfa görüntülenemez.</div>";
       }
     });
 
-    // Para çekme talebi
-    document.getElementById("cek-form").onsubmit = function(){
-      const method = document.getElementById("cek-method").value;
-      const bilgi = document.getElementById("cek-bilgi").value.trim();
-      const tutar = Number(document.getElementById("cek-tutar").value);
-      if (!bilgi || !tutar || tutar<10) {
-        document.getElementById("cek-error").innerText = "Lütfen bilgileri doğru girin! (Min 10 TL)";
-        return false;
+    // IBAN güncelle
+    async function ibanGuncelle() {
+      if (!currentUid) return;
+      const iban = document.getElementById("iban").value.trim();
+      if (!iban || !iban.startsWith("TR") || iban.length < 20) {
+        document.getElementById("dashboard-sonuc").innerText = "Geçerli bir IBAN giriniz!";
+        return;
       }
-      firebase.auth().onAuthStateChanged(function(user){
-        db.collection("withdraws").add({
-          uid: user.uid, method, bilgi, amount: tutar, status:"Beklemede", createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        }).then(()=>{
-          document.getElementById("cek-error").innerText = "Talebin alındı, en kısa sürede incelenecek!";
-        });
+      await db.collection("users").doc(currentUid).update({ iban });
+      document.getElementById("dashboard-sonuc").innerText = "IBAN güncellendi!";
+    }
+
+    // Çekim talebi oluştur
+    async function cekimTalep() {
+      if (!currentUid) return;
+      const miktar = parseInt(document.getElementById("cekimMiktar").value) || 0;
+      const doc = await db.collection("users").doc(currentUid).get();
+      const mevcutPuan = doc.data().point || 0;
+      if (miktar < 10) {
+        document.getElementById("dashboard-sonuc").innerText = "Minimum 10 puan çekebilirsiniz!";
+        return;
+      }
+      if (miktar > mevcutPuan) {
+        document.getElementById("dashboard-sonuc").innerText = "Yeterli puanınız yok!";
+        return;
+      }
+      // Çekim işlemini Firestore'a kaydet (admin onayı gerektirebilir)
+      await db.collection("withdrawals").add({
+        userId: currentUid,
+        amount: miktar,
+        iban: doc.data().iban || "",
+        status: "beklemede",
+        createdAt: new Date()
       });
-      return false;
-    };
+      // Puanı düş
+      await db.collection("users").doc(currentUid).update({
+        point: mevcutPuan - miktar
+      });
+      document.getElementById("dashboard-sonuc").innerText = "Çekim talebiniz alındı!";
+      gecmisiYukle();
+    }
+
+    // Geçmiş çekim işlemlerini getir
+    async function gecmisiYukle() {
+      if (!currentUid) return;
+      const snap = await db.collection("withdrawals")
+        .where("userId", "==", currentUid)
+        .orderBy("createdAt", "desc").limit(7).get();
+      let html = "";
+      snap.forEach(doc => {
+        const d = doc.data();
+        html += `<div>
+          <b>${d.amount} puan</b> — <span style="color:#ed4a88;">${d.status}</span>
+          <span style="color:#bbb;">(${new Date(d.createdAt.seconds*1000).toLocaleDateString("tr-TR")})</span>
+        </div>`;
+      });
+      document.getElementById("dashboard-gecmis").innerHTML = html || "<div style='color:#bbb;'>Henüz işlem yok.</div>";
+    }
   </script>
 </body>
 </html>
