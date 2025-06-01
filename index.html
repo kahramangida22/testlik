@@ -1,82 +1,82 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Testlik.com | Para Kazandıran Testler</title>
-  <meta name="description" content="Testlik.com ile eğlenceli testleri çöz, puan topla, ödüller ve nakit kazan!">
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testlik.com</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <div class="logo"><img src="logo.png" alt="Testlik.com" style="height:32px;vertical-align:middle;"> Testlik.com</div>
+  <header class="navbar">
+    <div class="logo">Testlik.com</div>
     <nav class="nav-links">
       <a href="index.html" class="active">Anasayfa</a>
       <a href="kategoriler.html">Kategoriler</a>
       <a href="sizdengelenler.html">Sizden Gelenler</a>
       <a href="soru-uret.html">Soru Üret</a>
-      <a href="cark.html">Çarkıfelek</a>
-      <a href="video-izle.html">Video İzle Kazan</a>
       <a href="favoriler.html">Favoriler</a>
-      <a href="profil.html">Profil</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="akademi.html">Akademi</a>
       <a href="istatistik.html">İstatistik</a>
-      <a href="leaderboard.html">Liderlik</a>
-      <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
-      <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
+      <a href="akademi.html">Akademi</a>
+      <a href="giris.html" id="giris-btn">Giriş Yap</a>
     </nav>
   </header>
-  <!-- Main -->
-  <main>
-    <section class="hero">
-      <h1>Para Kazandıran Testler <span style="color:#ed4a88;">Testlik.com’da!</span></h1>
-      <p>
-        Hemen üye ol, <b>eğlenceli testleri çöz</b>, puan topla ve IBAN’ına ödeme al! <br>
-        Ücretsiz kaydol, ödül ve ekstra gelir fırsatlarını kaçırma.
-      </p>
-      <a href="giris.html" class="cta-button">Hemen Katıl</a>
+
+  <main class="hero">
+    <h1>Testlik.com'a Hoş Geldin! ✨</h1>
+    <p>Eğlenceli testler, çark çevir ve video izle kazan sistemiyle puan topla!</p>
+    <a href="test-render.html" class="cta-button">Hemen Test Çözmeye Başla</a>
+
+    <section class="kategori-grid">
+      <div class="kategori-card">
+        <img src="img/category-genel.png" alt="Genel">
+        <h3>Genel</h3>
+        <p>Gündemden testler</p>
+      </div>
+      <div class="kategori-card">
+        <img src="img/category-eglence.png" alt="Eglence">
+        <h3>Eğlence</h3>
+        <p>Keyifli ve özgün içerikler</p>
+      </div>
+      <div class="kategori-card">
+        <img src="img/category-bilgi.png" alt="Bilgi">
+        <h3>Bilgi</h3>
+        <p>Beyin yakan sorular</p>
+      </div>
+      <div class="kategori-card">
+        <img src="img/category-psikoloji.png" alt="Psikoloji">
+        <h3>Psikoloji</h3>
+        <p>Kişilik analizleri</p>
+      </div>
     </section>
-    <section style="max-width:1100px;margin:40px auto 0 auto;">
-      <h2 style="color:#735aff;margin:23px 0 12px 0;">Kategoriler</h2>
-      <div id="kategori-list" class="kategori-grid"></div>
-      <h2 style="color:#735aff;margin:33px 0 12px 0;">Yeni Testler</h2>
-      <div id="yeni-testler" class="kategori-grid"></div>
-      <h2 style="color:#ed4a88;margin:33px 0 12px 0;">Popüler Testler</h2>
-      <div id="populer-testler" class="kategori-grid"></div>
+
+    <section class="bonus-grid">
+      <div class="bonus-card">
+        <a href="cark.html">
+          <img src="img/cark.png" alt="Çark">
+          <h4>🌐 Çark Çevir</h4>
+        </a>
+      </div>
+      <div class="bonus-card">
+        <a href="video-izle.html">
+          <img src="img/video.png" alt="Video">
+          <h4>🎥 Video İzle</h4>
+        </a>
+      </div>
     </section>
   </main>
-  <!-- Footer -->
+
   <footer>
-    <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
-    <div class="odeme-logo">
-      <img src="wise.png" alt="Wise" />
-      <img src="payoneer.png" alt="Payoneer" />
-      <img src="iban.png" alt="IBAN" />
-    </div>
+    <p>&copy; 2025 Testlik.com | Tüm Hakları Saklıdır</p>
   </footer>
-  <!-- Firebase/JS -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="firebase.js"></script>
-  <script src="main.js"></script>
+
   <script>
-    // Giriş ve admin kontrolü
+    // Giriş yaptıysa bazı bağlantıları göster
     firebase.auth().onAuthStateChanged(function(user) {
-      var adminLink = document.getElementById('admin-link');
-      if (adminLink) {
-        if (user && user.email === "admin@testlik.com") adminLink.style.display = "inline-block";
-        else adminLink.style.display = "none";
+      if (user) {
+        document.getElementById("giris-btn").style.display = "none";
+        document.querySelector(".nav-links").innerHTML += '<a href="profil.html">Profil</a><a href="dashboard.html">Dashboard</a>';
       }
-    });
-    // Kategoriler, yeni ve popüler testler yükle
-    document.addEventListener("DOMContentLoaded", () => {
-      kategorileriYukle();
-      testleriYukle();
     });
   </script>
 </body>

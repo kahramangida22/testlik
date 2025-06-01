@@ -3,105 +3,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Giriş Yap | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Hemen giriş yap veya ücretsiz kayıt ol!">
+  <title>Giriş | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Giriş yap, kayıt ol veya üyeliksiz devam et.">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .giris-kutu {background:#fff;max-width:350px;border-radius:23px;box-shadow:0 2px 22px #735aff13;margin:60px auto 40px auto;padding:39px 16px 31px 16px;}
-    .giris-btn {width:100%;margin-bottom:9px;}
-    .tablar {display:flex;justify-content:space-between;}
-    .tablar div {cursor:pointer;font-weight:700;padding:8px 16px;border-radius:8px;}
-    .tablar .aktif {background:#ed4a88;color:#fff;}
+    body {background:#f7f4ff;}
+    .giris-arka {
+      position:fixed;top:0;left:0;width:100vw;height:100vh;background:#735aff88;
+      z-index:99;display:flex;align-items:center;justify-content:center;
+    }
+    .giris-kart {
+      background:#fff;border-radius:23px;box-shadow:0 3px 25px #735aff33;
+      padding:36px 27px 31px 27px;max-width:360px;width:93%;text-align:center;position:relative;
+      display:flex;flex-direction:column;gap:19px;
+    }
+    .giris-logo {width:65px;margin:0 auto 12px auto;}
+    .giris-title {color:#735aff;font-size:1.33em;font-weight:800;margin-bottom:8px;}
+    .giris-google {
+      background:#fff;color:#ed4a88;font-weight:700;border-radius:11px;border:2px solid #ed4a88;
+      box-shadow:0 2px 9px #ed4a8820;padding:10px 10px;font-size:1.03em;cursor:pointer;
+      margin:0 0 3px 0;transition:background .13s;
+      display:flex;align-items:center;justify-content:center;gap:8px;
+    }
+    .giris-google:active{background:#f3e6ff;}
+    .giris-hr {margin:7px 0 12px 0;opacity:.19;}
+    .giris-inp {width:98%;padding:11px;border-radius:8px;border:1.5px solid #ccbaff;margin-bottom:6px;font-size:1.04em;}
+    .giris-btn {
+      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
+      color:#fff;font-weight:700;border-radius:9px;border:none;padding:10px 24px;font-size:1.05em;cursor:pointer;
+      margin-top:4px;transition:background .13s;
+    }
+    .giris-btn:active{background:#ed4a88;}
+    .giris-guest {background:#bbb;color:#fff;border:none;border-radius:8px;font-weight:700;padding:8px 17px;margin-top:10px;}
+    .giris-close {position:absolute;top:11px;right:13px;background:transparent;color:#735aff;font-size:2.15em;border:none;cursor:pointer;}
+    .giris-error {color:#ed4a88;font-size:.98em;min-height:22px;}
+    @media (max-width:520px){.giris-kart{padding:19px 5px 15px 5px;}}
   </style>
 </head>
 <body>
-  <main>
-    <div class="giris-kutu">
-      <div style="text-align:center;margin-bottom:12px;">
-        <img src="logo.png" alt="Testlik.com" style="height:43px;">
-      </div>
-      <div class="tablar" style="margin-bottom:13px;">
-        <div id="tab-giris" class="aktif">Giriş Yap</div>
-        <div id="tab-kayit">Kayıt Ol</div>
-      </div>
-      <form id="form-giris">
-        <input type="email" id="email-giris" placeholder="E-posta" required>
-        <input type="password" id="pass-giris" placeholder="Şifre" required>
-        <button class="btn giris-btn" type="submit">Giriş Yap</button>
-        <div id="giris-hata" style="color:#ed4a88;text-align:center;margin-top:8px;min-height:20px;"></div>
-      </form>
-      <form id="form-kayit" style="display:none;">
-        <input type="text" id="ad-kayit" placeholder="Kullanıcı Adı" required maxlength="22">
-        <input type="email" id="email-kayit" placeholder="E-posta" required>
-        <input type="password" id="pass-kayit" placeholder="Şifre" required>
-        <button class="btn giris-btn" type="submit">Kayıt Ol</button>
-        <div id="kayit-hata" style="color:#ed4a88;text-align:center;margin-top:8px;min-height:20px;"></div>
-      </form>
+  <div class="giris-arka">
+    <div class="giris-kart">
+      <button class="giris-close" onclick="window.location.href='index.html'">&times;</button>
+      <img src="logo.png" class="giris-logo" alt="Testlik.com Logo"/>
+      <div class="giris-title">Testlik.com'a Giriş Yap</div>
+      <button class="giris-google" onclick="loginGoogle()">
+        <img src="google-icon.png" style="height:24px;vertical-align:middle;"> Google ile Giriş Yap
+      </button>
+      <hr class="giris-hr">
+      <input type="email" id="login-email" class="giris-inp" placeholder="E-posta">
+      <input type="password" id="login-pass" class="giris-inp" placeholder="Şifre">
+      <button class="giris-btn" onclick="loginEmail()">Giriş Yap</button>
+      <div id="login-error" class="giris-error"></div>
+      <button class="giris-btn" style="background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
+      <button class="giris-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
     </div>
-  </main>
-  <footer>
-    <p style="text-align:center;color:#7a53c4;font-size:.98em;">&copy; 2025 <b>Testlik.com</b> | Tüm Hakları Saklıdır</p>
-  </footer>
+  </div>
+  <!-- Firebase/JS -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script>
-    // Tab geçişleri
-    document.getElementById("tab-giris").onclick = function(){
-      this.classList.add("aktif");
-      document.getElementById("tab-kayit").classList.remove("aktif");
-      document.getElementById("form-giris").style.display = "block";
-      document.getElementById("form-kayit").style.display = "none";
-    };
-    document.getElementById("tab-kayit").onclick = function(){
-      this.classList.add("aktif");
-      document.getElementById("tab-giris").classList.remove("aktif");
-      document.getElementById("form-giris").style.display = "none";
-      document.getElementById("form-kayit").style.display = "block";
-    };
-
-    // Giriş işlemi
-    document.getElementById("form-giris").onsubmit = function(e){
-      e.preventDefault();
-      const email = document.getElementById("email-giris").value.trim();
-      const pass = document.getElementById("pass-giris").value;
-      firebase.auth().signInWithEmailAndPassword(email, pass)
-      .then(()=>window.location.href="index.html")
-      .catch(err=>{
-        document.getElementById("giris-hata").innerText = "Giriş başarısız: " + (err.message || "");
-      });
-    };
-
-    // Kayıt işlemi
-    document.getElementById("form-kayit").onsubmit = function(e){
-      e.preventDefault();
-      const ad = document.getElementById("ad-kayit").value.trim();
-      const email = document.getElementById("email-kayit").value.trim();
-      const pass = document.getElementById("pass-kayit").value;
-      if(ad.length < 3){
-        document.getElementById("kayit-hata").innerText = "Kullanıcı adı en az 3 karakter olmalı!";
-        return;
-      }
-      firebase.auth().createUserWithEmailAndPassword(email, pass)
-      .then(cred=>{
-        return firebase.firestore().collection("users").doc(cred.user.uid).set({
-          displayName: ad,
-          email,
-          point: 0,
-          solvedTests: [],
-          favorites: [],
-          createdAt: new Date()
-        }).then(()=>{
-          return cred.user.updateProfile({ displayName: ad });
-        }).then(()=>window.location.href="index.html");
-      })
-      .catch(err=>{
-        document.getElementById("kayit-hata").innerText = "Kayıt başarısız: " + (err.message || "");
-      });
-    };
+    // Google ile giriş
+    function loginGoogle(){
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider).then(()=>window.location.href="index.html")
+      .catch(e=>document.getElementById("login-error").innerText = e.message);
+    }
+    // E-posta ile giriş
+    function loginEmail(){
+      var mail = document.getElementById("login-email").value;
+      var pass = document.getElementById("login-pass").value;
+      firebase.auth().signInWithEmailAndPassword(mail,pass).then(()=>window.location.href="index.html")
+      .catch(e=>document.getElementById("login-error").innerText = e.message);
+    }
+    // Kayıt ol
+    function registerEmail(){
+      var mail = document.getElementById("login-email").value;
+      var pass = document.getElementById("login-pass").value;
+      firebase.auth().createUserWithEmailAndPassword(mail,pass).then(()=>window.location.href="index.html")
+      .catch(e=>document.getElementById("login-error").innerText = e.message);
+    }
+    // Üyeliksiz devam
+    function guestLogin(){
+      firebase.auth().signInAnonymously().then(()=>window.location.href="index.html");
+    }
   </script>
 </body>
 </html>

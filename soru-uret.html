@@ -3,62 +3,91 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Soru/Test Öner | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Yeni test, soru veya önerini gönder, belki sitede yayınlansın!">
+  <title>Soru Öner | Testlik.com</title>
+  <meta name="description" content="Testlik.com - Kendi sorunuzu/testinizi önerin, platforma katkı sağlayın!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    .so-wrap {max-width:510px;margin:39px auto 30px auto;background:#fff;border-radius:26px;box-shadow:0 2px 22px #735aff15;padding:33px 28px 25px 28px;}
+    .so-title {color:#735aff;font-size:1.29em;font-weight:800;margin-bottom:19px;}
+    .so-label {display:block;margin-bottom:7px;color:#735aff;font-weight:600;}
+    .so-inp, .so-text {
+      width:100%;padding:11px 8px;border-radius:11px;border:1.3px solid #ccbaff;font-size:1.03em;font-family:'Fredoka',Arial;background:#f5f0fa;
+      margin-bottom:13px;
+    }
+    .so-text {min-height:80px;resize:vertical;}
+    .so-btn {
+      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
+      color:#fff;font-weight:700;border-radius:13px;border:none;box-shadow:0 2px 11px #735aff14;padding:10px 28px;font-size:1.08em;cursor:pointer;
+      transition:background .13s;margin-top:7px;
+    }
+    .so-btn:active{background:#ed4a88;}
+    .so-sonuc {color:#ed4a88;font-size:1em;min-height:19px;margin-top:7px;}
+  </style>
 </head>
 <body>
+  <!-- Giriş Modalı -->
+  <div class="modal-bg" id="login-modal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <h2>Testlik.com'a Giriş</h2>
+      <button class="modal-google" onclick="loginGoogle()">
+        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
+      </button>
+      <hr style="margin:23px 0 15px 0;opacity:.19;">
+      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
+      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
+      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
+      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
+      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
+      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
+    </div>
+  </div>
   <!-- Header -->
   <header>
-    <div class="logo"><img src="logo.png" alt="Testlik.com" style="height:32px;vertical-align:middle;"> Testlik.com</div>
-    <nav class="nav-links">
-      <a href="index.html">Anasayfa</a>
-      <a href="kategoriler.html">Kategoriler</a>
-      <a href="sizdengelenler.html">Sizden Gelenler</a>
-      <a href="soru-uret.html" class="active">Soru Üret</a>
-      <a href="cark.html">Çarkıfelek</a>
-      <a href="video-izle.html">Video İzle Kazan</a>
-      <a href="favoriler.html">Favoriler</a>
-      <a href="profil.html">Profil</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="akademi.html">Akademi</a>
-      <a href="istatistik.html">İstatistik</a>
-      <a href="leaderboard.html">Liderlik</a>
-      <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
-      <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
-    </nav>
+    <div class="nav-flex">
+      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
+      <nav>
+        <a href="index.html">Anasayfa</a>
+        <a href="kategoriler.html">Kategoriler</a>
+        <a href="sizdengelenler.html">Sizden Gelenler</a>
+        <a href="soru-uret.html" class="active">Soru Üret</a>
+        <a href="cark.html">Çarkıfelek</a>
+        <a href="video-izle.html">Video İzle Kazan</a>
+        <a href="favoriler.html">Favoriler</a>
+        <a href="profil.html">Profil</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="akademi.html">Akademi</a>
+        <a href="istatistik.html">İstatistik</a>
+        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
+        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
+      </nav>
+    </div>
   </header>
   <!-- Main -->
   <main>
-    <section style="max-width:500px;margin:36px auto 30px auto;">
-      <div class="profile-wrap">
-        <h2 style="color:#735aff;text-align:center;font-weight:900;margin-bottom:15px;">Soru / Test Öner</h2>
-        <div style="color:#7a53c4;text-align:center;font-size:1.08em;margin-bottom:11px;">Yeni bir test, soru ya da konu fikrin varsa paylaş!</div>
-        <form id="soru-uret-form">
-          <label>Test / Soru Başlığı</label>
-          <input type="text" id="soru-baslik" maxlength="60" placeholder="Başlık (ör: En sevdiğin yemek...)">
-          <label>Soru veya Test Detayı</label>
-          <textarea id="soru-detay" rows="3" maxlength="400" placeholder="Kısa açıklama, örnek soru veya öneri"></textarea>
-          <button class="btn" type="submit">Gönder</button>
-          <div id="soru-uret-sonuc" style="margin-top:7px;color:#7a53c4;font-weight:700;min-height:18px;"></div>
-        </form>
-        <hr style="margin:24px 0 15px 0;border:none;border-top:1px solid #ece8fa;">
-        <div style="text-align:center;">
-          <button class="btn" onclick="rastgeleOner()">AI'den rastgele test önerisi al</button>
-          <div id="ai-oneri" style="margin-top:13px;color:#ed4a88;font-weight:600;"></div>
-        </div>
-      </div>
-    </section>
+    <div class="so-wrap">
+      <div class="so-title">Kendi Testini veya Sorunu Öner</div>
+      <form id="so-form" onsubmit="return soruOnermek();">
+        <label class="so-label" for="so-title">Konu Başlığı</label>
+        <input class="so-inp" id="so-title" maxlength="50" required placeholder="Örneğin: Arkadaşlık Testi" />
+        <label class="so-label" for="so-text">Soru/Detay</label>
+        <textarea class="so-text" id="so-text" maxlength="600" required placeholder="Test/konu önerini buraya yaz"></textarea>
+        <button class="so-btn" type="submit">Öneriyi Gönder</button>
+        <div class="so-sonuc" id="so-sonuc"></div>
+      </form>
+    </div>
   </main>
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
-    <div class="odeme-logo">
-      <img src="wise.png" alt="Wise" />
-      <img src="payoneer.png" alt="Payoneer" />
-      <img src="iban.png" alt="IBAN" />
+    <div class="footer-flex">
+      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
+      <div class="odeme-logo">
+        <img src="wise.png" alt="Wise" />
+        <img src="payoneer.png" alt="Payoneer" />
+        <img src="iban.png" alt="IBAN" />
+      </div>
     </div>
   </footer>
   <!-- Firebase/JS -->
@@ -68,57 +97,39 @@
   <script src="firebase.js"></script>
   <script src="main.js"></script>
   <script>
-    // Admin kontrolü
+    // Modal ve admin linki
     firebase.auth().onAuthStateChanged(function(user) {
       var adminLink = document.getElementById('admin-link');
       if (adminLink) {
-        if (user && user.email === "admin@testlik.com") adminLink.style.display = "inline-block";
+        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
         else adminLink.style.display = "none";
       }
+      if (!user) openModal();
+      else closeModal();
     });
 
-    // Form ile yeni öneri/soru gönder
-    document.getElementById("soru-uret-form").onsubmit = async function(e){
-      e.preventDefault();
-      const baslik = document.getElementById("soru-baslik").value.trim();
-      const detay = document.getElementById("soru-detay").value.trim();
-      if(!baslik || baslik.length < 5){
-        document.getElementById("soru-uret-sonuc").innerText = "Başlık en az 5 karakter olmalı!";
-        return;
-      }
-      if(!detay || detay.length < 10){
-        document.getElementById("soru-uret-sonuc").innerText = "Detay en az 10 karakter olmalı!";
-        return;
-      }
-      let kullanici = "Anonim";
-      const user = firebase.auth().currentUser;
-      if(user) kullanici = user.displayName || user.email.split("@")[0];
-      await db.collection("suggestions").add({
-        user: kullanici,
-        title: baslik,
-        detail: detay,
-        createdAt: new Date()
+    // Soru önerme fonksiyonu
+    function soruOnermek() {
+      var title = document.getElementById("so-title").value.trim();
+      var text = document.getElementById("so-text").value.trim();
+      var sonuc = document.getElementById("so-sonuc");
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) return;
+        db.collection("suggestions").add({
+          displayName: user.displayName || "",
+          email: user.email || "",
+          title,
+          text,
+          createdAt: new Date(),
+          date: new Date().toLocaleString("tr-TR")
+        }).then(() => {
+          sonuc.innerText = "Önerin başarıyla iletildi! 🎉";
+          document.getElementById("so-form").reset();
+        }).catch(() => {
+          sonuc.innerText = "Hata oluştu, tekrar dene!";
+        });
       });
-      document.getElementById("soru-uret-sonuc").innerText = "Önerin alındı, teşekkürler!";
-      document.getElementById("soru-baslik").value = "";
-      document.getElementById("soru-detay").value = "";
-    };
-
-    // Basit yapay zeka önerisi (örnek - gerçek AI entegre için API gerekir)
-    function rastgeleOner() {
-      const ornekler = [
-        "Hangi dondurma seni yansıtıyor?",
-        "Gelecekteki mesleğin hangi test ile belirlenir?",
-        "En sevdiğin film karakterine göre kişilik analizi",
-        "Beyin tipin: Mantıkçı mı hayalperest mi?",
-        "Sana en uygun tatil şehri hangisi?",
-        "Gizli bir yeteneğin var mı? Testle keşfet!",
-        "Günlük alışkanlıklarına göre hangi hayvansın?",
-        "Çocukluğundan kalma bir alışkanlığın hangisi?",
-        "Hangisi seni daha iyi tanımlar: Deneyim mi, Bilgi mi?"
-      ];
-      const rnd = Math.floor(Math.random() * ornekler.length);
-      document.getElementById("ai-oneri").innerText = ornekler[rnd];
+      return false;
     }
   </script>
 </body>

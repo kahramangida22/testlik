@@ -1,47 +1,103 @@
-// Çıkış butonunu göster/gizle ve işlevi
+// main.js
+
+// Firebase ve kullanıcı kontrolleri
 firebase.auth().onAuthStateChanged(function(user) {
-  const logoutBtn = document.getElementById("logout-btn");
+  var logoutBtn = document.getElementById('logout-btn');
+  var adminNavLink = document.getElementById('admin-nav-link');
   if (logoutBtn) {
-    logoutBtn.style.display = user ? "inline-block" : "none";
-    logoutBtn.onclick = function(e){
-      e.preventDefault();
-      firebase.auth().signOut().then(function() {
-        window.location.href = "giris.html";
-      });
-    };
+    if (user) logoutBtn.style.display = 'inline-block';
+    else logoutBtn.style.display = 'none';
+  }
+  if (adminNavLink) {
+    if (user && user.email === "admin@testlik.com") adminNavLink.style.display = "inline-block";
+    else adminNavLink.style.display = "none";
   }
 });
 
-// Giriş yapılmamışsa korumalı sayfalardan yönlendir
-const korumaliSayfalar = [
-  "profil.html", "dashboard.html", "istatistik.html", "favoriler.html",
-  "leaderboard.html", "admin.html", "akademi.html"
-];
-if (korumaliSayfalar.includes(location.pathname.split("/").pop())) {
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (!user) window.location.href = "giris.html";
+document.addEventListener('DOMContentLoaded', function() {
+  var logoutBtnElem = document.getElementById('logout-btn');
+  if (logoutBtnElem) {
+    logoutBtnElem.onclick = function(e) {
+      e.preventDefault();
+      firebase.auth().signOut().then(() => {
+        window.location.href = "index.html";
+      });
+    }
+  }
+  // Eğer fonksiyonlar gerekiyorsa burada başlatılır
+  if (typeof testleriYukle === "function") testleriYukle();
+  if (typeof kategorileriYukle === "function") kategorileriYukle();
+  if (typeof kullaniciVerisiniYukle === "function") kullaniciVerisiniYukle();
+  if (typeof carkiHazirla === "function") carkiHazirla();
+});
+
+// Ana sayfa için yeni ve popüler testler (index.html)
+async function testleriYukle() {
+  const yeniTestler = document.getElementById("yeni-testler");
+  const populerTestler = document.getElementById("populer-testler");
+
+  if (yeniTestler) {
+    // En yeni 8 test
+    const yeniSnap = await db.collection("tests").orderBy("createdAt", "desc").limit(8).get();
+    let htmlYeni = "";
+    yeniSnap.forEach(doc => {
+      const t = doc.data();
+      htmlYeni += `
+        <div class="test-card">
+          <img class="test-img" src="${t.image || 'img/soru-isareti.png'}" alt="Test Görseli"/>
+          <div class="test-title">${t.title || "Test Başlığı"}</div>
+          <div class="test-desc">${t.description || ""}</div>
+          <button class="test-btn" onclick="window.location.href='test-render.html?id=${doc.id}'">Teste Git</button>
+        </div>
+      `;
+    });
+    yeniTestler.innerHTML = htmlYeni || "<div>Test bulunamadı.</div>";
+  }
+
+  if (populerTestler) {
+    // En çok çözülen 8 test
+    const popSnap = await db.collection("tests").orderBy("solvedCount", "desc").limit(8).get();
+    let htmlPop = "";
+    popSnap.forEach(doc => {
+      const t = doc.data();
+      htmlPop += `
+        <div class="test-card">
+          <img class="test-img" src="${t.image || 'img/soru-isareti.png'}" alt="Test Görseli"/>
+          <div class="test-title">${t.title || "Test Başlığı"}</div>
+          <div class="test-desc">${t.description || ""}</div>
+          <button class="test-btn" onclick="window.location.href='test-render.html?id=${doc.id}'">Teste Git</button>
+        </div>
+      `;
+    });
+    populerTestler.innerHTML = htmlPop || "<div>Test bulunamadı.</div>";
+  }
+}
+
+// Kategoriler sayfası için kategori listeleme (kategoriler.html)
+async function kategorileriYukle() {
+  const kategoriList = document.getElementById("kategori-list");
+  if (!kategoriList) return;
+
+  // Kategoriler manuel veya veritabanından çekilebilir
+  const kategoriler = [
+    { key: "Genel", title: "Genel", desc: "Gündemden her şey", img: "img/category-genel.png" },
+    { key: "Eğlence", title: "Eğlence", desc: "Keyifli, komik, özgün", img: "img/category-eglence.png" },
+    { key: "Bilgi", title: "Bilgi", desc: "Beyin yakan sorular", img: "img/category-bilgi.png" },
+    { key: "Psikoloji", title: "Psikoloji", desc: "Kişilik, zeka testleri", img: "img/category-psikoloji.png" },
+  ];
+  let html = "";
+  kategoriler.forEach(kat => {
+    html += `
+      <div class="kategori-card" onclick="window.location.href='kategori-testleri.html?cat=${kat.key}'">
+        <img src="${kat.img}" class="kategori-img" alt="${kat.title}">
+        <div class="kategori-title">${kat.title}</div>
+        <div class="kategori-desc">${kat.desc}</div>
+      </div>
+    `;
   });
+  kategoriList.innerHTML = html;
 }
 
-// Basit toast fonksiyonu
-function toast(mesaj, renk="#ed4a88") {
-  let t = document.createElement("div");
-  t.style.cssText = `position:fixed;bottom:44px;left:50%;transform:translateX(-50%);background:${renk};color:#fff;
-    padding:13px 33px;border-radius:18px;font-size:1.07em;font-weight:700;z-index:3000;box-shadow:0 4px 22px #735aff44;`;
-  t.innerText = mesaj;
-  document.body.appendChild(t);
-  setTimeout(()=>t.remove(), 2400);
-}
+// Profil, dashboard, çark, favoriler vb. için diğer fonksiyonları eklemen gerekiyorsa buraya yazabilirsin.
+// Örn: kullanıcı verisi çekme, çark döndürme, favorilere ekleme, vs.
 
-// Kullanıcı adı ve email getirme örneği (kullanıcı girişli sayfalarda)
-function getKullaniciAdi() {
-  const user = firebase.auth().currentUser;
-  return user ? (user.displayName || user.email.split("@")[0]) : "";
-}
-
-// Tarihi güzel formatla
-function formatTarih(dateObj) {
-  if (!dateObj) return "";
-  const d = (dateObj.seconds) ? new Date(dateObj.seconds*1000) : new Date(dateObj);
-  return d.toLocaleDateString("tr-TR") + " " + d.toLocaleTimeString("tr-TR", { hour: '2-digit', minute: '2-digit' });
-}
