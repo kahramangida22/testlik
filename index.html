@@ -63,7 +63,7 @@
 </div>
 </section>
 </main>
-<section class="card"><h2>✨ Popüler Testler</h2><div class="grid-3"><div class="card"><img alt="Test 1" src="test1.jpg" style="width:100%; border-radius: 10px;"/><h3>Hangi Karakter Seninle Aynı?</h3><p>Eğlenceli bir testle kendini keşfet!</p><a class="btn" href="test-render.html?id=test-1">Teste Başla</a></div><div class="card"><img alt="Test 2" src="test2.jpg" style="width:100%; border-radius: 10px;"/><h3>Hangi Karakter Seninle Aynı?</h3><p>Eğlenceli bir testle kendini keşfet!</p><a class="btn" href="test-render.html?id=test-2">Teste Başla</a></div><div class="card"><img alt="Test 3" src="test3.jpg" style="width:100%; border-radius: 10px;"/><h3>Hangi Karakter Seninle Aynı?</h3><p>Eğlenceli bir testle kendini keşfet!</p><a class="btn" href="test-render.html?id=test-3">Teste Başla</a></div></div></section><footer>
+<section class="card"><h2>✨ Popüler Testler</h2><div class="grid-3"><div class="card"><img alt="Test 1" src="test1.jpg" style="width:100%; border-radius: 10px;"/><h3>🎭 Hangi Karakter Seninle Aynı?</h3><p>Eğlenceli bir testle kendini keşfet!</p><a class="btn" href="test-render.html?id=test-1">Teste Başla</a></div><div class="card"><img alt="Test 2" src="test2.jpg" style="width:100%; border-radius: 10px;"/><h3>🎭 Hangi Karakter Seninle Aynı?</h3><p>Eğlenceli bir testle kendini keşfet!</p><a class="btn" href="test-render.html?id=test-2">Teste Başla</a></div><div class="card"><img alt="Test 3" src="test3.jpg" style="width:100%; border-radius: 10px;"/><h3>🎭 Hangi Karakter Seninle Aynı?</h3><p>Eğlenceli bir testle kendini keşfet!</p><a class="btn" href="test-render.html?id=test-3">Teste Başla</a></div></div></section><section class="card center"><h2>💬 Kullanıcı Yorumları</h2><p>⭐⭐⭐⭐⭐ Testleri çözerken çok eğlendim!</p><p>⭐⭐⭐⭐ Çark sistemi bağımlılık yapıyor 😄</p><p>⭐⭐⭐⭐⭐ Herkese öneriyorum, çok tatlı site! 💕</p></section><footer>
 <p>© 2025 Testlik.com | Tüm Hakları Saklıdır</p>
 </footer>
 <script>
@@ -75,5 +75,14 @@
       }
     });
   </script>
-</body>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll('.card').forEach((el, i) => {
+    setTimeout(() => {
+      el.style.opacity = 1;
+      el.style.transform = "translateY(0)";
+    }, 100 * i);
+  });
+});
+</script><audio autoplay="False" controls="True" loop="True" style="position:fixed;bottom:1rem;left:1rem;z-index:1000;border-radius:10px"><source src="fun.mp3" type="audio/mpeg"/></audio></body>
 </html>

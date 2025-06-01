@@ -1,191 +1,138 @@
-/* Genel Ayarlar */
+
 body {
   margin: 0;
-  font-family: 'Fredoka', sans-serif;
-  background: linear-gradient(135deg, #fbeaff, #e6dbff);
-  color: #444;
-  scroll-behavior: smooth;
+  font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom right, #fff5e6, #ffe0f0);
+  color: #333;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 16px;
-}
-
-/* Navigasyon */
 header {
-  background: linear-gradient(to right, #9b5de5, #f15bb5);
-  padding: 12px 0;
-  box-shadow: 0 4px 8px #00000015;
-  position: sticky;
-  top: 0;
-  z-index: 999;
+  background-color: #ff8fab;
+  padding: 1.2rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
 }
 
-nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 14px;
+header img {
+  height: 45px;
 }
 
 nav a {
-  color: #fff;
-  font-weight: 600;
-  padding: 8px 14px;
-  border-radius: 12px;
-  transition: background 0.3s;
-}
-
-nav a:hover {
-  background-color: #ffffff22;
-}
-
-/* Giriş Butonu */
-.login-btn {
-  position: absolute;
-  right: 20px;
-  top: 14px;
-  background: #fff;
-  color: #9b5de5;
-  padding: 8px 14px;
-  border-radius: 22px;
-  font-weight: bold;
-  box-shadow: 0 2px 6px #00000020;
-  cursor: pointer;
-}
-
-/* Hoşgeldin Alanı */
-.hero {
-  text-align: center;
-  padding: 64px 16px 40px;
-}
-
-.hero h1 {
-  font-size: 2.5em;
-  color: #7b4cff;
-  margin-bottom: 16px;
-}
-
-.hero p {
-  font-size: 1.1em;
-  color: #444;
-  max-width: 700px;
-  margin: auto;
-}
-
-.hero button {
-  margin-top: 22px;
-  background: linear-gradient(to right, #f15bb5, #9b5de5);
+  margin-left: 1rem;
+  text-decoration: none;
   color: white;
-  border: none;
-  padding: 14px 24px;
-  border-radius: 30px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: transform 0.2s;
+  font-weight: bold;
+  font-size: 1rem;
 }
 
-.hero button:hover {
-  transform: scale(1.05);
+main {
+  padding: 2rem 1rem;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-/* Kategoriler, Çark ve Video Kartları */
-.section {
-  padding: 40px 16px;
+footer {
+  background-color: #ffb3c6;
+  padding: 1rem;
   text-align: center;
-}
-
-.section h2 {
-  color: #7b4cff;
-  margin-bottom: 20px;
-}
-
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
+  color: #444;
+  font-size: 0.9rem;
+  margin-top: 3rem;
+  border-top: 3px dashed #ff69b4;
 }
 
 .card {
-  background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 4px 12px #00000012;
-  width: 220px;
-  padding: 20px;
-  transition: transform 0.3s;
-  cursor: pointer;
+  background-color: #fff;
+  border-radius: 25px;
+  box-shadow: 0 8px 20px rgba(255, 105, 180, 0.2);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 3px dashed #ff8fab;
+  transition: transform 0.2s ease;
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: scale(1.02);
 }
 
-.card img {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 12px;
-}
-
-.card-title {
-  font-weight: 700;
-  color: #9b5de5;
-  font-size: 1.1em;
-}
-
-.card-desc {
-  font-size: 0.95em;
-  color: #666;
-}
-
-/* Footer */
-footer {
-  background: #f5eaff;
-  padding: 22px;
+.center {
   text-align: center;
-  font-size: 0.9em;
-  color: #888;
-  border-top: 1px solid #ddd;
 }
 
-/* Mobil */
-@media (max-width: 768px) {
-  nav {
-    gap: 10px;
-  }
-
-  .login-btn {
-    position: static;
-    margin-top: 10px;
-    display: block;
-  }
-
-  .card {
-    width: 100%;
-    max-width: 280px;
-  }
+.btn {
+  background-color: #ff69b4;
+  border: none;
+  color: #fff;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
 }
 
-
-.resimli-kart img {
-  display: block;
-  max-width: 400px;
-  width: 90%;
-  margin: 2rem auto;
-  border-radius: 20px;
+.btn:hover {
+  background-color: #ff1493;
 }
 
+input[type="text"], input[type="email"], input[type="password"], select, textarea {
+  width: 100%;
+  padding: 0.9rem;
+  margin: 0.5rem 0 1rem;
+  border: 2px dashed #ffb3c6;
+  border-radius: 12px;
+  font-size: 1rem;
+  background-color: #fff0f5;
+  box-sizing: border-box;
+}
+
+img {
+  border-radius: 15px;
+}
 
 .grid-3 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
-  margin-top: 2rem;
+}
+
+.test-img {
+  width: 100%;
+  border-radius: 20px;
+}
+
+.profil-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  nav {
+    margin-top: 0.5rem;
+  }
+
+  nav a {
+    display: inline-block;
+    margin: 0.5rem 0.5rem 0 0;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+
+.card {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.6s ease;
+}
+
+.card:hover {
+  transform: scale(1.03);
 }
