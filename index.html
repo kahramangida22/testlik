@@ -1,88 +1,59 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Testlik.com</title>
-<link href="styles.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&amp;display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Testlik - Eğlenceli Testler</title>
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-<section class="card center"><h2>🎈 Hoş Geldin!</h2><img alt="Ana Görsel" src="c5c29229-ae36-4a3f-9385-52d5eb21cebe.png" style="max-width: 400px; width: 90%; margin: 2rem auto; display: block; border-radius: 20px;"/><p>Test çöz, puan kazan, eğlenmeye başla!</p></section><header class="navbar">
-<div class="logo">Testlik.com</div>
-<nav class="nav-links">
-<a class="active" href="index.html">Anasayfa</a>
-<a href="kategoriler.html">Kategoriler</a>
-<a href="sizdengelenler.html">Sizden Gelenler</a>
-<a href="soru-uret.html">Soru Üret</a>
-<a href="favoriler.html">Favoriler</a>
-<a href="istatistik.html">İstatistik</a>
-<a href="akademi.html">Akademi</a>
-<a href="giris.html" id="giris-btn">Giriş Yap</a>
-</nav>
-</header>
-<main class="hero">
-<h1>Testlik.com'a Hoş Geldin! ✨</h1>
-<p>Eğlenceli testler, çark çevir ve video izle kazan sistemiyle puan topla!</p>
-<a class="cta-button" href="test-render.html">Hemen Test Çözmeye Başla</a>
-<section class="kategori-grid">
-<div class="kategori-card">
-<img alt="Genel" src="img/category-genel.png" style="max-width: 400px; width: 90%; margin: 2rem auto; display: block; border-radius: 20px;"/>
-<h3>Genel</h3>
-<p>Gündemden testler</p>
-</div>
-<div class="kategori-card">
-<img alt="Eglence" src="img/category-eglence.png" style="max-width: 400px; width: 90%; margin: 2rem auto; display: block; border-radius: 20px;"/>
-<h3>Eğlence</h3>
-<p>Keyifli ve özgün içerikler</p>
-</div>
-<div class="kategori-card">
-<img alt="Bilgi" src="img/category-bilgi.png" style="max-width: 400px; width: 90%; margin: 2rem auto; display: block; border-radius: 20px;"/>
-<h3>Bilgi</h3>
-<p>Beyin yakan sorular</p>
-</div>
-<div class="kategori-card">
-<img alt="Psikoloji" src="img/category-psikoloji.png" style="max-width: 400px; width: 90%; margin: 2rem auto; display: block; border-radius: 20px;"/>
-<h3>Psikoloji</h3>
-<p>Kişilik analizleri</p>
-</div>
-</section>
-<section class="bonus-grid">
-<div class="bonus-card">
-<a href="cark.html">
-<img alt="Çark" src="img/cark.png" style="max-width: 400px; width: 90%; margin: 2rem auto; display: block; border-radius: 20px;"/>
-<h4>🌐 Çark Çevir</h4>
-</a>
-</div>
-<div class="bonus-card">
-<a href="video-izle.html">
-<img alt="Video" src="img/video.png" style="max-width: 400px; width: 90%; margin: 2rem auto; display: block; border-radius: 20px;"/>
-<h4>🎥 Video İzle</h4>
-</a>
-</div>
-</section>
-</main>
-<section class="card"><h2>✨ Popüler Testler</h2><div class="grid-3"><div class="card"><img alt="Test 1" src="test1.jpg" style="width:100%; border-radius: 10px;"/><h3>🎭 Hangi Karakter Seninle Aynı?</h3><p>Eğlenceli bir testle kendini keşfet!</p><a class="btn" href="test-render.html?id=test-1">Teste Başla</a></div><div class="card"><img alt="Test 2" src="test2.jpg" style="width:100%; border-radius: 10px;"/><h3>🎭 Hangi Karakter Seninle Aynı?</h3><p>Eğlenceli bir testle kendini keşfet!</p><a class="btn" href="test-render.html?id=test-2">Teste Başla</a></div><div class="card"><img alt="Test 3" src="test3.jpg" style="width:100%; border-radius: 10px;"/><h3>🎭 Hangi Karakter Seninle Aynı?</h3><p>Eğlenceli bir testle kendini keşfet!</p><a class="btn" href="test-render.html?id=test-3">Teste Başla</a></div></div></section><section class="card center"><h2>💬 Kullanıcı Yorumları</h2><p>⭐⭐⭐⭐⭐ Testleri çözerken çok eğlendim!</p><p>⭐⭐⭐⭐ Çark sistemi bağımlılık yapıyor 😄</p><p>⭐⭐⭐⭐⭐ Herkese öneriyorum, çok tatlı site! 💕</p></section><footer>
-<p>© 2025 Testlik.com | Tüm Hakları Saklıdır</p>
-</footer>
-<script>
-    // Giriş yaptıysa bazı bağlantıları göster
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        document.getElementById("giris-btn").style.display = "none";
-        document.querySelector(".nav-links").innerHTML += '<a href="profil.html">Profil</a><a href="dashboard.html">Dashboard</a>';
-      }
-    });
-  </script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll('.card').forEach((el, i) => {
-    setTimeout(() => {
-      el.style.opacity = 1;
-      el.style.transform = "translateY(0)";
-    }, 100 * i);
-  });
-});
-</script><audio autoplay="False" controls="True" loop="True" style="position:fixed;bottom:1rem;left:1rem;z-index:1000;border-radius:10px"><source src="fun.mp3" type="audio/mpeg"/></audio></body>
+  <header class="hero">
+    <div class="hero-content">
+      <h1>🎉 Ne Kadar Eğlencelisin?</h1>
+      <p>Testleri çöz, çarkı çevir, ödülleri kazan!</p>
+      <a href="giris.html" class="btn">Giriş Yap</a>
+    </div>
+    <img src="hero-girl.png" alt="Eğlenceli Kız" class="hero-image"/>
+  </header>
+
+  <main>
+    <section class="test-section">
+      <h2>❤️ Aşk & Kişilik Testleri</h2>
+      <div class="grid-3">
+        <div class="card">
+          <img src="test1.jpg" alt="Test 1" class="test-img"/>
+          <h3>💘 Gerçek Aşk Tipin Kim?</h3>
+          <a href="test-render.html?id=test-1" class="btn">Teste Git</a>
+        </div>
+        <div class="card">
+          <img src="test2.jpg" alt="Test 2" class="test-img"/>
+          <h3>😇 Ne Kadar Safsın?</h3>
+          <a href="test-render.html?id=test-2" class="btn">Teste Git</a>
+        </div>
+        <div class="card">
+          <img src="test3.jpg" alt="Test 3" class="test-img"/>
+          <h3>🔥 İçindeki Deli Ne Kadar Baskın?</h3>
+          <a href="test-render.html?id=test-3" class="btn">Teste Git</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="card center">
+      <h2>💬 Kullanıcı Yorumları</h2>
+      <p>⭐⭐⭐⭐⭐ “Kendimi yeniden keşfettim!”</p>
+      <p>⭐⭐⭐⭐ “Çok tatlı bir tasarım olmuş.”</p>
+      <p>⭐⭐⭐⭐⭐ “Çark olayı çok bağımlılık yapıyor 😍”</p>
+    </section>
+
+    <section class="center">
+      <h2>🎡 Şansını Dene!</h2>
+      <a href="cark.html" class="btn">Çarkı Çevir</a>
+    </section>
+  </main>
+
+  <footer>
+    © 2025 Testlik | Tüm hakları saklıdır.
+  </footer>
+</body>
 </html>
