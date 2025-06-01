@@ -1,214 +1,160 @@
-/* styles.css */
-
-/* Font & Body */
-body {
-  font-family: 'Fredoka', Arial, sans-serif;
-  background: linear-gradient(120deg, #f8f0fd 0%, #fff 100%);
-  color: #4c3969;
+/* ===== Testlik.com Ana Tema ===== */
+html, body {
+  height: 100%;
   margin: 0;
+  padding: 0;
+  font-family: 'Fredoka', Arial, sans-serif;
+  background: linear-gradient(135deg, #fff6fd 0%, #f2ebff 100%);
+  color: #3d3069;
   min-height: 100vh;
 }
+* { box-sizing: border-box; }
 
-a {
-  color: #735aff;
-  text-decoration: none;
-  transition: color .14s;
-}
+a { text-decoration: none; color: #735aff; font-weight: 700; }
 a:hover { color: #ed4a88; }
-
-/* Header */
-header {
-  background: #fff;
-  box-shadow: 0 2px 16px #735aff0a;
-  padding: 0 0 0 0;
-  position: sticky; top: 0; z-index: 100;
-}
-.logo {
-  display: inline-block;
-  font-size: 1.26em;
-  color: #7a53c4;
-  font-weight: bold;
-  padding: 19px 24px 17px 18px;
-  letter-spacing: .7px;
-  vertical-align: middle;
-}
-.nav-links {
-  display: inline-block;
-  float: right;
-  margin: 12px 14px 0 0;
-}
-.nav-links a {
-  display: inline-block;
-  margin: 0 6px;
-  padding: 9px 13px;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 1em;
-  transition: background .14s, color .14s;
-}
-.nav-links a.active,
-.nav-links a:hover {
-  background: #f5eaff;
-  color: #ed4a88;
-}
-.admin-link {
-  background: #ffe7f8 !important;
-  color: #735aff !important;
-  border: 1.2px solid #ed4a88;
-}
-
-/* Hero Bölümü (Anasayfa başı) */
-.hero {
-  text-align: center;
-  margin: 48px auto 36px auto;
-  max-width: 620px;
-  background: #fff;
-  border-radius: 32px;
-  box-shadow: 0 2px 22px #735aff13;
-  padding: 44px 30px 40px 30px;
-}
-.hero h1 {
-  font-size: 2.09em;
-  color: #735aff;
-  margin-bottom: 14px;
-  font-weight: 900;
-}
-.hero p {
-  color: #7a53c4;
-  font-size: 1.17em;
-  margin-bottom: 18px;
-}
-.cta-button {
-  background: linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
-  color: #fff;
-  font-size: 1.18em;
-  font-weight: 800;
-  padding: 14px 41px;
-  border-radius: 19px;
-  box-shadow: 0 2px 13px #735aff13;
-  text-decoration: none;
-  display: inline-block;
-  transition: background .14s, color .14s;
-}
-.cta-button:hover { background: #ed4a88; color: #fff; }
-
-/* Kategori/Test Grid ve Kartlar */
-.kategori-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 22px;
-  margin: 18px 0 20px 0;
-}
-.kategori-card {
-  background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 2px 11px #735aff0d;
-  padding: 19px 12px 14px 12px;
-  text-align: center;
-  cursor: pointer;
-  transition: box-shadow .14s, transform .10s;
-  position: relative;
-}
-.kategori-card:hover {
-  box-shadow: 0 4px 20px #ed4a8824;
-  transform: scale(1.03);
-}
-.kategori-card img {
-  width: 90px; height: 90px;
-  object-fit: cover;
-  border-radius: 18px;
-  box-shadow: 0 1px 6px #735aff15;
-  margin-bottom: 9px;
-}
-.kategori-card h3 {
-  color: #735aff;
-  font-size: 1.09em;
-  margin: 0 0 5px 0;
-  font-weight: 800;
-}
-.kategori-card p {
-  color: #7a53c4;
-  font-size: .98em;
-  margin: 0;
-  min-height: 18px;
-}
-
-/* Formlar */
-input, textarea {
+ul { padding-left: 23px; }
+input, textarea, select {
   font-family: inherit;
-  border: 1.3px solid #ccbaff;
-  border-radius: 8px;
-  padding: 9px 11px;
   font-size: 1em;
-  margin-bottom: 12px;
-  box-sizing: border-box;
-  background: #faf4ff;
-}
-input:focus, textarea:focus {
+  background: #f8f0fd;
+  border: 1.5px solid #ccbaff;
+  border-radius: 10px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  transition: border .12s;
   outline: none;
-  border-color: #ed4a88;
-  background: #fff;
 }
-
-button, .btn, .soru-btn, .giris-btn, .dashboard-btn, .admin-btn, .video-btn, .cark-btn {
+input:focus, textarea:focus, select:focus {
+  border: 1.8px solid #ed4a88;
+}
+button, .btn {
   background: linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
   color: #fff;
   font-weight: 700;
   border-radius: 13px;
   border: none;
   box-shadow: 0 2px 11px #735aff14;
-  padding: 10px 24px;
+  padding: 11px 28px;
   font-size: 1.07em;
   cursor: pointer;
-  transition: background .13s;
+  transition: background .14s;
+  margin-bottom: 8px;
 }
-button:active, .btn:active { background: #ed4a88; }
+button:active, .btn:active {
+  background: #ed4a88;
+}
 
-/* Footer */
+header {
+  background: #fff;
+  box-shadow: 0 2px 20px #735aff11;
+  padding: 11px 0;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.logo {
+  font-weight: 900;
+  font-size: 1.21em;
+  color: #ed4a88;
+  display: inline-block;
+  margin-left: 21px;
+  letter-spacing: 0.5px;
+}
+.nav-links {
+  float: right;
+  margin-right: 14px;
+}
+.nav-links a {
+  margin: 0 7px;
+  padding: 7px 9px;
+  color: #735aff;
+  border-radius: 9px;
+  font-weight: 800;
+  font-size: 1.07em;
+  transition: background .13s, color .13s;
+}
+.nav-links a.active, .nav-links a:hover {
+  background: #ed4a88;
+  color: #fff;
+}
+@media (max-width:800px){
+  .logo { font-size: 1.07em; }
+  .nav-links { float:none; display:block; text-align:center; margin:7px 0 0 0; }
+  .nav-links a { display:inline-block; margin:2px 4px; font-size:1em;}
+}
+
+main {
+  min-height: 75vh;
+}
+
+.kategori-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(210px,1fr));
+  gap: 23px;
+  margin: 22px 0;
+}
+.kategori-card {
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 2px 18px #735aff0b;
+  text-align: center;
+  padding: 22px 12px 13px 12px;
+  transition: box-shadow .15s, transform .12s;
+  cursor: pointer;
+  border: 1.5px solid #f4e9ff;
+}
+.kategori-card:hover {
+  box-shadow: 0 6px 32px #ed4a8830;
+  transform: translateY(-3px) scale(1.03);
+  border: 1.8px solid #ed4a88;
+}
+.kategori-card img {
+  width: 84px;
+  height: 84px;
+  object-fit: cover;
+  border-radius: 17px;
+  margin-bottom: 8px;
+  background: #f8f0fd;
+}
+.kategori-card h3 {
+  font-size: 1.09em;
+  color: #735aff;
+  margin: 10px 0 7px 0;
+  font-weight: 900;
+}
+.kategori-card p {
+  color: #7a53c4;
+  font-size: 1em;
+  min-height: 35px;
+}
+
+.profile-wrap, .dashboard-wrap, .lead-wrap, .akademi-wrap, .istatistik-wrap {
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 2px 22px #735aff10;
+  padding: 34px 20px 21px 20px;
+}
+
 footer {
   text-align: center;
-  background: #fff;
-  color: #a29ed6;
+  padding: 23px 0 11px 0;
+  color: #7a53c4;
   font-size: 1em;
-  padding: 19px 7px 11px 7px;
-  margin-top: 40px;
-  border-radius: 27px 27px 0 0;
-  box-shadow: 0 -1px 15px #735aff08;
+  background: #f8f0fd;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  margin-top: 33px;
+  border-top: 1.5px solid #e2d3ff;
 }
 .odeme-logo img {
-  height: 24px;
-  margin: 0 7px 0 2px;
+  width: 42px;
+  margin: 0 5px;
   vertical-align: middle;
-  opacity: 0.82;
-  transition: opacity .11s;
-}
-.odeme-logo img:hover { opacity: 1; }
-
-/* Responsive Tasarım */
-@media (max-width: 800px) {
-  .hero { padding: 24px 8px 20px 8px; }
-  .kategori-card img { width: 75px; height: 75px; }
-}
-@media (max-width: 600px) {
-  header { padding: 0; }
-  .nav-links { float: none; margin: 8px 0 0 0; display: flex; flex-wrap: wrap; justify-content: center;}
-  .nav-links a { margin: 2px 5px; font-size: .98em; padding: 7px 7px;}
-  .logo { display:block; text-align:center; padding: 13px 3px 6px 3px; }
-  .hero { margin: 18px auto 16px auto; padding: 14px 3px 10px 3px;}
-  .kategori-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:13px;}
-  .kategori-card { padding: 11px 4px 7px 4px;}
-  footer { padding: 12px 2px 6px 2px; border-radius: 12px 12px 0 0;}
+  filter: grayscale(0.35) contrast(1.06);
 }
 
-/* Genel Kart, Kutular (profil, dashboard, wrap) */
-.profile-wrap, .dashboard-wrap, .akademi-wrap, .istatistik-wrap, .lead-wrap, .admin-wrap, .video-wrap, .soru-wrap {
-  background: #fff;
-  border-radius: 26px;
-  box-shadow: 0 2px 22px #735aff15;
-  margin: 35px auto 24px auto;
-  padding: 33px 28px 24px 28px;
-  max-width: 450px;
-}
-
-::-webkit-scrollbar { width: 9px; background: #f8f0fd;}
-::-webkit-scrollbar-thumb { background: #bba5fa; border-radius: 8px;}
+::-webkit-scrollbar { width: 10px; background: #ece7fa;}
+::-webkit-scrollbar-thumb { background: #b6a3e9; border-radius: 11px;}
+::-webkit-scrollbar-thumb:hover { background: #ed4a88;}
