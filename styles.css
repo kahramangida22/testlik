@@ -1,174 +1,214 @@
-/* Genel Ayarlar */
+/* styles.css */
+
+/* Font & Body */
 body {
+  font-family: 'Fredoka', Arial, sans-serif;
+  background: linear-gradient(120deg, #f8f0fd 0%, #fff 100%);
+  color: #4c3969;
   margin: 0;
-  font-family: 'Fredoka', sans-serif;
-  background: linear-gradient(135deg, #fbeaff, #e6dbff);
-  color: #444;
-  scroll-behavior: smooth;
+  min-height: 100vh;
 }
 
 a {
+  color: #735aff;
   text-decoration: none;
-  color: inherit;
+  transition: color .14s;
 }
+a:hover { color: #ed4a88; }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 16px;
-}
-
-/* Navigasyon */
+/* Header */
 header {
-  background: linear-gradient(to right, #9b5de5, #f15bb5);
-  padding: 12px 0;
-  box-shadow: 0 4px 8px #00000015;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-}
-
-nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 14px;
-}
-
-nav a {
-  color: #fff;
-  font-weight: 600;
-  padding: 8px 14px;
-  border-radius: 12px;
-  transition: background 0.3s;
-}
-
-nav a:hover {
-  background-color: #ffffff22;
-}
-
-/* Giriş Butonu */
-.login-btn {
-  position: absolute;
-  right: 20px;
-  top: 14px;
   background: #fff;
-  color: #9b5de5;
-  padding: 8px 14px;
-  border-radius: 22px;
+  box-shadow: 0 2px 16px #735aff0a;
+  padding: 0 0 0 0;
+  position: sticky; top: 0; z-index: 100;
+}
+.logo {
+  display: inline-block;
+  font-size: 1.26em;
+  color: #7a53c4;
   font-weight: bold;
-  box-shadow: 0 2px 6px #00000020;
-  cursor: pointer;
+  padding: 19px 24px 17px 18px;
+  letter-spacing: .7px;
+  vertical-align: middle;
+}
+.nav-links {
+  display: inline-block;
+  float: right;
+  margin: 12px 14px 0 0;
+}
+.nav-links a {
+  display: inline-block;
+  margin: 0 6px;
+  padding: 9px 13px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1em;
+  transition: background .14s, color .14s;
+}
+.nav-links a.active,
+.nav-links a:hover {
+  background: #f5eaff;
+  color: #ed4a88;
+}
+.admin-link {
+  background: #ffe7f8 !important;
+  color: #735aff !important;
+  border: 1.2px solid #ed4a88;
 }
 
-/* Hoşgeldin Alanı */
+/* Hero Bölümü (Anasayfa başı) */
 .hero {
   text-align: center;
-  padding: 64px 16px 40px;
+  margin: 48px auto 36px auto;
+  max-width: 620px;
+  background: #fff;
+  border-radius: 32px;
+  box-shadow: 0 2px 22px #735aff13;
+  padding: 44px 30px 40px 30px;
 }
-
 .hero h1 {
-  font-size: 2.5em;
-  color: #7b4cff;
-  margin-bottom: 16px;
+  font-size: 2.09em;
+  color: #735aff;
+  margin-bottom: 14px;
+  font-weight: 900;
 }
-
 .hero p {
-  font-size: 1.1em;
-  color: #444;
-  max-width: 700px;
-  margin: auto;
+  color: #7a53c4;
+  font-size: 1.17em;
+  margin-bottom: 18px;
 }
-
-.hero button {
-  margin-top: 22px;
-  background: linear-gradient(to right, #f15bb5, #9b5de5);
-  color: white;
-  border: none;
-  padding: 14px 24px;
-  border-radius: 30px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: transform 0.2s;
+.cta-button {
+  background: linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
+  color: #fff;
+  font-size: 1.18em;
+  font-weight: 800;
+  padding: 14px 41px;
+  border-radius: 19px;
+  box-shadow: 0 2px 13px #735aff13;
+  text-decoration: none;
+  display: inline-block;
+  transition: background .14s, color .14s;
 }
+.cta-button:hover { background: #ed4a88; color: #fff; }
 
-.hero button:hover {
-  transform: scale(1.05);
+/* Kategori/Test Grid ve Kartlar */
+.kategori-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 22px;
+  margin: 18px 0 20px 0;
 }
-
-/* Kategoriler, Çark ve Video Kartları */
-.section {
-  padding: 40px 16px;
-  text-align: center;
-}
-
-.section h2 {
-  color: #7b4cff;
-  margin-bottom: 20px;
-}
-
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-
-.card {
+.kategori-card {
   background: #fff;
   border-radius: 20px;
-  box-shadow: 0 4px 12px #00000012;
-  width: 220px;
-  padding: 20px;
-  transition: transform 0.3s;
+  box-shadow: 0 2px 11px #735aff0d;
+  padding: 19px 12px 14px 12px;
+  text-align: center;
   cursor: pointer;
+  transition: box-shadow .14s, transform .10s;
+  position: relative;
+}
+.kategori-card:hover {
+  box-shadow: 0 4px 20px #ed4a8824;
+  transform: scale(1.03);
+}
+.kategori-card img {
+  width: 90px; height: 90px;
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 1px 6px #735aff15;
+  margin-bottom: 9px;
+}
+.kategori-card h3 {
+  color: #735aff;
+  font-size: 1.09em;
+  margin: 0 0 5px 0;
+  font-weight: 800;
+}
+.kategori-card p {
+  color: #7a53c4;
+  font-size: .98em;
+  margin: 0;
+  min-height: 18px;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-}
-
-.card img {
-  width: 60px;
-  height: 60px;
+/* Formlar */
+input, textarea {
+  font-family: inherit;
+  border: 1.3px solid #ccbaff;
+  border-radius: 8px;
+  padding: 9px 11px;
+  font-size: 1em;
   margin-bottom: 12px;
+  box-sizing: border-box;
+  background: #faf4ff;
+}
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #ed4a88;
+  background: #fff;
 }
 
-.card-title {
+button, .btn, .soru-btn, .giris-btn, .dashboard-btn, .admin-btn, .video-btn, .cark-btn {
+  background: linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
+  color: #fff;
   font-weight: 700;
-  color: #9b5de5;
-  font-size: 1.1em;
+  border-radius: 13px;
+  border: none;
+  box-shadow: 0 2px 11px #735aff14;
+  padding: 10px 24px;
+  font-size: 1.07em;
+  cursor: pointer;
+  transition: background .13s;
 }
-
-.card-desc {
-  font-size: 0.95em;
-  color: #666;
-}
+button:active, .btn:active { background: #ed4a88; }
 
 /* Footer */
 footer {
-  background: #f5eaff;
-  padding: 22px;
   text-align: center;
-  font-size: 0.9em;
-  color: #888;
-  border-top: 1px solid #ddd;
+  background: #fff;
+  color: #a29ed6;
+  font-size: 1em;
+  padding: 19px 7px 11px 7px;
+  margin-top: 40px;
+  border-radius: 27px 27px 0 0;
+  box-shadow: 0 -1px 15px #735aff08;
+}
+.odeme-logo img {
+  height: 24px;
+  margin: 0 7px 0 2px;
+  vertical-align: middle;
+  opacity: 0.82;
+  transition: opacity .11s;
+}
+.odeme-logo img:hover { opacity: 1; }
+
+/* Responsive Tasarım */
+@media (max-width: 800px) {
+  .hero { padding: 24px 8px 20px 8px; }
+  .kategori-card img { width: 75px; height: 75px; }
+}
+@media (max-width: 600px) {
+  header { padding: 0; }
+  .nav-links { float: none; margin: 8px 0 0 0; display: flex; flex-wrap: wrap; justify-content: center;}
+  .nav-links a { margin: 2px 5px; font-size: .98em; padding: 7px 7px;}
+  .logo { display:block; text-align:center; padding: 13px 3px 6px 3px; }
+  .hero { margin: 18px auto 16px auto; padding: 14px 3px 10px 3px;}
+  .kategori-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:13px;}
+  .kategori-card { padding: 11px 4px 7px 4px;}
+  footer { padding: 12px 2px 6px 2px; border-radius: 12px 12px 0 0;}
 }
 
-/* Mobil */
-@media (max-width: 768px) {
-  nav {
-    gap: 10px;
-  }
-
-  .login-btn {
-    position: static;
-    margin-top: 10px;
-    display: block;
-  }
-
-  .card {
-    width: 100%;
-    max-width: 280px;
-  }
+/* Genel Kart, Kutular (profil, dashboard, wrap) */
+.profile-wrap, .dashboard-wrap, .akademi-wrap, .istatistik-wrap, .lead-wrap, .admin-wrap, .video-wrap, .soru-wrap {
+  background: #fff;
+  border-radius: 26px;
+  box-shadow: 0 2px 22px #735aff15;
+  margin: 35px auto 24px auto;
+  padding: 33px 28px 24px 28px;
+  max-width: 450px;
 }
+
+::-webkit-scrollbar { width: 9px; background: #f8f0fd;}
+::-webkit-scrollbar-thumb { background: #bba5fa; border-radius: 8px;}
