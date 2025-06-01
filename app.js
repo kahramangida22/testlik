@@ -1,10 +1,10 @@
 
-import { generateNews } from './ai-news-bot.js';
+import { generateTest } from './ai-test-bot.js';
 
-window.runNewsBot = async function () {
-  const result = await generateNews();
-  const newsList = document.getElementById('newsList');
+window.runTestBot = async function () {
+  const result = await generateTest();
+  const testList = document.getElementById('testList');
   const li = document.createElement('li');
   li.textContent = result.title + " ✔️ eklendi";
-  newsList.appendChild(li);
+  testList.appendChild(li);
 };
