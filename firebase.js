@@ -1,6 +1,4 @@
-// firebase.js
-
-// Firebase config ayarların (sana özel panelden aldığın)
+// Import/require gerekmez, tüm sayfalarda CDN ile Firebase zaten yüklü!
 var firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
   authDomain: "testlik.firebaseapp.com",
@@ -11,7 +9,11 @@ var firebaseConfig = {
   measurementId: "G-8ZEYBJCV3T"
 };
 
-// Firebase’i başlat
-firebase.initializeApp(firebaseConfig);
-// Firestore referansı
-var db = firebase.firestore();
+// Firebase'i başlat
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+// Kütüphaneler
+const db = firebase.firestore();
+const auth = firebase.auth();
