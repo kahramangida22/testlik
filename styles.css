@@ -1,8 +1,11 @@
 
+* {
+  box-sizing: border-box;
+}
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: #fff0f5;
+  background: linear-gradient(135deg, #ffe4ec, #ffe0f7);
   color: #333;
 }
 header {
@@ -28,33 +31,36 @@ nav a.active {
 main {
   padding: 2rem;
 }
-h1.center {
-  text-align: center;
-}
-.kategori-galeri {
-  max-width: 1000px;
-  margin: auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
-}
-.kategori-karti {
+form {
   background: white;
-  padding: 1rem;
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
   border-radius: 1rem;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  text-align: center;
 }
-.btn {
-  display: inline-block;
+form h2 {
+  margin-top: 0;
+  color: #ab47bc;
+}
+input[type="text"], input[type="email"], input[type="password"] {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+}
+button {
   background: #ec407a;
   color: white;
-  padding: 0.5rem 1rem;
   border: none;
-  border-radius: 30px;
-  margin-top: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.5rem;
   cursor: pointer;
-  text-decoration: none;
+  width: 100%;
+}
+button:hover {
+  background: #d81b60;
 }
 footer {
   text-align: center;
