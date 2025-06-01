@@ -4,122 +4,69 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Paneli | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Admin paneli: Test ekle, güncelle, sil!">
+  <meta name="description" content="Testlik.com - Admin için test, kategori ve sonuç ekleme paneli">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .admin-wrap {
-      max-width: 780px;
-      margin: 35px auto 30px auto;
-      background: #fff;
-      border-radius: 23px;
-      box-shadow: 0 2px 22px #735aff1a;
-      padding: 38px 28px 28px 28px;
-    }
-    .admin-title {font-size:1.35em;color:#735aff;font-weight:800;margin-bottom:22px;}
-    .admin-input, .admin-select {
-      width: 100%; padding: 12px 9px; margin-bottom: 12px;
-      border-radius: 13px; border: 1.4px solid #d7c3f7; font-size:1.03em;
-      font-family:'Fredoka',Arial; background:#faf4ff;
-    }
-    .admin-btn {
-      background: linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
-      color:#fff; font-weight:700; border-radius:15px; border:none;
-      padding:11px 38px;font-size:1.11em;cursor:pointer;margin-top:6px;
-      transition:background .13s;
-    }
-    .admin-btn:active {background: #ed4a88;}
-    .admin-table {width:100%;margin-top:33px;border-collapse:collapse;}
-    .admin-table th, .admin-table td {padding:11px 6px;text-align:left;border-bottom:1.3px solid #eee;}
-    .admin-table th {background:#eee5ff;color:#735aff;}
-    .admin-table td {background:#faf7ff;}
-    .admin-action-btn {
-      background:#ed4a88;color:#fff;border:none;border-radius:8px;padding:5px 15px;font-weight:600;cursor:pointer;
-      margin-left:3px;font-size:.97em;
-    }
+    .admin-wrap { background: #fff; border-radius: 28px; box-shadow: 0 2px 22px #735aff13; margin: 38px auto 28px auto; padding: 37px 18px 31px 18px; max-width: 540px; }
+    textarea { width:100%; border-radius:10px; border:1.5px solid #ccbaff; padding:8px 10px; font-family:inherit; font-size:1em; margin-bottom:13px; }
+    .admin-btn { background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%); color:#fff;font-weight:700;border-radius:13px;border:none;box-shadow:0 2px 11px #735aff14;padding:10px 24px;font-size:1.06em;cursor:pointer;transition:background .13s;margin-bottom:9px; }
+    .admin-btn:active{background:#ed4a88;}
+    .admin-label { color:#735aff;font-weight:700;margin:11px 0 5px 0;display:block;}
+    @media (max-width:600px){ .admin-wrap{padding:13px 4px 7px 4px;} }
   </style>
 </head>
 <body>
-  <!-- Giriş Modalı (her sayfada ortak) -->
-  <div class="modal-bg" id="login-modal" style="display:none;">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeModal()">&times;</button>
-      <h2>Testlik.com'a Giriş</h2>
-      <button class="modal-google" onclick="loginGoogle()">
-        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
-      </button>
-      <hr style="margin:23px 0 15px 0;opacity:.19;">
-      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
-      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
-      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
-      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
-      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
-      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
-    </div>
-  </div>
   <!-- Header -->
   <header>
-    <div class="nav-flex">
-      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
-      <nav>
-        <a href="index.html">Anasayfa</a>
-        <a href="kategoriler.html">Kategoriler</a>
-        <a href="sizdengelenler.html">Sizden Gelenler</a>
-        <a href="soru-uret.html">Soru Üret</a>
-        <a href="cark.html">Çarkıfelek</a>
-        <a href="video-izle.html">Video İzle Kazan</a>
-        <a href="favoriler.html">Favoriler</a>
-        <a href="profil.html">Profil</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="akademi.html">Akademi</a>
-        <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link active" id="admin-link">Admin</a>
-        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
-      </nav>
-    </div>
+    <div class="logo"><img src="logo.png" alt="Testlik.com" style="height:32px;vertical-align:middle;"> Testlik.com</div>
+    <nav class="nav-links">
+      <a href="index.html">Anasayfa</a>
+      <a href="kategoriler.html">Kategoriler</a>
+      <a href="sizdengelenler.html">Sizden Gelenler</a>
+      <a href="soru-uret.html">Soru Üret</a>
+      <a href="cark.html">Çarkıfelek</a>
+      <a href="video-izle.html">Video İzle Kazan</a>
+      <a href="favoriler.html">Favoriler</a>
+      <a href="profil.html">Profil</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="akademi.html">Akademi</a>
+      <a href="istatistik.html">İstatistik</a>
+      <a href="leaderboard.html">Liderlik</a>
+      <a href="admin.html" class="active admin-link" id="admin-link">Admin</a>
+      <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
+    </nav>
   </header>
   <!-- Main -->
   <main>
-    <div class="admin-wrap" id="admin-panel" style="display:none;">
-      <div class="admin-title">Admin Paneli</div>
-      <form id="test-ekle-form" onsubmit="return ekleTest();">
-        <input type="text" class="admin-input" id="test-title" placeholder="Test Başlığı" required>
-        <textarea class="admin-input" id="test-desc" placeholder="Açıklama" rows="2"></textarea>
-        <select class="admin-select" id="test-cat">
-          <option>Genel</option><option>Eğlence</option>
-          <option>Bilgi</option><option>Psikoloji</option>
-          <option>Oyun</option>
-        </select>
-        <input type="text" class="admin-input" id="test-image" placeholder="Görsel URL (opsiyonel)">
-        <button type="submit" class="admin-btn">Test Ekle</button>
-      </form>
-      <div id="admin-hata" style="color:#ed4a88;min-height:23px;margin-top:9px;"></div>
-      <table class="admin-table" id="test-table">
-        <thead>
-          <tr><th>Başlık</th><th>Kategori</th><th>Açıklama</th><th>İşlem</th></tr>
-        </thead>
-        <tbody>
-          <!-- Testler buraya JS ile gelecek -->
-        </tbody>
-      </table>
-    </div>
-    <div id="admin-noauth" style="max-width:410px;margin:60px auto 40px auto;display:none;">
-      <div style="background:#fff;padding:32px 17px 28px 17px;border-radius:24px;box-shadow:0 2px 18px #735aff11;text-align:center;">
-        <span style="color:#ed4a88;font-size:2em;">🚫</span><br>
-        <b>Sadece admin yetkili kullanıcılar bu sayfayı görebilir!</b>
+    <div class="admin-wrap">
+      <h2 style="color:#735aff;text-align:center;font-weight:900;margin-bottom:15px;">Admin Paneli</h2>
+      <div style="color:#ed4a88;text-align:center;font-size:1.08em;margin-bottom:11px;">
+        Test ve kategori ekleme/güncelleme, sonuçları JSON ile yükleme
       </div>
+      <label class="admin-label">Kategori Ekle (JSON)</label>
+      <textarea id="kategori-json" rows="2" placeholder='[{"slug":"genel","name":"Genel Kültür","description":"Genel bilgi testleri"}]'></textarea>
+      <button class="admin-btn" onclick="kategorileriYukle()">Kategorileri Ekle/Güncelle</button>
+
+      <label class="admin-label">Test Ekle (JSON)</label>
+      <textarea id="test-json" rows="7" placeholder='{"title":"Deneme Testi","description":"Açıklama","category":"genel","questions":[{"text":"Soru?","options":["a","b"],"image":""}],"correctAnswers":[0],"results":[{"min":0,"max":1,"text":"Başarı","image":""}]}'></textarea>
+      <input type="text" id="test-id" placeholder="Test ID (varsa güncelle)" style="width:100%;margin-bottom:10px;">
+      <button class="admin-btn" onclick="testiYukle()">Test Ekle/Güncelle</button>
+
+      <label class="admin-label">Sosyal Medyada Otomatik Paylaşım</label>
+      <button class="admin-btn" onclick="paylasimYap()">Testleri Tüm Sosyal Medyada Paylaş</button>
+
+      <div id="admin-sonuc" style="margin-top:13px;color:#7a53c4;font-weight:700;min-height:18px;"></div>
     </div>
   </main>
   <!-- Footer -->
   <footer>
-    <div class="footer-flex">
-      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
-      <div class="odeme-logo">
-        <img src="wise.png" alt="Wise" />
-        <img src="payoneer.png" alt="Payoneer" />
-        <img src="iban.png" alt="IBAN" />
-      </div>
+    <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
+    <div class="odeme-logo">
+      <img src="wise.png" alt="Wise" />
+      <img src="payoneer.png" alt="Payoneer" />
+      <img src="iban.png" alt="IBAN" />
     </div>
   </footer>
   <!-- Firebase/JS -->
@@ -129,65 +76,49 @@
   <script src="firebase.js"></script>
   <script src="main.js"></script>
   <script>
-    // Sadece admin girebilir
+    // Sadece admin yetkisi kontrolü
     firebase.auth().onAuthStateChanged(function(user) {
-      if (!user) { openModal(); return; }
-      const isAdmin = user.email === "admin@testlik.com" || user.email === "seninadminmailin@...";
-      document.getElementById("admin-panel").style.display = isAdmin ? "block" : "none";
-      document.getElementById("admin-noauth").style.display = isAdmin ? "none" : "block";
-      var adminLink = document.getElementById('admin-link');
-      if (adminLink) adminLink.style.display = isAdmin ? "inline-block" : "none";
-      if (!isAdmin) return;
-
-      // Admin panel fonksiyonları (test ekle, göster, sil)
-      getirTestler();
+      if (!user || user.email !== "admin@testlik.com") {
+        document.body.innerHTML = "<div style='color:#ed4a88;font-size:1.25em;text-align:center;margin-top:60px;'>Bu sayfaya sadece admin erişebilir.</div>";
+      }
     });
 
-    // Test ekle
-    function ekleTest() {
-      const title = document.getElementById("test-title").value.trim();
-      const desc = document.getElementById("test-desc").value.trim();
-      const cat = document.getElementById("test-cat").value.trim();
-      const img = document.getElementById("test-image").value.trim();
-      db.collection("tests").add({
-        title, description: desc, category: cat,
-        image: img, createdAt: new Date(), solved: 0
-      }).then(() => {
-        document.getElementById("test-ekle-form").reset();
-        getirTestler();
-        document.getElementById("admin-hata").innerText = "Test başarıyla eklendi!";
-        setTimeout(()=>{document.getElementById("admin-hata").innerText = "";},2000);
-      }).catch(e => {
-        document.getElementById("admin-hata").innerText = "Ekleme başarısız!";
-      });
-      return false;
+    // Kategori ekle/güncelle
+    async function kategorileriYukle() {
+      const val = document.getElementById("kategori-json").value.trim();
+      try {
+        const arr = JSON.parse(val);
+        for (const kat of arr) {
+          await db.collection("kategoriler").doc(kat.slug).set(kat, {merge:true});
+        }
+        document.getElementById("admin-sonuc").innerText = "Kategoriler başarıyla yüklendi/güncellendi!";
+      } catch(e) {
+        document.getElementById("admin-sonuc").innerText = "Hatalı JSON veya veri!";
+      }
     }
-    // Testleri göster
-    function getirTestler() {
-      const tbody = document.getElementById("test-table").querySelector("tbody");
-      tbody.innerHTML = `<tr><td colspan="4" style="color:#bba5fa;">Yükleniyor...</td></tr>`;
-      db.collection("tests").orderBy("createdAt","desc").limit(25).get().then(snap => {
-        let html = "";
-        snap.forEach(doc => {
-          const t = doc.data();
-          html += `
-            <tr>
-              <td>${t.title}</td>
-              <td>${t.category}</td>
-              <td>${t.description || ""}</td>
-              <td>
-                <button class="admin-action-btn" onclick="silTest('${doc.id}')">Sil</button>
-              </td>
-            </tr>
-          `;
-        });
-        tbody.innerHTML = html || `<tr><td colspan="4" style="color:#ed4a88;">Test bulunamadı!</td></tr>`;
-      });
+
+    // Test ekle/güncelle
+    async function testiYukle() {
+      const val = document.getElementById("test-json").value.trim();
+      const id = document.getElementById("test-id").value.trim();
+      try {
+        const obj = JSON.parse(val);
+        if(id){
+          await db.collection("tests").doc(id).set({...obj, updatedAt:new Date()}, {merge:true});
+          document.getElementById("admin-sonuc").innerText = "Test güncellendi!";
+        }else{
+          await db.collection("tests").add({...obj, createdAt:new Date()});
+          document.getElementById("admin-sonuc").innerText = "Yeni test başarıyla eklendi!";
+        }
+      } catch(e) {
+        document.getElementById("admin-sonuc").innerText = "Hatalı JSON veya veri!";
+      }
     }
-    // Test sil
-    function silTest(id) {
-      if (!confirm("Bu testi silmek istediğine emin misin?")) return;
-      db.collection("tests").doc(id).delete().then(getirTestler);
+
+    // Sosyal medya otomatik paylaşım (demo)
+    function paylasimYap() {
+      document.getElementById("admin-sonuc").innerText = "Test(ler) otomatik olarak sosyal medyada paylaşıldı! (Demo fonksiyonu)";
+      // Gerçek paylaşım için dış API entegrasyonu gerekir.
     }
   </script>
 </body>
