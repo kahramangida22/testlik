@@ -3,47 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Testlik | Eğlen, Öğren, Kazan</title>
+  <title>Testlik - Eğlenceli Testler, Oyunlar, Haberler</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
     <div class="logo">Testlik</div>
     <nav>
-      <a href="index.html" class="active">Ana Sayfa</a>
       <a href="testler.html">Testler</a>
       <a href="oyunlar.html">Oyunlar</a>
       <a href="haberler.html">Haberler</a>
-      <a href="giris.html">Giriş Yap</a>
     </nav>
+    <div class="actions">
+      <button id="toggle-theme">🌗</button>
+      <select id="lang">
+        <option value="tr">TR</option>
+        <option value="en">EN</option>
+      </select>
+      <a href="giris.html" class="btn">Giriş Yap</a>
+    </div>
   </header>
 
-  <main class="hero">
-    <h1>Testlik'e Hoş Geldin 👋</h1>
-    <p>Dünyanın dört bir yanından testler çöz, oyunlar oyna, trend haberleri keşfet!</p>
-    <a href="testler.html" class="button">Test Çözmeye Başla</a>
+  <main>
+    <section class="hero">
+      <h1>Test Çöz, Oyun Oyna, Eğlen!</h1>
+      <p>Her gün onlarca eğlenceli test, oyun ve haber seni bekliyor.</p>
+    </section>
+
+    <section class="cards">
+      <h2>🧠 Popüler Testler</h2>
+      <div class="card-grid">
+        <div class="card">Hangi Film Karakterisin?</div>
+        <div class="card">Zeka Seviyeni Ölç!</div>
+        <div class="card">Ruh Eşin Kim?</div>
+      </div>
+    </section>
+
+    <section class="cards">
+      <h2>🎮 En Çok Oynanan Oyunlar</h2>
+      <div class="card-grid">
+        <div class="card">Hafıza Kartı</div>
+        <div class="card">Refleks Testi</div>
+        <div class="card">Renk Eşleştirme</div>
+      </div>
+    </section>
+
+    <section class="cards">
+      <h2>📰 Günün Haberleri</h2>
+      <div class="card-grid">
+        <div class="card">Uzayda Yeni Keşifler</div>
+        <div class="card">Z kuşağının yeni trendi</div>
+        <div class="card">Yapay zekâ sanatı dönüştürüyor</div>
+      </div>
+    </section>
   </main>
 
-  <section class="features">
-    <div class="feature-card">
-      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Testler">
-      <h3>Testler</h3>
-      <p>Kişilik, zeka ve eğlence testleriyle kendini keşfet.</p>
-    </div>
-    <div class="feature-card">
-      <img src="https://cdn-icons-png.flaticon.com/512/1995/1995491.png" alt="Oyunlar">
-      <h3>Mini Oyunlar</h3>
-      <p>Zamana karşı yarış, hafızanı test et ya da refleksini ölç.</p>
-    </div>
-    <div class="feature-card">
-      <img src="https://cdn-icons-png.flaticon.com/512/1828/1828490.png" alt="Haberler">
-      <h3>Gündem</h3>
-      <p>Trend haberleri eğlenceli bir dille oku. Asla sıkıcı değil!</p>
-    </div>
-  </section>
-
   <footer>
-    <p>© 2025 Testlik | Tüm hakları saklıdır.</p>
+    <p>© 2025 Testlik - Eğlence Fabrikası</p>
   </footer>
 </body>
 </html>
