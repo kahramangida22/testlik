@@ -1,162 +1,174 @@
+/* Genel Ayarlar */
 body {
-  font-family: 'Fredoka', 'Segoe UI', Arial, sans-serif;
   margin: 0;
-  background: #ece4ff;   /* Lila arka plan */
-  color: #735aff;
-  min-height: 100vh;
+  font-family: 'Fredoka', sans-serif;
+  background: linear-gradient(135deg, #fbeaff, #e6dbff);
+  color: #444;
+  scroll-behavior: smooth;
 }
 
-header, footer {
-  background: linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
-  color: #fff;
-  box-shadow: 0 2px 14px #735aff0d;
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-.logo {
-  height: 48px;
-  margin-right: 18px;
-  vertical-align: middle;
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Navigasyon */
+header {
+  background: linear-gradient(to right, #9b5de5, #f15bb5);
+  padding: 12px 0;
+  box-shadow: 0 4px 8px #00000015;
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 
 nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 18px;
   justify-content: center;
-  padding: 18px 0 10px 0;
+  gap: 14px;
 }
 
 nav a {
-  font-weight: 700;
   color: #fff;
-  text-decoration: none;
-  padding: 7px 20px;
+  font-weight: 600;
+  padding: 8px 14px;
   border-radius: 12px;
-  transition: background 0.13s, color 0.13s;
-  font-size: 1.07em;
+  transition: background 0.3s;
 }
-nav a:hover, nav .active {
+
+nav a:hover {
+  background-color: #ffffff22;
+}
+
+/* Giriş Butonu */
+.login-btn {
+  position: absolute;
+  right: 20px;
+  top: 14px;
   background: #fff;
-  color: #735aff;
-}
-nav .admin-link {
-  background: #ff69b425;
-  color: #fff;
-}
-
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  color: #9b5de5;
+  padding: 8px 14px;
+  border-radius: 22px;
+  font-weight: bold;
+  box-shadow: 0 2px 6px #00000020;
+  cursor: pointer;
 }
 
-.main-block {
-  background: #f6f2ff;
-  border-radius: 20px;
-  padding: 22px 15px 18px 15px;
-  margin: 0 6px;
-  box-shadow: 0 2px 14px #735aff18;
-  min-width: 220px;
-}
-
-h1, h2 {
-  font-family: 'Fredoka', Arial, sans-serif;
-  font-weight: 700;
-}
-
-h1 {
-  font-size: 2.2em;
-}
-
-h2 {
-  font-size: 1.4em;
-  margin-top: 0;
-}
-
-.testler-grid {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-.test-card {
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 2px 14px #735aff18;
-  padding: 13px 12px;
-  width: 170px;
-  min-height: 215px;
+/* Hoşgeldin Alanı */
+.hero {
   text-align: center;
-  margin-bottom: 13px;
-  transition: transform .13s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 64px 16px 40px;
 }
-.test-card:hover { transform: scale(1.04);}
-.test-img { width: 78px; height: 78px; object-fit:cover; border-radius:15px; margin-bottom:8px;}
-.test-title { font-weight:700; font-size:1.08em; margin-bottom:4px;}
-.test-desc { font-size:.96em; color:#8a79bf; margin-bottom:6px;}
-.test-btn {
-  background: linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
-  color: #fff; font-weight:700; border-radius:9px; border:none;
-  padding:7px 18px; font-size:.99em; cursor:pointer;
-  margin-bottom:4px;
-  transition: filter .13s;
-}
-.test-btn:hover { filter: brightness(1.13); }
 
-.footer-flex, .nav-flex {
+.hero h1 {
+  font-size: 2.5em;
+  color: #7b4cff;
+  margin-bottom: 16px;
+}
+
+.hero p {
+  font-size: 1.1em;
+  color: #444;
+  max-width: 700px;
+  margin: auto;
+}
+
+.hero button {
+  margin-top: 22px;
+  background: linear-gradient(to right, #f15bb5, #9b5de5);
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 30px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.hero button:hover {
+  transform: scale(1.05);
+}
+
+/* Kategoriler, Çark ve Video Kartları */
+.section {
+  padding: 40px 16px;
+  text-align: center;
+}
+
+.section h2 {
+  color: #7b4cff;
+  margin-bottom: 20px;
+}
+
+.card-container {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 8px 10px;
+  gap: 20px;
+  justify-content: center;
 }
 
-footer {
-  padding: 0 0 12px 0;
-  margin-top: 32px;
-}
-
-.odeme-logo img {
-  height: 30px;
-  margin-left: 10px;
+.card {
   background: #fff;
-  padding: 3px 10px;
-  border-radius: 7px;
-  box-shadow: 0 2px 8px #735aff15;
-  vertical-align: middle;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px #00000012;
+  width: 220px;
+  padding: 20px;
+  transition: transform 0.3s;
+  cursor: pointer;
 }
 
-.emoji {
-  font-size: 1.4em;
-  vertical-align: -6px;
+.card:hover {
+  transform: translateY(-5px);
 }
 
-@media (max-width: 1200px) {
-  .container { max-width: 98%; }
+.card img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 12px;
 }
 
-@media (max-width: 900px) {
-  .main-block { min-width: 180px; }
-  .footer-flex, .nav-flex { flex-direction: column; gap: 4px; align-items: flex-start; }
+.card-title {
+  font-weight: 700;
+  color: #9b5de5;
+  font-size: 1.1em;
 }
 
-@media (max-width: 700px) {
-  .testler-grid { justify-content:center; }
-  .main-block { margin-bottom: 22px; min-width: 120px; }
+.card-desc {
+  font-size: 0.95em;
+  color: #666;
+}
+
+/* Footer */
+footer {
+  background: #f5eaff;
+  padding: 22px;
+  text-align: center;
+  font-size: 0.9em;
+  color: #888;
+  border-top: 1px solid #ddd;
+}
+
+/* Mobil */
+@media (max-width: 768px) {
   nav {
-    gap: 7px;
-    font-size: 0.98em;
-    flex-wrap: wrap;
+    gap: 10px;
   }
-  .test-card { width: 98%; min-width: 140px; }
-  .footer-flex, .nav-flex { padding: 8px 3px; }
-}
 
-::-webkit-scrollbar { width: 7px; background:#e5d5ff;}
-::-webkit-scrollbar-thumb { background:#c9b1ff; border-radius:10px; }
+  .login-btn {
+    position: static;
+    margin-top: 10px;
+    display: block;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 280px;
+  }
+}
