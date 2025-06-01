@@ -4,94 +4,47 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Test Sonucu | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Testin sonucu, puanın ve kazandıkların burada!">
+  <meta name="description" content="Testlik.com - Test sonucu ekranı, puan ve başarı görseli ile!">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    .ts-wrap {max-width:500px;margin:37px auto 30px auto;background:#fff;border-radius:26px;box-shadow:0 2px 22px #735aff15;padding:33px 28px 24px 28px;}
-    .ts-title {color:#735aff;font-size:1.29em;font-weight:800;margin-bottom:21px;}
-    .ts-img {width:88px;height:88px;object-fit:cover;margin:0 auto 13px auto;display:block;border-radius:17px;box-shadow:0 1px 7px #ed4a8814;}
-    .ts-puan {color:#ed4a88;font-size:2.15em;font-weight:800;text-align:center;margin:5px 0 13px 0;}
-    .ts-desc {color:#7a53c4;font-size:1.15em;font-weight:600;text-align:center;margin-bottom:19px;}
-    .ts-btns {display:flex;gap:19px;justify-content:center;margin:18px 0 8px 0;flex-wrap:wrap;}
-    .ts-btn {
-      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
-      color:#fff;font-weight:700;border-radius:13px;border:none;box-shadow:0 2px 11px #735aff14;padding:10px 23px;font-size:1.06em;cursor:pointer;
-      transition:background .13s;
-    }
-    .ts-btn:active{background:#ed4a88;}
-    .ts-sosyal {margin:0 auto 9px auto;text-align:center;}
-    .ts-sosyal img {width:34px;height:34px;margin:0 8px;cursor:pointer;opacity:.83;}
-    .ts-yenitest {margin:24px 0 0 0;}
-    @media (max-width:600px){.ts-wrap{padding:17px 5px 9px 5px;}}
-  </style>
 </head>
 <body>
-  <!-- Giriş Modalı -->
-  <div class="modal-bg" id="login-modal" style="display:none;">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeModal()">&times;</button>
-      <h2>Testlik.com'a Giriş</h2>
-      <button class="modal-google" onclick="loginGoogle()">
-        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
-      </button>
-      <hr style="margin:23px 0 15px 0;opacity:.19;">
-      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
-      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
-      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
-      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
-      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
-      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
-    </div>
-  </div>
   <!-- Header -->
   <header>
-    <div class="nav-flex">
-      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
-      <nav>
-        <a href="index.html">Anasayfa</a>
-        <a href="kategoriler.html">Kategoriler</a>
-        <a href="sizdengelenler.html">Sizden Gelenler</a>
-        <a href="soru-uret.html">Soru Üret</a>
-        <a href="cark.html">Çarkıfelek</a>
-        <a href="video-izle.html">Video İzle Kazan</a>
-        <a href="favoriler.html">Favoriler</a>
-        <a href="profil.html">Profil</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="akademi.html">Akademi</a>
-        <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
-        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
-      </nav>
-    </div>
+    <div class="logo"><img src="logo.png" alt="Testlik.com" style="height:32px;vertical-align:middle;"> Testlik.com</div>
+    <nav class="nav-links">
+      <a href="index.html">Anasayfa</a>
+      <a href="kategoriler.html">Kategoriler</a>
+      <a href="sizdengelenler.html">Sizden Gelenler</a>
+      <a href="soru-uret.html">Soru Üret</a>
+      <a href="cark.html">Çarkıfelek</a>
+      <a href="video-izle.html">Video İzle Kazan</a>
+      <a href="favoriler.html">Favoriler</a>
+      <a href="profil.html">Profil</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="akademi.html">Akademi</a>
+      <a href="istatistik.html">İstatistik</a>
+      <a href="leaderboard.html">Liderlik</a>
+      <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
+      <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
+    </nav>
   </header>
   <!-- Main -->
   <main>
-    <div class="ts-wrap">
-      <div class="ts-title" id="ts-title">Test Sonucun</div>
-      <img src="" id="ts-img" class="ts-img" alt="Sonuç görseli" style="display:none;" />
-      <div class="ts-puan" id="ts-puan"></div>
-      <div class="ts-desc" id="ts-desc"></div>
-      <div class="ts-btns">
-        <button class="ts-btn" onclick="window.location.href='index.html'">Ana Sayfa</button>
-        <button class="ts-btn" id="tekrar-coz">Tekrar Çöz</button>
+    <section style="max-width:520px;margin:37px auto 30px auto;">
+      <div class="profile-wrap" id="sonuc-wrap" style="padding: 31px 15px 25px 15px;text-align:center;">
+        <!-- Sonuç içeriği burada gösterilecek -->
       </div>
-      <div class="ts-sosyal">
-        <img src="share.png" alt="Paylaş" title="Paylaş" onclick="navigator.share ? navigator.share({title:'Test Sonucum', text:'Testlik.com test sonucum: '+puanText, url:window.location.href}) : alert('Tarayıcın paylaşımı desteklemiyor!')">
-      </div>
-      <div class="ts-yenitest" id="ts-yenitest"></div>
-    </div>
+    </section>
   </main>
   <!-- Footer -->
   <footer>
-    <div class="footer-flex">
-      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
-      <div class="odeme-logo">
-        <img src="wise.png" alt="Wise" />
-        <img src="payoneer.png" alt="Payoneer" />
-        <img src="iban.png" alt="IBAN" />
-      </div>
+    <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
+    <div class="odeme-logo">
+      <img src="wise.png" alt="Wise" />
+      <img src="payoneer.png" alt="Payoneer" />
+      <img src="iban.png" alt="IBAN" />
     </div>
   </footer>
   <!-- Firebase/JS -->
@@ -101,93 +54,59 @@
   <script src="firebase.js"></script>
   <script src="main.js"></script>
   <script>
-    // Modal ve admin linki
-    firebase.auth().onAuthStateChanged(function(user) {
-      var adminLink = document.getElementById('admin-link');
-      if (adminLink) {
-        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
-        else adminLink.style.display = "none";
-      }
-      if (!user) openModal();
-      else closeModal();
-    });
-
-    // Sonuç verisi
+    // Test sonucu ekranı için parametre: ?id=TESTID&puan=XX&dogru=YY
     function getQueryParam(name) {
       const url = new URL(window.location.href);
       return url.searchParams.get(name) || "";
     }
     const testId = getQueryParam("id");
-    const answers = JSON.parse(decodeURIComponent(getQueryParam("answers")||"[]"));
-    let puanText = "";
+    const puan = parseInt(getQueryParam("puan")) || 0;
+    const dogru = parseInt(getQueryParam("dogru")) || 0;
 
-    async function gosterSonuc() {
-      // Testi Firestore'dan çek
-      const doc = await db.collection("tests").doc(testId).get();
-      const test = doc.data() || {};
-      document.getElementById("tekrar-coz").onclick = function(){
-        window.location.href = "test-render.html?id=" + testId;
-      };
-      // Basit puanlama: doğru sayısı veya cevaplara göre puan
-      let puan = 0;
-      if (test.correctAnswers && Array.isArray(test.correctAnswers)) {
-        answers.forEach((cevap,i)=>{ if(test.correctAnswers[i] == cevap) puan+=Math.floor((test.point||10)/test.correctAnswers.length); });
-      } else {
-        puan = test.point || 10;
+    // Admin linki kontrolü
+    firebase.auth().onAuthStateChanged(function(user) {
+      var adminLink = document.getElementById('admin-link');
+      if (adminLink) {
+        if (user && user.email === "admin@testlik.com") adminLink.style.display = "inline-block";
+        else adminLink.style.display = "none";
       }
-      puanText = puan + " puan";
-      document.getElementById("ts-puan").innerText = puanText;
+    });
 
-      // Sonuç görsel ve açıklama (puan aralığına göre)
-      let sonuc = { image: "", text: "" };
-      if (test.results && Array.isArray(test.results)) {
-        for(let r of test.results) {
-          if (puan >= r.min && puan <= r.max) { sonuc = r; break; }
+    async function showSonuc() {
+      if (!testId) {
+        document.getElementById("sonuc-wrap").innerHTML = "<div style='color:#bba5fa;width:100%;text-align:center;'>Test sonucu bulunamadı.</div>";
+        return;
+      }
+      // Test bilgisini Firestore'dan çek
+      const doc = await db.collection("tests").doc(testId).get();
+      if (!doc.exists) {
+        document.getElementById("sonuc-wrap").innerHTML = "<div style='color:#bba5fa;width:100%;text-align:center;'>Test sonucu bulunamadı.</div>";
+        return;
+      }
+      const testData = doc.data();
+      // Sonuç aralığı ve görselini bul
+      let resultTxt = "";
+      let resultImg = "img/soru-isareti.png";
+      if (Array.isArray(testData.results)) {
+        for (const r of testData.results) {
+          if (dogru >= r.min && dogru <= r.max) {
+            resultTxt = r.text;
+            resultImg = r.image || resultImg;
+            break;
+          }
         }
       }
-      // Varsayılan
-      if (!sonuc.image) sonuc.image = test.image || "result-success.png";
-      if (!sonuc.text) sonuc.text = test.description || "Tebrikler, testi tamamladın!";
-
-      // Göster
-      document.getElementById("ts-img").src = sonuc.image;
-      document.getElementById("ts-img").style.display = "block";
-      document.getElementById("ts-desc").innerText = sonuc.text;
-
-      // Kısa paylaşım
-      if (navigator.share) {
-        document.querySelector(".ts-sosyal img").onclick = function(){
-          navigator.share({
-            title: "Test Sonucum",
-            text: "Testlik.com test sonucum: "+puanText,
-            url: window.location.href
-          });
-        };
-      }
-
-      // Yeni test önerileri (basit)
-      let yenitestDiv = document.getElementById("ts-yenitest");
-      let snap = await db.collection("tests").orderBy("createdAt","desc").limit(4).get();
-      let html = "<div style='font-size:1.08em;color:#735aff;margin-bottom:8px;'>Yeni Testler</div><div style='display:flex;gap:15px;flex-wrap:wrap;justify-content:center;'>";
-      snap.forEach(doc=>{
-        let t = doc.data();
-        html += `<div style="background:#faf4ff;border-radius:13px;padding:8px 10px;text-align:center;width:116px;box-shadow:0 1px 7px #735aff13;margin-bottom:7px;">
-          <img src="${t.image||'test-category-default.png'}" style="width:44px;height:44px;border-radius:10px;object-fit:cover;margin-bottom:4px;">
-          <div style="font-weight:700;color:#ed4a88;">${t.title}</div>
-          <button onclick="window.location.href='test-render.html?id=${doc.id}'" style="background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);color:#fff;border:none;padding:6px 11px;border-radius:8px;font-size:.97em;font-weight:700;margin-top:5px;cursor:pointer;">Çöz</button>
-        </div>`;
-      });
-      yenitestDiv.innerHTML = html + "</div>";
-      // Kullanıcıya puan ekle
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (!user) return;
-        db.collection("users").doc(user.uid).get().then(udoc=>{
-          let upuan = (udoc.data() && udoc.data().points) || 0;
-          db.collection("users").doc(user.uid).update({points: upuan+puan});
-        });
-      });
+      let html = `<div style="font-size:1.18em;font-weight:800;color:#735aff;margin-bottom:14px;">Test Sonucu</div>
+        <img src="${resultImg}" style="max-width:130px;margin-bottom:11px;border-radius:18px;box-shadow:0 2px 11px #735aff13;">
+        <div style="color:#ed4a88;font-size:1.1em;font-weight:700;margin:9px 0;">${resultTxt || ''}</div>
+        <div style="font-size:1.04em;color:#7a53c4;margin-bottom:7px;">Doğru Sayısı: <b>${dogru}</b></div>
+        <div style="font-size:1.04em;color:#7a53c4;margin-bottom:7px;">Kazanılan Puan: <b>${puan}</b></div>
+        <button class="btn" style="margin-top:17px;" onclick="window.location.href='index.html'">Anasayfaya Dön</button>`;
+      document.getElementById("sonuc-wrap").innerHTML = html;
+      // Kullanıcıya puan ekleme işlemi test-render.html'de yapılmalı.
     }
-    gosterSonuc();
+
+    document.addEventListener("DOMContentLoaded", showSonuc);
   </script>
 </body>
 </html>
