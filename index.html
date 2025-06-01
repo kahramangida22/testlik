@@ -2,72 +2,46 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Testlik | Global Test Platformu</title>
-  <link rel="stylesheet" href="styles.css" />
-  <script type="module" src="firebase.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Onedio Tarzı Platform</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <nav>
-    <div class="logo">Testlik</div>
+  <header class="site-header">
+    <h1>🧠 Otomatik İçerik Platformu</h1>
+    <p>Yapay zekanın ürettiği eğlenceli testler, haberler, listeler!</p>
+  </header>
+
+  <nav class="site-nav">
     <ul>
-      <li><a href="#tests">Testler</a></li>
-      <li><a href="#leaderboard">Lider Tablosu</a></li>
-      <li><a href="#login">Giriş</a></li>
+      <li><a href="#">Anasayfa</a></li>
+      <li><a href="#">Testler</a></li>
+      <li><a href="#">Listeler</a></li>
+      <li><a href="#">Anketler</a></li>
+      <li><a href="#">Haberler</a></li>
     </ul>
   </nav>
 
-  <header>
-    <h1>Dünyanın Her Yerinden Eğlenceli Testler</h1>
-    <p>Yapay zeka destekli testler çöz, puan topla, ödüller kazan!</p>
-  </header>
+  <main id="content">
+    <section class="content-grid">
+      <article class="card">
+        <img src="https://source.unsplash.com/400x200/?ai,fun" alt="Otomatik Test">
+        <h2>Hangi Dönemden Bir Karaktersin?</h2>
+        <p>Yapay zekanın hazırladığı bu eğlenceli testle geçmişe yolculuk yap!</p>
+        <a href="#">Teste Git</a>
+      </article>
+      <article class="card">
+        <img src="https://source.unsplash.com/400x200/?robot,newspaper" alt="Haber">
+        <h2>AI'dan Günün Mizahi Haberi</h2>
+        <p>Bugün dünyada neler oldu? Tabii ki eğlenceli yorumlarla!</p>
+        <a href="#">Haberi Oku</a>
+      </article>
+    </section>
+  </main>
 
-  <section id="tests">
-    <h2>Testler</h2>
-    <div id="test-container">Yükleniyor...</div>
-  </section>
-
-  <section id="leaderboard">
-    <h2>Lider Tablosu</h2>
-    <ol id="leaderboard-list"></ol>
-  </section>
-
-  <section id="login">
-    <h2>Giriş / Kayıt</h2>
-    <div id="auth-box">
-      <input type="email" placeholder="Email" id="email" />
-      <input type="password" placeholder="Şifre" id="password" />
-      <button onclick="login()">Giriş Yap</button>
-      <button onclick="signup()">Kayıt Ol</button>
-    </div>
-  </section>
-
-  <button id="go-admin-btn" style="display: none; margin: 1rem auto; display: block;" onclick="document.getElementById('admin').scrollIntoView({ behavior: 'smooth' })">
-    Admin Paneline Git
-  </button>
-
-  <section id="admin" style="display: none;">
-    <h2>Admin Paneli</h2>
-    <div id="admin-panel">
-      <h3>Yeni Test Ekle</h3>
-      <input type="text" placeholder="Test Başlığı" id="newTestTitle" />
-      <textarea placeholder='Soru ve Seçenekler JSON formatında' id="newTestData" rows="6"></textarea>
-      <button onclick="addNewTest()">Testi Ekle</button>
-
-      <h3>Kullanıcıları Listele</h3>
-      <button onclick="listUsers()">Kullanıcıları Göster</button>
-      <ul id="userList"></ul>
-
-      <h3>Lider Tablosunu Sıfırla</h3>
-      <button onclick="resetLeaderboard()">Sıfırla</button>
-    </div>
-  </section>
-
-  <footer>
-    <p>&copy; 2025 Testlik.com</p>
+  <footer class="site-footer">
+    <p>&copy; 2025 Testlik AI İçerik Platformu</p>
   </footer>
-
-  <script type="module" src="app.js"></script>
 </body>
 </html>

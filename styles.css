@@ -1,72 +1,74 @@
 
 body {
-  font-family: 'Comic Sans MS', cursive, sans-serif;
-  background: linear-gradient(to bottom right, #ffccf9, #bdb2ff);
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
   color: #333;
 }
 
-nav {
-  background-color: #9c27b0;
+.site-header {
+  background-color: #4a90e2;
   color: white;
-  padding: 1em;
+  padding: 2rem;
+  text-align: center;
+}
+
+.site-nav {
+  background-color: #fff;
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.site-nav ul {
+  list-style: none;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  justify-content: center;
+  gap: 2rem;
+  padding: 0;
+  margin: 0;
 }
 
-nav ul li a {
-  color: white;
+.site-nav a {
   text-decoration: none;
+  color: #333;
   font-weight: bold;
-  transition: color 0.3s ease;
 }
 
-nav ul li a:hover {
-  color: #ffeb3b;
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
 }
 
-button {
-  background-color: #ff4081;
-  color: white;
-  border: none;
+.card {
+  background: white;
   border-radius: 10px;
-  padding: 0.5em 1em;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 1rem;
+  text-align: center;
 }
 
-button:hover {
-  background-color: #f50057;
-}
-
-input, textarea {
-  border: 2px solid #ce93d8;
-  border-radius: 10px;
-  padding: 0.5em;
+.card img {
   width: 100%;
-  max-width: 400px;
+  border-radius: 10px;
 }
 
-section {
-  padding: 2em;
-  background-color: rgba(255, 255, 255, 0.7);
-  border-radius: 20px;
-  margin: 2em auto;
-  max-width: 900px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+.card a {
+  display: inline-block;
+  margin-top: 1rem;
+  text-decoration: none;
+  background-color: #4a90e2;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
 }
 
-footer {
-  background-color: #7b1fa2;
+.site-footer {
+  background-color: #222;
   color: white;
   text-align: center;
-  padding: 1em;
-  border-top: 4px solid #ba68c8;
-}
-
-.result-card {
-  background: #fff3e0;
-  border: 3px dashed #ff9800;
+  padding: 1rem;
+  margin-top: 2rem;
 }
