@@ -31,23 +31,18 @@ main {
 h1.center {
   text-align: center;
 }
-.game-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  max-width: 1200px;
+.haber-listesi {
+  max-width: 800px;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
-.game-card {
+.haber-karti {
   background: white;
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: 1rem;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  text-align: center;
-}
-.game-card img {
-  width: 100%;
-  border-radius: 1rem;
 }
 .btn {
   display: inline-block;
