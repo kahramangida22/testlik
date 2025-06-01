@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Haber Botu - Testlik</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">Testlik Haber Botu</div>
+    <nav>
+      <a href="admin.html">Admin Paneli</a>
+      <a href="haber-bot.html" class="active">Haber Botu</a>
+    </nav>
+  </header>
+
+  <main>
+    <form>
+      <h2>📰 Otomatik Haber Üretimi</h2>
+      <label>Haber Dili</label>
+      <select style="width: 100%; padding: 0.6rem; margin-bottom: 1rem;">
+        <option>Türkçe</option>
+        <option>İngilizce</option>
+        <option>İspanyolca</option>
+        <option>Fransızca</option>
+        <option>Almanca</option>
+      </select>
+
+      <label>Trend Konulara Odaklan</label>
+      <input type="checkbox" checked style="transform: scale(1.2); margin-right: 0.5rem;"> Evet, popüler konuları seç
+
+      <label style="display:block; margin-top:1rem;">Kaç Haber Üretilsin?</label>
+      <input type="number" min="1" max="10" value="3" required />
+
+      <button type="submit">Haberleri Üret</button>
+    </form>
+    <div style="text-align:center; margin-top:2rem;">
+      <p>Oluşturulan haber içerikleri otomatik olarak sitene eklenmeye hazır olur.</p>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Testlik - Haber Botu</p>
+  </footer>
+</body>
+</html>
