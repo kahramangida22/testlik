@@ -1,103 +1,109 @@
 // main.js
 
-// Firebase ve kullanıcı kontrolleri
+// Oturum ve menü kontrolü
 firebase.auth().onAuthStateChanged(function(user) {
+  // Çıkış yap/gizle butonları
   var logoutBtn = document.getElementById('logout-btn');
-  var adminNavLink = document.getElementById('admin-nav-link');
   if (logoutBtn) {
-    if (user) logoutBtn.style.display = 'inline-block';
-    else logoutBtn.style.display = 'none';
-  }
-  if (adminNavLink) {
-    if (user && user.email === "admin@testlik.com") adminNavLink.style.display = "inline-block";
-    else adminNavLink.style.display = "none";
-  }
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-  var logoutBtnElem = document.getElementById('logout-btn');
-  if (logoutBtnElem) {
-    logoutBtnElem.onclick = function(e) {
-      e.preventDefault();
-      firebase.auth().signOut().then(() => {
-        window.location.href = "index.html";
-      });
+    if (user) {
+      logoutBtn.style.display = "inline-block";
+      logoutBtn.onclick = function(e) {
+        e.preventDefault();
+        firebase.auth().signOut().then(() => window.location.href = "index.html");
+      };
+    } else {
+      logoutBtn.style.display = "none";
     }
   }
-  // Eğer fonksiyonlar gerekiyorsa burada başlatılır
-  if (typeof testleriYukle === "function") testleriYukle();
-  if (typeof kategorileriYukle === "function") kategorileriYukle();
-  if (typeof kullaniciVerisiniYukle === "function") kullaniciVerisiniYukle();
-  if (typeof carkiHazirla === "function") carkiHazirla();
+
+  // Kullanıcıya özel menü, profil, dashboard erişimi
+  // (Kullanıcı giriş yaptıysa bazı butonlar gösterilecek)
+  const protectedLinks = [
+    "favoriler.html",
+    "profil.html",
+    "dashboard.html",
+    "istatistik.html"
+  ];
+  protectedLinks.forEach(page => {
+    let link = document.querySelector(`a[href="${page}"]`);
+    if (link) link.style.display = user ? "inline-block" : "none";
+  });
 });
 
-// Ana sayfa için yeni ve popüler testler (index.html)
-async function testleriYukle() {
-  const yeniTestler = document.getElementById("yeni-testler");
-  const populerTestler = document.getElementById("populer-testler");
-
-  if (yeniTestler) {
-    // En yeni 8 test
-    const yeniSnap = await db.collection("tests").orderBy("createdAt", "desc").limit(8).get();
-    let htmlYeni = "";
-    yeniSnap.forEach(doc => {
-      const t = doc.data();
-      htmlYeni += `
-        <div class="test-card">
-          <img class="test-img" src="${t.image || 'img/soru-isareti.png'}" alt="Test Görseli"/>
-          <div class="test-title">${t.title || "Test Başlığı"}</div>
-          <div class="test-desc">${t.description || ""}</div>
-          <button class="test-btn" onclick="window.location.href='test-render.html?id=${doc.id}'">Teste Git</button>
-        </div>
-      `;
-    });
-    yeniTestler.innerHTML = htmlYeni || "<div>Test bulunamadı.</div>";
-  }
-
-  if (populerTestler) {
-    // En çok çözülen 8 test
-    const popSnap = await db.collection("tests").orderBy("solvedCount", "desc").limit(8).get();
-    let htmlPop = "";
-    popSnap.forEach(doc => {
-      const t = doc.data();
-      htmlPop += `
-        <div class="test-card">
-          <img class="test-img" src="${t.image || 'img/soru-isareti.png'}" alt="Test Görseli"/>
-          <div class="test-title">${t.title || "Test Başlığı"}</div>
-          <div class="test-desc">${t.description || ""}</div>
-          <button class="test-btn" onclick="window.location.href='test-render.html?id=${doc.id}'">Teste Git</button>
-        </div>
-      `;
-    });
-    populerTestler.innerHTML = htmlPop || "<div>Test bulunamadı.</div>";
-  }
-}
-
-// Kategoriler sayfası için kategori listeleme (kategoriler.html)
-async function kategorileriYukle() {
+// Kategori ve testleri anasayfada göstermek için (index.html)
+function kategorileriYukle() {
   const kategoriList = document.getElementById("kategori-list");
   if (!kategoriList) return;
-
-  // Kategoriler manuel veya veritabanından çekilebilir
-  const kategoriler = [
-    { key: "Genel", title: "Genel", desc: "Gündemden her şey", img: "img/category-genel.png" },
-    { key: "Eğlence", title: "Eğlence", desc: "Keyifli, komik, özgün", img: "img/category-eglence.png" },
-    { key: "Bilgi", title: "Bilgi", desc: "Beyin yakan sorular", img: "img/category-bilgi.png" },
-    { key: "Psikoloji", title: "Psikoloji", desc: "Kişilik, zeka testleri", img: "img/category-psikoloji.png" },
-  ];
-  let html = "";
-  kategoriler.forEach(kat => {
-    html += `
-      <div class="kategori-card" onclick="window.location.href='kategori-testleri.html?cat=${kat.key}'">
-        <img src="${kat.img}" class="kategori-img" alt="${kat.title}">
-        <div class="kategori-title">${kat.title}</div>
-        <div class="kategori-desc">${kat.desc}</div>
-      </div>
-    `;
+  db.collection("kategoriler").get().then(snap => {
+    let html = "";
+    snap.forEach(doc => {
+      const k = doc.data();
+      html += `
+        <div class="kategori-card" onclick="window.location.href='kategori-testleri.html?cat=${encodeURIComponent(k.slug)}'">
+          <img src="${k.image || 'img/soru-isareti.png'}" alt="Kategori Görseli">
+          <h3>${k.name || 'Kategori'}</h3>
+        </div>
+      `;
+    });
+    kategoriList.innerHTML = html || "<div style='color:#bbb;'>Hiç kategori yok.</div>";
   });
-  kategoriList.innerHTML = html;
 }
 
-// Profil, dashboard, çark, favoriler vb. için diğer fonksiyonları eklemen gerekiyorsa buraya yazabilirsin.
-// Örn: kullanıcı verisi çekme, çark döndürme, favorilere ekleme, vs.
+function testleriYukle() {
+  // Yeni testler
+  const yeniTestler = document.getElementById("yeni-testler");
+  if (yeniTestler) {
+    db.collection("tests").orderBy("createdAt", "desc").limit(6).get().then(snap => {
+      let html = "";
+      snap.forEach(doc => {
+        const t = doc.data();
+        html += `
+          <div class="kategori-card" onclick="window.location.href='test-render.html?id=${doc.id}'">
+            <img src="${t.image || 'img/soru-isareti.png'}" alt="Test Görseli">
+            <h3>${t.title || "Test"}</h3>
+            <p>${t.description || ""}</p>
+          </div>
+        `;
+      });
+      yeniTestler.innerHTML = html || "<div style='color:#bbb;'>Yeni test yok.</div>";
+    });
+  }
+  // Popüler testler
+  const popTestler = document.getElementById("populer-testler");
+  if (popTestler) {
+    db.collection("tests").orderBy("popularity", "desc").limit(6).get().then(snap => {
+      let html = "";
+      snap.forEach(doc => {
+        const t = doc.data();
+        html += `
+          <div class="kategori-card" onclick="window.location.href='test-render.html?id=${doc.id}'">
+            <img src="${t.image || 'img/soru-isareti.png'}" alt="Test Görseli">
+            <h3>${t.title || "Test"}</h3>
+            <p>${t.description || ""}</p>
+          </div>
+        `;
+      });
+      popTestler.innerHTML = html || "<div style='color:#bbb;'>Popüler test yok.</div>";
+    });
+  }
+}
 
+// Favoriye ekle/çıkar fonksiyonu (örnek)
+async function toggleFavorite(testId) {
+  const user = firebase.auth().currentUser;
+  if (!user) return alert("Favoriye eklemek için giriş yapmalısın!");
+  const userRef = db.collection("users").doc(user.uid);
+  const userDoc = await userRef.get();
+  let favs = userDoc.data()?.favorites || [];
+  if (favs.includes(testId)) {
+    favs = favs.filter(id => id !== testId);
+  } else {
+    favs.push(testId);
+  }
+  await userRef.update({ favorites: favs });
+  // Favoriler güncellendi uyarısı verebilirsin
+}
+
+// Diğer modüllerde benzer şekilde Firestore işlemlerini bu dosyadan kontrol edebilirsin.
+
+// Mobil menü için ufak ekleme yapılabilir
