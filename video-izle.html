@@ -1,128 +1,30 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Video İzle Kazan | Testlik.com</title>
-  <meta name="description" content="Testlik.com - Video izle, puan kazan, ödül topla!">
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    .vid-wrap {max-width:530px;margin:39px auto 30px auto;background:#fff;border-radius:26px;box-shadow:0 2px 22px #735aff15;padding:33px 28px 25px 28px;}
-    .vid-title {color:#735aff;font-size:1.29em;font-weight:800;margin-bottom:19px;}
-    .vid-player {width:100%;height:220px;background:#d7c3f7;border-radius:18px;overflow:hidden;margin-bottom:18px;display:flex;align-items:center;justify-content:center;}
-    .vid-btn {
-      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
-      color:#fff;font-weight:700;border-radius:13px;border:none;box-shadow:0 2px 11px #735aff14;padding:10px 28px;font-size:1.08em;cursor:pointer;
-      transition:background .13s;margin:13px 0 0 0;
-    }
-    .vid-btn:active{background:#ed4a88;}
-    .vid-sonuc {color:#ed4a88;font-size:1em;min-height:19px;margin-top:11px;}
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video İzle - Testlik</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Giriş Modalı -->
-  <div class="modal-bg" id="login-modal" style="display:none;">
-    <div class="modal-card">
-      <button class="modal-close" onclick="closeModal()">&times;</button>
-      <h2>Testlik.com'a Giriş</h2>
-      <button class="modal-google" onclick="loginGoogle()">
-        <img src="google-icon.png" style="height:22px;vertical-align:middle;margin-right:9px;"> Google ile Giriş Yap
-      </button>
-      <hr style="margin:23px 0 15px 0;opacity:.19;">
-      <input type="email" id="login-email" class="modal-inp" placeholder="E-posta" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;">
-      <input type="password" id="login-pass" class="modal-inp" placeholder="Şifre" style="width:95%;padding:11px;border-radius:9px;border:1px solid #ccbaff;margin-top:8px;">
-      <button class="modal-btn" onclick="loginEmail()">Giriş Yap</button>
-      <div id="login-error" style="color:#ed4a88;font-size:.98em;min-height:22px;margin-top:7px;"></div>
-      <button class="modal-btn" style="margin-top:18px;background:#7a53c4;" onclick="registerEmail()">Kayıt Ol</button>
-      <button class="modal-guest" onclick="guestLogin()">Üyeliksiz Devam Et</button>
-    </div>
-  </div>
-  <!-- Header -->
   <header>
-    <div class="nav-flex">
-      <img src="logo.png" alt="Testlik.com Logo" class="logo" />
-      <nav>
-        <a href="index.html">Anasayfa</a>
-        <a href="kategoriler.html">Kategoriler</a>
-        <a href="sizdengelenler.html">Sizden Gelenler</a>
-        <a href="soru-uret.html">Soru Üret</a>
-        <a href="cark.html">Çarkıfelek</a>
-        <a href="video-izle.html" class="active">Video İzle Kazan</a>
-        <a href="favoriler.html">Favoriler</a>
-        <a href="profil.html">Profil</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="akademi.html">Akademi</a>
-        <a href="istatistik.html">İstatistik</a>
-        <a href="admin.html" class="admin-link" id="admin-link" style="display:none;">Admin</a>
-        <a href="#" id="logout-btn" style="display:none;">Çıkış Yap</a>
-      </nav>
-    </div>
+    <div class="logo">Testlik Video İzle</div>
+    <nav>
+      <a href="index.html">Ana Sayfa</a>
+    </nav>
   </header>
-  <!-- Main -->
+
   <main>
-    <div class="vid-wrap">
-      <div class="vid-title">Video İzle, Puan Kazan!</div>
-      <div class="vid-player" id="vid-player">
-        <!-- YouTube veya reklam video gömülecek -->
-        <iframe id="iframe-player" width="100%" height="220" src="https://www.youtube.com/embed/ScMzIvxBSi4?rel=0&controls=1" 
-          title="Video" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-      </div>
-      <button class="vid-btn" id="puan-al-btn" disabled>Puanı Al</button>
-      <div class="vid-sonuc" id="vid-sonuc"></div>
-    </div>
+    <h2>🎥 İzle ve Kazan</h2>
+    <video controls width="100%" style="border-radius: 10px; margin-bottom: 1rem;">
+      <source src="video.mp4" type="video/mp4">
+      Tarayıcınız video öğesini desteklemiyor.
+    </video>
+    <button>🎁 İzledim, Puan Kazan!</button>
   </main>
-  <!-- Footer -->
+
   <footer>
-    <div class="footer-flex">
-      <p>&copy; 2025 <b>Testlik.com</b> | <span style="color:#ff69b4;">Tüm Hakları Saklıdır</span></p>
-      <div class="odeme-logo">
-        <img src="wise.png" alt="Wise" />
-        <img src="payoneer.png" alt="Payoneer" />
-        <img src="iban.png" alt="IBAN" />
-      </div>
-    </div>
+    <p>© 2025 Testlik</p>
   </footer>
-  <!-- Firebase/JS -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="firebase.js"></script>
-  <script src="main.js"></script>
-  <script>
-    // Modal ve admin linki
-    firebase.auth().onAuthStateChanged(function(user) {
-      var adminLink = document.getElementById('admin-link');
-      if (adminLink) {
-        if (user && (user.email === "admin@testlik.com" || user.email === "seninadminmailin@...")) adminLink.style.display = "inline-block";
-        else adminLink.style.display = "none";
-      }
-      if (!user) openModal();
-      else closeModal();
-    });
-
-    // Video tamamlanınca puan aktifleşsin (YouTube için basic simülasyon)
-    let puanBtn = document.getElementById("puan-al-btn");
-    let sonuc = document.getElementById("vid-sonuc");
-    let videoWatched = false;
-    // YouTube API ile daha sağlam yapabilirsin, burada sadece 40sn bekleme örneği
-    setTimeout(()=>{ puanBtn.disabled = false; puanBtn.innerText="Puanı Al"; videoWatched = true; }, 40000);
-
-    puanBtn.onclick = function(){
-      if (!videoWatched) return;
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (!user) return;
-        // Kullanıcıya 10 puan ver
-        db.collection("users").doc(user.uid).get().then(doc => {
-          let puan = (doc.data() && doc.data().points) || 0;
-          db.collection("users").doc(user.uid).update({points: puan+10});
-          sonuc.innerText = "10 puan hesabına eklendi! 🎉";
-          puanBtn.disabled = true;
-          puanBtn.innerText = "Tebrikler!";
-        });
-      });
-    }
-  </script>
 </body>
 </html>

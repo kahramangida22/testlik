@@ -1,110 +1,34 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Çarkıfelek | Testlik.com</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="img/favicon.png" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Çarkıfelek - Testlik</title>
+  <link rel="stylesheet" href="styles.css">
   <style>
-    .cark-cerceve {
-      margin:48px auto 18px auto; display:flex; flex-direction:column; align-items:center;
-    }
-    .cark-canvas {
-      background:#fff; border-radius:50%; box-shadow:0 3px 20px #735aff2c;
-      width:330px; height:330px; margin-bottom:24px;
-    }
-    .cark-btn {
-      background:linear-gradient(90deg,#fd72ff 0%,#735aff 100%);
-      color:#fff; font-weight:700; border-radius:13px; border:none;
-      padding:11px 35px; font-size:1.15em; cursor:pointer; margin-top:17px; font-family:'Fredoka',Arial,sans-serif;box-shadow:0 2px 12px #ed4a8822;
-    }
-    .cark-sonuc {color:#ed4a88;font-size:1.13em;font-weight:700;margin-top:22px;}
-    @media(max-width:500px){.cark-canvas{width:97vw;height:97vw;max-width:330px;max-height:330px;}}
+    #wheel { width: 300px; height: 300px; margin: 2rem auto; border: 10px solid pink; border-radius: 50%; text-align: center; }
+    #spinBtn { padding: 1rem; background: deeppink; color: white; border: none; cursor: pointer; }
   </style>
 </head>
 <body>
   <header>
-    <div class="container nav-flex">
-      <img src="img/logo.png" alt="Testlik.com Logo" class="logo" />
-      <nav>
-        <!-- NAV BURAYA GELECEK (aynı) -->
-      </nav>
-    </div>
+    <div class="logo">Testlik Çark</div>
   </header>
+
   <main>
-    <div class="cark-cerceve">
-      <canvas id="cark" class="cark-canvas" width="330" height="330"></canvas>
-      <button class="cark-btn" id="cark-cevir">Çevir!</button>
-      <div class="cark-sonuc" id="cark-sonuc"></div>
-    </div>
+    <h2>🎡 Çarkıfelek</h2>
+    <div id="wheel">Dönen Çark</div>
+    <button id="spinBtn">Çevir ve Puan Kazan</button>
+    <p id="result"></p>
   </main>
-  <footer>
-    <!-- FOOTER BURAYA GELECEK (aynı) -->
-  </footer>
+
+  <footer><p>© 2025 Testlik</p></footer>
+
   <script>
-    // Çark veri ve kodu
-    const dilimler = [
-      {label:"+50 Puan",color:"#ed4a88",puan:50},
-      {label:"0",color:"#fd72ff",puan:0},
-      {label:"+20 Puan",color:"#735aff",puan:20},
-      {label:"İflas",color:"#ffdf8e",puan:0,iflas:true},
-      {label:"+10 Puan",color:"#7a53c4",puan:10},
-      {label:"0",color:"#8a79bf",puan:0},
-      {label:"+30 Puan",color:"#ed4a88",puan:30},
-      {label:"İflas",color:"#ffdf8e",puan:0,iflas:true}
-    ];
-    const cark = document.getElementById('cark');
-    const ctx = cark.getContext('2d');
-    function cizCark(acilar=0) {
-      let basla = acilar;
-      let derece = (2*Math.PI)/dilimler.length;
-      for(let i=0;i<dilimler.length;i++){
-        ctx.beginPath();
-        ctx.moveTo(165,165);
-        ctx.arc(165,165,160,basla,basla+derece);
-        ctx.fillStyle = dilimler[i].color;
-        ctx.fill();
-        ctx.save();
-        ctx.translate(165,165);
-        ctx.rotate(basla+derece/2);
-        ctx.textAlign="right";
-        ctx.font="bold 19px Fredoka";
-        ctx.fillStyle="#fff";
-        ctx.fillText(dilimler[i].label,145,9);
-        ctx.restore();
-        basla += derece;
-      }
-      // Ok çiz
-      ctx.beginPath();
-      ctx.moveTo(165,12);ctx.lineTo(175,28);ctx.lineTo(155,28);ctx.closePath();
-      ctx.fillStyle="#ed4a88";ctx.fill();
+    document.getElementById("spinBtn").onclick = () => {
+      const prize = [10, 20, 50, 5, 0][Math.floor(Math.random() * 5)];
+      document.getElementById("result").innerText = `Kazandığınız Puan: ${prize}`;
     }
-    cizCark();
-    let donuyor = false;
-    document.getElementById("cark-cevir").onclick = function(){
-      if(donuyor) return;
-      donuyor = true;
-      let tur = Math.floor(Math.random()*8)+6;
-      let sonuc = Math.floor(Math.random()*dilimler.length);
-      let hedef = 2*Math.PI*tur - sonuc*(2*Math.PI/dilimler.length);
-      let aci = 0, fps = 60, adim = (hedef-aci)/(fps*2.2);
-      function animate(){
-        ctx.clearRect(0,0,330,330);
-        cizCark(aci);
-        aci += adim;
-        if((adim>0&&aci<hedef)||(adim<0&&aci>hedef)){
-          requestAnimationFrame(animate);
-        } else {
-          ctx.clearRect(0,0,330,330);
-          cizCark(hedef);
-          donuyor=false;
-          let secilen = dilimler[sonuc];
-          document.getElementById("cark-sonuc").innerText = secilen.iflas ? "İFLAS! Puanın sıfırlandı." : (secilen.puan>0 ? `Tebrikler, ${secilen.puan} puan kazandın!` : "Bu sefer şansın yok!");
-        }
-      }
-      animate();
-    };
   </script>
 </body>
 </html>
