@@ -2,25 +2,45 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Testlik - Ana Sayfa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Testlik - Anasayfa</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header>
-  Testlik
-  <nav>
-    <a href="index.html">Ana Sayfa</a>
-    <a href="test.html">Testler</a>
-    <a href="oyunlar.html">Oyunlar</a>
-    <a href="haberler.html">Haberler</a>
-  </nav>
-</header>
-<main>
-  <div class="card">
-    <h2>Test Çöz, Oyun Oyna, Eğlen!</h2>
-    <p>Testlik'te seni eğlenceli içerikler bekliyor.</p>
-    <button class="button" onclick="window.location.href='test.html'">Test Başla</button>
-  </div>
-</main>
+  <header class="hero">
+    <h1>Testlik'e Hoş Geldin!</h1>
+    <p>Kendini keşfetmeye hazır mısın?</p>
+    <a href="test.html" class="btn">Testleri Keşfet</a>
+  </header>
+
+  <section class="section">
+    <h2>Popüler Testler</h2>
+    <div class="card-container">
+      <div class="card"><h3>Aşk Testi</h3><p>Gerçek aşkı bulmaya hazır mısın?</p></div>
+      <div class="card"><h3>Kişilik Analizi</h3><p>Sen nasıl birisin?</p></div>
+      <div class="card"><h3>Eğlenceli Bilgi</h3><p>Ne kadar genel kültürlüsün?</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Oyunlar</h2>
+    <div class="card-container">
+      <div class="card"><h3>Hafıza Oyunu</h3><p>Kartları eşleştir!</p></div>
+      <div class="card"><h3>Emoji Bul</h3><p>Hızlıca eşleştir!</p></div>
+      <div class="card"><h3>Refleks Testi</h3><p>Ne kadar hızlısın?</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Günün Haberleri</h2>
+    <div class="card-container">
+      <div class="card"><h3>Trend Olaylar</h3><p>Sosyal medya gündemi</p></div>
+      <div class="card"><h3>Popüler Videolar</h3><p>Dünyada neler oluyor?</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Testlik.com | Tüm hakları saklıdır</p>
+  </footer>
 </body>
 </html>
