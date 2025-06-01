@@ -1,24 +1,11 @@
+
 import { app } from './firebase.js';
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword
-} from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  getDoc,
-  getDocs,
-  updateDoc,
-  collection,
-  addDoc
-} from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
+import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js';
 
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Giriş işlemi
 async function login() {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
@@ -29,23 +16,18 @@ async function login() {
     const userRef = doc(db, 'users', uid);
     const userSnap = await getDoc(userRef);
 
-    const adminPanel = document.getElementById('admin');
-    if (adminPanel && userSnap.exists()) {
-      const role = userSnap.data().role;
-      if (role === 'admin') {
-        adminPanel.style.display = 'block';
-        alert("Hoşgeldin Admin!");
-      } else {
-        adminPanel.style.display = 'none';
-        alert("Giriş başarılı.");
-      }
+    if (userSnap.exists() && userSnap.data().role === 'admin') {
+      document.getElementById('admin').style.display = 'block';
+    } else {
+      document.getElementById('admin').style.display = 'none';
     }
+
+    alert('Giriş başarılı');
   } catch (error) {
     alert('Giriş başarısız: ' + error.message);
   }
 }
 
-// Kayıt işlemi
 async function signup() {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
@@ -54,64 +36,154 @@ async function signup() {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const uid = userCredential.user.uid;
 
+    // Yeni kullanıcı varsayılan olarak user rolüyle kayıt ediliyor
     await setDoc(doc(db, 'users', uid), {
       email: email,
-      role: 'user',
-      score: 0
+      role: 'user'
     });
 
-    alert('Kayıt başarılı. Şimdi giriş yapabilirsin.');
+    document.getElementById('admin').style.display = 'none';
+    alert('Kayıt başarılı');
   } catch (error) {
     alert('Kayıt başarısız: ' + error.message);
   }
 }
 
-// Admin panel fonksiyonları
-window.addNewTest = async function () {
-  const title = document.getElementById('newTestTitle').value;
-  const rawData = document.getElementById('newTestData').value;
-
-  try {
-    const json = JSON.parse(rawData);
-    await addDoc(collection(db, 'tests'), {
-      title: title,
-      questions: json,
-      createdAt: new Date()
-    });
-    alert('Test başarıyla eklendi!');
-  } catch (err) {
-    alert('Test eklenemedi. JSON hatası olabilir: ' + err.message);
-  }
-};
-
-window.listUsers = async function () {
-  const usersList = document.getElementById('userList');
-  usersList.innerHTML = '';
-  try {
-    const usersSnapshot = await getDocs(collection(db, 'users'));
-    usersSnapshot.forEach((docSnap) => {
-      const user = docSnap.data();
-      const li = document.createElement('li');
-      li.textContent = `${user.email} (${user.role})`;
-      usersList.appendChild(li);
-    });
-  } catch (err) {
-    alert('Kullanıcılar listelenemedi: ' + err.message);
-  }
-};
-
-window.resetLeaderboard = async function () {
-  try {
-    const usersSnapshot = await getDocs(collection(db, 'users'));
-    for (const docSnap of usersSnapshot.docs) {
-      const ref = doc(db, 'users', docSnap.id);
-      await updateDoc(ref, { score: 0 });
-    }
-    alert('Lider tablosu sıfırlandı!');
-  } catch (err) {
-    alert('Sıfırlama başarısız: ' + err.message);
-  }
-};
-
 window.login = login;
 window.signup = signup;
+
+
+// Test çözüldüğünde puan verme (örnek)
+window.submitTest = async function () {
+  const user = auth.currentUser;
+  if (!user) return alert('Giriş yapmalısın!');
+
+  const userRef = doc(db, 'users', user.uid);
+  const userSnap = await getDoc(userRef);
+  const currentScore = userSnap.data().score || 0;
+
+  await updateDoc(userRef, {
+    score: currentScore + 20  // Test başına +20 puan
+  });
+
+  alert('Test çözümü için +20 puan kazandın!');
+};
+
+window.showTestResult = function () {
+  const possibleResults = [
+    "Sen enerjik bir karaktersin!",
+    "Sen sakin ve düşüncelisin.",
+    "Sen yaratıcı ve hayalperestsin."
+  ];
+  const selected = possibleResults[Math.floor(Math.random() * possibleResults.length)];
+  document.getElementById("result-text").innerText = selected;
+  document.getElementById("test-result").style.display = "block";
+};
+
+window.showEnhancedResult = function () {
+  const selectedOptions = document.querySelectorAll(".option.selected");
+  const textCounts = {};
+
+  selectedOptions.forEach(opt => {
+    const text = opt.dataset.text;
+    textCounts[text] = (textCounts[text] || 0) + 1;
+  });
+
+  let resultKey = "Bilinmiyor";
+  let max = 0;
+
+  for (const [key, val] of Object.entries(textCounts)) {
+    if (val > max) {
+      max = val;
+      resultKey = key;
+    }
+  }
+
+  const results = {
+    "Lider": {
+      text: "Sen doğal bir lidersin, insanları etkileme yeteneğin çok yüksek.",
+      image: "https://source.unsplash.com/600x300/?leader"
+    },
+    "Sanatçı": {
+      text: "Sen yaratıcı bir sanatçısın, duygularını eserlerine yansıtıyorsun.",
+      image: "https://source.unsplash.com/600x300/?artist"
+    },
+    "Bilimci": {
+      text: "Sen meraklı bir bilim insanısın, dünyayı analiz etmeyi seviyorsun.",
+      image: "https://source.unsplash.com/600x300/?scientist"
+    }
+  };
+
+  const result = results[resultKey] || {
+    text: "Kendine has, eşsiz bir karaktersin!",
+    image: "https://source.unsplash.com/600x300/?abstract"
+  };
+
+  document.getElementById("result-text").innerText = result.text;
+  document.getElementById("test-result").style.display = "block";
+
+  const resultCard = document.getElementById("result-card");
+  resultCard.innerHTML = `<img src="${result.image}" style="max-width:100%;border-radius:1rem;margin-bottom:1em;" />
+  <p>${result.text}</p>`;
+};
+
+document.addEventListener("click", function (e) {
+  if (e.target.closest(".option")) {
+    const options = e.target.closest(".options").querySelectorAll(".option");
+    options.forEach(opt => opt.classList.remove("selected"));
+    e.target.closest(".option").classList.add("selected");
+  }
+});
+
+window.downloadResultImage = function () {
+  const canvas = document.createElement("canvas");
+  canvas.width = 800;
+  canvas.height = 400;
+  const ctx = canvas.getContext("2d");
+
+  const resultText = document.getElementById("result-text").innerText;
+  const resultCard = document.getElementById("result-card");
+  const resultImgEl = resultCard.querySelector("img");
+  const resultImgUrl = resultImgEl ? resultImgEl.src : "";
+
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.src = resultImgUrl;
+
+  img.onload = function () {
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.drawImage(img, 0, 0, 800, 200);
+
+    ctx.fillStyle = "#000000";
+    ctx.font = "20px Arial";
+    ctx.fillText("Test Sonucun:", 30, 240);
+
+    ctx.font = "bold 22px Arial";
+    wrapText(ctx, resultText, 30, 270, 740, 26);
+
+    const link = document.createElement("a");
+    link.download = "testlik_sonuc.png";
+    link.href = canvas.toDataURL();
+    link.click();
+  };
+
+  function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    const words = text.split(' ');
+    let line = '';
+    for (let n = 0; n < words.length; n++) {
+      const testLine = line + words[n] + ' ';
+      const metrics = ctx.measureText(testLine);
+      const testWidth = metrics.width;
+      if (testWidth > maxWidth && n > 0) {
+        ctx.fillText(line, x, y);
+        line = words[n] + ' ';
+        y += lineHeight;
+      } else {
+        line = testLine;
+      }
+    }
+    ctx.fillText(line, x, y);
+  }
+};
