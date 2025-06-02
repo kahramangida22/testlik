@@ -1,2 +1,42 @@
 <!-- tests.html -->
-<html><body><h1>Tüm Testler</h1></body></html>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testlik | Testler</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="firebase.js"></script>
+  <script type="module">
+    import { db } from './firebase.js';
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    async function loadTests() {
+      const container = document.getElementById('test-list');
+      const snapshot = await getDocs(collection(db, "tests"));
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="test-detail.html?id=${doc.id}">${data.title}</a>`;
+        container.appendChild(li);
+      });
+    }
+
+    window.onload = loadTests;
+  </script>
+</head>
+<body>
+  <nav>
+    <a href="index.html">← Ana Sayfa</a>
+  </nav>
+
+  <main>
+    <h1>Tüm Testler</h1>
+    <ul id="test-list">Yükleniyor...</ul>
+  </main>
+
+  <footer>
+    <p>© 2025 Testlik</p>
+  </footer>
+</body>
+</html>
