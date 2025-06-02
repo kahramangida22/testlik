@@ -1,2 +1,52 @@
 <!-- news-detail.html -->
-<html><body><h1>Haber Detayı</h1></body></html>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Testlik | Haber Detayı</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="firebase.js"></script>
+  <script type="module">
+    import { db } from './firebase.js';
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const newsId = urlParams.get("id");
+
+    async function loadNews() {
+      const container = document.getElementById('news-detail');
+      const ref = doc(db, "news", newsId);
+      const snap = await getDoc(ref);
+
+      if (snap.exists()) {
+        const data = snap.data();
+        container.innerHTML = `
+          <h2>${data.title}</h2>
+          <img src="${data.image}" alt="Haber Görseli" style="max-width:100%;"/>
+          <p><em>${data.date}</em></p>
+          <p>${data.summary}</p>
+          <div>${data.content}</div>
+        `;
+      } else {
+        container.innerHTML = "Haber bulunamadı.";
+      }
+    }
+
+    window.onload = loadNews;
+  </script>
+</head>
+<body>
+  <nav>
+    <a href="news.html">← Tüm Haberler</a>
+  </nav>
+
+  <main>
+    <div id="news-detail">Yükleniyor...</div>
+  </main>
+
+  <footer>
+    <p>© 2025 Testlik</p>
+  </footer>
+</body>
+</html>
