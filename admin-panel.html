@@ -1,2 +1,49 @@
 <!-- admin-panel.html -->
-<html><body><h1>Admin Paneli</h1></body></html>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Testlik | Admin Paneli</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <nav>
+    <a href="index.html">← Ana Sayfa</a>
+  </nav>
+
+  <main>
+    <h1>Admin Paneli</h1>
+
+    <section>
+      <h2>🧪 Test Botu</h2>
+      <button onclick="runTestBot()">Test Üret</button>
+      <ul id="testList"></ul>
+    </section>
+
+    <section>
+      <h2>📊 Anket Botu</h2>
+      <button onclick="runPollBot()">Anket Üret</button>
+      <ul id="pollList"></ul>
+    </section>
+
+    <section>
+      <h2>📋 Liste Botu</h2>
+      <button onclick="runListBot()">Liste Üret</button>
+      <ul id="listList"></ul>
+    </section>
+
+    <section>
+      <h2>📰 Haber Botu</h2>
+      <button onclick="runNewsBot()">Haber Üret</button>
+      <ul id="newsList"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Testlik Admin Paneli</p>
+  </footer>
+</body>
+</html>
