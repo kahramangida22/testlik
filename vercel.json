@@ -1,1 +1,28 @@
-{ "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }] }
+{
+  "version": 2,
+  "public": true,
+  "builds": [
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "tests.html", "use": "@vercel/static" },
+    { "src": "test-detail.html", "use": "@vercel/static" },
+    { "src": "polls.html", "use": "@vercel/static" },
+    { "src": "poll-detail.html", "use": "@vercel/static" },
+    { "src": "lists.html", "use": "@vercel/static" },
+    { "src": "list-detail.html", "use": "@vercel/static" },
+    { "src": "news.html", "use": "@vercel/static" },
+    { "src": "news-detail.html", "use": "@vercel/static" },
+    { "src": "admin-panel.html", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/tests", "dest": "/tests.html" },
+    { "src": "/test-detail", "dest": "/test-detail.html" },
+    { "src": "/polls", "dest": "/polls.html" },
+    { "src": "/poll-detail", "dest": "/poll-detail.html" },
+    { "src": "/lists", "dest": "/lists.html" },
+    { "src": "/list-detail", "dest": "/list-detail.html" },
+    { "src": "/news", "dest": "/news.html" },
+    { "src": "/news-detail", "dest": "/news-detail.html" },
+    { "src": "/admin", "dest": "/admin-panel.html" }
+  ]
+}
