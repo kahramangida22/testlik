@@ -1,0 +1,17 @@
+[
+  {
+    "soru": "Atatürk'ün doğum yılı kaçtır?",
+    "secenekler": ["1881", "1890", "1878", "1901"],
+    "dogru": "1881"
+  },
+  {
+    "soru": "Dünyanın en uzun nehri hangisidir?",
+    "secenekler": ["Amazon", "Nil", "Yangtze", "Mississippi"],
+    "dogru": "Nil"
+  },
+  {
+    "soru": "Einstein'ın ünlü denklemi nedir?",
+    "secenekler": ["E=mc²", "F=ma", "a² + b² = c²", "PV=nRT"],
+    "dogru": "E=mc²"
+  }
+]
