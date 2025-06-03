@@ -31,6 +31,17 @@ button {
   color: white;
 }
 
+.btn {
+  display: inline-block;
+  background-color: #0288d1;
+  color: white;
+  padding: 10px 20px;
+  margin: 10px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
 button:hover {
   background-color: #0277bd;
 }
