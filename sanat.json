@@ -1,0 +1,17 @@
+[
+  {
+    "soru": "Mona Lisa tablosu hangi ressama aittir?",
+    "secenekler": ["Leonardo da Vinci", "Pablo Picasso", "Michelangelo", "Van Gogh"],
+    "dogru": "Leonardo da Vinci"
+  },
+  {
+    "soru": "Yıldızlı Gece adlı tablo kime aittir?",
+    "secenekler": ["Van Gogh", "Monet", "Matisse", "Rembrandt"],
+    "dogru": "Van Gogh"
+  },
+  {
+    "soru": "Kübizm akımının öncüsü kimdir?",
+    "secenekler": ["Picasso", "Dali", "Warhol", "Gauguin"],
+    "dogru": "Picasso"
+  }
+]
