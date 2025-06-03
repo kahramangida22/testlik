@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Testlik - Eğlen Kazan</title>
+  <link rel="stylesheet" href="index-style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">🧠 TESTLİK</div>
+    <nav class="nav-links">
+      <a href="kategoriler.html">📚 Kategoriler</a>
+      <a href="puan-tablosu.html">🏆 Puan Tablosu</a>
+      <a href="giris.html" id="giris-link">🔐 Giriş Yap</a>
+      <a href="uye-ol.html" id="uye-link">📝 Üye Ol</a>
+      <a href="admin.html" id="admin-link" style="display: none;">🛠️ Admin</a>
+    </nav>
+  </header>
+
+  <div class="ad-banner">Reklam Alanı - 728x90</div>
+
+  <main class="main-section">
+    <section class="welcome">
+      <h1>🎉 Test çözerek eğlen, puan kazan!</h1>
+      <p>En eğlenceli testlerle bilgini sınarken puan topla, liderliği ele geçir!</p>
+    </section>
+
+    <section class="kategori-ornekleri">
+      <a href="bilgi.html" class="kategori-btn">📘 Bilgi</a>
+      <a href="eglence.html" class="kategori-btn">🎭 Eğlence</a>
+      <a href="spor.html" class="kategori-btn">⚽ Spor</a>
+      <a href="sanat.html" class="kategori-btn">🎨 Sanat</a>
+      <a href="teknoloji.html" class="kategori-btn">💻 Teknoloji</a>
+      <a href="genel-kultur.html" class="kategori-btn">🌍 Genel Kültür</a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Testlik.com - Tüm hakları saklıdır.</p>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
+      authDomain: "testlik.firebaseapp.com",
+      projectId: "testlik",
+      storageBucket: "testlik.firebasestorage.app",
+      messagingSenderId: "668524500496",
+      appId: "1:668524500496:web:579bb4fc5990c87afedc95"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const adminLink = document.getElementById("admin-link");
+
+    onAuthStateChanged(auth, (user) => {
+      if (user && user.email === "admin@testlik.com") {
+        adminLink.style.display = "inline-block";
+      }
+    });
+  </script>
+</body>
+</html>
