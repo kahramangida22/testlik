@@ -1,0 +1,17 @@
+[
+  {
+    "soru": "Michael Jordan kaç şampiyonluk kazanmıştır?",
+    "secenekler": ["4", "6", "5", "7"],
+    "dogru": "6"
+  },
+  {
+    "soru": "NBA hangi yıl kurulmuştur?",
+    "secenekler": ["1946", "1960", "1952", "1939"],
+    "dogru": "1946"
+  },
+  {
+    "soru": "Kobe Bryant hangi numaraları giydi?",
+    "secenekler": ["8 ve 24", "23 ve 32", "6 ve 11", "9 ve 15"],
+    "dogru": "8 ve 24"
+  }
+]
