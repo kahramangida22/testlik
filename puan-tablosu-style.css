@@ -1,0 +1,52 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #e8f5e9, #a5d6a7);
+  padding: 40px;
+}
+
+.puan-container {
+  max-width: 700px;
+  margin: auto;
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+h1 {
+  color: #2e7d32;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  font-size: 16px;
+}
+
+th {
+  background-color: #4caf50;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.highlight {
+  background-color: #c8e6c9 !important;
+  font-weight: bold;
+}
+
+#kendi-puan {
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #1b5e20;
+}
