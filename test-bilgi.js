@@ -32,7 +32,6 @@ let aktifSoru = 0;
 const soruKutusu = document.getElementById("soru-kutusu");
 const cevaplar = document.getElementById("cevaplar");
 const durum = document.getElementById("durum");
-const butonlar = document.getElementById("butonlar");
 let kullaniciID = null;
 
 onAuthStateChanged(auth, (user) => {
@@ -48,7 +47,13 @@ function soruGoster() {
   if (aktifSoru >= sorular.length) {
     soruKutusu.innerHTML = "<h3>🎉 Test tamamlandı!</h3>";
     cevaplar.innerHTML = "";
-    butonlar.style.display = "block";
+    durum.innerHTML = "";
+    soruKutusu.insertAdjacentHTML("afterend", `
+      <div class="sonuc-butonlari">
+        <a href="index.html" class="btn">🏠 Ana Sayfa</a>
+        <a href="bilgi.html" class="btn">➕ Başka Test</a>
+      </div>
+    `);
     return;
   }
 
