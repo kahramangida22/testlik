@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #fceabb, #f8b500);
+  background: linear-gradient(to right, #f9f9f9, #e0f7fa);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,14 +12,14 @@ body {
   background-color: #ffffff;
   padding: 30px;
   border-radius: 15px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   max-width: 600px;
   width: 100%;
   text-align: center;
 }
 
 h1 {
-  color: #e65100;
+  color: #2c3e50;
 }
 
 button {
@@ -27,7 +27,7 @@ button {
   margin: 8px;
   border: none;
   border-radius: 8px;
-  background-color: #ff9800;
+  background-color: #009688;
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -35,7 +35,7 @@ button {
 }
 
 button:hover {
-  background-color: #ef6c00;
+  background-color: #00796b;
 }
 
 #durum {
@@ -48,4 +48,8 @@ button:hover {
   margin-top: 20px;
   border-top: 1px dashed #ccc;
   padding-top: 15px;
+}
+
+#bitis-butonu {
+  margin-top: 20px;
 }
