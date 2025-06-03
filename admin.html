@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - Testlik</title>
+  <link rel="stylesheet" href="admin-style.css" />
+</head>
+<body>
+  <div class="admin-panel">
+    <h1>🛠️ Admin Paneli</h1>
+    <p>Hoş geldin admin. Aşağıdaki butonlar ile içerik ekleyebilirsin.</p>
+
+    <div class="butonlar">
+      <button id="testBotu">🤖 Test Botunu Çalıştır</button>
+      <button id="anketBotu">📊 Anket Botunu Çalıştır</button>
+      <button id="haberBotu">📰 Haber Botunu Çalıştır</button>
+    </div>
+
+    <p id="durum"></p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
+      authDomain: "testlik.firebaseapp.com",
+      projectId: "testlik",
+      storageBucket: "testlik.firebasestorage.app",
+      messagingSenderId: "668524500496",
+      appId: "1:668524500496:web:579bb4fc5990c87afedc95"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const durum = document.getElementById("durum");
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user || user.email !== "admin@testlik.com") {
+        document.body.innerHTML = "<h2>Erişim reddedildi. Admin girişi gerekli.</h2>";
+      }
+    });
+
+    document.getElementById("testBotu").addEventListener("click", () => {
+      durum.textContent = "📡 Test botu çalıştırılıyor... (Simülasyon)";
+    });
+
+    document.getElementById("anketBotu").addEventListener("click", () => {
+      durum.textContent = "📡 Anket botu çalıştırılıyor... (Simülasyon)";
+    });
+
+    document.getElementById("haberBotu").addEventListener("click", () => {
+      durum.textContent = "📡 Haber botu çalıştırılıyor... (Simülasyon)";
+    });
+  </script>
+</body>
+</html>
