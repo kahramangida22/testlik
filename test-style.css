@@ -49,7 +49,11 @@ button:hover {
   font-weight: bold;
 }
 
-.btn {
+.sonuc-butonlari {
+  margin-top: 20px;
+}
+
+.sonuc-butonlari .btn {
   display: inline-block;
   background-color: #0288d1;
   color: white;
@@ -58,4 +62,9 @@ button:hover {
   text-decoration: none;
   border-radius: 8px;
   font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.sonuc-butonlari .btn:hover {
+  background-color: #01579b;
 }
