@@ -17,14 +17,14 @@ const db = getFirestore(app);
 
 const sorular = [
   {
-    soru: "Dünyanın en büyük okyanusu hangisidir?",
-    secenekler: ["Atlas", "Hint", "Pasifik", "Arktik"],
-    dogru: "Pasifik"
+    soru: "Dünyanın en uzun nehri hangisidir?",
+    secenekler: ["Nil", "Amazon", "Yangtze", "Mississippi"],
+    dogru: "Nil"
   },
   {
-    soru: "Türk alfabesinde kaç harf vardır?",
-    secenekler: ["29", "26", "32", "28"],
-    dogru: "29"
+    soru: "Türkiye'nin en kalabalık şehri neresidir?",
+    secenekler: ["İstanbul", "Ankara", "İzmir", "Bursa"],
+    dogru: "İstanbul"
   }
 ];
 
