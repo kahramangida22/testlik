@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🏆 Spor Tarihi Testi</title>
+  <link rel="stylesheet" href="test-style.css" />
+</head>
+<body>
+  <header>
+    <h1>🏆 Spor Tarihi Testi</h1>
+    <div class="puan">Puan: <span id="puan">0</span></div>
+  </header>
+
+  <main>
+    <div id="soru-alani">
+      <p id="soru"></p>
+      <div id="secenekler"></div>
+      <div id="dogru-cevap"></div>
+      <button id="sonrakiBtn" style="display:none;">Sonraki Soru</button>
+    </div>
+
+    <div id="reklam-alani">
+      <p>⏱️ Her soruda yenilenen reklam alanı</p>
+    </div>
+
+    <div id="test-bitti" style="display:none;">
+      <h2>Test tamamlandı! 🏅</h2>
+      <a href="index.html" class="btn">🏠 Ana Sayfa</a>
+      <a href="test-tarih.html" class="btn">🔁 Aynı kategoride başka test çöz</a>
+    </div>
+  </main>
+
+  <script type="module" src="test-tarih.js"></script>
+</body>
+</html>
