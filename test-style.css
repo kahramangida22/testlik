@@ -105,8 +105,7 @@ body {
 }
 
 #sonrakiBtn {
-  display: block;
-  margin: 20px auto;
+  margin: 20px auto 0 auto;
   padding: 10px 20px;
   background-color: #00bcd4;
   color: #fff;
@@ -114,6 +113,12 @@ body {
   font-size: 16px;
   border-radius: 8px;
   cursor: pointer;
+  display: block;
+  text-align: center;
+}
+
+#sonrakiBtn:hover {
+  background-color: #0097a7;
 }
 
 #sonrakiBtn:hover {
