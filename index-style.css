@@ -5,8 +5,8 @@
 }
 
 body {
-  font-family: "Comic Neue", "Segoe UI", sans-serif;
-  background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  background: linear-gradient(to bottom right, #fdfbfb, #ebedee);
   color: #333;
   min-height: 100vh;
   display: flex;
@@ -14,109 +14,139 @@ body {
 }
 
 header {
-  background: #ff8a65;
-  padding: 20px;
+  background: linear-gradient(90deg, #ff6f61, #ffcc80);
+  padding: 20px 0;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 header h1 {
   font-size: 36px;
-  color: white;
-  margin-bottom: 10px;
+  color: #fff;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+nav {
+  margin-top: 10px;
 }
 
 nav a {
-  margin: 0 15px;
-  color: white;
-  font-weight: bold;
+  margin: 0 12px;
   text-decoration: none;
+  font-weight: bold;
+  color: #fff;
   font-size: 16px;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  padding: 6px 10px;
+  border-radius: 8px;
 }
 
 nav a:hover {
-  color: #ffe0b2;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
 }
 
 main {
-  flex: 1;
   padding: 40px 20px;
+  flex: 1;
   text-align: center;
-}
-
-.hosgeldin {
-  margin-bottom: 40px;
 }
 
 .hosgeldin h2 {
   font-size: 30px;
   color: #ff5722;
-  animation: yukariGel 1s ease-in-out;
+  margin-bottom: 10px;
+  animation: gelis 0.7s ease;
 }
 
 .hosgeldin p {
   font-size: 18px;
-  color: #555;
-  margin-top: 10px;
+  color: #666;
 }
 
-@keyframes yukariGel {
-  from {
-    transform: translateY(20px);
+@keyframes gelis {
+  0% {
     opacity: 0;
+    transform: scale(0.95);
   }
-  to {
-    transform: translateY(0);
+  100% {
     opacity: 1;
+    transform: scale(1);
   }
+}
+
+.kategori-onizleme {
+  margin-top: 50px;
 }
 
 .kategori-onizleme h3 {
-  font-size: 24px;
+  font-size: 26px;
+  color: #5d4037;
   margin-bottom: 20px;
-  color: #6d4c41;
 }
 
 .test-listesi {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  gap: 15px;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
 }
 
 .test-listesi a {
-  padding: 14px 24px;
-  border-radius: 12px;
-  text-decoration: none;
-  background-color: #fff3e0;
+  display: inline-block;
+  width: 200px;
+  background: linear-gradient(145deg, #fff8e1, #ffe0b2);
   color: #e65100;
-  font-size: 16px;
   font-weight: bold;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 15px;
+  text-decoration: none;
+  box-shadow: 0 6px 10px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
+  font-size: 16px;
+  position: relative;
+}
+
+.test-listesi a::after {
+  content: "🧩";
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  font-size: 18px;
+  opacity: 0.3;
 }
 
 .test-listesi a:hover {
-  background-color: #ffe0b2;
-  transform: translateY(-3px) scale(1.05);
+  transform: scale(1.05);
+  background: linear-gradient(145deg, #ffe0b2, #ffd54f);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.15);
 }
 
 .reklam-alani {
-  margin-top: 50px;
-  padding: 20px;
+  margin-top: 60px;
+  padding: 25px;
   background-color: #fff9c4;
   border: 2px dashed #fbc02d;
-  border-radius: 10px;
+  border-radius: 15px;
   font-size: 16px;
   color: #827717;
+  animation: parlamatik 1s infinite alternate;
+}
+
+@keyframes parlamatik {
+  from { background-color: #fffde7; }
+  to   { background-color: #fff59d; }
 }
 
 footer {
-  background-color: #ffccbc;
+  background-color: #ffe0b2;
+  padding: 20px;
   text-align: center;
-  padding: 15px;
   font-size: 14px;
-  color: #4e342e;
-  margin-top: 50px;
+  color: #5d4037;
+  margin-top: 40px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
 }
