@@ -1,92 +1,104 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #fff8e1;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: linear-gradient(to bottom right, #ffe082, #ffccbc);
   margin: 0;
   padding: 0;
 }
 
 header {
-  background-color: #ffca28;
+  background-color: #ff7043;
   padding: 10px 20px;
+  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .logo {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
-  color: #4e342e;
 }
 
-.menu a {
+.nav a {
   margin: 0 10px;
   text-decoration: none;
-  color: #4e342e;
+  color: white;
   font-weight: bold;
-}
-
-.kullanici-paneli {
-  text-align: right;
 }
 
 main {
-  padding: 20px;
-}
-
-.soru-kutusu {
-  background-color: #ffe082;
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  font-size: 20px;
-}
-
-#secenekler button {
-  display: block;
-  margin: 10px auto;
-  padding: 12px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 6px;
-  background-color: #ff7043;
-  color: white;
-  cursor: pointer;
-}
-
-#secenekler button:hover {
-  background-color: #f4511e;
-}
-
-#sonrakiBtn {
-  margin-top: 20px;
-  padding: 10px 25px;
-  font-size: 16px;
-  border: none;
-  background-color: #00bcd4;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-#sonrakiBtn:hover {
-  background-color: #008ba3;
-}
-
-#reklam-alani {
-  background-color: #fff59d;
   text-align: center;
-  padding: 10px;
-  margin-top: 30px;
+  padding: 30px 10px;
+}
+
+.soru-kapsayici {
+  background-color: #fff3e0;
+  border-radius: 12px;
+  padding: 25px;
+  margin: auto;
+  max-width: 600px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.soru-metin {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #5d4037;
+}
+
+.secenekler button {
+  display: block;
+  width: 80%;
+  margin: 10px auto;
+  padding: 12px;
+  font-size: 18px;
+  border: none;
+  background-color: #ffb74d;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.secenekler button:hover {
+  background-color: #ff9800;
+}
+
+.dogru-cevap {
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.sonraki {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4db6ac;
+  color: white;
+  border: none;
   border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.reklam {
+  margin-top: 40px;
+  padding: 10px;
+  background-color: #ffe0b2;
+  font-size: 16px;
+  border-radius: 8px;
 }
 
 .btn {
   display: inline-block;
   margin: 10px;
-  padding: 12px 20px;
-  background-color: #4caf50;
+  padding: 12px 18px;
+  background-color: #7e57c2;
   color: white;
-  text-decoration: none;
   border-radius: 6px;
+  text-decoration: none;
+}
+
+.son-ekran {
+  margin-top: 30px;
 }
