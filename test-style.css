@@ -1,70 +1,154 @@
+/* Genel Ayarlar */
 body {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #fceabb, #f8b500);
+  padding: 0;
+  background: linear-gradient(to bottom right, #fff0f5, #e0f7fa);
+  color: #333;
+}
+
+/* Üst Logo & Menü */
+.ust-kisim {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  min-height: 100vh;
+  background-color: #ffccf9;
+  padding: 15px;
+  border-bottom: 3px dashed #ff69b4;
 }
 
-.test-container {
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-  max-width: 600px;
-  width: 100%;
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ff1493;
   text-align: center;
+  flex: 1;
 }
 
-h1 {
-  margin-bottom: 20px;
-  color: #ff9800;
+.menu a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+  background-color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background 0.3s;
 }
 
-h2 {
-  font-size: 20px;
-  margin-bottom: 20px;
+.menu a:hover {
+  background-color: #e0e0e0;
 }
 
-button {
-  padding: 12px 20px;
-  margin: 10px 5px;
-  border: none;
-  border-radius: 10px;
-  background-color: #ff9800;
+.kullanici-paneli {
+  text-align: right;
+}
+
+.kullanici-paneli button {
+  background-color: #4caf50;
   color: white;
-  font-size: 16px;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  margin-top: 5px;
 }
 
-button:hover {
-  background-color: #f57c00;
+.kullanici-paneli button:hover {
+  background-color: #45a049;
 }
 
-#durum {
+/* Soru Kutusu */
+.soru-kutusu {
+  background-color: #fff3cd;
+  border: 2px dashed #ffa500;
+  padding: 20px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 12px;
+  font-size: 20px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Seçenekler */
+#secenekler {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 10px;
+}
+
+#secenekler button {
+  background-color: #ffb347;
+  color: #000;
+  border: none;
+  padding: 12px 20px;
+  margin: 8px;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.3s;
+}
+
+#secenekler button:hover {
+  background-color: #ffd580;
+  transform: scale(1.05);
+}
+
+/* Doğru Cevap ve Sonraki */
+#dogru-cevap {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 18px;
   font-weight: bold;
 }
 
-.sonuc-butonlari {
-  margin-top: 20px;
+#sonrakiBtn {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #00bcd4;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-.sonuc-butonlari .btn {
+#sonrakiBtn:hover {
+  background-color: #0097a7;
+}
+
+/* Reklam Alanı */
+#reklam-alani {
+  background-color: #f0f8ff;
+  border: 1px dotted #87cefa;
+  margin: 20px auto;
+  padding: 10px;
+  width: 90%;
+  max-width: 600px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+/* Test Bitti Alanı */
+#test-bitti {
+  text-align: center;
+  margin-top: 30px;
+}
+
+#test-bitti .btn {
   display: inline-block;
-  background-color: #0288d1;
-  color: white;
-  padding: 10px 20px;
   margin: 10px;
+  padding: 12px 18px;
+  background-color: #8bc34a;
+  color: white;
   text-decoration: none;
   border-radius: 8px;
   font-weight: bold;
-  transition: background-color 0.3s;
 }
 
-.sonuc-butonlari .btn:hover {
-  background-color: #01579b;
+#test-bitti .btn:hover {
+  background-color: #7cb342;
 }
