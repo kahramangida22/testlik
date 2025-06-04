@@ -1,87 +1,122 @@
-body {
+* {
   margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background: linear-gradient(to right, #fceabb, #f8b500);
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Comic Neue", "Segoe UI", sans-serif;
+  background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
   color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 header {
-  background-color: #fff;
+  background: #ff8a65;
   padding: 20px;
   text-align: center;
-  border-bottom: 3px solid #ff9800;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-h1 {
-  margin: 0;
-  font-size: 32px;
-}
-
-nav {
-  margin-top: 10px;
+header h1 {
+  font-size: 36px;
+  color: white;
+  margin-bottom: 10px;
 }
 
 nav a {
-  margin: 0 12px;
-  text-decoration: none;
-  color: #ff5722;
+  margin: 0 15px;
+  color: white;
   font-weight: bold;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s ease;
 }
 
 nav a:hover {
-  text-decoration: underline;
+  color: #ffe0b2;
 }
 
 main {
+  flex: 1;
   padding: 40px 20px;
   text-align: center;
 }
 
-.hosgeldin h2 {
-  font-size: 28px;
-  color: #d84315;
+.hosgeldin {
+  margin-bottom: 40px;
 }
 
-.kategori-onizleme {
-  margin-top: 30px;
+.hosgeldin h2 {
+  font-size: 30px;
+  color: #ff5722;
+  animation: yukariGel 1s ease-in-out;
+}
+
+.hosgeldin p {
+  font-size: 18px;
+  color: #555;
+  margin-top: 10px;
+}
+
+@keyframes yukariGel {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.kategori-onizleme h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #6d4c41;
 }
 
 .test-listesi {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 15px;
+  gap: 15px;
 }
 
 .test-listesi a {
-  background-color: #fff8e1;
-  padding: 12px 18px;
-  border-radius: 8px;
+  padding: 14px 24px;
+  border-radius: 12px;
   text-decoration: none;
-  color: #f57c00;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff3e0;
+  color: #e65100;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
 .test-listesi a:hover {
   background-color: #ffe0b2;
-  transform: scale(1.05);
+  transform: translateY(-3px) scale(1.05);
 }
 
 .reklam-alani {
   margin-top: 50px;
   padding: 20px;
-  background-color: #fff3e0;
+  background-color: #fff9c4;
+  border: 2px dashed #fbc02d;
   border-radius: 10px;
-  font-size: 18px;
+  font-size: 16px;
+  color: #827717;
 }
 
 footer {
-  background-color: #ffcc80;
+  background-color: #ffccbc;
   text-align: center;
   padding: 15px;
   font-size: 14px;
-  color: #5d4037;
+  color: #4e342e;
   margin-top: 50px;
 }
