@@ -1,6 +1,10 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import {
+  getFirestore, collection, getDocs
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import {
+  getAuth, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
@@ -12,42 +16,51 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
-const tbody = document.getElementById("puanlar");
-const kendiPuan = document.getElementById("kendi-puan");
+const liste = document.getElementById("puan-listesi");
+const kendiAlani = document.getElementById("ben");
+const kendiBolumu = document.getElementById("kendi-puanim");
+
+let kendiUID = null;
 
 onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    kendiPuan.innerHTML = "Puanları görmek için giriş yapmalısın.";
-    return;
+  if (user) {
+    kendiUID = user.uid;
   }
 
   const querySnapshot = await getDocs(collection(db, "puanlar"));
-  let puanlar = [];
-  querySnapshot.forEach(doc => {
+  const puanlar = [];
+
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
     puanlar.push({
       id: doc.id,
-      ...doc.data()
+      kullaniciAdi: data.kullaniciAdi || "Anonim",
+      puan: data.puan || 0
     });
   });
 
+  // En yüksekten sırala
   puanlar.sort((a, b) => b.puan - a.puan);
 
-  let siralama = 1;
-  puanlar.forEach(kisi => {
+  // Listele
+  puanlar.forEach((item, index) => {
     const tr = document.createElement("tr");
-    if (kisi.id === user.uid) {
-      kendiPuan.innerHTML = `👤 Senin Puanın: <strong>${kisi.ad}</strong> - ${kisi.puan} puan`;
-      tr.classList.add("highlight");
-    }
     tr.innerHTML = `
-      <td>${siralama}</td>
-      <td>${kisi.ad}</td>
-      <td>${kisi.puan}</td>
+      <td>${index + 1}</td>
+      <td>${item.kullaniciAdi}</td>
+      <td>${item.puan}</td>
     `;
-    tbody.appendChild(tr);
-    siralama++;
+    liste.appendChild(tr);
+
+    // Eğer bu kullanıcıysan, üstte göster
+    if (item.id === kendiUID) {
+      kendiBolumu.style.display = "block";
+      kendiAlani.innerHTML = `
+        <p><strong>${item.kullaniciAdi}</strong> - <strong>${item.puan} puan</strong></p>
+      `;
+    }
   });
 });
