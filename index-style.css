@@ -5,27 +5,34 @@
 }
 
 body {
-  font-family: "Poppins", "Segoe UI", sans-serif;
-  background: linear-gradient(to bottom right, #fdfbfb, #ebedee);
+  font-family: 'Comic Sans MS', 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+  background-size: 400% 400%;
+  animation: animBg 15s ease infinite;
   color: #333;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+}
+
+@keyframes animBg {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
 }
 
 header {
-  background: linear-gradient(90deg, #ff6f61, #ffcc80);
-  padding: 20px 0;
+  background: linear-gradient(90deg, #f6d365, #fda085);
+  padding: 25px;
   text-align: center;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
-  position: relative;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  border-bottom: 3px dashed #ff4081;
 }
 
 header h1 {
-  font-size: 36px;
-  color: #fff;
-  letter-spacing: 1px;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+  font-size: 38px;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px #ff4081;
 }
 
 nav {
@@ -33,19 +40,20 @@ nav {
 }
 
 nav a {
-  margin: 0 12px;
-  text-decoration: none;
-  font-weight: bold;
+  margin: 0 10px;
   color: #fff;
-  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  background-color: #ff4081;
+  padding: 8px 15px;
+  border-radius: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
   transition: all 0.3s ease;
-  padding: 6px 10px;
-  border-radius: 8px;
 }
 
 nav a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(5px);
+  background-color: #ff80ab;
+  transform: scale(1.05);
 }
 
 main {
@@ -56,25 +64,24 @@ main {
 
 .hosgeldin h2 {
   font-size: 30px;
-  color: #ff5722;
-  margin-bottom: 10px;
-  animation: gelis 0.7s ease;
+  color: #fff;
+  background: linear-gradient(to right, #ff8a00, #e52e71);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: bounce 1s ease-in-out;
 }
 
 .hosgeldin p {
   font-size: 18px;
-  color: #666;
+  color: #ffffff;
+  margin-top: 10px;
+  text-shadow: 1px 1px 3px #00000033;
 }
 
-@keyframes gelis {
-  0% {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+@keyframes bounce {
+  0% {transform: scale(0.95);}
+  50% {transform: scale(1.05);}
+  100% {transform: scale(1);}
 }
 
 .kategori-onizleme {
@@ -83,70 +90,65 @@ main {
 
 .kategori-onizleme h3 {
   font-size: 26px;
-  color: #5d4037;
+  color: #fff;
+  text-shadow: 1px 1px 3px #00000044;
   margin-bottom: 20px;
 }
 
 .test-listesi {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 20px;
-  margin-top: 20px;
 }
 
 .test-listesi a {
-  display: inline-block;
-  width: 200px;
-  background: linear-gradient(145deg, #fff8e1, #ffe0b2);
-  color: #e65100;
-  font-weight: bold;
-  padding: 20px;
-  border-radius: 15px;
+  background: linear-gradient(145deg, #fffde7, #fff8e1);
+  color: #ff5722;
+  padding: 20px 30px;
+  border-radius: 18px;
+  font-size: 18px;
   text-decoration: none;
-  box-shadow: 0 6px 10px rgba(0,0,0,0.1);
+  font-weight: bold;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
   transition: all 0.3s ease;
-  font-size: 16px;
   position: relative;
 }
 
-.test-listesi a::after {
-  content: "🧩";
-  position: absolute;
-  bottom: 10px;
-  right: 12px;
-  font-size: 18px;
-  opacity: 0.3;
-}
-
 .test-listesi a:hover {
-  transform: scale(1.05);
   background: linear-gradient(145deg, #ffe0b2, #ffd54f);
-  box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+  transform: rotate(-1deg) scale(1.05);
+  color: #bf360c;
 }
 
 .reklam-alani {
-  margin-top: 60px;
+  margin-top: 50px;
   padding: 25px;
-  background-color: #fff9c4;
+  background: repeating-linear-gradient(
+    -45deg,
+    #ffecb3,
+    #ffecb3 10px,
+    #fff59d 10px,
+    #fff59d 20px
+  );
   border: 2px dashed #fbc02d;
   border-radius: 15px;
   font-size: 16px;
   color: #827717;
-  animation: parlamatik 1s infinite alternate;
+  animation: parlak 1.5s infinite alternate;
 }
 
-@keyframes parlamatik {
-  from { background-color: #fffde7; }
-  to   { background-color: #fff59d; }
+@keyframes parlak {
+  0% { opacity: 0.7; }
+  100% { opacity: 1; }
 }
 
 footer {
-  background-color: #ffe0b2;
-  padding: 20px;
+  background-color: #ffccbc;
   text-align: center;
+  padding: 15px;
   font-size: 14px;
-  color: #5d4037;
+  color: #4e342e;
   margin-top: 40px;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+  border-top: 3px dotted #ff7043;
 }
