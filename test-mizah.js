@@ -16,7 +16,6 @@ const firebaseConfig = {
   appId: "1:668524500496:web:579bb4fc5990c87afedc95"
 };
 
-// Firebase başlat
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth();
@@ -47,37 +46,39 @@ window.cikisYap = function () {
   auth.signOut().then(() => location.reload());
 };
 
-// Firestore'dan soru alma
+// Firestore'dan mizah sorularını getir
 async function soruGetir() {
   const querySnapshot = await getDocs(collection(db, "mizah"));
+  sorular = [];
   querySnapshot.forEach((doc) => {
     sorular.push(doc.data());
   });
   sonrakiSoru();
 }
 
-// Yeni soru göster
+// Yeni soru getir
 function sonrakiSoru() {
   cevaplandi = false;
   mevcutSoru = sorular[Math.floor(Math.random() * sorular.length)];
+
+  document.getElementById("soru").textContent = mevcutSoru.soru;
   document.getElementById("dogru-cevap").textContent = "";
   document.getElementById("sonrakiBtn").style.display = "none";
 
-  document.getElementById("soru").textContent = mevcutSoru.soru;
   const seceneklerDiv = document.getElementById("secenekler");
   seceneklerDiv.innerHTML = "";
 
   mevcutSoru.secenekler.forEach((secenek) => {
     const btn = document.createElement("button");
     btn.textContent = secenek;
-    btn.onclick = () => cevapKontrol(secenek, btn);
+    btn.addEventListener("click", () => cevapKontrol(secenek, btn));
     seceneklerDiv.appendChild(btn);
   });
 
   reklamYenile();
 }
 
-// Cevap kontrolü
+// Cevap kontrol fonksiyonu
 async function cevapKontrol(secenek, buton) {
   if (cevaplandi) return;
   cevaplandi = true;
@@ -86,42 +87,39 @@ async function cevapKontrol(secenek, buton) {
   const dogruCevap = mevcutSoru.dogru.trim().toLowerCase();
 
   if (temizSecenek === dogruCevap) {
-    buton.style.backgroundColor = "#8bc34a";
+    buton.style.backgroundColor = "#4caf50";
     if (kullanici) {
       await puanEkle(10);
     }
   } else {
-    buton.style.backgroundColor = "#e57373";
-    document.getElementById("dogru-cevap").textContent = "❌ Yanlış! Doğru cevap: " + mevcutSoru.dogru;
+    buton.style.backgroundColor = "#e53935";
+    document.getElementById("dogru-cevap").textContent = `❌ Yanlış! Doğru cevap: ${mevcutSoru.dogru}`;
   }
 
   document.getElementById("sonrakiBtn").style.display = "block";
 }
 
-// Puan güncelle
+// Puan ekleme
 async function puanEkle(puan) {
   const ref = doc(db, "puanlar", kullanici.uid);
   const snap = await getDoc(ref);
   if (snap.exists()) {
-    const mevcut = snap.data().puan || 0;
+    const mevcutPuan = snap.data().puan || 0;
     await setDoc(ref, {
-      puan: mevcut + puan,
+      puan: mevcutPuan + puan,
       kullaniciAdi: snap.data().kullaniciAdi
     });
-    document.getElementById("kullanici-puani").textContent = mevcut + puan;
+    document.getElementById("kullanici-puani").textContent = mevcutPuan + puan;
   }
+}
+
+// Reklam yenile
+function reklamYenile() {
+  const reklam = document.getElementById("reklam-alani");
+  reklam.innerHTML = `<p>🎬 Yeni reklam: ${Math.floor(Math.random() * 9999)}</p>`;
 }
 
 // Sonraki soru butonu
 document.getElementById("sonrakiBtn").addEventListener("click", () => {
   sonrakiSoru();
 });
-
-// Reklam alanını yenile
-function reklamYenile() {
-  const alan = document.getElementById("reklam-alani");
-  alan.innerHTML = `<p>🎬 Reklam yenilendi: ${(Math.random() * 1000).toFixed(0)}</p>`;
-}
-
-// ✅ Cevap kontrol fonksiyonu global hale getirildi
-window.cevapKontrol = cevapKontrol;}
