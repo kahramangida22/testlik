@@ -18,6 +18,7 @@ const db = getFirestore(app);
 const soruAlani = document.getElementById("soru-alani");
 const durum = document.getElementById("durum");
 const reklamAlani = document.getElementById("reklam-alani");
+const bitisButonu = document.getElementById("bitis-butonu");
 
 let sorular = [];
 let aktifSoru = 0;
@@ -26,7 +27,7 @@ let kullaniciID = null;
 fetch("basketbol.json")
   .then(res => res.json())
   .then(data => {
-    sorular = data;
+    sorular = shuffleArray(data);
     onAuthStateChanged(auth, (user) => {
       if (user) {
         kullaniciID = user.uid;
@@ -37,10 +38,15 @@ fetch("basketbol.json")
     });
   });
 
+function shuffleArray(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
 function soruGoster() {
   if (aktifSoru >= sorular.length) {
     soruAlani.innerHTML = "<h2>🎉 Tüm sorular çözüldü!</h2>";
     durum.innerHTML = "";
+    bitisButonu.style.display = "block";
     return;
   }
 
@@ -58,16 +64,16 @@ function soruGoster() {
 window.cevapKontrol = async function(secilen, dogru) {
   if (secilen === dogru) {
     await puanEkle(10);
-    durum.textContent = "✅ Doğru! +10 puan";
+    durum.innerHTML = "✅ Doğru! +10 puan";
   } else {
-    durum.textContent = "❌ Yanlış!";
+    durum.innerHTML = `❌ Yanlış!<br>✅ Doğru cevap: ${dogru}`;
   }
 
   aktifSoru++;
   setTimeout(() => {
     durum.textContent = "";
     soruGoster();
-  }, 1200);
+  }, 1500);
 };
 
 async function puanEkle(puan) {
@@ -80,10 +86,10 @@ async function puanEkle(puan) {
 }
 
 function reklamYenile() {
-  reklamAlani.innerHTML = ""; // temizle
+  reklamAlani.innerHTML = "";
   setTimeout(() => {
     reklamAlani.innerHTML = `
-      <div style="background:#ddd;padding:15px;border-radius:8px;">🔁 Yeni reklam alanı (örnek)</div>
+      <div style="background:#f0f0f0;padding:15px;border-radius:8px;">🏀 Reklam alanı (Basketbol)</div>
     `;
   }, 200);
 }
