@@ -6,7 +6,7 @@ import {
   getAuth, onAuthStateChanged, signOut
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-// Firebase yapılandırması
+// Firebase ayarları
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
   authDomain: "testlik.firebaseapp.com",
@@ -25,15 +25,14 @@ let mevcutSoru = null;
 let cevaplandi = false;
 let kullanici = null;
 
-// Giriş durumu kontrolü
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     kullanici = user;
     document.getElementById("girisBtn").style.display = "none";
     document.getElementById("girisBilgisi").style.display = "block";
 
-    const puanRef = doc(db, "puanlar", user.uid);
-    const snap = await getDoc(puanRef);
+    const ref = doc(db, "puanlar", user.uid);
+    const snap = await getDoc(ref);
     if (snap.exists()) {
       const data = snap.data();
       document.getElementById("kullanici-adi").textContent = data.kullaniciAdi || "👤";
@@ -61,11 +60,7 @@ function sonrakiSoru() {
   cevaplandi = false;
   mevcutSoru = sorular[Math.floor(Math.random() * sorular.length)];
 
-  if (!mevcutSoru) {
-    document.getElementById("test-bitti").style.display = "block";
-    document.querySelector(".soru-kapsayici").style.display = "none";
-    return;
-  }
+  if (!mevcutSoru) return;
 
   document.getElementById("soru").textContent = mevcutSoru.soru;
   document.getElementById("dogru-cevap").textContent = "";
@@ -88,15 +83,15 @@ async function cevapKontrol(secenek, buton) {
   if (cevaplandi) return;
   cevaplandi = true;
 
-  const temizSecenek = secenek.trim().toLowerCase();
-  const dogru = mevcutSoru.dogru.trim().toLowerCase();
+  const secilen = secenek.trim().toLowerCase();
+  const dogru = (mevcutSoru.cevap || "").trim().toLowerCase();
 
-  if (temizSecenek === dogru) {
+  if (secilen === dogru) {
     buton.style.backgroundColor = "#4caf50";
     if (kullanici) await puanArtir(10);
   } else {
     buton.style.backgroundColor = "#e53935";
-    document.getElementById("dogru-cevap").textContent = `❌ Yanlış! Doğru cevap: ${mevcutSoru.dogru}`;
+    document.getElementById("dogru-cevap").textContent = `❌ Yanlış! Doğru cevap: ${mevcutSoru.cevap}`;
   }
 
   document.getElementById("sonrakiBtn").style.display = "block";
@@ -116,8 +111,8 @@ async function puanArtir(puan) {
 }
 
 function reklamYenile() {
-  const reklam = document.getElementById("reklam-alani");
-  reklam.innerHTML = `<p>📺 Yeni reklam: ${Math.floor(Math.random() * 10000)}</p>`;
+  const alan = document.getElementById("reklam-alani");
+  alan.innerHTML = `<p>📺 Yeni reklam: ${Math.floor(Math.random() * 9999)}</p>`;
 }
 
 document.getElementById("sonrakiBtn").addEventListener("click", sonrakiSoru);
