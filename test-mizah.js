@@ -122,3 +122,6 @@ function reklamYenile() {
   const alan = document.getElementById("reklam-alani");
   alan.innerHTML = `<p>🎬 Reklam yenilendi: ${(Math.random() * 1000).toFixed(0)}</p>`;
 }
+
+// ✅ Cevap kontrol fonksiyonu global hale getirildi
+window.cevapKontrol = cevapKontrol;}
