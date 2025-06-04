@@ -1,58 +1,78 @@
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #fffde7, #e0f7fa);
+  padding: 0;
+  font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background-color: #00bcd4;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+header h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+nav a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  background-color: #0097a7;
+  padding: 6px 14px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+nav a:hover {
+  background-color: #4dd0e1;
+}
+
+main {
+  flex: 1;
+  padding: 40px 20px;
   text-align: center;
 }
 
-.header {
-  background-color: #0288d1;
-  padding: 20px;
-  color: white;
-  position: relative;
-}
-
-.header h1 {
-  margin: 0;
-}
-
-.home-link {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-}
-
 .kategori-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
-  padding: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  margin-top: 30px;
 }
 
 .kategori-kart {
-  background-color: white;
-  padding: 30px 10px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  font-size: 40px;
-  color: #0288d1;
+  background: linear-gradient(to right, #ffffff, #f0f0f0);
+  padding: 25px 35px;
+  border-radius: 20px;
+  font-size: 22px;
   text-decoration: none;
-  transition: 0.3s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  color: #00796b;
+  font-weight: bold;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
 }
 
 .kategori-kart:hover {
+  background: linear-gradient(to right, #d1c4e9, #b2ebf2);
   transform: scale(1.05);
-  background-color: #b3e5fc;
+  color: #004d40;
 }
 
-.kategori-kart span {
-  margin-top: 10px;
-  font-size: 18px;
-  color: black;
+footer {
+  background-color: #00bcd4;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  margin-top: 30px;
 }
