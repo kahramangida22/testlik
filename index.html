@@ -3,41 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Testlik - Eğlen Kazan</title>
+  <title>Testlik.com - Eğlen, Öğren, Kazan!</title>
   <link rel="stylesheet" href="index-style.css" />
 </head>
 <body>
-  <header class="navbar">
-    <div class="logo">🧠 TESTLİK</div>
-    <nav class="nav-links">
+  <header>
+    <h1>🧠 Testlik.com</h1>
+    <nav>
       <a href="kategoriler.html">📚 Kategoriler</a>
       <a href="puan-tablosu.html">🏆 Puan Tablosu</a>
-      <a href="giris.html" id="giris-link">🔐 Giriş Yap</a>
-      <a href="uye-ol.html" id="uye-link">📝 Üye Ol</a>
-      <a href="admin.html" id="admin-link" style="display: none;">🛠️ Admin</a>
+      <a href="giris.html" id="girisLink">🔐 Giriş Yap</a>
+      <a href="admin.html" id="adminPanel" style="display:none;">🛠️ Admin Paneli</a>
     </nav>
   </header>
 
-  <div class="ad-banner">Reklam Alanı - 728x90</div>
-
-  <main class="main-section">
-    <section class="welcome">
-      <h1>🎉 Test çözerek eğlen, puan kazan!</h1>
-      <p>En eğlenceli testlerle bilgini sınarken puan topla, liderliği ele geçir!</p>
+  <main>
+    <section class="hosgeldin">
+      <h2>🎉 Test çözerek eğlen, öğren, puan topla!</h2>
+      <p>Her doğru cevap sana puan kazandırır. Üstelik en iyi oyuncular ödüller kazanır!</p>
     </section>
 
-    <section class="kategori-ornekleri">
-      <a href="bilgi.html" class="kategori-btn">📘 Bilgi</a>
-      <a href="eglence.html" class="kategori-btn">🎭 Eğlence</a>
-      <a href="spor.html" class="kategori-btn">⚽ Spor</a>
-      <a href="sanat.html" class="kategori-btn">🎨 Sanat</a>
-      <a href="teknoloji.html" class="kategori-btn">💻 Teknoloji</a>
-      <a href="genel-kultur.html" class="kategori-btn">🌍 Genel Kültür</a>
+    <section class="kategori-onizleme">
+      <h3>📌 Popüler Testler</h3>
+      <div class="test-listesi">
+        <a href="test-mizah.html">😂 Mizah Testi</a>
+        <a href="test-basketbol.html">🏀 Basketbol Bilgisi</a>
+        <a href="test-ai.html">🧠 Yapay Zeka</a>
+        <a href="test-turkiye.html">🇹🇷 Türkiye Hakkında</a>
+      </div>
+    </section>
+
+    <section class="reklam-alani">
+      <div>🔔 Reklam Alanı</div>
     </section>
   </main>
 
-  <footer class="footer">
-    <p>© 2025 Testlik.com - Tüm hakları saklıdır.</p>
+  <footer>
+    <p>© 2025 Testlik.com - Tüm hakları saklıdır</p>
   </footer>
 
   <script type="module">
@@ -56,11 +58,9 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    const adminLink = document.getElementById("admin-link");
-
     onAuthStateChanged(auth, (user) => {
       if (user && user.email === "admin@testlik.com") {
-        adminLink.style.display = "inline-block";
+        document.getElementById("adminPanel").style.display = "inline-block";
       }
     });
   </script>
