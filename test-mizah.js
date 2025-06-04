@@ -63,11 +63,12 @@ function sonrakiSoru() {
 
 function cevapKontrol(secilen, dogru) {
   if (secilen === dogru) {
-    puan += 10;
-    document.getElementById("puan").textContent = puan;
-  } else {
-    document.getElementById("dogru-cevap").innerHTML = `❌ Yanlış! ✅ Doğru cevap: <b>${dogru}</b>`;
-  }
+  puan += 10;
+  document.getElementById("puan").textContent = puan;
+  document.getElementById("dogru-cevap").innerHTML = `✅ Bravo! Doğru cevap: <b>${dogru}</b>`;
+} else {
+  document.getElementById("dogru-cevap").innerHTML = `❌ Yanlış! Doğru cevap: <b>${dogru}</b>`;
+}
 
   document.getElementById("sonrakiBtn").style.display = "inline-block";
 }
