@@ -1,160 +1,92 @@
-/* Genel Ayarlar */
 body {
-  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
+  background: #fff8e1;
   margin: 0;
   padding: 0;
-  background: linear-gradient(to bottom right, #fff0f5, #e0f7fa);
-  color: #333;
 }
 
-/* Üst Logo & Menü */
-.ust-kisim {
+header {
+  background-color: #ffca28;
+  padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffccf9;
-  padding: 15px;
-  border-bottom: 3px dashed #ff69b4;
 }
 
 .logo {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: bold;
-  color: #ff1493;
-  text-align: center;
-  flex: 1;
+  color: #4e342e;
 }
 
 .menu a {
   margin: 0 10px;
   text-decoration: none;
-  color: #007bff;
+  color: #4e342e;
   font-weight: bold;
-  background-color: #fff;
-  padding: 8px 12px;
-  border-radius: 8px;
-  transition: background 0.3s;
-}
-
-.menu a:hover {
-  background-color: #e0e0e0;
 }
 
 .kullanici-paneli {
   text-align: right;
 }
 
-.kullanici-paneli button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 5px;
-}
-
-.kullanici-paneli button:hover {
-  background-color: #45a049;
-}
-
-/* Soru Kutusu */
-.soru-kutusu {
-  background-color: #fff3cd;
-  border: 2px dashed #ffa500;
+main {
   padding: 20px;
-  margin: 20px auto;
-  width: 90%;
-  max-width: 600px;
-  border-radius: 12px;
-  font-size: 20px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-/* Seçenekler */
-#secenekler {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 10px;
+.soru-kutusu {
+  background-color: #ffe082;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-size: 20px;
 }
 
 #secenekler button {
-  background-color: #ffb347;
-  color: #000;
-  border: none;
+  display: block;
+  margin: 10px auto;
   padding: 12px 20px;
-  margin: 8px;
   font-size: 16px;
-  border-radius: 10px;
+  border: none;
+  border-radius: 6px;
+  background-color: #ff7043;
+  color: white;
   cursor: pointer;
-  transition: transform 0.2s, background 0.3s;
 }
 
 #secenekler button:hover {
-  background-color: #ffd580;
-  transform: scale(1.05);
-}
-
-/* Doğru Cevap ve Sonraki */
-#dogru-cevap {
-  text-align: center;
-  margin-top: 10px;
-  font-size: 18px;
-  font-weight: bold;
+  background-color: #f4511e;
 }
 
 #sonrakiBtn {
-  margin: 20px auto 0 auto;
-  padding: 10px 20px;
-  background-color: #00bcd4;
-  color: #fff;
-  border: none;
+  margin-top: 20px;
+  padding: 10px 25px;
   font-size: 16px;
-  border-radius: 8px;
+  border: none;
+  background-color: #00bcd4;
+  color: white;
+  border-radius: 6px;
   cursor: pointer;
-  display: block;
-  text-align: center;
 }
 
 #sonrakiBtn:hover {
-  background-color: #0097a7;
+  background-color: #008ba3;
 }
 
-
-#sonrakiBtn:hover {
-  background-color: #0097a7;
-}
-
-/* Reklam Alanı */
 #reklam-alani {
-  background-color: #f0f8ff;
-  border: 1px dotted #87cefa;
-  margin: 20px auto;
+  background-color: #fff59d;
+  text-align: center;
   padding: 10px;
-  width: 90%;
-  max-width: 600px;
-  text-align: center;
-  border-radius: 10px;
-}
-
-/* Test Bitti Alanı */
-#test-bitti {
-  text-align: center;
   margin-top: 30px;
+  border-radius: 6px;
 }
 
-#test-bitti .btn {
+.btn {
   display: inline-block;
   margin: 10px;
-  padding: 12px 18px;
-  background-color: #8bc34a;
+  padding: 12px 20px;
+  background-color: #4caf50;
   color: white;
   text-decoration: none;
-  border-radius: 8px;
-  font-weight: bold;
-}
-
-#test-bitti .btn:hover {
-  background-color: #7cb342;
+  border-radius: 6px;
 }
