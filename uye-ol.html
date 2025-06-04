@@ -1,22 +1,62 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Üye Ol - Testlik</title>
-  <link rel="stylesheet" href="uye-ol-style.css" />
+  <link rel="stylesheet" href="uye-ol-style.css">
 </head>
 <body>
-  <div class="register-container">
+  <div class="uye-kapsayici">
     <h1>📝 Üye Ol</h1>
-    <input type="text" id="username" placeholder="Kullanıcı Adı" required />
-    <input type="email" id="email" placeholder="E-posta" required />
-    <input type="password" id="password" placeholder="Şifre" required />
+    <input type="text" id="kullaniciadi" placeholder="Kullanıcı Adı (zorunlu)">
+    <input type="email" id="email" placeholder="E-posta">
+    <input type="password" id="sifre" placeholder="Şifre">
     <button onclick="uyeOl()">Hesap Oluştur</button>
-    <p id="hata"></p>
-    <a href="giris.html">Zaten hesabın var mı? Giriş Yap</a>
+    <p>Zaten hesabınız var mı? <a href="giris.html">Giriş Yap</a></p>
+    <p id="hata" class="hata"></p>
   </div>
 
-  <script type="module" src="uye-ol.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
+      authDomain: "testlik.firebaseapp.com",
+      projectId: "testlik",
+      storageBucket: "testlik.firebasestorage.app",
+      messagingSenderId: "668524500496",
+      appId: "1:668524500496:web:579bb4fc5990c87afedc95"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    window.uyeOl = async function () {
+      const email = document.getElementById("email").value;
+      const sifre = document.getElementById("sifre").value;
+      const kullaniciadi = document.getElementById("kullaniciadi").value;
+
+      if (!kullaniciadi.trim()) {
+        document.getElementById("hata").innerText = "⚠️ Kullanıcı adı zorunludur!";
+        return;
+      }
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, sifre);
+        const uid = userCredential.user.uid;
+        await setDoc(doc(db, "kullanicilar", uid), {
+          kullaniciadi: kullaniciadi,
+          puan: 0
+        });
+        window.location.href = "index.html";
+      } catch (error) {
+        document.getElementById("hata").innerText = "❌ Kayıt yapılamadı: " + error.message;
+      }
+    };
+  </script>
 </body>
 </html>
