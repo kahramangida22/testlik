@@ -3,7 +3,7 @@ import {
   getFirestore, collection, getDocs, doc, getDoc, setDoc
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 import {
-  getAuth, onAuthStateChanged
+  getAuth, onAuthStateChanged, signOut
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 // Firebase yapılandırması
@@ -30,24 +30,25 @@ onAuthStateChanged(auth, async (user) => {
   if (user) {
     kullanici = user;
     document.getElementById("girisBtn").style.display = "none";
-    document.getElementById("giris-yapan-panel").style.display = "block";
-    const ref = doc(db, "puanlar", user.uid);
-    const snap = await getDoc(ref);
+    document.getElementById("girisBilgisi").style.display = "block";
+
+    const puanRef = doc(db, "puanlar", user.uid);
+    const snap = await getDoc(puanRef);
     if (snap.exists()) {
       const data = snap.data();
       document.getElementById("kullanici-adi").textContent = data.kullaniciAdi || "👤";
       document.getElementById("kullanici-puani").textContent = data.puan || 0;
     }
   }
-  soruGetir();
+
+  sorulariGetir();
 });
 
 window.cikisYap = function () {
-  auth.signOut().then(() => location.reload());
+  signOut(auth).then(() => location.reload());
 };
 
-// Firestore'dan mizah sorularını getir
-async function soruGetir() {
+async function sorulariGetir() {
   const querySnapshot = await getDocs(collection(db, "mizah"));
   sorular = [];
   querySnapshot.forEach((doc) => {
@@ -56,10 +57,15 @@ async function soruGetir() {
   sonrakiSoru();
 }
 
-// Yeni soru getir
 function sonrakiSoru() {
   cevaplandi = false;
   mevcutSoru = sorular[Math.floor(Math.random() * sorular.length)];
+
+  if (!mevcutSoru) {
+    document.getElementById("test-bitti").style.display = "block";
+    document.querySelector(".soru-kapsayici").style.display = "none";
+    return;
+  }
 
   document.getElementById("soru").textContent = mevcutSoru.soru;
   document.getElementById("dogru-cevap").textContent = "";
@@ -68,7 +74,7 @@ function sonrakiSoru() {
   const seceneklerDiv = document.getElementById("secenekler");
   seceneklerDiv.innerHTML = "";
 
-  mevcutSoru.secenekler.forEach((secenek) => {
+  mevcutSoru.secenekler.forEach(secenek => {
     const btn = document.createElement("button");
     btn.textContent = secenek;
     btn.addEventListener("click", () => cevapKontrol(secenek, btn));
@@ -78,19 +84,16 @@ function sonrakiSoru() {
   reklamYenile();
 }
 
-// Cevap kontrol fonksiyonu
 async function cevapKontrol(secenek, buton) {
   if (cevaplandi) return;
   cevaplandi = true;
 
   const temizSecenek = secenek.trim().toLowerCase();
-  const dogruCevap = mevcutSoru.dogru.trim().toLowerCase();
+  const dogru = mevcutSoru.dogru.trim().toLowerCase();
 
-  if (temizSecenek === dogruCevap) {
+  if (temizSecenek === dogru) {
     buton.style.backgroundColor = "#4caf50";
-    if (kullanici) {
-      await puanEkle(10);
-    }
+    if (kullanici) await puanArtir(10);
   } else {
     buton.style.backgroundColor = "#e53935";
     document.getElementById("dogru-cevap").textContent = `❌ Yanlış! Doğru cevap: ${mevcutSoru.dogru}`;
@@ -99,27 +102,22 @@ async function cevapKontrol(secenek, buton) {
   document.getElementById("sonrakiBtn").style.display = "block";
 }
 
-// Puan ekleme
-async function puanEkle(puan) {
+async function puanArtir(puan) {
   const ref = doc(db, "puanlar", kullanici.uid);
   const snap = await getDoc(ref);
   if (snap.exists()) {
-    const mevcutPuan = snap.data().puan || 0;
+    const mevcut = snap.data().puan || 0;
     await setDoc(ref, {
-      puan: mevcutPuan + puan,
+      puan: mevcut + puan,
       kullaniciAdi: snap.data().kullaniciAdi
     });
-    document.getElementById("kullanici-puani").textContent = mevcutPuan + puan;
+    document.getElementById("kullanici-puani").textContent = mevcut + puan;
   }
 }
 
-// Reklam yenile
 function reklamYenile() {
   const reklam = document.getElementById("reklam-alani");
-  reklam.innerHTML = `<p>🎬 Yeni reklam: ${Math.floor(Math.random() * 9999)}</p>`;
+  reklam.innerHTML = `<p>📺 Yeni reklam: ${Math.floor(Math.random() * 10000)}</p>`;
 }
 
-// Sonraki soru butonu
-document.getElementById("sonrakiBtn").addEventListener("click", () => {
-  sonrakiSoru();
-});
+document.getElementById("sonrakiBtn").addEventListener("click", sonrakiSoru);
