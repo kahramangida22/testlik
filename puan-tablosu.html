@@ -1,26 +1,36 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Puan Tablosu - Testlik</title>
-  <link rel="stylesheet" href="puan-tablosu-style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🏆 Puan Tablosu</title>
+  <link rel="stylesheet" href="puan-style.css">
 </head>
 <body>
-  <div class="puan-container">
-    <h1>🏆 Puan Tablosu</h1>
-    <div id="kendi-puan"></div>
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Kullanıcı Adı</th>
-          <th>Puan</th>
-        </tr>
-      </thead>
-      <tbody id="puanlar"></tbody>
-    </table>
-  </div>
+  <header>
+    <h1>🏆 En Yüksek Puanlar</h1>
+  </header>
+
+  <main>
+    <section id="kendi-puanim" style="display: none;">
+      <h2>👤 Senin Puanın</h2>
+      <div id="ben"></div>
+    </section>
+
+    <section>
+      <h2>🌍 Global Sıralama</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Sıra</th>
+            <th>Kullanıcı</th>
+            <th>Puan</th>
+          </tr>
+        </thead>
+        <tbody id="puan-listesi"></tbody>
+      </table>
+    </section>
+  </main>
 
   <script type="module" src="puan-tablosu.js"></script>
 </body>
