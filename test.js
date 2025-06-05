@@ -1,18 +1,17 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
 import {
   getFirestore,
   collection,
   getDocs,
   doc,
-  getDoc,
-  updateDoc
-} from "firebase/firestore";
+  updateDoc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 import {
   getAuth,
   onAuthStateChanged
-} from "firebase/auth";
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
-// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
   authDomain: "testlik.firebaseapp.com",
@@ -27,123 +26,93 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-let sorular = [];
-let mevcutSoru = 0;
-let kullanici = null;
-let cevaplandi = false;
+let user = null;
+let currentUserDocRef = null;
+let currentScore = 0;
+let currentQuestionIndex = 0;
+let questions = [];
 
-// Soru alanları
-const soruElement = document.getElementById("soru");
-const seceneklerElement = document.getElementById("secenekler");
-const dogruDiv = document.getElementById("dogruCevap");
-const sonrakiBtn = document.getElementById("sonrakiBtn");
+onAuthStateChanged(auth, async (u) => {
+  if (u) {
+    user = u;
+    const docRef = doc(db, "kullanicilar", user.uid);
+    currentUserDocRef = docRef;
 
-// Kullanıcı kontrolü
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    kullanici = user;
-    const kullaniciBilgi = document.getElementById("kullaniciBilgi");
-    kullaniciBilgi.innerHTML = `<strong>${user.displayName || "Kullanıcı"}</strong> - 🧠 Puan: <span id="puanYaz">Yükleniyor...</span><br><button onclick="logout()">Çıkış Yap</button>`;
-    puaniGoster();
-  } else {
-    kullanici = null;
-  }
-});
-
-// Puanı göster
-function puaniGoster() {
-  const userDocRef = doc(db, "kullanicilar", kullanici.uid);
-  getDoc(userDocRef).then((docSnap) => {
+    const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      const puan = docSnap.data().puan || 0;
-      document.getElementById("puanYaz").textContent = puan;
+      currentScore = docSnap.data().puan || 0;
     }
-  });
-}
 
-// Soruları getir (kategoriye göre)
-const kategori = document.body.getAttribute("data-kategori");
-const soruKoleksiyonu = collection(db, kategori || "mizah");
-
-getDocs(soruKoleksiyonu).then((snapshot) => {
-  snapshot.forEach((doc) => {
-    sorular.push(doc.data());
-  });
-
-  // Soruları karıştır
-  sorular = sorular.sort(() => Math.random() - 0.5);
-  soruGoster();
+    loadQuestions();
+  } else {
+    alert("Lütfen giriş yapınız.");
+    window.location.href = "giris.html";
+  }
 });
 
-// Soru göster
-function soruGoster() {
-  cevaplandi = false;
-  const soru = sorular[mevcutSoru];
-  soruElement.textContent = soru.soru;
-  seceneklerElement.innerHTML = "";
-  dogruDiv.textContent = "";
-  sonrakiBtn.style.display = "none";
+// Kategoriye göre JSON yolu otomatik alınır
+function getJsonPath() {
+  const file = window.location.pathname.split("/").pop().replace(".html", "");
+  return `testler/${file}`;
+}
 
-  soru.secenekler.forEach((secenek) => {
-    const btn = document.createElement("button");
-    btn.textContent = secenek;
-    btn.classList.add("secenek");
-    btn.onclick = () => cevapKontrol(secenek, soru);
-    seceneklerElement.appendChild(btn);
+async function loadQuestions() {
+  const path = getJsonPath();
+  const ref = collection(db, path);
+  const snapshot = await getDocs(ref);
+
+  snapshot.forEach(doc => {
+    questions.push(doc.data());
   });
+
+  shuffleArray(questions);
+  showQuestion();
 }
 
-// Cevap kontrol
-function cevapKontrol(secenek, soru) {
-  if (cevaplandi) return;
-  cevaplandi = true;
-
-  if (secenek === soru.cevap) {
-    dogruDiv.textContent = "✅ Doğru!";
-    dogruDiv.style.color = "lightgreen";
-
-    // Giriş yaptıysa puan ver
-    if (kullanici) {
-      const userDocRef = doc(db, "kullanicilar", kullanici.uid);
-      getDoc(userDocRef).then((docSnap) => {
-        if (docSnap.exists()) {
-          const mevcutPuan = docSnap.data().puan || 0;
-          const yeniPuan = mevcutPuan + 10;
-
-          updateDoc(userDocRef, { puan: yeniPuan }).then(() => {
-            puaniGoster();
-          });
-        }
-      });
-    } else {
-      dogruDiv.textContent += " (Giriş yapmadığınız için puan kazanmadınız)";
-    }
-
-  } else {
-    dogruDiv.innerHTML = `❌ Yanlış! <br>✅ Doğru cevap: <strong>${soru.cevap}</strong>`;
-    dogruDiv.style.color = "#ffcccb";
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
-
-  sonrakiBtn.style.display = "inline-block";
 }
 
-// Sonraki soruya geç
-sonrakiBtn.addEventListener("click", () => {
-  mevcutSoru++;
-  if (mevcutSoru < sorular.length) {
-    soruGoster();
-  } else {
-    document.getElementById("testAlani").innerHTML = `
-      <h2>🎉 Test Tamamlandı!</h2>
-      <button onclick="window.location.href='index.html'">🏠 Ana Sayfaya Dön</button>
-      <button onclick="location.reload()">🔁 Aynı kategoride başka test çöz</button>
+function showQuestion() {
+  const q = questions[currentQuestionIndex];
+  if (!q) {
+    document.getElementById("soru-alani").innerHTML = "<h3>🎉 Test Bitti!</h3>";
+    document.getElementById("secenekler").innerHTML = `
+      <button onclick="window.location.href='index.html'" class="btn">Ana Sayfa</button>
     `;
+    return;
   }
-});
 
-// Çıkış işlemi
-window.logout = function () {
-  auth.signOut().then(() => {
-    location.reload();
-  });
+  document.getElementById("soru-alani").innerHTML = `<h3>${q.soru}</h3>`;
+  const secenekler = q.secenekler.map(secenek => `
+    <button class="secenek-btn" onclick="cevapla(this, '${secenek}', '${q.cevap}')">${secenek}</button>
+  `).join("");
+
+  document.getElementById("secenekler").innerHTML = secenekler;
+}
+
+window.cevapla = async function (btn, secilen, dogru) {
+  const butonlar = document.querySelectorAll(".secenek-btn");
+  butonlar.forEach(b => b.disabled = true);
+
+  if (secilen === dogru) {
+    btn.classList.add("dogru");
+    currentScore += 10;
+    await updateDoc(currentUserDocRef, { puan: currentScore });
+  } else {
+    btn.classList.add("yanlis");
+    butonlar.forEach(b => {
+      if (b.textContent === dogru) {
+        b.classList.add("dogru");
+      }
+    });
+  }
+
+  setTimeout(() => {
+    currentQuestionIndex++;
+    showQuestion();
+  }, 1500);
 };
