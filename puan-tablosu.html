@@ -1,34 +1,28 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
   <title>🏆 Puan Tablosu</title>
-  <link rel="stylesheet" href="puan-style.css">
+  <link rel="stylesheet" href="puan-style.css" />
 </head>
 <body>
+
   <header>
-    <h1>🏆 En Yüksek Puanlar</h1>
+    <h1>🏆 Puan Tablosu</h1>
+    <div class="menu">
+      <a href="index.html">🏠 Ana Sayfa</a>
+      <a href="kategoriler.html">📂 Kategoriler</a>
+    </div>
+    <div id="kullanici-bilgi">
+      <span id="giris-isim">Giriş yapılmadı</span>
+    </div>
   </header>
 
   <main>
-    <section id="kendi-puanim" style="display: none;">
-      <h2>👤 Senin Puanın</h2>
-      <div id="ben"></div>
-    </section>
-
+    <section id="kendi-puan" class="kutu"></section>
     <section>
-      <h2>🌍 Global Sıralama</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Sıra</th>
-            <th>Kullanıcı</th>
-            <th>Puan</th>
-          </tr>
-        </thead>
-        <tbody id="puan-listesi"></tbody>
-      </table>
+      <h2>En Yüksek Puanlar</h2>
+      <ul id="puan-listesi"></ul>
     </section>
   </main>
 
