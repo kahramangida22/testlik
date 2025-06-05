@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eğlenceli Testler - Testlik.com</title>
+  <link rel="stylesheet" href="index-style.css">
+  <script type="module" src="index.js" defer></script>
+  <style>
+    .kategori-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 20px;
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .kategori-card {
+      background-color: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s, background-color 0.3s;
+      font-weight: bold;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .kategori-card:hover {
+      transform: scale(1.05);
+      background-color: #f0f0f0;
+    }
+
+    .kategori-card span {
+      font-size: 40px;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .kategori-baslik {
+      text-align: center;
+      font-size: 26px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">🎉 Testlik.com</div>
+    <div class="user-panel" id="user-panel">
+      <button id="login-btn" class="btn">🔒 Giriş Yap</button>
+      <div id="user-info" class="hidden">
+        <span id="user-name">👤</span> |
+        <span id="user-score">0 Puan</span> |
+        <button id="logout-btn" class="btn">Çıkış Yap</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h2 class="kategori-baslik">🎉 Eğlenceli Testler</h2>
+
+    <div class="kategori-grid">
+      <a href="test-mizah.html" class="kategori-card"><span>😂</span>Mizah</a>
+      <a href="test-film.html" class="kategori-card"><span>🎬</span>Film</a>
+      <a href="test-muzik.html" class="kategori-card"><span>🎵</span>Müzik</a>
+      <a href="test-bilgi.html" class="kategori-card"><span>🧠</span>Bilgi</a>
+      <a href="test-spor.html" class="kategori-card"><span>🏆</span>Spor</a>
+      <a href="test-turkiye.html" class="kategori-card"><span>🇹🇷</span>Türkiye</a>
+      <a href="test-dunya.html" class="kategori-card"><span>🌍</span>Dünya</a>
+      <a href="test-yapayzeka.html" class="kategori-card"><span>🤖</span>Yapay Zeka</a>
+      <a href="test-internet.html" class="kategori-card"><span>🌐</span>İnternet</a>
+      <a href="test-basketbol.html" class="kategori-card"><span>🏀</span>Basketbol</a>
+      <a href="test-tarih.html" class="kategori-card"><span>📜</span>Tarih</a>
+      <a href="test-bilgisayar.html" class="kategori-card"><span>💻</span>Bilgisayar</a>
+    </div>
+  </main>
+
+  <footer>
+    <p style="text-align:center;">© 2025 Testlik.com - Tüm Hakları Saklıdır</p>
+  </footer>
+</body>
+</html>
