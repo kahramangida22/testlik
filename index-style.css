@@ -1,3 +1,4 @@
+/* GENEL RESET VE YAZI TİPİ */
 * {
   margin: 0;
   padding: 0;
@@ -13,6 +14,7 @@ body {
   flex-direction: column;
 }
 
+/* HEADER */
 .header {
   background-color: #ff7e5f;
   padding: 15px 25px;
@@ -23,6 +25,11 @@ body {
   font-size: 22px;
   font-weight: bold;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .btn {
@@ -49,6 +56,7 @@ body {
   display: none;
 }
 
+/* ANA BÖLÜM */
 .main-section {
   padding: 40px 20px;
   flex: 1;
@@ -88,6 +96,7 @@ body {
   100% { transform: scale(1); }
 }
 
+/* KATEGORİ ALANI */
 .kategori-alani {
   margin-top: 60px;
 }
@@ -123,6 +132,76 @@ body {
   transform: scale(1.05);
 }
 
+/* SORU ALANI */
+.soru-kutusu {
+  max-width: 700px;
+  margin: 30px auto 10px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-size: 20px;
+}
+
+#soru-alani h3 {
+  font-size: 22px;
+  animation: fadeIn 0.4s ease;
+}
+
+/* SEÇENEKLER */
+.secenekler-alani {
+  max-width: 700px;
+  margin: 10px auto 30px auto;
+  padding: 0 20px;
+}
+
+.secenek-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 10px;
+  background-color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.secenek-btn:hover {
+  background-color: #f1f1f1;
+}
+
+.secenek-btn.dogru {
+  background-color: #2ecc71 !important;
+  color: white;
+}
+
+.secenek-btn.yanlis {
+  background-color: #e74c3c !important;
+  color: white;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* REKLAM ALANI */
+.reklam {
+  max-width: 600px;
+  margin: 20px auto;
+  background: #ffefc3;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  text-align: center;
+  font-weight: bold;
+}
+
+/* FOOTER */
 footer {
   text-align: center;
   padding: 15px;
