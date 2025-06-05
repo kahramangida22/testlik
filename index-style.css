@@ -1,80 +1,168 @@
-// Rastgele test yönlendirme
-function rastgeleTest() {
-  const testler = [
-    "test-mizah.html",
-    "test-film.html",
-    "test-muzik.html",
-    "test-basketbol.html",
-    "test-spor.html",
-    "test-futbol.html",
-    "test-mobil.html",
-    "test-yapayzeka.html",
-    "test-bilgisayar.html",
-    "test-dunya.html",
-    "test-turkiye.html",
-    "test-internet.html"
-  ];
-
-  const secilen = testler[Math.floor(Math.random() * testler.length)];
-  window.location.href = secilen;
+/* Genel ayarlar */
+body {
+  margin: 0;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: linear-gradient(135deg, #f5a623, #f76b1c);
+  background-size: 200% 200%;
+  animation: hareketliArkaPlan 15s ease infinite;
+  color: #fff;
 }
 
-// Firebase import ve konfigürasyon
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import {
-  getAuth,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
-import {
-  getFirestore,
-  doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+/* Arka plan geçiş animasyonu */
+@keyframes hareketliArkaPlan {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-// Firebase yapılandırma
-const firebaseConfig = {
-  apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
-  authDomain: "testlik.firebaseapp.com",
-  projectId: "testlik",
-  storageBucket: "testlik.firebasestorage.app",
-  messagingSenderId: "668524500496",
-  appId: "1:668524500496:web:579bb4fc5990c87afedc95",
-  measurementId: "G-8ZEYBJCV3T"
-};
+/* Logo */
+header {
+  text-align: center;
+  padding: 20px 10px;
+  font-size: 36px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 2px 2px 5px #000;
+}
 
-// Firebase başlat
-const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-const db = getFirestore();
+/* Menü */
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
 
-// Giriş yapmış kullanıcıyı kontrol et ve göster
-onAuthStateChanged(auth, async (user) => {
-  const girisBtn = document.getElementById("girisBtn");
-  const girisBilgi = document.getElementById("girisBilgi");
-  const kullaniciAdi = document.getElementById("kullanici-adi");
-  const kullaniciPuani = document.getElementById("kullanici-puani");
+nav button {
+  background-color: #fff;
+  color: #f76b1c;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+  transition: transform 0.3s;
+}
 
-  if (user) {
-    girisBtn.style.display = "none";
-    girisBilgi.style.display = "block";
+nav button:hover {
+  transform: scale(1.1);
+  background-color: #fefefe;
+}
 
-    const ref = doc(db, "kullanicilar", user.uid);
-    const snap = await getDoc(ref);
-    if (snap.exists()) {
-      const data = snap.data();
-      kullaniciAdi.textContent = data.kullaniciAdi || "Kullanıcı";
-      kullaniciPuani.textContent = data.puan || 0;
-    }
-  } else {
-    girisBtn.style.display = "block";
-    girisBilgi.style.display = "none";
+/* Giriş bilgisi */
+#girisBilgi {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #fff;
+  color: #f76b1c;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-weight: bold;
+  display: none;
+  text-align: center;
+}
+
+#girisBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #fff;
+  color: #f76b1c;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+/* Ana başlık */
+h1 {
+  text-align: center;
+  font-size: 28px;
+  margin: 20px;
+  color: #fff;
+}
+
+/* Rastgele test butonu */
+.rastgele-btn {
+  display: block;
+  margin: 20px auto;
+  padding: 15px 25px;
+  background-color: #fff;
+  color: #f76b1c;
+  font-size: 20px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.rastgele-btn:hover {
+  background-color: #ffd700;
+  color: #000;
+  transform: scale(1.1);
+}
+
+/* Kategori kutuları */
+.kategori-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin: 30px auto;
+  padding: 0 20px;
+  max-width: 1200px;
+}
+
+.kategori-kutusu {
+  background-color: #fff;
+  color: #f76b1c;
+  padding: 15px;
+  border-radius: 15px;
+  text-align: center;
+  width: 200px;
+  font-size: 18px;
+  font-weight: bold;
+  box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+
+.kategori-kutusu:hover {
+  transform: scale(1.1);
+  background-color: #ffd700;
+  color: #000;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 40px;
+  padding: 20px;
+  font-size: 14px;
+  color: #fff;
+}
+
+/* Mobil uyum */
+@media screen and (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    align-items: center;
   }
-});
 
-// Çıkış işlemi
-window.cikisYap = function () {
-  signOut(auth).then(() => {
-    location.reload();
-  });
-};
+  .kategori-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #girisBilgi,
+  #girisBtn {
+    top: auto;
+    bottom: 10px;
+    right: 10px;
+  }
+}
