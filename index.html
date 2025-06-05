@@ -1,61 +1,47 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Testlik.com - Oyun Gibi Testler!</title>
-  <link rel="stylesheet" href="index-style.css">
-  <script defer src="index.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Testlik.com - Eğlenceli Testler</title>
+  <link rel="stylesheet" href="index-style.css" />
+  <script type="module" src="index.js" defer></script>
+  <script type="module" src="auth.js" defer></script>
 </head>
 <body>
-  <header>
-    <h1>🎉 Testlik.com 🎮</h1>
-    <div id="kullaniciPanel">
-      <button id="girisBtn" onclick="window.location.href='giris.html'">🔐 Giriş Yap</button>
-      <div id="girisBilgi" style="display: none;">
-        <span id="kullaniciAdi"></span><br>
-        <span id="kullaniciPuani"></span><br>
-        <button id="cikisBtn">🚪 Çıkış Yap</button>
+  <header class="header">
+    <div class="logo">🎉 Testlik.com 🎮</div>
+    <div class="user-panel" id="user-panel">
+      <button id="login-btn" class="btn">🔒 Giriş Yap</button>
+      <div id="user-info" class="hidden">
+        <span id="user-name">👤</span> |
+        <span id="user-score">0 Puan</span> |
+        <button id="logout-btn" class="btn">Çıkış Yap</button>
       </div>
     </div>
   </header>
 
-  <nav>
-    <button onclick="window.location.href='kategoriler.html'">📂 Kategoriler</button>
-    <button onclick="window.location.href='puan-tablosu.html'">🏆 Puan Tablosu</button>
-    <button onclick="window.location.href='admin.html'" id="adminBtn" style="display: none;">🛠️ Admin Paneli</button>
-  </nav>
-
-  <main>
-    <section class="tanitim">
+  <main class="main-section">
+    <div class="intro">
       <h2>🧠 Bugün beynine kaç soru soralım?</h2>
       <p>Test çöz, eğlen, puan kazan! 🎯 Her soru bir macera!</p>
-      <button class="oyun-btn" onclick="rastgeleTest()">🎲 Bana Rastgele Test Ver!</button>
-    </section>
+      <button class="test-btn" onclick="rastgeleTest()">🎲 Bana Rastgele Test Ver!</button>
+    </div>
 
-    <section class="kategoriler">
-      <h3>📚 Kategoriler</h3>
-      <div class="kategori-listesi">
-        <div class="kategori" onclick="window.location.href='bilgi.html'">🧠 Bilgi</div>
-        <div class="kategori" onclick="window.location.href='eglence.html'">😂 Eğlence</div>
-        <div class="kategori" onclick="window.location.href='spor.html'">🏀 Spor</div>
-        <div class="kategori" onclick="window.location.href='teknoloji.html'">💾 Teknoloji</div>
-        <div class="kategori" onclick="window.location.href='genel-kultur.html'">🌍 Genel Kültür</div>
+    <section class="kategori-alani">
+      <h3>🧩 Kategoriler</h3>
+      <div class="kategori-kartlar">
+        <a href="bilgi.html" class="kategori-btn">🧠 Bilgi</a>
+        <a href="eglence.html" class="kategori-btn">😂 Eğlence</a>
+        <a href="spor.html" class="kategori-btn">🏀 Spor</a>
+        <a href="teknoloji.html" class="kategori-btn">💡 Teknoloji</a>
+        <a href="genel-kultur.html" class="kategori-btn">🌍 Genel Kültür</a>
       </div>
-    </section>
-
-    <section class="ornek-testler">
-      <h3>🧪 Örnek Testler</h3>
-      <ul>
-        <li>🤖 Yapay Zeka Hakkında Ne Biliyorsun?</li>
-        <li>🎬 Bu Film Repliğini Biliyor musun?</li>
-        <li>⚽ En Zor Futbol IQ Testi!</li>
-      </ul>
     </section>
   </main>
 
   <footer>
-    <p>© 2025 Testlik.com - Tüm hakları saklıdır.</p>
+    <p>© 2025 Testlik.com - Tüm Hakları Saklıdır</p>
   </footer>
 </body>
 </html>
