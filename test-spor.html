@@ -3,20 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Spor Testi - Testlik</title>
+  <title>🏆 Spor Tarihi Testi</title>
   <link rel="stylesheet" href="test-style.css" />
 </head>
 <body>
-  <div class="test-container">
-    <h1>🏆 Spor Testi</h1>
-    <div id="soru-kutusu"></div>
-    <div id="cevaplar"></div>
-    <p id="durum"></p>
-    <div id="butonlar" style="display: none;">
-      <a href="index.html" class="btn">🏠 Ana Sayfa</a>
-      <a href="spor.html" class="btn">➕ Başka Test</a>
+
+  <header>
+    <h1 class="logo">🎉 Testlik.com</h1>
+    <div class="nav">
+      <a href="index.html">🏠 Ana Sayfa</a>
+      <a href="kategoriler.html">📂 Kategoriler</a>
     </div>
-  </div>
+    <div id="kullanici-paneli">
+      <button id="girisBtn">Giriş Yap</button>
+      <div id="girisBilgisi" style="display:none;">
+        <span id="kullanici-adi">👤</span> | <span id="kullanici-puani">0</span> Puan
+        <button onclick="cikisYap()">Çıkış Yap</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="soru-kapsayici">
+      <p id="soru" class="soru-metin"></p>
+      <div id="secenekler" class="secenekler"></div>
+      <div id="dogru-cevap" class="dogru-cevap"></div>
+      <button id="sonrakiBtn" class="sonraki" style="display:none;">➡️ Sonraki Soru</button>
+    </div>
+
+    <div id="reklam-alani" class="reklam">
+      🏅 Spor Tarihi reklam alanı
+    </div>
+
+    <div id="test-bitti" style="display:none;" class="son-ekran">
+      <h2>🎉 Test Tamamlandı!</h2>
+      <a href="index.html" class="btn">🏠 Ana Sayfa</a>
+      <a href="test-spor.html" class="btn">🔁 Yeni Spor Testi</a>
+    </div>
+  </main>
 
   <script type="module" src="test-spor.js"></script>
 </body>
