@@ -1,60 +1,67 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
 import {
-  getFirestore, collection, getDocs, query, orderBy
-} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+  getFirestore,
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 import {
-  getAuth, onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+  getAuth,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
-// Firebase yapılandırması
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
   authDomain: "testlik.firebaseapp.com",
   projectId: "testlik",
   storageBucket: "testlik.firebasestorage.app",
   messagingSenderId: "668524500496",
-  appId: "1:668524500496:web:579bb4fc5990c87afedc95"
+  appId: "1:668524500496:web:579bb4fc5990c87afedc95",
+  measurementId: "G-8ZEYBJCV3T"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuth();
+const auth = getAuth(app);
 
-const puanListesi = document.getElementById("puan-listesi");
-const kendiPuanKutusu = document.getElementById("kendi-puan");
-const girisIsim = document.getElementById("giris-isim");
+let currentUserId = null;
 
-let kullaniciUID = null;
-
-// Giriş yapan kullanıcıyı bul
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(auth, (user) => {
   if (user) {
-    kullaniciUID = user.uid;
-    girisIsim.textContent = `👤 ${user.displayName || user.email}`;
-    puanlariGetir();
-  } else {
-    girisIsim.textContent = "🔑 Giriş Yapılmadı";
-    kendiPuanKutusu.textContent = "🔒 Giriş yaparak kendi puanınızı görebilirsiniz.";
-    puanlariGetir(); // misafir için sadece liste
+    currentUserId = user.uid;
   }
+  getPuanTablosu();
 });
 
-// Firestore'dan puan verilerini getir
-async function puanlariGetir() {
-  const q = query(collection(db, "kullanicilar"), orderBy("puan", "desc"));
-  const querySnapshot = await getDocs(q);
+async function getPuanTablosu() {
+  const usersRef = collection(db, "kullanicilar");
+  const snapshot = await getDocs(usersRef);
 
-  let index = 1;
-  querySnapshot.forEach((docSnap) => {
-    const data = docSnap.data();
-    const li = document.createElement("li");
-    li.innerHTML = `<span>#${index} - ${data.kullaniciAdi}</span><span>${data.puan} 🏅</span>`;
-    puanListesi.appendChild(li);
+  let users = [];
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    users.push({
+      id: doc.id,
+      kullaniciAdi: data.kullaniciAdi || "Bilinmeyen",
+      puan: data.puan || 0
+    });
+  });
 
-    if (docSnap.id === kullaniciUID) {
-      kendiPuanKutusu.textContent = `🎯 Senin Puanın: ${data.puan} | Sıralama: #${index}`;
+  users.sort((a, b) => b.puan - a.puan);
+
+  const tbody = document.getElementById("puanlar-body");
+  tbody.innerHTML = "";
+
+  users.forEach((user, index) => {
+    const tr = document.createElement("tr");
+    if (user.id === currentUserId) {
+      tr.classList.add("highlight");
     }
 
-    index++;
+    tr.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${user.kullaniciAdi}</td>
+      <td>${user.puan}</td>
+    `;
+    tbody.appendChild(tr);
   });
 }
