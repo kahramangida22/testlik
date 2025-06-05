@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sınavlar - Testlik.com</title>
+  <link rel="stylesheet" href="index-style.css" />
+  <script type="module" src="index.js" defer></script>
+  <style>
+    .sinav-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      padding: 40px 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .sinav-kart {
+      background-color: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s, background-color 0.3s;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .sinav-kart:hover {
+      transform: scale(1.05);
+      background-color: #f0f9ff;
+    }
+
+    .sinav-kart span {
+      font-size: 36px;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .kategori-baslik {
+      text-align: center;
+      font-size: 26px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">📚 Testlik.com</div>
+    <div class="user-panel" id="user-panel">
+      <button id="login-btn" class="btn">🔒 Giriş Yap</button>
+      <div id="user-info" class="hidden">
+        <span id="user-name">👤</span> |
+        <span id="user-score">0 Puan</span> |
+        <button id="logout-btn" class="btn">Çıkış Yap</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h2 class="kategori-baslik">📘 Türkiye'de Yaygın Sınavlar</h2>
+
+    <div class="sinav-grid">
+      <a href="test-tyt.html" class="sinav-kart"><span>📝</span>TYT</a>
+      <a href="test-ayt.html" class="sinav-kart"><span>📘</span>AYT</a>
+      <a href="test-ydt.html" class="sinav-kart"><span>🌍</span>YDT</a>
+      <a href="test-kpss.html" class="sinav-kart"><span>🏛️</span>KPSS</a>
+      <a href="test-ales.html" class="sinav-kart"><span>🎓</span>ALES</a>
+      <a href="test-dgs.html" class="sinav-kart"><span>📈</span>DGS</a>
+      <a href="test-yokdil.html" class="sinav-kart"><span>🗣️</span>YÖKDİL</a>
+      <a href="test-yds.html" class="sinav-kart"><span>🗨️</span>YDS</a>
+
+      <a href="test-tus.html" class="sinav-kart"><span>🧬</span>TUS</a>
+      <a href="test-dus.html" class="sinav-kart"><span>🦷</span>DUS</a>
+      <a href="test-sts.html" class="sinav-kart"><span>🏥</span>STS</a>
+      <a href="test-yos.html" class="sinav-kart"><span>🌐</span>YÖS</a>
+
+      <a href="test-ehliyet.html" class="sinav-kart"><span>🚗</span>Ehliyet</a>
+    </div>
+  </main>
+
+  <footer>
+    <p style="text-align:center;">© 2025 Testlik.com - Tüm Hakları Saklıdır</p>
+  </footer>
+</body>
+</html>
