@@ -2,18 +2,19 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Giriş Yap - Testlik</title>
-  <link rel="stylesheet" href="giris-style.css" />
+  <title>Giriş Yap</title>
+  <link rel="stylesheet" href="auth-style.css" />
 </head>
 <body>
-  <div class="login-container">
-    <h1>🔐 Giriş Yap</h1>
-    <input type="email" id="email" placeholder="E-posta" required />
-    <input type="password" id="password" placeholder="Şifre" required />
+  <div class="auth-container">
+    <h2>🔑 Giriş Yap</h2>
+
+    <input type="email" id="girisEmail" placeholder="E-posta" />
+    <input type="password" id="girisSifre" placeholder="Şifre" />
     <button onclick="girisYap()">Giriş Yap</button>
-    <p id="hata"></p>
-    <a href="uye-ol.html">Hesabın yok mu? Üye Ol</a>
+
+    <p>Zaten hesabınız yok mu? <a href="uye-ol.html">Üye Ol</a></p>
+    <p id="girisMesaj" class="mesaj"></p>
   </div>
 
   <script type="module" src="giris.js"></script>
