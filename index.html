@@ -2,18 +2,18 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <title>Testlik.com</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Testlik.com - Eğlenerek Test Çöz!</title>
   <link rel="stylesheet" href="index-style.css" />
 </head>
 <body>
   <header>
     <h1 class="logo">🎉 Testlik.com</h1>
-    <nav>
+    <nav class="nav">
       <a href="kategoriler.html">📂 Kategoriler</a>
       <a href="puan-tablosu.html">🏆 Puan Tablosu</a>
       <a href="admin.html" id="adminLink" style="display:none;">🛠️ Admin</a>
     </nav>
-
     <div id="kullanici-paneli">
       <button id="girisBtn" onclick="window.location.href='giris.html'">Giriş Yap</button>
       <div id="girisBilgi" style="display: none;">
@@ -24,12 +24,28 @@
   </header>
 
   <main>
-    <section class="tanitim">
+    <section class="hero">
       <h2>Test Çözerek Eğlen, Öğren ve Kazan!</h2>
-      <p>Hemen kategorilerden birini seç ve yeteneklerini göster!</p>
-      <a href="kategoriler.html" class="btn">🎯 Kategorilere Git</a>
+      <p>Her kategori birbirinden renkli! Eğlenceli testlerle ne kadar bilgilisin göster!</p>
+      <a href="kategoriler.html" class="btn">🚀 Hemen Başla</a>
+    </section>
+
+    <section class="ornek-testler">
+      <h3>📌 Popüler Testler</h3>
+      <div class="test-kartlari">
+        <div class="kart">😂 Mizah Testi</div>
+        <div class="kart">🎬 Film Bilgisi</div>
+        <div class="kart">🎵 Müzik Zevki</div>
+        <div class="kart">📱 Mobil Teknolojiler</div>
+        <div class="kart">🧠 Yapay Zeka</div>
+        <div class="kart">🌐 İnternet Kültürü</div>
+      </div>
     </section>
   </main>
+
+  <footer>
+    <p>© 2025 Testlik.com - Tüm hakları saklıdır.</p>
+  </footer>
 
   <script type="module" src="index.js"></script>
 </body>
