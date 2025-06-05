@@ -3,31 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🏀 Basketbol Testi</title>
+  <title>🏀 Basketbol Bilgisi Testi</title>
   <link rel="stylesheet" href="test-style.css" />
 </head>
 <body>
+
   <header>
-    <h1>🏀 Basketbol Bilgisi Testi</h1>
-    <div class="puan">Puan: <span id="puan">0</span></div>
+    <h1 class="logo">🎉 Testlik.com</h1>
+    <div class="nav">
+      <a href="index.html">🏠 Ana Sayfa</a>
+      <a href="kategoriler.html">📂 Kategoriler</a>
+    </div>
+    <div id="kullanici-paneli">
+      <button id="girisBtn">Giriş Yap</button>
+      <div id="girisBilgisi" style="display:none;">
+        <span id="kullanici-adi">👤</span> | <span id="kullanici-puani">0</span> Puan
+        <button onclick="cikisYap()">Çıkış Yap</button>
+      </div>
+    </div>
   </header>
 
   <main>
-    <div id="soru-alani">
-      <p id="soru"></p>
-      <div id="secenekler"></div>
-      <div id="dogru-cevap"></div>
-      <button id="sonrakiBtn" style="display:none;">Sonraki Soru</button>
+    <div class="soru-kapsayici">
+      <p id="soru" class="soru-metin"></p>
+      <div id="secenekler" class="secenekler"></div>
+      <div id="dogru-cevap" class="dogru-cevap"></div>
+      <button id="sonrakiBtn" class="sonraki" style="display:none;">➡️ Sonraki Soru</button>
     </div>
 
-    <div id="reklam-alani">
-      <p>🏀 Her soruda yenilenen reklam alanı</p>
+    <div id="reklam-alani" class="reklam">
+      🏀 Basket reklamı alanı
     </div>
 
-    <div id="test-bitti" style="display:none;">
-      <h2>Test tamamlandı! 🏆</h2>
+    <div id="test-bitti" style="display:none;" class="son-ekran">
+      <h2>🎉 Test Tamamlandı!</h2>
       <a href="index.html" class="btn">🏠 Ana Sayfa</a>
-      <a href="test-basketbol.html" class="btn">🔁 Aynı kategoride başka test çöz</a>
+      <a href="test-basketbol.html" class="btn">🔁 Yeni Basketbol Testi</a>
     </div>
   </main>
 
