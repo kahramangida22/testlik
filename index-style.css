@@ -1,168 +1,204 @@
-/* Genel ayarlar */
+
+/* Genel yapı */
 body {
   margin: 0;
+  padding: 0;
   font-family: 'Comic Sans MS', cursive, sans-serif;
-  background: linear-gradient(135deg, #f5a623, #f76b1c);
-  background-size: 200% 200%;
-  animation: hareketliArkaPlan 15s ease infinite;
+  background: linear-gradient(135deg, #1f1c2c, #928dab);
   color: #fff;
+  animation: bgAnim 20s ease infinite;
 }
 
-/* Arka plan geçiş animasyonu */
-@keyframes hareketliArkaPlan {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes bgAnim {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
 }
 
-/* Logo */
+/* Header */
 header {
+  background-color: #ff7f50;
+  padding: 20px;
   text-align: center;
-  padding: 20px 10px;
-  font-size: 36px;
-  font-weight: bold;
-  color: #fff;
-  text-shadow: 2px 2px 5px #000;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
 
-/* Menü */
+header h1 {
+  margin: 0;
+  font-size: 38px;
+  color: #fff;
+  text-shadow: 2px 2px 4px #000;
+}
+
+#kullaniciPanel {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  text-align: right;
+}
+
+/* Giriş butonları */
+#girisBtn, #cikisBtn {
+  background-color: #fff;
+  color: #ff7f50;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+#girisBilgi {
+  background-color: #fff;
+  color: #333;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 2px 2px 6px #000;
+}
+
+/* Navigasyon */
 nav {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 20px;
+  background-color: #2d2a4a;
+  padding: 15px;
 }
 
 nav button {
-  background-color: #fff;
-  color: #f76b1c;
+  background-color: #ff7f50;
+  color: #fff;
+  padding: 10px 18px;
   border: none;
-  border-radius: 25px;
-  padding: 10px 20px;
-  font-size: 16px;
+  border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-  transition: transform 0.3s;
+  font-size: 16px;
+  transition: all 0.3s;
 }
 
 nav button:hover {
   transform: scale(1.1);
-  background-color: #fefefe;
+  background-color: #ffa07a;
 }
 
-/* Giriş bilgisi */
-#girisBilgi {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: #fff;
-  color: #f76b1c;
-  padding: 10px 15px;
-  border-radius: 10px;
-  font-weight: bold;
-  display: none;
+/* Tanıtım bölümü */
+.tanitim {
   text-align: center;
+  padding: 40px 20px;
 }
 
-#girisBtn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: #fff;
-  color: #f76b1c;
-  padding: 10px 15px;
-  border-radius: 10px;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
+.tanitim h2 {
+  font-size: 30px;
 }
 
-/* Ana başlık */
-h1 {
-  text-align: center;
-  font-size: 28px;
-  margin: 20px;
+.tanitim p {
+  font-size: 18px;
+  margin: 10px auto;
+  max-width: 600px;
+}
+
+/* Rastgele butonu */
+.oyun-btn {
+  background-color: #32cd32;
   color: #fff;
-}
-
-/* Rastgele test butonu */
-.rastgele-btn {
-  display: block;
-  margin: 20px auto;
-  padding: 15px 25px;
-  background-color: #fff;
-  color: #f76b1c;
-  font-size: 20px;
-  border: none;
+  font-size: 18px;
+  padding: 14px 30px;
   border-radius: 30px;
+  border: none;
   cursor: pointer;
+  margin-top: 20px;
+  transition: 0.3s;
   font-weight: bold;
-  transition: all 0.3s;
 }
 
-.rastgele-btn:hover {
-  background-color: #ffd700;
+.oyun-btn:hover {
+  background-color: #66ff66;
   color: #000;
-  transform: scale(1.1);
 }
 
-/* Kategori kutuları */
-.kategori-container {
+/* Kategoriler */
+.kategoriler {
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.kategori-listesi {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 15px;
-  margin: 30px auto;
-  padding: 0 20px;
-  max-width: 1200px;
+  gap: 20px;
+  margin-top: 20px;
 }
 
-.kategori-kutusu {
+.kategori {
   background-color: #fff;
-  color: #f76b1c;
-  padding: 15px;
+  color: #ff7f50;
+  padding: 20px;
   border-radius: 15px;
+  width: 150px;
   text-align: center;
-  width: 200px;
-  font-size: 18px;
   font-weight: bold;
-  box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
-  transition: transform 0.3s;
   cursor: pointer;
+  transition: transform 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
-.kategori-kutusu:hover {
+.kategori:hover {
   transform: scale(1.1);
-  background-color: #ffd700;
+  background-color: #ffe4b5;
   color: #000;
+}
+
+/* Örnek testler */
+.ornek-testler {
+  text-align: center;
+  padding: 20px;
+  background-color: #2d2a4a;
+}
+
+.ornek-testler h3 {
+  color: #ffa07a;
+  font-size: 24px;
+}
+
+.ornek-testler ul {
+  list-style: none;
+  padding: 0;
+  font-size: 18px;
+}
+
+.ornek-testler li {
+  margin: 10px 0;
+  color: #fff;
 }
 
 /* Footer */
 footer {
   text-align: center;
-  margin-top: 40px;
   padding: 20px;
+  background-color: #1f1c2c;
   font-size: 14px;
-  color: #fff;
+  color: #ccc;
 }
 
 /* Mobil uyum */
 @media screen and (max-width: 768px) {
   nav {
     flex-direction: column;
-    align-items: center;
   }
 
-  .kategori-container {
+  .kategori-listesi {
     flex-direction: column;
-    align-items: center;
   }
 
-  #girisBilgi,
-  #girisBtn {
-    top: auto;
-    bottom: 10px;
-    right: 10px;
+  header h1 {
+    font-size: 26px;
+  }
+
+  .oyun-btn {
+    font-size: 16px;
   }
 }
