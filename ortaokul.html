@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ortaokul Testleri - Testlik.com</title>
+  <link rel="stylesheet" href="index-style.css" />
+  <script type="module" src="index.js" defer></script>
+  <style>
+    .siniflar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 30px;
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .sinif-kart {
+      background-color: white;
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+      font-size: 20px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .sinif-kart:hover {
+      transform: scale(1.05);
+      background-color: #f0f8ff;
+    }
+
+    .sinif-kart span {
+      font-size: 36px;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .kategori-baslik {
+      text-align: center;
+      font-size: 28px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">🎉 Testlik.com</div>
+    <div class="user-panel" id="user-panel">
+      <button id="login-btn" class="btn">🔒 Giriş Yap</button>
+      <div id="user-info" class="hidden">
+        <span id="user-name">👤</span> |
+        <span id="user-score">0 Puan</span> |
+        <button id="logout-btn" class="btn">Çıkış Yap</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h2 class="kategori-baslik">🏫 Ortaokul Sınıfları</h2>
+
+    <div class="siniflar-grid">
+      <a href="ortaokul-5.html" class="sinif-kart"><span>📘</span>5. Sınıf</a>
+      <a href="ortaokul-6.html" class="sinif-kart"><span>📙</span>6. Sınıf</a>
+      <a href="ortaokul-7.html" class="sinif-kart"><span>📗</span>7. Sınıf</a>
+      <a href="ortaokul-8.html" class="sinif-kart"><span>📕</span>8. Sınıf</a>
+    </div>
+  </main>
+
+  <footer>
+    <p style="text-align:center;">© 2025 Testlik.com - Tüm Hakları Saklıdır</p>
+  </footer>
+</body>
+</html>
