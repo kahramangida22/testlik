@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2. Sınıf Testleri - Testlik.com</title>
+  <link rel="stylesheet" href="index-style.css" />
+  <script type="module" src="index.js" defer></script>
+  <style>
+    .ders-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 20px;
+      padding: 40px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .ders-kart {
+      background-color: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s, background-color 0.3s;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .ders-kart:hover {
+      transform: scale(1.05);
+      background-color: #f0f0f0;
+    }
+
+    .ders-kart span {
+      font-size: 36px;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .kategori-baslik {
+      text-align: center;
+      font-size: 26px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">🎉 Testlik.com</div>
+    <div class="user-panel" id="user-panel">
+      <button id="login-btn" class="btn">🔒 Giriş Yap</button>
+      <div id="user-info" class="hidden">
+        <span id="user-name">👤</span> |
+        <span id="user-score">0 Puan</span> |
+        <button id="logout-btn" class="btn">Çıkış Yap</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h2 class="kategori-baslik">📗 2. Sınıf Dersleri</h2>
+
+    <div class="ders-grid">
+      <a href="test-ilkokul2-turkce.html" class="ders-kart"><span>📘</span>Türkçe</a>
+      <a href="test-ilkokul2-matematik.html" class="ders-kart"><span>➕</span>Matematik</a>
+      <a href="test-ilkokul2-hayatbilgisi.html" class="ders-kart"><span>🌍</span>Hayat Bilgisi</a>
+      <a href="test-ilkokul2-gorselsanatlar.html" class="ders-kart"><span>🎨</span>Görsel Sanatlar</a>
+      <a href="test-ilkokul2-muzik.html" class="ders-kart"><span>🎵</span>Müzik</a>
+      <a href="test-ilkokul2-bedeneğitimi.html" class="ders-kart"><span>🏃‍♂️</span>Beden Eğitimi</a>
+      <a href="test-ilkokul2-oyun.html" class="ders-kart"><span>🎲</span>Oyun ve Fiziki Etkinlikler</a>
+      <a href="test-ilkokul2-serbest.html" class="ders-kart"><span>🧩</span>Serbest Etkinlikler</a>
+      <a href="test-ilkokul2-degerler.html" class="ders-kart"><span>💡</span>Değerler Eğitimi</a>
+    </div>
+  </main>
+
+  <footer>
+    <p style="text-align:center;">© 2025 Testlik.com - Tüm Hakları Saklıdır</p>
+  </footer>
+</body>
+</html>
