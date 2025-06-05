@@ -7,10 +7,83 @@
   <link rel="stylesheet" href="index-style.css" />
   <script type="module" src="index.js" defer></script>
   <script type="module" src="auth.js" defer></script>
+  <style>
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 20px;
+      padding: 30px 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .menu-btn {
+      background-color: white;
+      border: 2px solid #ff7e5f;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .menu-btn:hover {
+      transform: scale(1.05);
+      background-color: #fff6f0;
+    }
+
+    .menu-btn span {
+      font-size: 36px;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .hero {
+      padding: 50px 20px 20px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 38px;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: #555;
+    }
+
+    .animated-test-btn {
+      margin: 30px auto;
+      display: inline-block;
+      padding: 16px 32px;
+      font-size: 20px;
+      background-color: #2ecc71;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      animation: bounce 2s infinite;
+    }
+
+    .animated-test-btn:hover {
+      background-color: #27ae60;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
 </head>
 <body>
   <header class="header">
-    <div class="logo">🎉 Testlik.com 🎮</div>
+    <div class="logo">🎉 Testlik.com</div>
     <div class="user-panel" id="user-panel">
       <button id="login-btn" class="btn">🔒 Giriş Yap</button>
       <div id="user-info" class="hidden">
@@ -21,27 +94,31 @@
     </div>
   </header>
 
-  <main class="main-section">
-    <div class="intro">
-      <h2>🧠 Bugün beynine kaç soru soralım?</h2>
-      <p>Test çöz, eğlen, puan kazan! 🎯 Her soru bir macera!</p>
-      <button class="test-btn" onclick="rastgeleTest()">🎲 Bana Rastgele Test Ver!</button>
-    </div>
-
-    <section class="kategori-alani">
-      <h3>🧩 Kategoriler</h3>
-      <div class="kategori-kartlar">
-        <a href="bilgi.html" class="kategori-btn">🧠 Bilgi</a>
-        <a href="eglence.html" class="kategori-btn">😂 Eğlence</a>
-        <a href="spor.html" class="kategori-btn">🏀 Spor</a>
-        <a href="teknoloji.html" class="kategori-btn">💡 Teknoloji</a>
-        <a href="genel-kultur.html" class="kategori-btn">🌍 Genel Kültür</a>
-      </div>
+  <main>
+    <section class="hero">
+      <h1>🎮 Hazırsan Başlıyoruz!</h1>
+      <p>Test çöz, puan kazan, rakiplerini geç! 🧠</p>
+      <button class="animated-test-btn" onclick="rastgeleTest()">🎲 Rastgele Test Başlat</button>
     </section>
+
+    <div class="menu-grid">
+      <div class="menu-btn" onclick="window.location.href='kategoriler.html'">
+        <span>📚</span>
+        Kategoriler
+      </div>
+      <div class="menu-btn" onclick="window.location.href='puan-tablosu.html'">
+        <span>🏆</span>
+        Puan Tablosu
+      </div>
+      <div class="menu-btn" onclick="rastgeleTest()">
+        <span>🎲</span>
+        Test Çöz
+      </div>
+    </div>
   </main>
 
   <footer>
-    <p>© 2025 Testlik.com - Tüm Hakları Saklıdır</p>
+    <p style="text-align:center;">© 2025 Testlik.com - Tüm Hakları Saklıdır</p>
   </footer>
 </body>
 </html>
