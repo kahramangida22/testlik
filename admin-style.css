@@ -1,68 +1,43 @@
 body {
-  font-family: "Comic Sans MS", cursive, sans-serif;
-  background: linear-gradient(135deg, #fceabb, #f8b500);
-  color: #333;
+  font-family: Arial, sans-serif;
+  background: #fefefe;
   margin: 0;
-  padding: 0;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  background: linear-gradient(135deg, #ffecd2, #fcb69f);
 }
 
-header {
-  background-color: #ff9800;
-  padding: 20px;
-  text-align: center;
-  color: white;
-  font-size: 28px;
-  font-weight: bold;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-header a {
-  color: white;
-  text-decoration: none;
-  font-size: 16px;
-  float: right;
-  margin-top: -35px;
-  margin-right: 20px;
-}
-
-main {
+.container {
   max-width: 600px;
-  margin: 40px auto;
-  background: white;
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-h2 {
-  color: #ff9800;
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-label, select, input {
-  display: block;
-  margin-bottom: 15px;
-  font-size: 16px;
   width: 100%;
+  background: white;
+  border-radius: 10px;
+  padding: 25px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
 }
 
-select, input[type="file"] {
-  padding: 10px;
+textarea, input {
+  width: 100%;
+  margin-top: 15px;
+  padding: 12px;
   border-radius: 8px;
   border: 1px solid #ccc;
+  resize: vertical;
 }
 
 button {
-  background-color: #4caf50;
+  margin-top: 15px;
+  width: 100%;
+  padding: 12px;
+  background-color: #4CAF50;
   color: white;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 10px;
   font-size: 16px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  margin-top: 10px;
-  transition: 0.3s;
 }
 
 button:hover {
@@ -70,8 +45,7 @@ button:hover {
 }
 
 #durumMesaji {
-  margin-top: 20px;
+  margin-top: 15px;
   font-weight: bold;
-  font-size: 16px;
   color: #333;
 }
