@@ -1,27 +1,19 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Paneli - Test Yükle</title>
-  <link rel="stylesheet" href="admin-style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - Testlik</title>
+  <link rel="stylesheet" href="admin-style.css" />
   <script type="module" src="admin.js" defer></script>
 </head>
 <body>
-  <h1>⚙️ Admin Paneli</h1>
-
-  <label for="kategori">Kategori Adı (ör. mizah, bilgi, spor):</label><br>
-  <input type="text" id="kategori" placeholder="Kategori ismi yaz..."><br><br>
-
-  <label for="jsonInput">Test JSON Verisi:</label><br>
-  <textarea id="jsonInput" rows="15" cols="60" placeholder='[
-  {
-    "soru": "Atatürk’ün doğum yılı nedir?",
-    "secenekler": ["1871", "1881", "1891", "1901"],
-    "cevap": "1881"
-  }
-]'></textarea><br><br>
-
-  <button id="gonderBtn">🔥 Firestore’a Yükle</button>
-  <p id="durum"></p>
+  <div class="container">
+    <h1>🧠 Testlik Admin Paneli</h1>
+    <textarea id="jsonInput" placeholder='[{ "soru": "...", "secenekler": ["A", "B", "C", "D"], "cevap": "B" }]' rows="12"></textarea>
+    <input type="text" id="kategoriInput" placeholder="Kategori adı (örn: mizah, tarih, film)"/>
+    <button id="gonderBtn">🔥 Firestore'a Kaydet</button>
+    <p id="durumMesaji"></p>
+  </div>
 </body>
 </html>
