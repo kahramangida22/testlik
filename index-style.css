@@ -1,48 +1,129 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import {
-  getAuth, onAuthStateChanged, signOut
-} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import {
-  getFirestore, doc, getDoc
-} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-// Firebase ayarları
-const firebaseConfig = {
-  apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
-  authDomain: "testlik.firebaseapp.com",
-  projectId: "testlik",
-  storageBucket: "testlik.firebasestorage.app",
-  messagingSenderId: "668524500496",
-  appId: "1:668524500496:web:579bb4fc5990c87afedc95"
-};
+body {
+  font-family: 'Comic Sans MS', sans-serif;
+  background: linear-gradient(to bottom right, #ffe6f0, #e0f7fa);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-const db = getFirestore(app);
+header {
+  background-color: #ff80ab;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
 
-// Giriş kontrolü
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    document.getElementById("girisBtn").style.display = "none";
-    document.getElementById("girisBilgi").style.display = "inline-block";
+.logo {
+  font-size: 2em;
+  font-weight: bold;
+}
 
-    // Admin mail adresi kontrolü
-    if (user.email === "admin@testlik.com") {
-      document.getElementById("adminLink").style.display = "inline-block";
-    }
+.nav a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
 
-    // Firestore'dan kullanıcı adı ve puanı çek
-    const ref = doc(db, "kullanicilar", user.uid);
-    const snap = await getDoc(ref);
-    if (snap.exists()) {
-      const data = snap.data();
-      document.getElementById("kullanici-adi").textContent = data.kullaniciAdi || "👤";
-      document.getElementById("kullanici-puani").textContent = data.puan || 0;
-    }
+#kullanici-paneli {
+  margin-top: 10px;
+}
+
+main {
+  flex: 1;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.hero {
+  background-color: #fce4ec;
+  padding: 30px;
+  border-radius: 15px;
+  margin-bottom: 40px;
+}
+
+.hero h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.btn {
+  background-color: #ff4081;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #e91e63;
+}
+
+.ornek-testler h3 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.test-kartlari {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.kart {
+  background-color: #fff;
+  border: 2px dashed #ff80ab;
+  padding: 20px;
+  border-radius: 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.kart:hover {
+  transform: scale(1.05);
+  background-color: #fff3f8;
+}
+
+footer {
+  background-color: #ff80ab;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  font-size: 0.9rem;
+}
+
+/* Mobil uyumluluk */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
   }
-});
 
-// Çıkış
-window.cikisYap = function () {
-  signOut(auth).then(() => location.reload());
-};
+  .nav {
+    margin-top: 10px;
+  }
+
+  .test-kartlari {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+}
