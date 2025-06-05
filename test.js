@@ -50,15 +50,14 @@ onAuthStateChanged(auth, async (u) => {
   }
 });
 
-// Kategoriye göre JSON yolu otomatik alınır
-function getJsonPath() {
-  const file = window.location.pathname.split("/").pop().replace(".html", "");
-  return `testler/${file}`;
+function getKategoriAdi() {
+  const dosya = window.location.pathname.split("/").pop();
+  return dosya.replace(".html", "");
 }
 
 async function loadQuestions() {
-  const path = getJsonPath();
-  const ref = collection(db, path);
+  const kategoriAdi = getKategoriAdi(); // Örn: test-mizah
+  const ref = collection(db, kategoriAdi);
   const snapshot = await getDocs(ref);
 
   snapshot.forEach(doc => {
