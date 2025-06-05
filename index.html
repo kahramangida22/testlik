@@ -2,21 +2,21 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Testlik.com - Eğlenerek Test Çöz!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Testlik.com - Eğlen, Öğren, Kazan!</title>
   <link rel="stylesheet" href="index-style.css" />
 </head>
 <body>
   <header>
-    <h1 class="logo">🎉 Testlik.com</h1>
-    <nav class="nav">
+    <div class="logo">🧠 Testlik.com</div>
+    <nav>
       <a href="kategoriler.html">📂 Kategoriler</a>
-      <a href="puan-tablosu.html">🏆 Puan Tablosu</a>
+      <a href="puan-tablosu.html">🏆 Puanlar</a>
       <a href="admin.html" id="adminLink" style="display:none;">🛠️ Admin</a>
     </nav>
-    <div id="kullanici-paneli">
+    <div class="user-panel">
       <button id="girisBtn" onclick="window.location.href='giris.html'">Giriş Yap</button>
-      <div id="girisBilgi" style="display: none;">
+      <div id="girisBilgi" style="display:none;">
         <span id="kullanici-adi">👤</span> | <span id="kullanici-puani">0</span> Puan
         <button onclick="cikisYap()">Çıkış Yap</button>
       </div>
@@ -25,26 +25,32 @@
 
   <main>
     <section class="hero">
-      <h2>Test Çözerek Eğlen, Öğren ve Kazan!</h2>
-      <p>Her kategori birbirinden renkli! Eğlenceli testlerle ne kadar bilgilisin göster!</p>
-      <a href="kategoriler.html" class="btn">🚀 Hemen Başla</a>
+      <h1>Bugün beynine kaç soru soralım? 🤓</h1>
+      <p>Test çöz, eğlen, öğren ve seviyeni yükselt!</p>
+      <button class="spin-btn" onclick="rastgeleTest()">🎯 BANA RASTGELE TEST VER!</button>
     </section>
 
-    <section class="ornek-testler">
-      <h3>📌 Popüler Testler</h3>
-      <div class="test-kartlari">
-        <div class="kart">😂 Mizah Testi</div>
-        <div class="kart">🎬 Film Bilgisi</div>
-        <div class="kart">🎵 Müzik Zevki</div>
-        <div class="kart">📱 Mobil Teknolojiler</div>
-        <div class="kart">🧠 Yapay Zeka</div>
-        <div class="kart">🌐 İnternet Kültürü</div>
+    <section class="kategoriler">
+      <h2>🎉 Popüler Kategoriler</h2>
+      <div class="kategori-listesi">
+        <a href="eglence.html">😂 Eğlence</a>
+        <a href="spor.html">🏀 Spor</a>
+        <a href="teknoloji.html">💻 Teknoloji</a>
+        <a href="genelkultur.html">🌍 Genel Kültür</a>
+      </div>
+    </section>
+
+    <section class="test-seviye">
+      <h3>🧩 Test profiline hoş geldin!</h3>
+      <p>🧪 Şu ana kadar çözdüğün testlerle beynin seviyeye atladı!</p>
+      <div class="seviye-bar">
+        <div class="seviye-doluluk" id="seviyeDoluluk" style="width: 35%;">Seviye 2</div>
       </div>
     </section>
   </main>
 
   <footer>
-    <p>© 2025 Testlik.com - Tüm hakları saklıdır.</p>
+    <p>© 2025 Testlik.com | Test Çözerek Eğlen!</p>
   </footer>
 
   <script type="module" src="index.js"></script>
