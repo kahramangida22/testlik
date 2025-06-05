@@ -1,11 +1,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import {
-  getFirestore, collection, getDocs
+  getFirestore, collection, getDocs, query, orderBy
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 import {
   getAuth, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
+// Firebase yapılandırması
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
   authDomain: "testlik.firebaseapp.com",
@@ -17,50 +18,43 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuth(app);
+const auth = getAuth();
 
-const liste = document.getElementById("puan-listesi");
-const kendiAlani = document.getElementById("ben");
-const kendiBolumu = document.getElementById("kendi-puanim");
+const puanListesi = document.getElementById("puan-listesi");
+const kendiPuanKutusu = document.getElementById("kendi-puan");
+const girisIsim = document.getElementById("giris-isim");
 
-let kendiUID = null;
+let kullaniciUID = null;
 
+// Giriş yapan kullanıcıyı bul
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    kendiUID = user.uid;
+    kullaniciUID = user.uid;
+    girisIsim.textContent = `👤 ${user.displayName || user.email}`;
+    puanlariGetir();
+  } else {
+    girisIsim.textContent = "🔑 Giriş Yapılmadı";
+    kendiPuanKutusu.textContent = "🔒 Giriş yaparak kendi puanınızı görebilirsiniz.";
+    puanlariGetir(); // misafir için sadece liste
   }
-
-  const querySnapshot = await getDocs(collection(db, "puanlar"));
-  const puanlar = [];
-
-  querySnapshot.forEach((doc) => {
-    const data = doc.data();
-    puanlar.push({
-      id: doc.id,
-      kullaniciAdi: data.kullaniciAdi || "Anonim",
-      puan: data.puan || 0
-    });
-  });
-
-  // En yüksekten sırala
-  puanlar.sort((a, b) => b.puan - a.puan);
-
-  // Listele
-  puanlar.forEach((item, index) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${index + 1}</td>
-      <td>${item.kullaniciAdi}</td>
-      <td>${item.puan}</td>
-    `;
-    liste.appendChild(tr);
-
-    // Eğer bu kullanıcıysan, üstte göster
-    if (item.id === kendiUID) {
-      kendiBolumu.style.display = "block";
-      kendiAlani.innerHTML = `
-        <p><strong>${item.kullaniciAdi}</strong> - <strong>${item.puan} puan</strong></p>
-      `;
-    }
-  });
 });
+
+// Firestore'dan puan verilerini getir
+async function puanlariGetir() {
+  const q = query(collection(db, "kullanicilar"), orderBy("puan", "desc"));
+  const querySnapshot = await getDocs(q);
+
+  let index = 1;
+  querySnapshot.forEach((docSnap) => {
+    const data = docSnap.data();
+    const li = document.createElement("li");
+    li.innerHTML = `<span>#${index} - ${data.kullaniciAdi}</span><span>${data.puan} 🏅</span>`;
+    puanListesi.appendChild(li);
+
+    if (docSnap.id === kullaniciUID) {
+      kendiPuanKutusu.textContent = `🎯 Senin Puanın: ${data.puan} | Sıralama: #${index}`;
+    }
+
+    index++;
+  });
+}
