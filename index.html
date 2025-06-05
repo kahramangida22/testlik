@@ -2,67 +2,35 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Testlik.com - Eğlen, Öğren, Kazan!</title>
+  <title>Testlik.com</title>
   <link rel="stylesheet" href="index-style.css" />
 </head>
 <body>
   <header>
-    <h1>🧠 Testlik.com</h1>
+    <h1 class="logo">🎉 Testlik.com</h1>
     <nav>
-      <a href="kategoriler.html">📚 Kategoriler</a>
+      <a href="kategoriler.html">📂 Kategoriler</a>
       <a href="puan-tablosu.html">🏆 Puan Tablosu</a>
-      <a href="giris.html" id="girisLink">🔐 Giriş Yap</a>
-      <a href="admin.html" id="adminPanel" style="display:none;">🛠️ Admin Paneli</a>
+      <a href="admin.html" id="adminLink" style="display:none;">🛠️ Admin</a>
     </nav>
+
+    <div id="kullanici-paneli">
+      <button id="girisBtn" onclick="window.location.href='giris.html'">Giriş Yap</button>
+      <div id="girisBilgi" style="display: none;">
+        <span id="kullanici-adi">👤</span> | <span id="kullanici-puani">0</span> Puan
+        <button onclick="cikisYap()">Çıkış Yap</button>
+      </div>
+    </div>
   </header>
 
   <main>
-    <section class="hosgeldin">
-      <h2>🎉 Test çözerek eğlen, öğren, puan topla!</h2>
-      <p>Her doğru cevap sana puan kazandırır. Üstelik en iyi oyuncular ödüller kazanır!</p>
-    </section>
-
-    <section class="kategori-onizleme">
-      <h3>📌 Popüler Testler</h3>
-      <div class="test-listesi">
-        <a href="test-mizah.html">😂 Mizah Testi</a>
-        <a href="test-basketbol.html">🏀 Basketbol Bilgisi</a>
-        <a href="test-yapayzeka.html">🧠 Yapay Zeka</a>
-        <a href="test-turkiye.html">🇹🇷 Türkiye Hakkında</a>
-      </div>
-    </section>
-
-    <section class="reklam-alani">
-      <div>🔔 Reklam Alanı</div>
+    <section class="tanitim">
+      <h2>Test Çözerek Eğlen, Öğren ve Kazan!</h2>
+      <p>Hemen kategorilerden birini seç ve yeteneklerini göster!</p>
+      <a href="kategoriler.html" class="btn">🎯 Kategorilere Git</a>
     </section>
   </main>
 
-  <footer>
-    <p>© 2025 Testlik.com - Tüm hakları saklıdır</p>
-  </footer>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
-      authDomain: "testlik.firebaseapp.com",
-      projectId: "testlik",
-      storageBucket: "testlik.firebasestorage.app",
-      messagingSenderId: "668524500496",
-      appId: "1:668524500496:web:579bb4fc5990c87afedc95"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    onAuthStateChanged(auth, (user) => {
-      if (user && user.email === "admin@testlik.com") {
-        document.getElementById("adminPanel").style.display = "inline-block";
-      }
-    });
-  </script>
+  <script type="module" src="index.js"></script>
 </body>
 </html>
