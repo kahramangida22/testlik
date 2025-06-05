@@ -6,55 +6,55 @@
 
 body {
   font-family: 'Comic Sans MS', sans-serif;
-  background: linear-gradient(to bottom right, #ffe6f0, #e0f7fa);
-  color: #333;
+  background: linear-gradient(135deg, #fce3ec, #c2f0f7);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
 header {
-  background-color: #ff80ab;
+  background: #ff80ab;
   color: white;
   padding: 20px;
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
 }
 
 .logo {
-  font-size: 2em;
+  font-size: 2rem;
   font-weight: bold;
 }
 
-.nav a {
+nav a {
+  color: white;
   margin: 0 10px;
   text-decoration: none;
-  color: white;
   font-weight: bold;
 }
 
-#kullanici-paneli {
+.user-panel {
   margin-top: 10px;
 }
 
 main {
   flex: 1;
-  padding: 40px 20px;
+  padding: 30px 20px;
   text-align: center;
 }
 
 .hero {
-  background-color: #fce4ec;
-  padding: 30px;
+  background-color: #ffeef5;
+  padding: 40px 20px;
   border-radius: 15px;
+  box-shadow: 0 0 10px #ffccda;
   margin-bottom: 40px;
 }
 
-.hero h2 {
-  font-size: 2rem;
-  margin-bottom: 15px;
+.hero h1 {
+  font-size: 2.2rem;
+  margin-bottom: 10px;
 }
 
 .hero p {
@@ -62,68 +62,98 @@ main {
   margin-bottom: 20px;
 }
 
-.btn {
+.spin-btn {
   background-color: #ff4081;
   color: white;
-  padding: 12px 25px;
+  padding: 15px 30px;
   border: none;
   border-radius: 25px;
   font-size: 1rem;
-  text-decoration: none;
+  cursor: pointer;
   transition: background-color 0.3s ease;
+  animation: wiggle 2s infinite;
 }
 
-.btn:hover {
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+.spin-btn:hover {
   background-color: #e91e63;
 }
 
-.ornek-testler h3 {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
+.kategoriler {
+  margin-top: 40px;
 }
 
-.test-kartlari {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 20px;
+.kategori-listesi {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
 }
 
-.kart {
+.kategori-listesi a {
   background-color: #fff;
   border: 2px dashed #ff80ab;
-  padding: 20px;
-  border-radius: 15px;
-  font-size: 1rem;
+  padding: 15px 25px;
+  border-radius: 20px;
+  text-decoration: none;
   font-weight: bold;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  transition: transform 0.3s;
+  color: #ff4081;
+  transition: transform 0.2s ease;
 }
 
-.kart:hover {
-  transform: scale(1.05);
+.kategori-listesi a:hover {
+  transform: scale(1.1);
   background-color: #fff3f8;
 }
 
+.test-seviye {
+  margin-top: 40px;
+  background: #e1f5fe;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.seviye-bar {
+  width: 100%;
+  background-color: #b2ebf2;
+  border-radius: 20px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.seviye-doluluk {
+  background-color: #00acc1;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+}
+
 footer {
-  background-color: #ff80ab;
+  background: #ff80ab;
   color: white;
   text-align: center;
   padding: 15px;
   font-size: 0.9rem;
 }
 
-/* Mobil uyumluluk */
+/* Mobil uyumlu */
 @media (max-width: 768px) {
   header {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .nav {
-    margin-top: 10px;
+  .kategori-listesi {
+    flex-direction: column;
+    align-items: center;
   }
 
-  .test-kartlari {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  .spin-btn {
+    width: 100%;
   }
 }
