@@ -2,41 +2,26 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Paneli</title>
+  <title>Admin Paneli - Test Yükle</title>
   <link rel="stylesheet" href="admin-style.css">
+  <script type="module" src="admin.js" defer></script>
 </head>
 <body>
-  <header>
-    <h1>🛠️ Admin Paneli</h1>
-    <a href="index.html">🏠 Ana Sayfa</a>
-  </header>
+  <h1>⚙️ Admin Paneli</h1>
 
-  <main>
-    <section>
-      <h2>Test Yükle (JSON)</h2>
-      <label for="kategoriSec">Kategori:</label>
-      <select id="kategoriSec">
-        <option value="mizah">😂 Mizah</option>
-        <option value="film">🎬 Film</option>
-        <option value="muzik">🎵 Müzik</option>
-        <option value="basketbol">🏀 Basketbol</option>
-        <option value="spor">🏆 Spor</option>
-        <option value="futbol">⚽ Futbol</option>
-        <option value="mobil">📱 Mobil</option>
-        <option value="yapayzeka">🧠 Yapay Zeka</option>
-        <option value="bilgisayar">💾 Bilgisayar</option>
-        <option value="dunya">🧭 Dünya</option>
-        <option value="turkiye">🇹🇷 Türkiye</option>
-        <option value="internet">🌐 İnternet</option>
-      </select>
+  <label for="kategori">Kategori Adı (ör. mizah, bilgi, spor):</label><br>
+  <input type="text" id="kategori" placeholder="Kategori ismi yaz..."><br><br>
 
-      <input type="file" id="jsonDosya" accept=".json">
-      <button onclick="jsonYukle()">📤 Yükle</button>
+  <label for="jsonInput">Test JSON Verisi:</label><br>
+  <textarea id="jsonInput" rows="15" cols="60" placeholder='[
+  {
+    "soru": "Atatürk’ün doğum yılı nedir?",
+    "secenekler": ["1871", "1881", "1891", "1901"],
+    "cevap": "1881"
+  }
+]'></textarea><br><br>
 
-      <p id="durumMesaji"></p>
-    </section>
-  </main>
-
-  <script type="module" src="admin.js"></script>
+  <button id="gonderBtn">🔥 Firestore’a Yükle</button>
+  <p id="durum"></p>
 </body>
 </html>
