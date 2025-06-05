@@ -1,60 +1,42 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Panel - Testlik</title>
-  <link rel="stylesheet" href="admin-style.css" />
+  <meta charset="UTF-8">
+  <title>Admin Paneli</title>
+  <link rel="stylesheet" href="admin-style.css">
 </head>
 <body>
-  <div class="admin-panel">
+  <header>
     <h1>🛠️ Admin Paneli</h1>
-    <p>Hoş geldin admin. Aşağıdaki butonlar ile içerik ekleyebilirsin.</p>
+    <a href="index.html">🏠 Ana Sayfa</a>
+  </header>
 
-    <div class="butonlar">
-      <button id="testBotu">🤖 Test Botunu Çalıştır</button>
-      <button id="anketBotu">📊 Anket Botunu Çalıştır</button>
-      <button id="haberBotu">📰 Haber Botunu Çalıştır</button>
-    </div>
+  <main>
+    <section>
+      <h2>Test Yükle (JSON)</h2>
+      <label for="kategoriSec">Kategori:</label>
+      <select id="kategoriSec">
+        <option value="mizah">😂 Mizah</option>
+        <option value="film">🎬 Film</option>
+        <option value="muzik">🎵 Müzik</option>
+        <option value="basketbol">🏀 Basketbol</option>
+        <option value="spor">🏆 Spor</option>
+        <option value="futbol">⚽ Futbol</option>
+        <option value="mobil">📱 Mobil</option>
+        <option value="yapayzeka">🧠 Yapay Zeka</option>
+        <option value="bilgisayar">💾 Bilgisayar</option>
+        <option value="dunya">🧭 Dünya</option>
+        <option value="turkiye">🇹🇷 Türkiye</option>
+        <option value="internet">🌐 İnternet</option>
+      </select>
 
-    <p id="durum"></p>
-  </div>
+      <input type="file" id="jsonDosya" accept=".json">
+      <button onclick="jsonYukle()">📤 Yükle</button>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+      <p id="durumMesaji"></p>
+    </section>
+  </main>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
-      authDomain: "testlik.firebaseapp.com",
-      projectId: "testlik",
-      storageBucket: "testlik.firebasestorage.app",
-      messagingSenderId: "668524500496",
-      appId: "1:668524500496:web:579bb4fc5990c87afedc95"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    const durum = document.getElementById("durum");
-
-    onAuthStateChanged(auth, (user) => {
-      if (!user || user.email !== "admin@testlik.com") {
-        document.body.innerHTML = "<h2>Erişim reddedildi. Admin girişi gerekli.</h2>";
-      }
-    });
-
-    document.getElementById("testBotu").addEventListener("click", () => {
-      durum.textContent = "📡 Test botu çalıştırılıyor... (Simülasyon)";
-    });
-
-    document.getElementById("anketBotu").addEventListener("click", () => {
-      durum.textContent = "📡 Anket botu çalıştırılıyor... (Simülasyon)";
-    });
-
-    document.getElementById("haberBotu").addEventListener("click", () => {
-      durum.textContent = "📡 Haber botu çalıştırılıyor... (Simülasyon)";
-    });
-  </script>
+  <script type="module" src="admin.js"></script>
 </body>
 </html>
