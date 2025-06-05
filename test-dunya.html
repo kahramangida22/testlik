@@ -1,47 +1,46 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🧭 Dünya Bilgisi Testi</title>
-  <link rel="stylesheet" href="test-style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dünya Bilgisi Testi - Testlik.com</title>
+  <link rel="stylesheet" href="index-style.css" />
+  <script type="module" src="test.js" defer></script>
+  <script type="module" src="index.js" defer></script>
 </head>
 <body>
-
-  <header>
-    <h1 class="logo">🌍 Testlik.com</h1>
-    <div class="nav">
-      <a href="index.html">🏠 Ana Sayfa</a>
-      <a href="kategoriler.html">📂 Kategoriler</a>
-    </div>
-    <div id="kullanici-paneli">
-      <button id="girisBtn">Giriş Yap</button>
-      <div id="girisBilgisi" style="display:none;">
-        <span id="kullanici-adi">👤</span> | <span id="kullanici-puani">0</span> Puan
-        <button onclick="cikisYap()">Çıkış Yap</button>
+  <header class="header">
+    <div class="logo">🎉 Testlik.com</div>
+    <div class="user-panel" id="user-panel">
+      <button id="login-btn" class="btn">🔒 Giriş Yap</button>
+      <div id="user-info" class="hidden">
+        <span id="user-name">👤</span> |
+        <span id="user-score">0 Puan</span> |
+        <button id="logout-btn" class="btn">Çıkış Yap</button>
       </div>
     </div>
   </header>
 
-  <main>
-    <div class="soru-kapsayici">
-      <p id="soru" class="soru-metin"></p>
-      <div id="secenekler" class="secenekler"></div>
-      <div id="dogru-cevap" class="dogru-cevap"></div>
-      <button id="sonrakiBtn" class="sonraki" style="display:none;">➡️ Sonraki Soru</button>
+  <main class="main-section">
+    <div class="intro">
+      <h2>🌍 Dünya Bilgisi Testi</h2>
+      <p>Dünyayı ne kadar tanıyorsun? Ülkeler, bayraklar, kültürler burada seni bekliyor!</p>
+    </div>
+
+    <div id="soru-alani" class="soru-kutusu">
+      <!-- Soru buraya gelecek -->
+    </div>
+    <div id="secenekler" class="secenekler-alani">
+      <!-- Seçenekler buraya gelecek -->
     </div>
 
     <div id="reklam-alani" class="reklam">
-      🌍 Dünya Bilgisi reklam alanı
-    </div>
-
-    <div id="test-bitti" style="display:none;" class="son-ekran">
-      <h2>🎉 Test Tamamlandı!</h2>
-      <a href="index.html" class="btn">🏠 Ana Sayfa</a>
-      <a href="test-dunya.html" class="btn">🔁 Yeni Test Çöz</a>
+      <p>🗺️ Reklam Alanı – Global markalara uygun alan!</p>
     </div>
   </main>
 
-  <script type="module" src="test-dunya.js"></script>
+  <footer>
+    <p>© 2025 Testlik.com - Tüm Hakları Saklıdır</p>
+  </footer>
 </body>
 </html>
