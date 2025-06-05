@@ -1,6 +1,7 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
+// Firebase yapılandırması (senin verdiklerine göre)
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
   authDomain: "testlik.firebaseapp.com",
@@ -15,26 +16,28 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 document.getElementById("gonderBtn").addEventListener("click", async () => {
-  const kategori = document.getElementById("kategori").value.trim();
-  const jsonInput = document.getElementById("jsonInput").value.trim();
-  const durum = document.getElementById("durum");
+  const jsonText = document.getElementById("jsonInput").value.trim();
+  const kategori = document.getElementById("kategoriInput").value.trim().toLowerCase();
+  const mesajEl = document.getElementById("durumMesaji");
 
-  if (!kategori || !jsonInput) {
-    durum.textContent = "⚠️ Lütfen kategori ve JSON verisini doldur.";
+  if (!jsonText || !kategori) {
+    mesajEl.textContent = "Lütfen JSON ve kategori adı giriniz.";
+    mesajEl.style.color = "red";
     return;
   }
 
   try {
-    const veriler = JSON.parse(jsonInput);
-    const koleksiyon = collection(db, kategori);
+    const testVerileri = JSON.parse(jsonText);
+    if (!Array.isArray(testVerileri)) throw new Error("JSON dizi olmalı.");
 
-    for (const veri of veriler) {
-      await addDoc(koleksiyon, veri);
+    for (let veri of testVerileri) {
+      await addDoc(collection(db, kategori), veri);
     }
 
-    durum.textContent = "✅ Testler başarıyla yüklendi!";
+    mesajEl.textContent = "✅ Test(ler) başarıyla kaydedildi!";
+    mesajEl.style.color = "green";
   } catch (e) {
-    console.error("Hata:", e);
-    durum.textContent = "❌ JSON geçersiz veya yükleme hatası!";
+    mesajEl.textContent = "❌ Hata: " + e.message;
+    mesajEl.style.color = "red";
   }
 });
