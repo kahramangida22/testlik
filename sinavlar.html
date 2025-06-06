@@ -3,88 +3,74 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sınavlar - Testlik.com</title>
-  <link rel="stylesheet" href="index-style.css" />
-  <script type="module" src="index.js" defer></script>
-  <style>
-    .sinav-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-      padding: 40px 20px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .sinav-kart {
-      background-color: white;
-      border-radius: 15px;
-      padding: 25px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      text-align: center;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.3s, background-color 0.3s;
-      text-decoration: none;
-      color: #333;
-    }
-
-    .sinav-kart:hover {
-      transform: scale(1.05);
-      background-color: #f0f9ff;
-    }
-
-    .sinav-kart span {
-      font-size: 36px;
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    .kategori-baslik {
-      text-align: center;
-      font-size: 26px;
-      margin-top: 40px;
-    }
-  </style>
+  <title>Sınav Testleri - Testlik.com</title>
+  <link rel="stylesheet" href="styles/kategoriler.css" />
 </head>
 <body>
   <header class="header">
-    <div class="logo">📚 Testlik.com</div>
-    <div class="user-panel" id="user-panel">
-      <button id="login-btn" class="btn">🔒 Giriş Yap</button>
-      <div id="user-info" class="hidden">
-        <span id="user-name">👤</span> |
-        <span id="user-score">0 Puan</span> |
-        <button id="logout-btn" class="btn">Çıkış Yap</button>
-      </div>
-    </div>
+    <div class="logo">📑 Testlik.com</div>
+    <nav>
+      <a href="index.html" class="btn">Ana Sayfa</a>
+      <a href="kategoriler.html" class="btn">Tüm Kategoriler</a>
+    </nav>
   </header>
 
-  <main>
-    <h2 class="kategori-baslik">📘 Türkiye'de Yaygın Sınavlar</h2>
+  <main class="kategori-sayfasi">
+    <h2>📘 Sınavlara Hazırlık</h2>
 
-    <div class="sinav-grid">
-      <a href="test-tyt.html" class="sinav-kart"><span>📝</span>TYT</a>
-      <a href="test-ayt.html" class="sinav-kart"><span>📘</span>AYT</a>
-      <a href="test-ydt.html" class="sinav-kart"><span>🌍</span>YDT</a>
-      <a href="test-kpss.html" class="sinav-kart"><span>🏛️</span>KPSS</a>
-      <a href="test-ales.html" class="sinav-kart"><span>🎓</span>ALES</a>
-      <a href="test-dgs.html" class="sinav-kart"><span>📈</span>DGS</a>
-      <a href="test-yokdil.html" class="sinav-kart"><span>🗣️</span>YÖKDİL</a>
-      <a href="test-yds.html" class="sinav-kart"><span>🗨️</span>YDS</a>
+    <section class="sinif-kategori">
+      <h3>📚 Üniversite Sınavları (YKS)</h3>
+      <div class="kategori-grid">
+        <a href="test-tyt.html" class="kategori-kutu">TYT</a>
+        <a href="test-ayt.html" class="kategori-kutu">AYT</a>
+        <a href="test-ydt.html" class="kategori-kutu">YDT</a>
+        <a href="test-msu.html" class="kategori-kutu">MSÜ</a>
+      </div>
+    </section>
 
-      <a href="test-tus.html" class="sinav-kart"><span>🧬</span>TUS</a>
-      <a href="test-dus.html" class="sinav-kart"><span>🦷</span>DUS</a>
-      <a href="test-sts.html" class="sinav-kart"><span>🏥</span>STS</a>
-      <a href="test-yos.html" class="sinav-kart"><span>🌐</span>YÖS</a>
+    <section class="sinif-kategori">
+      <h3>🎯 KPSS</h3>
+      <div class="kategori-grid">
+        <a href="test-kpss-genel-kultur.html" class="kategori-kutu">Genel Kültür</a>
+        <a href="test-kpss-genel-yetenek.html" class="kategori-kutu">Genel Yetenek</a>
+        <a href="test-kpss-egitim-bilimleri.html" class="kategori-kutu">Eğitim Bilimleri</a>
+        <a href="test-kpss-ogretmenlik.html" class="kategori-kutu">ÖABT</a>
+      </div>
+    </section>
 
-      <a href="test-ehliyet.html" class="sinav-kart"><span>🚗</span>Ehliyet</a>
-    </div>
+    <section class="sinif-kategori">
+      <h3>📈 Akademik Sınavlar</h3>
+      <div class="kategori-grid">
+        <a href="test-ales.html" class="kategori-kutu">ALES</a>
+        <a href="test-dgs.html" class="kategori-kutu">DGS</a>
+        <a href="test-yksdil.html" class="kategori-kutu">YÖKDİL</a>
+        <a href="test-yokdil-sosyal.html" class="kategori-kutu">YÖKDİL Sosyal</a>
+      </div>
+    </section>
+
+    <section class="sinif-kategori">
+      <h3>🩺 Tıp ve Sağlık</h3>
+      <div class="kategori-grid">
+        <a href="test-tus.html" class="kategori-kutu">TUS</a>
+        <a href="test-dus.html" class="kategori-kutu">DUS</a>
+        <a href="test-yandal.html" class="kategori-kutu">YAN DAL</a>
+      </div>
+    </section>
+
+    <section class="sinif-kategori">
+      <h3>🚗 Mesleki ve Diğer Sınavlar</h3>
+      <div class="kategori-grid">
+        <a href="test-src.html" class="kategori-kutu">SRC Testleri</a>
+        <a href="test-dib.html" class="kategori-kutu">Diyanet (MBSTS)</a>
+        <a href="test-ttk.html" class="kategori-kutu">Türk Tarih Kurumu</a>
+        <a href="test-belge.html" class="kategori-kutu">Mesleki Yeterlilik</a>
+      </div>
+    </section>
+
   </main>
 
   <footer>
-    <p style="text-align:center;">© 2025 Testlik.com - Tüm Hakları Saklıdır</p>
+    <p style="text-align:center;">© 2025 Testlik.com - Sınavlar</p>
   </footer>
 </body>
 </html>
