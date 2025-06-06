@@ -4,76 +4,75 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ortaokul Testleri - Testlik.com</title>
-  <link rel="stylesheet" href="index-style.css" />
-  <script type="module" src="index.js" defer></script>
-  <style>
-    .siniflar-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 30px;
-      padding: 40px 20px;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .sinif-kart {
-      background-color: white;
-      border-radius: 20px;
-      padding: 30px;
-      text-align: center;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-      font-size: 20px;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      text-decoration: none;
-      color: #333;
-    }
-
-    .sinif-kart:hover {
-      transform: scale(1.05);
-      background-color: #f0f8ff;
-    }
-
-    .sinif-kart span {
-      font-size: 36px;
-      display: block;
-      margin-bottom: 12px;
-    }
-
-    .kategori-baslik {
-      text-align: center;
-      font-size: 28px;
-      margin-top: 40px;
-    }
-  </style>
+  <link rel="stylesheet" href="styles/kategoriler.css" />
 </head>
 <body>
   <header class="header">
-    <div class="logo">🎉 Testlik.com</div>
-    <div class="user-panel" id="user-panel">
-      <button id="login-btn" class="btn">🔒 Giriş Yap</button>
-      <div id="user-info" class="hidden">
-        <span id="user-name">👤</span> |
-        <span id="user-score">0 Puan</span> |
-        <button id="logout-btn" class="btn">Çıkış Yap</button>
-      </div>
-    </div>
+    <div class="logo">📗 Testlik.com</div>
+    <nav>
+      <a href="index.html" class="btn">Ana Sayfa</a>
+      <a href="kategoriler.html" class="btn">Tüm Kategoriler</a>
+    </nav>
   </header>
 
-  <main>
-    <h2 class="kategori-baslik">🏫 Ortaokul Sınıfları</h2>
+  <main class="kategori-sayfasi">
+    <h2>📚 Ortaokul Testleri</h2>
 
-    <div class="siniflar-grid">
-      <a href="ortaokul-5.html" class="sinif-kart"><span>📘</span>5. Sınıf</a>
-      <a href="ortaokul-6.html" class="sinif-kart"><span>📙</span>6. Sınıf</a>
-      <a href="ortaokul-7.html" class="sinif-kart"><span>📗</span>7. Sınıf</a>
-      <a href="ortaokul-8.html" class="sinif-kart"><span>📕</span>8. Sınıf</a>
-    </div>
+    <section class="sinif-kategori">
+      <h3>5. Sınıf</h3>
+      <div class="kategori-grid">
+        <a href="test-5sinif-turkce.html" class="kategori-kutu">Türkçe</a>
+        <a href="test-5sinif-matematik.html" class="kategori-kutu">Matematik</a>
+        <a href="test-5sinif-fen.html" class="kategori-kutu">Fen Bilimleri</a>
+        <a href="test-5sinif-sosyal.html" class="kategori-kutu">Sosyal Bilgiler</a>
+        <a href="test-5sinif-din.html" class="kategori-kutu">Din Kültürü</a>
+        <a href="test-5sinif-ingilizce.html" class="kategori-kutu">İngilizce</a>
+        <a href="test-5sinif-bilisim.html" class="kategori-kutu">Bilişim</a>
+      </div>
+    </section>
+
+    <section class="sinif-kategori">
+      <h3>6. Sınıf</h3>
+      <div class="kategori-grid">
+        <a href="test-6sinif-turkce.html" class="kategori-kutu">Türkçe</a>
+        <a href="test-6sinif-matematik.html" class="kategori-kutu">Matematik</a>
+        <a href="test-6sinif-fen.html" class="kategori-kutu">Fen Bilimleri</a>
+        <a href="test-6sinif-sosyal.html" class="kategori-kutu">Sosyal Bilgiler</a>
+        <a href="test-6sinif-din.html" class="kategori-kutu">Din Kültürü</a>
+        <a href="test-6sinif-ingilizce.html" class="kategori-kutu">İngilizce</a>
+        <a href="test-6sinif-bilisim.html" class="kategori-kutu">Bilişim</a>
+      </div>
+    </section>
+
+    <section class="sinif-kategori">
+      <h3>7. Sınıf</h3>
+      <div class="kategori-grid">
+        <a href="test-7sinif-turkce.html" class="kategori-kutu">Türkçe</a>
+        <a href="test-7sinif-matematik.html" class="kategori-kutu">Matematik</a>
+        <a href="test-7sinif-fen.html" class="kategori-kutu">Fen Bilimleri</a>
+        <a href="test-7sinif-sosyal.html" class="kategori-kutu">Sosyal Bilgiler</a>
+        <a href="test-7sinif-din.html" class="kategori-kutu">Din Kültürü</a>
+        <a href="test-7sinif-ingilizce.html" class="kategori-kutu">İngilizce</a>
+        <a href="test-7sinif-bilisim.html" class="kategori-kutu">Bilişim</a>
+      </div>
+    </section>
+
+    <section class="sinif-kategori">
+      <h3>8. Sınıf</h3>
+      <div class="kategori-grid">
+        <a href="test-8sinif-turkce.html" class="kategori-kutu">Türkçe</a>
+        <a href="test-8sinif-matematik.html" class="kategori-kutu">Matematik</a>
+        <a href="test-8sinif-fen.html" class="kategori-kutu">Fen Bilimleri</a>
+        <a href="test-8sinif-inkilap.html" class="kategori-kutu">İnkılap Tarihi</a>
+        <a href="test-8sinif-din.html" class="kategori-kutu">Din Kültürü</a>
+        <a href="test-8sinif-ingilizce.html" class="kategori-kutu">İngilizce</a>
+        <a href="test-8sinif-bilisim.html" class="kategori-kutu">Bilişim</a>
+      </div>
+    </section>
   </main>
 
   <footer>
-    <p style="text-align:center;">© 2025 Testlik.com - Tüm Hakları Saklıdır</p>
+    <p style="text-align:center;">© 2025 Testlik.com - Ortaokul</p>
   </footer>
 </body>
 </html>
