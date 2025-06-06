@@ -4,83 +4,38 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TYT Testleri - Testlik.com</title>
-  <link rel="stylesheet" href="index-style.css" />
-  <script type="module" src="index.js" defer></script>
-  <style>
-    .ders-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 20px;
-      padding: 40px 20px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .ders-kart {
-      background-color: white;
-      border-radius: 15px;
-      padding: 25px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      text-align: center;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.3s, background-color 0.3s;
-      text-decoration: none;
-      color: #333;
-    }
-
-    .ders-kart:hover {
-      transform: scale(1.05);
-      background-color: #eef8ff;
-    }
-
-    .ders-kart span {
-      font-size: 36px;
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    .kategori-baslik {
-      text-align: center;
-      font-size: 26px;
-      margin-top: 40px;
-    }
-  </style>
+  <link rel="stylesheet" href="styles/kategoriler.css" />
 </head>
 <body>
   <header class="header">
     <div class="logo">📘 Testlik.com</div>
-    <div class="user-panel" id="user-panel">
-      <button id="login-btn" class="btn">🔒 Giriş Yap</button>
-      <div id="user-info" class="hidden">
-        <span id="user-name">👤</span> |
-        <span id="user-score">0 Puan</span> |
-        <button id="logout-btn" class="btn">Çıkış Yap</button>
-      </div>
-    </div>
+    <nav>
+      <a href="index.html" class="btn">Ana Sayfa</a>
+      <a href="sinavlar.html" class="btn">Sınavlar</a>
+    </nav>
   </header>
 
-  <main>
-    <h2 class="kategori-baslik">🎯 TYT Sınavı Dersleri</h2>
+  <main class="kategori-sayfasi">
+    <h2>📘 TYT Testleri</h2>
+    <p class="aciklama">Temel Yeterlilik Testi'ne hazırlık için tüm derslere özel testleri buradan çözebilirsin.</p>
 
-    <div class="ders-grid">
-      <a href="test-tyt-turkce.html" class="ders-kart"><span>📖</span>Türkçe</a>
-      <a href="test-tyt-matematik.html" class="ders-kart"><span>➕</span>Temel Matematik</a>
-
-      <a href="test-tyt-tarih.html" class="ders-kart"><span>📜</span>Tarih</a>
-      <a href="test-tyt-cografya.html" class="ders-kart"><span>🗺️</span>Coğrafya</a>
-      <a href="test-tyt-felsefe.html" class="ders-kart"><span>🧠</span>Felsefe</a>
-      <a href="test-tyt-dinkulturu.html" class="ders-kart"><span>🕌</span>Din Kültürü</a>
-
-      <a href="test-tyt-fizik.html" class="ders-kart"><span>🔭</span>Fizik</a>
-      <a href="test-tyt-kimya.html" class="ders-kart"><span>⚗️</span>Kimya</a>
-      <a href="test-tyt-biyoloji.html" class="ders-kart"><span>🧬</span>Biyoloji</a>
+    <div class="kategori-grid">
+      <a href="test-tyt-turkce.html" class="kategori-kutu">Türkçe</a>
+      <a href="test-tyt-matematik.html" class="kategori-kutu">Matematik</a>
+      <a href="test-tyt-fen.html" class="kategori-kutu">Fen Bilimleri</a>
+      <a href="test-tyt-fizik.html" class="kategori-kutu">Fizik</a>
+      <a href="test-tyt-kimya.html" class="kategori-kutu">Kimya</a>
+      <a href="test-tyt-biyoloji.html" class="kategori-kutu">Biyoloji</a>
+      <a href="test-tyt-sosyal.html" class="kategori-kutu">Sosyal Bilimler</a>
+      <a href="test-tyt-tarih.html" class="kategori-kutu">Tarih</a>
+      <a href="test-tyt-cografya.html" class="kategori-kutu">Coğrafya</a>
+      <a href="test-tyt-felsefe.html" class="kategori-kutu">Felsefe</a>
+      <a href="test-tyt-din.html" class="kategori-kutu">Din Kültürü</a>
     </div>
   </main>
 
   <footer>
-    <p style="text-align:center;">© 2025 Testlik.com - Tüm Hakları Saklıdır</p>
+    <p style="text-align:center;">© 2025 Testlik.com - TYT</p>
   </footer>
 </body>
 </html>
