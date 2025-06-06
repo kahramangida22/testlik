@@ -3,77 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ALES Testleri - Testlik.com</title>
-  <link rel="stylesheet" href="index-style.css" />
-  <script type="module" src="index.js" defer></script>
-  <style>
-    .ders-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 20px;
-      padding: 40px 20px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .ders-kart {
-      background-color: white;
-      border-radius: 15px;
-      padding: 25px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      text-align: center;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.3s, background-color 0.3s;
-      text-decoration: none;
-      color: #333;
-    }
-
-    .ders-kart:hover {
-      transform: scale(1.05);
-      background-color: #e6f4ff;
-    }
-
-    .ders-kart span {
-      font-size: 36px;
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    .kategori-baslik {
-      text-align: center;
-      font-size: 26px;
-      margin-top: 40px;
-    }
-  </style>
+  <title>ALES Testi - Testlik.com</title>
+  <link rel="stylesheet" href="styles/test.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 </head>
 <body>
   <header class="header">
-    <div class="logo">📘 Testlik.com</div>
-    <div class="user-panel" id="user-panel">
-      <button id="login-btn" class="btn">🔒 Giriş Yap</button>
-      <div id="user-info" class="hidden">
-        <span id="user-name">👤</span> |
-        <span id="user-score">0 Puan</span> |
-        <button id="logout-btn" class="btn">Çıkış Yap</button>
-      </div>
-    </div>
+    <div class="logo">📖 Testlik.com</div>
+    <nav>
+      <a href="index.html" class="btn">Ana Sayfa</a>
+      <a href="kategoriler.html" class="btn">Kategoriler</a>
+    </nav>
+    <div class="user-panel" id="user-panel"></div>
   </header>
 
   <main>
-    <h2 class="kategori-baslik">📚 ALES Sınavı Testleri</h2>
-
-    <div class="ders-grid">
-      <a href="test-ales-sayisal1.html" class="ders-kart"><span>➗</span>Sayısal 1</a>
-      <a href="test-ales-sayisal2.html" class="ders-kart"><span>➕</span>Sayısal 2</a>
-      <a href="test-ales-sozel1.html" class="ders-kart"><span>📝</span>Sözel 1</a>
-      <a href="test-ales-sozel2.html" class="ders-kart"><span>📖</span>Sözel 2</a>
-    </div>
+    <h2 class="test-title">ALES Testi</h2>
+    <div id="soru-alani" class="soru-container"></div>
   </main>
 
   <footer>
-    <p style="text-align:center;">© 2025 Testlik.com - Tüm Hakları Saklıdır</p>
+    <p style="text-align:center;">© 2025 Testlik.com - ALES Testi</p>
   </footer>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
+      authDomain: "testlik.firebaseapp.com",
+      projectId: "testlik",
+      storageBucket: "testlik.firebasestorage.app",
+      messagingSenderId: "668524500496",
+      appId: "1:668524500496:web:579bb4fc5990c87afedc95"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+  </script>
+  <script src="scripts/auth.js"></script>
+  <script>
+    const kategori = "ales";
+  </script>
+  <script src="scripts/test.js"></script>
 </body>
 </html>
