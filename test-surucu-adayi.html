@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sürücü Adayı Testi - Testlik.com</title>
+  <link rel="stylesheet" href="styles/test.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">🚗 Testlik.com</div>
+    <nav>
+      <a href="index.html" class="btn">Ana Sayfa</a>
+      <a href="kategoriler.html" class="btn">Kategoriler</a>
+    </nav>
+    <div class="user-panel" id="user-panel"></div>
+  </header>
+
+  <main>
+    <h2 class="test-title">Sürücü Adayı Testi</h2>
+    <div id="soru-alani" class="soru-container"></div>
+  </main>
+
+  <footer>
+    <p style="text-align:center;">© 2025 Testlik.com - Sürücü Adayı Testleri</p>
+  </footer>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
+      authDomain: "testlik.firebaseapp.com",
+      projectId: "testlik",
+      storageBucket: "testlik.firebasestorage.app",
+      messagingSenderId: "668524500496",
+      appId: "1:668524500496:web:579bb4fc5990c87afedc95"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+  </script>
+  <script src="scripts/auth.js"></script>
+  <script>
+    const kategori = "surucu-adayi";
+  </script>
+  <script src="scripts/test.js"></script>
+</body>
+</html>
