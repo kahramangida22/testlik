@@ -4,36 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TYT Matematik Testi - Testlik.com</title>
-  <link rel="stylesheet" href="styles/test-style.css" />
-  <script type="module" src="scripts/test.js" defer></script>
+  <link rel="stylesheet" href="styles/test.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 </head>
 <body>
   <header class="header">
-    <div class="logo">🧮 Testlik.com</div>
+    <div class="logo">📘 Testlik.com</div>
     <nav>
       <a href="index.html" class="btn">Ana Sayfa</a>
       <a href="kategoriler.html" class="btn">Kategoriler</a>
     </nav>
-    <div class="user-panel" id="user-panel">
-      <button id="login-btn" class="btn">🔒 Giriş Yap</button>
-      <div id="user-info" class="hidden">
-        <span id="user-name">👤</span> |
-        <span id="user-score">0 Puan</span> |
-        <button id="logout-btn" class="btn">Çıkış Yap</button>
-      </div>
-    </div>
+    <div class="user-panel" id="user-panel"></div>
   </header>
 
   <main>
-    <section class="test-container">
-      <div class="soru-alani">
-        <h2 id="soru"></h2>
-        <div id="secenekler" class="secenekler"></div>
-      </div>
-      <div class="reklam-alani">
-        <iframe src="reklam.html" frameborder="0" width="100%" height="100px"></iframe>
-      </div>
-    </section>
+    <h2 class="test-title">TYT Matematik Testi</h2>
+    <div id="soru-alani" class="soru-container"></div>
   </main>
 
   <footer>
@@ -41,7 +29,23 @@
   </footer>
 
   <script>
-    window.testKategori = "tyt-matematik"; // test.js bu değeri kullanarak doğru JSON'u çeker
+    const firebaseConfig = {
+      apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
+      authDomain: "testlik.firebaseapp.com",
+      projectId: "testlik",
+      storageBucket: "testlik.firebasestorage.app",
+      messagingSenderId: "668524500496",
+      appId: "1:668524500496:web:579bb4fc5990c87afedc95"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
   </script>
+  <script src="scripts/auth.js"></script>
+  <script>
+    const kategori = "tyt-matematik";
+  </script>
+  <script src="scripts/test.js"></script>
 </body>
 </html>
