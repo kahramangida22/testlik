@@ -4,76 +4,87 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Lise Testleri - Testlik.com</title>
-  <link rel="stylesheet" href="index-style.css" />
-  <script type="module" src="index.js" defer></script>
-  <style>
-    .siniflar-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 30px;
-      padding: 40px 20px;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .sinif-kart {
-      background-color: white;
-      border-radius: 20px;
-      padding: 30px;
-      text-align: center;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-      font-size: 20px;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      text-decoration: none;
-      color: #333;
-    }
-
-    .sinif-kart:hover {
-      transform: scale(1.05);
-      background-color: #f0f8ff;
-    }
-
-    .sinif-kart span {
-      font-size: 36px;
-      display: block;
-      margin-bottom: 12px;
-    }
-
-    .kategori-baslik {
-      text-align: center;
-      font-size: 28px;
-      margin-top: 40px;
-    }
-  </style>
+  <link rel="stylesheet" href="styles/kategoriler.css" />
 </head>
 <body>
   <header class="header">
-    <div class="logo">🎉 Testlik.com</div>
-    <div class="user-panel" id="user-panel">
-      <button id="login-btn" class="btn">🔒 Giriş Yap</button>
-      <div id="user-info" class="hidden">
-        <span id="user-name">👤</span> |
-        <span id="user-score">0 Puan</span> |
-        <button id="logout-btn" class="btn">Çıkış Yap</button>
-      </div>
-    </div>
+    <div class="logo">📙 Testlik.com</div>
+    <nav>
+      <a href="index.html" class="btn">Ana Sayfa</a>
+      <a href="kategoriler.html" class="btn">Tüm Kategoriler</a>
+    </nav>
   </header>
 
-  <main>
-    <h2 class="kategori-baslik">🏫 Lise Sınıfları</h2>
+  <main class="kategori-sayfasi">
+    <h2>🏫 Lise Testleri</h2>
 
-    <div class="siniflar-grid">
-      <a href="lise-9.html" class="sinif-kart"><span>📗</span>9. Sınıf</a>
-      <a href="lise-10.html" class="sinif-kart"><span>📘</span>10. Sınıf</a>
-      <a href="lise-11.html" class="sinif-kart"><span>📙</span>11. Sınıf</a>
-      <a href="lise-12.html" class="sinif-kart"><span>📕</span>12. Sınıf</a>
-    </div>
+    <section class="sinif-kategori">
+      <h3>9. Sınıf</h3>
+      <div class="kategori-grid">
+        <a href="test-9sinif-edebiyat.html" class="kategori-kutu">Edebiyat</a>
+        <a href="test-9sinif-matematik.html" class="kategori-kutu">Matematik</a>
+        <a href="test-9sinif-fizik.html" class="kategori-kutu">Fizik</a>
+        <a href="test-9sinif-kimya.html" class="kategori-kutu">Kimya</a>
+        <a href="test-9sinif-biyoloji.html" class="kategori-kutu">Biyoloji</a>
+        <a href="test-9sinif-coğrafya.html" class="kategori-kutu">Coğrafya</a>
+        <a href="test-9sinif-tarih.html" class="kategori-kutu">Tarih</a>
+        <a href="test-9sinif-felsefe.html" class="kategori-kutu">Felsefe</a>
+        <a href="test-9sinif-din.html" class="kategori-kutu">Din Kültürü</a>
+        <a href="test-9sinif-ingilizce.html" class="kategori-kutu">İngilizce</a>
+      </div>
+    </section>
+
+    <section class="sinif-kategori">
+      <h3>10. Sınıf</h3>
+      <div class="kategori-grid">
+        <a href="test-10sinif-edebiyat.html" class="kategori-kutu">Edebiyat</a>
+        <a href="test-10sinif-matematik.html" class="kategori-kutu">Matematik</a>
+        <a href="test-10sinif-fizik.html" class="kategori-kutu">Fizik</a>
+        <a href="test-10sinif-kimya.html" class="kategori-kutu">Kimya</a>
+        <a href="test-10sinif-biyoloji.html" class="kategori-kutu">Biyoloji</a>
+        <a href="test-10sinif-coğrafya.html" class="kategori-kutu">Coğrafya</a>
+        <a href="test-10sinif-tarih.html" class="kategori-kutu">Tarih</a>
+        <a href="test-10sinif-felsefe.html" class="kategori-kutu">Felsefe</a>
+        <a href="test-10sinif-din.html" class="kategori-kutu">Din Kültürü</a>
+        <a href="test-10sinif-ingilizce.html" class="kategori-kutu">İngilizce</a>
+      </div>
+    </section>
+
+    <section class="sinif-kategori">
+      <h3>11. Sınıf</h3>
+      <div class="kategori-grid">
+        <a href="test-11sinif-edebiyat.html" class="kategori-kutu">Edebiyat</a>
+        <a href="test-11sinif-matematik.html" class="kategori-kutu">Matematik</a>
+        <a href="test-11sinif-fizik.html" class="kategori-kutu">Fizik</a>
+        <a href="test-11sinif-kimya.html" class="kategori-kutu">Kimya</a>
+        <a href="test-11sinif-biyoloji.html" class="kategori-kutu">Biyoloji</a>
+        <a href="test-11sinif-coğrafya.html" class="kategori-kutu">Coğrafya</a>
+        <a href="test-11sinif-tarih.html" class="kategori-kutu">Tarih</a>
+        <a href="test-11sinif-felsefe.html" class="kategori-kutu">Felsefe</a>
+        <a href="test-11sinif-din.html" class="kategori-kutu">Din Kültürü</a>
+        <a href="test-11sinif-ingilizce.html" class="kategori-kutu">İngilizce</a>
+      </div>
+    </section>
+
+    <section class="sinif-kategori">
+      <h3>12. Sınıf</h3>
+      <div class="kategori-grid">
+        <a href="test-12sinif-edebiyat.html" class="kategori-kutu">Edebiyat</a>
+        <a href="test-12sinif-matematik.html" class="kategori-kutu">Matematik</a>
+        <a href="test-12sinif-fizik.html" class="kategori-kutu">Fizik</a>
+        <a href="test-12sinif-kimya.html" class="kategori-kutu">Kimya</a>
+        <a href="test-12sinif-biyoloji.html" class="kategori-kutu">Biyoloji</a>
+        <a href="test-12sinif-coğrafya.html" class="kategori-kutu">Coğrafya</a>
+        <a href="test-12sinif-tarih.html" class="kategori-kutu">Tarih</a>
+        <a href="test-12sinif-felsefe.html" class="kategori-kutu">Felsefe</a>
+        <a href="test-12sinif-din.html" class="kategori-kutu">Din Kültürü</a>
+        <a href="test-12sinif-ingilizce.html" class="kategori-kutu">İngilizce</a>
+      </div>
+    </section>
   </main>
 
   <footer>
-    <p style="text-align:center;">© 2025 Testlik.com - Tüm Hakları Saklıdır</p>
+    <p style="text-align:center;">© 2025 Testlik.com - Lise</p>
   </footer>
 </body>
 </html>
