@@ -1,79 +1,68 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>İlkokul Testleri - Testlik.com</title>
-  <link rel="stylesheet" href="index-style.css" />
-  <script type="module" src="index.js" defer></script>
-  <style>
-    .sinif-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 20px;
-      padding: 40px 20px;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .sinif-kart {
-      background-color: white;
-      border-radius: 15px;
-      padding: 25px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      text-align: center;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.3s, background-color 0.3s;
-      text-decoration: none;
-      color: #333;
-    }
-
-    .sinif-kart:hover {
-      transform: scale(1.05);
-      background-color: #f9f9f9;
-    }
-
-    .sinif-kart span {
-      font-size: 40px;
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    .kategori-baslik {
-      text-align: center;
-      font-size: 26px;
-      margin-top: 40px;
-    }
-  </style>
+  <link rel="stylesheet" href="styles/kategoriler.css" />
 </head>
 <body>
   <header class="header">
-    <div class="logo">🎉 Testlik.com</div>
-    <div class="user-panel" id="user-panel">
-      <button id="login-btn" class="btn">🔒 Giriş Yap</button>
-      <div id="user-info" class="hidden">
-        <span id="user-name">👤</span> |
-        <span id="user-score">0 Puan</span> |
-        <button id="logout-btn" class="btn">Çıkış Yap</button>
-      </div>
-    </div>
+    <div class="logo">📘 Testlik.com</div>
+    <nav>
+      <a href="index.html" class="btn">Ana Sayfa</a>
+      <a href="kategoriler.html" class="btn">Tüm Kategoriler</a>
+    </nav>
   </header>
 
-  <main>
-    <h2 class="kategori-baslik">📚 İlkokul Test Kategorileri</h2>
+  <main class="kategori-sayfasi">
+    <h2>🧒 İlkokul Testleri</h2>
 
-    <div class="sinif-grid">
-      <a href="ilkokul-1.html" class="sinif-kart"><span>1️⃣</span>1. Sınıf</a>
-      <a href="ilkokul-2.html" class="sinif-kart"><span>2️⃣</span>2. Sınıf</a>
-      <a href="ilkokul-3.html" class="sinif-kart"><span>3️⃣</span>3. Sınıf</a>
-      <a href="ilkokul-4.html" class="sinif-kart"><span>4️⃣</span>4. Sınıf</a>
-    </div>
+    <section class="sinif-kategori">
+      <h3>1. Sınıf</h3>
+      <div class="kategori-grid">
+        <a href="test-1sinif-turkce.html" class="kategori-kutu">Türkçe</a>
+        <a href="test-1sinif-matematik.html" class="kategori-kutu">Matematik</a>
+        <a href="test-1sinif-hayat.html" class="kategori-kutu">Hayat Bilgisi</a>
+      </div>
+    </section>
+
+    <section class="sinif-kategori">
+      <h3>2. Sınıf</h3>
+      <div class="kategori-grid">
+        <a href="test-2sinif-turkce.html" class="kategori-kutu">Türkçe</a>
+        <a href="test-2sinif-matematik.html" class="kategori-kutu">Matematik</a>
+        <a href="test-2sinif-fen.html" class="kategori-kutu">Fen Bilimleri</a>
+        <a href="test-2sinif-hayat.html" class="kategori-kutu">Hayat Bilgisi</a>
+      </div>
+    </section>
+
+    <section class="sinif-kategori">
+      <h3>3. Sınıf</h3>
+      <div class="kategori-grid">
+        <a href="test-3sinif-turkce.html" class="kategori-kutu">Türkçe</a>
+        <a href="test-3sinif-matematik.html" class="kategori-kutu">Matematik</a>
+        <a href="test-3sinif-fen.html" class="kategori-kutu">Fen Bilimleri</a>
+        <a href="test-3sinif-sosyal.html" class="kategori-kutu">Sosyal Bilgiler</a>
+        <a href="test-3sinif-ingilizce.html" class="kategori-kutu">İngilizce</a>
+      </div>
+    </section>
+
+    <section class="sinif-kategori">
+      <h3>4. Sınıf</h3>
+      <div class="kategori-grid">
+        <a href="test-4sinif-turkce.html" class="kategori-kutu">Türkçe</a>
+        <a href="test-4sinif-matematik.html" class="kategori-kutu">Matematik</a>
+        <a href="test-4sinif-fen.html" class="kategori-kutu">Fen Bilimleri</a>
+        <a href="test-4sinif-sosyal.html" class="kategori-kutu">Sosyal Bilgiler</a>
+        <a href="test-4sinif-ingilizce.html" class="kategori-kutu">İngilizce</a>
+        <a href="test-4sinif-din.html" class="kategori-kutu">Din Kültürü</a>
+      </div>
+    </section>
   </main>
 
   <footer>
-    <p style="text-align:center;">© 2025 Testlik.com - Tüm Hakları Saklıdır</p>
+    <p style="text-align:center;">© 2025 Testlik.com - İlkokul</p>
   </footer>
 </body>
 </html>
