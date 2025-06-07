@@ -3,47 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sürücü Adayı Testleri | Testlik.com</title>
-  <link rel="stylesheet" href="styles/style.css" />
+  <title>Sürücü Adayı Testi | Testlik.com</title>
+  <link rel="stylesheet" href="styles/test-style.css" />
 </head>
 <body>
   <header class="site-header">
     <h1 class="logo">Testlik.com</h1>
-    <nav class="top-nav">
+    <div class="nav-buttons">
       <button onclick="window.location.href='index.html'">🏠 Ana Sayfa</button>
-      <button onclick="window.location.href='sinavlar.html'">⬅️ Sınavlar</button>
-    </nav>
+      <button onclick="window.location.href='sinavlar.html'">📚 Sınavlar</button>
+    </div>
+    <div class="user-info" id="user-info">Giriş kontrol ediliyor...</div>
   </header>
 
   <main class="main-content">
-    <h2>🚦 Sürücü Adayı Testleri</h2>
-    <p>Ehliyet sınavına hazırlık için konulara göre testler 👇</p>
-
-    <div class="kategori-kartlar">
-      <div class="kategori-kart" onclick="window.location.href='test-surucu-trafik.html'">
-        <h3>🚧 Trafik Bilgisi</h3>
-        <p>Trafik kuralları, levhalar, geçiş önceliği</p>
-      </div>
-
-      <div class="kategori-kart" onclick="window.location.href='test-surucu-motor.html'">
-        <h3>🔧 Motor Bilgisi</h3>
-        <p>Araç motor yapısı, arıza belirtileri</p>
-      </div>
-
-      <div class="kategori-kart" onclick="window.location.href='test-surucu-ilkyardim.html'">
-        <h3>⛑️ İlkyardım Bilgisi</h3>
-        <p>Kazalarda müdahale, temel ilkyardım</p>
-      </div>
-
-      <div class="kategori-kart" onclick="window.location.href='test-surucu-adab.html'">
-        <h3>🚙 Trafik Adabı</h3>
-        <p>Empati, sabır, toplumsal trafik kültürü</p>
-      </div>
+    <h2>🚗 Sürücü Adayı Testi</h2>
+    <div id="soru-alani" class="soru-alani">
+      <p id="soru"></p>
+      <div id="secenekler" class="secenekler"></div>
+      <div id="dogru-cevap" class="dogru-cevap"></div>
     </div>
   </main>
 
   <footer class="footer">
-    <p>© 2025 Testlik.com | Sürücü Adayı Testleri</p>
+    <p>© 2025 Testlik.com</p>
   </footer>
+
+  <script src="scripts/firebase-config.js"></script>
+  <script src="scripts/test.js"></script>
+  <script>
+    const jsonKategori = "surucu";
+  </script>
 </body>
 </html>
