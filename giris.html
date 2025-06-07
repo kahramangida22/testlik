@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Giriş Yap | Testlik.com</title>
+  <link rel="stylesheet" href="styles/style.css">
+  <script type="module" src="scripts/firebase-config.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <h1 class="logo">Testlik.com</h1>
+  </header>
+
+  <main class="main-content">
+    <h2>🔐 Giriş Yap veya Kayıt Ol</h2>
+    
+    <div class="form-box">
+      <input type="email" id="email" placeholder="E-posta adresin">
+      <input type="password" id="password" placeholder="Şifre">
+      <button onclick="girisYap()">🚪 Giriş Yap</button>
+      <button onclick="kayitOl()">📝 Kayıt Ol</button>
+    </div>
+
+    <p id="mesaj" class="uyari-mesaj"></p>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Testlik.com | Giriş Sistemi</p>
+  </footer>
+
+  <script type="module" src="scripts/login.js"></script>
+</body>
+</html>
