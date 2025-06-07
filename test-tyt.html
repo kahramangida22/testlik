@@ -3,47 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TYT Testleri | Testlik.com</title>
-  <link rel="stylesheet" href="styles/style.css" />
+  <title>TYT Testi | Testlik.com</title>
+  <link rel="stylesheet" href="styles/test-style.css" />
 </head>
 <body>
   <header class="site-header">
     <h1 class="logo">Testlik.com</h1>
-    <nav class="top-nav">
+    <div class="nav-buttons">
       <button onclick="window.location.href='index.html'">🏠 Ana Sayfa</button>
-      <button onclick="window.location.href='sinavlar.html'">⬅️ Sınavlar</button>
-    </nav>
+      <button onclick="window.location.href='sinavlar.html'">📚 Sınavlar</button>
+    </div>
+    <div class="user-info" id="user-info">Giriş kontrol ediliyor...</div>
   </header>
 
   <main class="main-content">
-    <h2>📘 TYT Testleri</h2>
-    <p>TYT’ye özel derslere göre hazırlanmış testler aşağıda 👇</p>
-
-    <div class="kategori-kartlar">
-      <div class="kategori-kart" onclick="window.location.href='test-tyt-turkce.html'">
-        <h3>📝 Türkçe</h3>
-        <p>Paragraf, dil bilgisi, anlam bilgisi</p>
-      </div>
-
-      <div class="kategori-kart" onclick="window.location.href='test-tyt-matematik.html'">
-        <h3>➕ Matematik</h3>
-        <p>Temel matematik, problemler</p>
-      </div>
-
-      <div class="kategori-kart" onclick="window.location.href='test-tyt-fen.html'">
-        <h3>🔬 Fen Bilimleri</h3>
-        <p>Fizik, kimya, biyoloji konuları</p>
-      </div>
-
-      <div class="kategori-kart" onclick="window.location.href='test-tyt-sosyal.html'">
-        <h3>🌍 Sosyal Bilgiler</h3>
-        <p>Tarih, coğrafya, din, vatandaşlık</p>
-      </div>
+    <h2>📄 TYT Testi</h2>
+    <div id="soru-alani" class="soru-alani">
+      <p id="soru"></p>
+      <div id="secenekler" class="secenekler"></div>
+      <div id="dogru-cevap" class="dogru-cevap"></div>
     </div>
   </main>
 
   <footer class="footer">
-    <p>© 2025 Testlik.com | TYT Testleri</p>
+    <p>© 2025 Testlik.com</p>
   </footer>
+
+  <script src="scripts/firebase-config.js"></script>
+  <script src="scripts/test.js"></script>
+  <script>
+    const jsonKategori = "tyt";
+  </script>
 </body>
 </html>
