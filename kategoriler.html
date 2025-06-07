@@ -4,35 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Kategoriler | Testlik.com</title>
-  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/index-style.css" />
 </head>
 <body>
-  <header class="site-header">
-    <h1 class="logo">Testlik.com</h1>
-    <nav class="top-nav">
-      <button onclick="window.location.href='index.html'">🏠 Ana Sayfa</button>
-      <button onclick="window.location.href='puan-tablosu.html'">🏆 Puan Tablosu</button>
-    </nav>
+  <header>
+    <h1>Kategoriler</h1>
   </header>
 
-  <main class="main-content">
-    <h2>🧩 Test Kategorileri</h2>
-
-    <div class="kategori-kartlar">
-      <div class="kategori-kart" onclick="window.location.href='kategori-eglence.html'">
-        <h3>🎉 Eğlenceli Testler</h3>
-        <p>Mizah, Spor, Filmler, Diziler, Burçlar ve daha fazlası</p>
-      </div>
-
-      <div class="kategori-kart" onclick="window.location.href='kategori-ogrenciler.html'">
-        <h3>🎓 Öğrenciler İçin</h3>
-        <p>İlkokul, Ortaokul, Lise ve Sınav testleri</p>
-      </div>
-    </div>
-  </main>
-
-  <footer class="footer">
-    <p>© 2025 Testlik.com | Kategoriler</p>
-  </footer>
+  <section class="kategori-container">
+    <!-- Spor Alt Kategorileri -->
+    <button class="kategori-btn" onclick="location.href='basketbol.html'">Basketbol</button>
+    <button class="kategori-btn" onclick="location.href='futbol.html'">Futbol</button>
+    <button class="kategori-btn" onclick="location.href='voleybol.html'">Voleybol</button>
+    <!-- Mizah Alt Kategorileri -->
+    <button class="kategori-btn" onclick="location.href='mizah1.html'">Mizah 1</button>
+    <button class="kategori-btn" onclick="location.href='mizah2.html'">Mizah 2</button>
+    <!-- Diğer alt kategoriler -->
+  </section>
 </body>
 </html>
