@@ -3,47 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SRC Testleri | Testlik.com</title>
-  <link rel="stylesheet" href="styles/style.css" />
+  <title>SRC Testi | Testlik.com</title>
+  <link rel="stylesheet" href="styles/test-style.css" />
 </head>
 <body>
   <header class="site-header">
     <h1 class="logo">Testlik.com</h1>
-    <nav class="top-nav">
+    <div class="nav-buttons">
       <button onclick="window.location.href='index.html'">🏠 Ana Sayfa</button>
-      <button onclick="window.location.href='sinavlar.html'">⬅️ Sınavlar</button>
-    </nav>
+      <button onclick="window.location.href='sinavlar.html'">📚 Sınavlar</button>
+    </div>
+    <div class="user-info" id="user-info">Giriş kontrol ediliyor...</div>
   </header>
 
   <main class="main-content">
-    <h2>🚛 SRC Testleri</h2>
-    <p>Ticari taşıma yapan sürücüler için SRC belgesi testleri 👇</p>
-
-    <div class="kategori-kartlar">
-      <div class="kategori-kart" onclick="window.location.href='test-src1.html'">
-        <h3>🚐 SRC 1</h3>
-        <p>Uluslararası yolcu taşımacılığı</p>
-      </div>
-
-      <div class="kategori-kart" onclick="window.location.href='test-src2.html'">
-        <h3>🚕 SRC 2</h3>
-        <p>Yurtiçi yolcu taşımacılığı</p>
-      </div>
-
-      <div class="kategori-kart" onclick="window.location.href='test-src3.html'">
-        <h3>🚚 SRC 3</h3>
-        <p>Uluslararası eşya-yük taşımacılığı</p>
-      </div>
-
-      <div class="kategori-kart" onclick="window.location.href='test-src4.html'">
-        <h3>🚛 SRC 4</h3>
-        <p>Yurtiçi eşya-yük taşımacılığı</p>
-      </div>
+    <h2>🛠️ SRC Testi</h2>
+    <div id="soru-alani" class="soru-alani">
+      <p id="soru"></p>
+      <div id="secenekler" class="secenekler"></div>
+      <div id="dogru-cevap" class="dogru-cevap"></div>
     </div>
   </main>
 
   <footer class="footer">
-    <p>© 2025 Testlik.com | SRC Testleri</p>
+    <p>© 2025 Testlik.com</p>
   </footer>
+
+  <script src="scripts/firebase-config.js"></script>
+  <script src="scripts/test.js"></script>
+  <script>
+    const jsonKategori = "src";
+  </script>
 </body>
 </html>
