@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Puan Tablosu | Testlik.com</title>
+  <link rel="stylesheet" href="styles/style.css" />
+  <script type="module" src="scripts/firebase-config.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <h1 class="logo">Testlik.com</h1>
+    <nav class="top-nav">
+      <button onclick="window.location.href='index.html'">🏠 Ana Sayfa</button>
+      <button onclick="window.location.href='kategoriler.html'">🧩 Kategoriler</button>
+      <div id="user-info"></div>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <h2>🏆 Haftalık Puan Tablosu</h2>
+    <table class="puan-tablosu">
+      <thead>
+        <tr>
+          <th>Sıra</th>
+          <th>Kullanıcı</th>
+          <th>Puan</th>
+        </tr>
+      </thead>
+      <tbody id="puanListesi"></tbody>
+    </table>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Testlik.com | Puan Sistemi</p>
+  </footer>
+
+  <script type="module" src="scripts/puan-tablosu.js"></script>
+</body>
+</html>
