@@ -1,79 +1,24 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Testlik.com | Eğlenceli Testler</title>
-  <link rel="stylesheet" href="styles/style.css">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <script type="module" src="scripts/firebase-config.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Testlik.com - Eğlenceli Testler</title>
+  <link rel="stylesheet" href="styles/index-style.css" />
 </head>
 <body>
-  <header class="site-header">
-    <h1 class="logo">Testlik.com</h1>
-    <nav class="top-nav">
-      <button onclick="window.location.href='kategoriler.html'">🧩 Kategoriler</button>
-      <button onclick="window.location.href='puan-tablosu.html'">🏆 Puan Tablosu</button>
-      <div id="user-section"></div>
-    </nav>
+  <header>
+    <h1>TESTLİK.COM</h1>
   </header>
 
-  <div class="odul-duyuru">
-    🎁 <strong>Her hafta en yüksek puanı toplayan ilk 3 kullanıcı</strong>'ya <span>250 TL</span> ödül veriyoruz! 
-    <a href="puan-tablosu.html">Sıralamayı Gör →</a>
-  </div>
-
-  <main class="main-content">
-    <h2>🎉 Bugün Hangi Testi Çözeceksin?</h2>
-    <p>Test çözerek puan kazan, sıralamada yüksel ve ödülleri kap! 👇</p>
-    <button onclick="rastgeleTesteGit()">🎯 Rastgele Teste Başla</button>
-  </main>
-
-  <footer class="footer">
-    <p>© 2025 Testlik.com | Yapay Zeka Destekli Eğlenceli Test Platformu</p>
-  </footer>
-
-  <script type="module">
-    import { auth, onAuthStateChanged, signOut } from "./scripts/firebase-config.js";
-
-    const userSection = document.getElementById("user-section");
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const displayName = user.displayName || "Kullanıcı";
-        userSection.innerHTML = `
-          <span>👤 ${displayName}</span>
-          <button onclick="logout()">Çıkış Yap</button>
-        `;
-      } else {
-        userSection.innerHTML = `<button onclick="window.location.href='giris.html'">Giriş Yap</button>`;
-      }
-    });
-
-    window.logout = () => {
-      signOut(auth).then(() => {
-        location.reload();
-      });
-    };
-
-    window.rastgeleTesteGit = () => {
-      const testler = [
-        "test-mizah.html",
-        "test-film.html",
-        "test-muzik.html",
-        "test-basketbol.html",
-        "test-futbol.html",
-        "test-spor.html",
-        "test-turkiye.html",
-        "test-dunya.html",
-        "test-internet.html",
-        "test-mobil.html",
-        "test-yapayzeka.html",
-        "test-bilgisayar.html"
-      ];
-      const sec = testler[Math.floor(Math.random() * testler.length)];
-      window.location.href = sec;
-    };
-  </script>
+  <section class="kategori-container">
+    <div class="kategori-kart" onclick="location.href='mizah.html'">Mizah</div>
+    <div class="kategori-kart" onclick="location.href='spor.html'">Spor</div>
+    <div class="kategori-kart" onclick="location.href='film.html'">Film</div>
+    <div class="kategori-kart" onclick="location.href='dizi.html'">Dizi</div>
+    <div class="kategori-kart" onclick="location.href='burc.html'">Burçlar</div>
+    <div class="kategori-kart" onclick="location.href='genel_kultur.html'">Genel Kültür</div>
+    <div class="kategori-kart" onclick="location.href='tarih.html'">Tarih</div>
+  </section>
 </body>
 </html>
