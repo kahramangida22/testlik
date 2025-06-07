@@ -1,0 +1,192 @@
+/* Genel Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  user-select: none;
+}
+
+body {
+  background: linear-gradient(135deg, #f9fafb, #e0e7ff);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 15px 40px;
+}
+
+/* Header */
+.site-header {
+  width: 100%;
+  max-width: 1200px;
+  background: #4f46e5;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 0 0 12px 12px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 4px 12px rgb(79 70 229 / 0.3);
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.nav-buttons button {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+  font-weight: 600;
+  padding: 8px 14px;
+  margin-left: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.nav-buttons button:hover {
+  background: white;
+  color: #4f46e5;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(79, 70, 229, 0.4);
+}
+
+.user-info {
+  font-weight: 600;
+  font-size: 16px;
+  min-width: 140px;
+  text-align: right;
+  user-select: text;
+}
+
+/* Ana içerik */
+.main-content {
+  max-width: 900px;
+  width: 100%;
+  margin-top: 30px;
+  background: white;
+  border-radius: 14px;
+  padding: 25px 30px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-content h2 {
+  font-size: 26px;
+  margin-bottom: 25px;
+  color: #3b82f6;
+  text-align: center;
+  user-select: none;
+}
+
+/* Soru alanı */
+.soru-alani {
+  width: 100%;
+  text-align: center;
+}
+
+.soru-alani p#soru {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+
+/* Seçenekler */
+.secenekler {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.secenekler button {
+  flex: 1 1 45%;
+  max-width: 45%;
+  padding: 12px 18px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: 2px solid #4f46e5;
+  background: #eef2ff;
+  color: #4f46e5;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgb(79 70 229 / 0.1);
+}
+
+.secenekler button:hover:not(:disabled) {
+  background: #4f46e5;
+  color: white;
+  box-shadow: 0 8px 20px rgb(79 70 229 / 0.4);
+}
+
+.secenekler button:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+/* Doğru cevap gösterimi */
+.dogru-cevap {
+  margin-top: 18px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #059669; /* yeşil */
+  user-select: text;
+}
+
+/* Doğru/yanlış buton renkleri */
+button.dogru {
+  background-color: #059669 !important; /* yeşil */
+  color: white !important;
+  border-color: #059669 !important;
+  box-shadow: 0 8px 20px rgba(5, 150, 105, 0.5) !important;
+}
+
+button.yanlis {
+  background-color: #dc2626 !important; /* kırmızı */
+  color: white !important;
+  border-color: #dc2626 !important;
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.5) !important;
+}
+
+/* Footer */
+.footer {
+  margin-top: 40px;
+  color: #6b7280;
+  font-size: 14px;
+  text-align: center;
+  user-select: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .secenekler button {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+  .nav-buttons button {
+    padding: 8px 10px;
+    font-size: 14px;
+    margin-left: 8px;
+  }
+  .logo {
+    font-size: 22px;
+  }
+  .main-content h2 {
+    font-size: 22px;
+  }
+}
