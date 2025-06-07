@@ -3,57 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>KPSS Testleri | Testlik.com</title>
-  <link rel="stylesheet" href="styles/style.css" />
+  <title>KPSS Testi | Testlik.com</title>
+  <link rel="stylesheet" href="styles/test-style.css" />
 </head>
 <body>
   <header class="site-header">
     <h1 class="logo">Testlik.com</h1>
-    <nav class="top-nav">
+    <div class="nav-buttons">
       <button onclick="window.location.href='index.html'">🏠 Ana Sayfa</button>
-      <button onclick="window.location.href='sinavlar.html'">⬅️ Sınavlar</button>
-    </nav>
+      <button onclick="window.location.href='sinavlar.html'">📚 Sınavlar</button>
+    </div>
+    <div class="user-info" id="user-info">Giriş kontrol ediliyor...</div>
   </header>
 
   <main class="main-content">
-    <h2>🏛️ KPSS Testleri</h2>
-    <p>Memurluk sınavına hazırlık için konulara göre testler 👇</p>
-
-    <div class="kategori-kartlar">
-      <div class="kategori-kart" onclick="window.location.href='test-kpss-turkce.html'">
-        <h3>📝 Türkçe</h3>
-        <p>Paragraf, dil bilgisi, anlatım bozukluğu</p>
-      </div>
-
-      <div class="kategori-kart" onclick="window.location.href='test-kpss-matematik.html'">
-        <h3>➗ Matematik</h3>
-        <p>Temel işlemler, problemler, sayılar</p>
-      </div>
-
-      <div class="kategori-kart" onclick="window.location.href='test-kpss-tarih.html'">
-        <h3>📜 Tarih</h3>
-        <p>İnkılap, Osmanlı, İslamiyet Öncesi</p>
-      </div>
-
-      <div class="kategori-kart" onclick="window.location.href='test-kpss-cografya.html'">
-        <h3>🗺️ Coğrafya</h3>
-        <p>Türkiye coğrafyası, iklim, harita bilgisi</p>
-      </div>
-
-      <div class="kategori-kart" onclick="window.location.href='test-kpss-vatandaslik.html'">
-        <h3>⚖️ Vatandaşlık</h3>
-        <p>Hukuk, anayasa, temel haklar</p>
-      </div>
-
-      <div class="kategori-kart" onclick="window.location.href='test-kpss-egitim.html'">
-        <h3>📚 Eğitim Bilimleri</h3>
-        <p>Gelişim, öğrenme, rehberlik, ölçme</p>
-      </div>
+    <h2>🎓 KPSS Testi</h2>
+    <div id="soru-alani" class="soru-alani">
+      <p id="soru"></p>
+      <div id="secenekler" class="secenekler"></div>
+      <div id="dogru-cevap" class="dogru-cevap"></div>
     </div>
   </main>
 
   <footer class="footer">
-    <p>© 2025 Testlik.com | KPSS Testleri</p>
+    <p>© 2025 Testlik.com</p>
   </footer>
+
+  <script src="scripts/firebase-config.js"></script>
+  <script src="scripts/test.js"></script>
+  <script>
+    const jsonKategori = "kpss";
+  </script>
 </body>
 </html>
