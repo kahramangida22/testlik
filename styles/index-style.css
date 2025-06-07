@@ -1,0 +1,131 @@
+/* styles/index-style.css */
+
+/* Arka plan yumuşak hareketli gradient */
+body {
+  background: linear-gradient(120deg, #1e3c72, #2a5298);
+  background-size: 200% 200%;
+  animation: gradientShift 15s ease infinite;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  user-select: none;
+}
+
+@keyframes gradientShift {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+header h1 {
+  font-size: 48px;
+  letter-spacing: 8px;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+  user-select: none;
+}
+
+/* Kategori kartları - grid yapısı */
+.kategori-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Her kart */
+.kategori-kart {
+  background: linear-gradient(145deg, #33415c, #1a2738);
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow:
+    0 8px 24px rgba(0,0,0,0.5),
+    inset 0 0 15px rgba(255,255,255,0.1);
+  text-align: center;
+  cursor: pointer;
+  color: #cbd5e1;
+  font-weight: 700;
+  font-size: 22px;
+  text-transform: uppercase;
+  user-select: none;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+  perspective: 1000px;
+}
+
+/* Hover animasyonları */
+.kategori-kart:hover {
+  color: #60a5fa;
+  box-shadow:
+    0 16px 32px rgba(96, 165, 250, 0.7),
+    inset 0 0 30px rgba(96, 165, 250, 0.2);
+  transform: translateY(-12px) scale(1.05);
+  z-index: 10;
+}
+
+/* Kart içindeki ışık efekti */
+.kategori-kart::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.15), transparent 60%);
+  transform: rotate(45deg);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 0;
+}
+
+.kategori-kart:hover::before {
+  opacity: 1;
+}
+
+/* Butonlar */
+button.kategori-btn {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  border: none;
+  border-radius: 14px;
+  padding: 16px 26px;
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  box-shadow:
+    0 6px 12px rgba(59, 130, 246, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+button.kategori-btn:hover {
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  box-shadow:
+    0 10px 25px rgba(96, 165, 250, 0.7);
+  transform: scale(1.08);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 36px;
+    letter-spacing: 6px;
+  }
+  .kategori-kart {
+    font-size: 18px;
+    padding: 22px;
+  }
+  button.kategori-btn {
+    font-size: 16px;
+    padding: 14px 22px;
+  }
+}
