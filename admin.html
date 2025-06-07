@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Paneli | Testlik.com</title>
+  <link rel="stylesheet" href="styles/style.css">
+  <script type="module" src="scripts/firebase-config.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <h1 class="logo">Testlik.com - Admin Paneli</h1>
+  </header>
+
+  <main class="main-content">
+    <h2>🛠️ Test Ekle</h2>
+    <textarea id="jsonInput" rows="12" placeholder='[
+  {
+    "soru": "Soru nedir?",
+    "secenekler": ["A", "B", "C", "D"],
+    "cevap": "A"
+  }
+]'></textarea>
+    <input type="text" id="kategoriInput" placeholder="Testin Kategorisi (örnek: mizah)">
+    <button onclick="testEkle()">➕ Testi Ekle</button>
+
+    <hr style="margin: 40px 0;">
+
+    <h2>♻️ Tüm Puanları Sıfırla</h2>
+    <button onclick="puanSifirla()" class="reset-btn">🔥 Puanları Sıfırla</button>
+
+    <p id="adminMesaj" class="uyari-mesaj"></p>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Testlik.com | Admin Paneli</p>
+  </footer>
+
+  <script type="module" src="scripts/admin.js"></script>
+</body>
+</html>
