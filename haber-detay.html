@@ -3,32 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Haber Detayı - Testlik.com</title>
+  <title>Haber Detay - Testlik.com</title>
   <link rel="stylesheet" href="haber-detay-style.css">
   <script type="module" src="haber-detay.js" defer></script>
 </head>
 <body>
-  <header>
-    <h1>Testlik.com</h1>
-    <nav>
-      <ul>
-        <li><a href="kategoriler.html">Kategoriler</a></li>
-        <li><a href="index.html">Ana Sayfa</a></li>
-        <li><a href="haberler.html">Haberler</a></li>
-        <li><a href="puan-tablosu.html">Puan Durumu</a></li>
-      </ul>
-    </nav>
+
+  <!-- ÜST BAR -->
+  <header class="site-header">
+    <div class="navbar">
+      <div class="logo">🧠 <span>Testlik</span><strong>.com</strong></div>
+      <nav class="menu">
+        <a href="kategoriler.html">🎯 Kategoriler</a>
+        <a href="index.html">🏠 Ana Sayfa</a>
+        <a href="haberler.html">📰 Haberler</a>
+        <a href="puan-tablosu.html">🏆 Puan Durumu</a>
+      </nav>
+      <div id="kullaniciAlani" class="kullanici-kontrol"></div>
+    </div>
   </header>
 
+  <!-- HABER İÇERİĞİ -->
   <main>
-    <article id="haberAlani">
-      <h2 id="haberBaslik"></h2>
-      <p id="haberIcerik"></p>
-    </article>
+    <h1 id="haberBaslik">Yükleniyor...</h1>
+    <div id="haberIcerik">İçerik getiriliyor...</div>
   </main>
 
   <footer>
-    <p>&copy; 2025 Testlik.com</p>
+    <p>© 2025 Testlik.com | Haber Detay Sayfası</p>
   </footer>
+
+  <!-- Giriş/çıkış JS -->
+  <script type="module">
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+
+    const auth = getAuth();
+    const kullaniciAlani = document.getElementById("kullaniciAlani");
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const puan = localStorage.getItem("puan") || 0;
+        kullaniciAlani.innerHTML = `
+          <span>👤 ${user.displayName || "Kullanıcı"}</span>
+          <span>⭐ ${puan} puan</span>
+          <button onclick="cikisYap()">🚪 Çıkış</button>
+        `;
+      } else {
+        kullaniciAlani.innerHTML = `<a href="giris.html">🔐 Giriş Yap</a>`;
+      }
+    });
+
+    window.cikisYap = () => {
+      signOut(auth).then(() => location.reload());
+    };
+  </script>
+
 </body>
 </html>
