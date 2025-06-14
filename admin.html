@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Paneli - Testlik.com</title>
+  <link rel="stylesheet" href="admin-style.css">
+  <script type="module" src="admin.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Admin Paneli</h1>
+    <p>Yalnızca yetkili kullanıcılar için</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Test Ekle</h2>
+      <textarea id="testJson" placeholder="JSON formatında test verisi"></textarea>
+      <button id="testEkleBtn">Teste Kaydet</button>
+    </section>
+
+    <section>
+      <h2>Haber Ekle</h2>
+      <input type="text" id="haberBaslik" placeholder="Haber Başlığı">
+      <input type="text" id="haberKategori" placeholder="Kategori">
+      <textarea id="haberIcerik" placeholder="İçerik"></textarea>
+      <button id="haberEkleBtn">Haberi Kaydet</button>
+    </section>
+
+    <section>
+      <h2>Puan Sıfırla</h2>
+      <button id="puanSifirlaBtn">Tüm Kullanıcı Puanlarını Sıfırla</button>
+    </section>
+
+    <section>
+      <h2>Bildirim Gönder</h2>
+      <input type="text" id="bildirimMesaji" placeholder="Bildirim içeriği">
+      <button id="bildirimGonderBtn">Gönder</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Testlik.com | Admin Paneli</p>
+  </footer>
+</body>
+</html>
