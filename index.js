@@ -48,3 +48,28 @@ getVeriler("testler", "cozulmeSayisi", "populerTestler");
 getVeriler("haberler", "tiklanmaSayisi", "populerHaberler");
 getVeriler("testler", "eklenmeTarihi", "yeniTestler");
 getVeriler("haberler", "eklenmeTarihi", "yeniHaberler");
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+
+const auth = getAuth();
+const kullaniciAlani = document.getElementById("kullaniciAlani");
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    const puan = localStorage.getItem("puan") || 0;
+    kullaniciAlani.innerHTML = `
+      <span>👤 ${user.displayName || "Kullanıcı"}</span>
+      <span>⭐ ${puan} puan</span>
+      <button onclick="cikisYap()">🚪 Çıkış</button>
+    `;
+  } else {
+    kullaniciAlani.innerHTML = `<a href="giris.html">🔐 Giriş Yap</a>`;
+  }
+});
+
+window.cikisYap = () => {
+  signOut(auth).then(() => location.reload());
+};
