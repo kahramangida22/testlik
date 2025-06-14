@@ -257,3 +257,37 @@ footer {
   background: #7873f5;
   color: white;
 }
+.giris-kapsayici {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+}
+
+.giris-kutu {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.giris-kutu h1 {
+  margin-bottom: 0.5rem;
+  color: #4a148c;
+}
+
+.giris-kutu button {
+  background: #4a148c;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.giris-kutu button:hover {
+  background: #6a1b9a;
+}
