@@ -1,8 +1,65 @@
-/* KULLANICI GÖRÜNÜMÜ */
+/* GENEL YAPI */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f7ff;
+  color: #333;
+}
+
+/* ÜST BAR */
+.site-header {
+  background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 10;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.logo span {
+  color: #ffeb3b;
+}
+
+.menu {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.menu a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.menu a:hover, .menu a.aktif {
+  background: white;
+  color: #2575fc;
+}
+
+/* KULLANICI ALANI */
 .kullanici-kontrol {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
 }
 .kullanici-kontrol span {
   background: white;
@@ -28,4 +85,100 @@
   color: white;
 }
 
-/* (Diğer tüm stiller önceki halinle aynı kalabilir) */
+/* İÇERİK KUTULARI */
+main {
+  padding: 2rem 1rem;
+}
+
+.bolum {
+  margin-bottom: 2rem;
+}
+
+.bolum h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: #3f51b5;
+}
+
+.icerik-kutulari {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1rem;
+}
+
+.kutu {
+  background: white;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.kutu:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.kutu h3 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.kutu p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* SABİT REKLAMLAR */
+.sabit-reklam {
+  position: fixed;
+  top: 100px;
+  width: 120px;
+  z-index: 999;
+}
+.sag-reklam {
+  right: 0;
+}
+.sol-reklam {
+  left: 0;
+}
+
+/* ALT REKLAM */
+.alt-reklam {
+  margin: 2rem auto 1rem auto;
+  max-width: 728px;
+  text-align: center;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: #777;
+  background: #e8eaf6;
+  border-top: 1px solid #ccc;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .sabit-reklam {
+    display: none;
+  }
+
+  .menu {
+    justify-content: center;
+  }
+
+  .kullanici-kontrol {
+    justify-content: center;
+  }
+
+  .navbar {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
