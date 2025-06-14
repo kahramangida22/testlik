@@ -48,18 +48,44 @@ getVeriler("testler", "cozulmeSayisi", "populerTestler");
 getVeriler("haberler", "tiklanmaSayisi", "populerHaberler");
 getVeriler("testler", "eklenmeTarihi", "yeniTestler");
 getVeriler("haberler", "eklenmeTarihi", "yeniHaberler");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import {
   getAuth,
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
+// Firebase ayarları
+const firebaseConfig = {
+  apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
+  authDomain: "testlik.firebaseapp.com",
+  projectId: "testlik",
+  storageBucket: "testlik.appspot.com",
+  messagingSenderId: "668524500496",
+  appId: "1:668524500496:web:579bb4fc5990c87afedc95"
+};
+
+const app = initializeApp(firebaseConfig);
 const auth = getAuth();
+const db = getFirestore(app);
+
 const kullaniciAlani = document.getElementById("kullaniciAlani");
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   if (user) {
-    const puan = localStorage.getItem("puan") || 0;
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+
+    let puan = 0;
+    if (userSnap.exists()) {
+      puan = userSnap.data().puan || 0;
+    }
+
     kullaniciAlani.innerHTML = `
       <span>👤 ${user.displayName || "Kullanıcı"}</span>
       <span>⭐ ${puan} puan</span>
@@ -72,4 +98,5 @@ onAuthStateChanged(auth, (user) => {
 
 window.cikisYap = () => {
   signOut(auth).then(() => location.reload());
+};.reload());
 };
