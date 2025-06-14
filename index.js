@@ -49,25 +49,17 @@ getVeriler("haberler", "tiklanmaSayisi", "populerHaberler");
 getVeriler("testler", "eklenmeTarihi", "yeniTestler");
 getVeriler("haberler", "eklenmeTarihi", "yeniHaberler");
 import {
-  getFirestore,
-  doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-import {
   getAuth,
-  onAuthStateChanged
+  onAuthStateChanged,
+  signOut
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 
-const db = getFirestore();
 const auth = getAuth();
 const kullaniciAlani = document.getElementById("kullaniciAlani");
 
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(auth, (user) => {
   if (user) {
-    const userRef = doc(db, "users", user.uid);
-    const userSnap = await getDoc(userRef);
-    const puan = userSnap.exists() ? userSnap.data().puan || 0 : 0;
-
+    const puan = localStorage.getItem("puan") || 0;
     kullaniciAlani.innerHTML = `
       <span>👤 ${user.displayName || "Kullanıcı"}</span>
       <span>⭐ ${puan} puan</span>
