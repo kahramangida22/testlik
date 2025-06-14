@@ -1,19 +1,30 @@
+/* RENKLİ ARKAPLAN ANİMASYONU */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: #fff;
+  background: linear-gradient(270deg, #fceabb, #e8dff5, #c2e9fb, #fceabb);
+  background-size: 800% 800%;
+  animation: arkaPlanAkisi 30s ease infinite;
   color: #333;
 }
 
+@keyframes arkaPlanAkisi {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ÜST BAR */
 header {
-  background-color: #f44336;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
   color: white;
   padding: 1rem;
   text-align: center;
   position: sticky;
   top: 0;
   z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 nav ul {
@@ -33,8 +44,14 @@ nav ul li a {
   color: white;
   text-decoration: none;
   font-weight: bold;
+  transition: 0.3s;
 }
 
+nav ul li a:hover {
+  text-decoration: underline;
+}
+
+/* HABER İÇERİĞİ */
 main {
   max-width: 800px;
   margin: 2rem auto;
@@ -42,28 +59,31 @@ main {
 }
 
 #haberAlani {
-  background: #fff8f6;
+  background: rgba(255, 255, 255, 0.9);
   padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(4px);
 }
 
 #haberBaslik {
-  color: #f44336;
-  font-size: 1.5rem;
+  color: #6a11cb;
+  font-size: 1.8rem;
   margin-bottom: 1rem;
 }
 
 #haberIcerik {
   font-size: 1.1rem;
-  line-height: 1.6;
+  line-height: 1.8;
 }
 
+/* ALT BİLGİ */
 footer {
   text-align: center;
   padding: 2rem 1rem;
-  background-color: #eee;
+  background-color: #e8eaf6;
   color: #666;
   font-size: 0.9rem;
   margin-top: 3rem;
+  border-top: 1px solid #ccc;
 }
