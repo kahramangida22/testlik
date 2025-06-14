@@ -2,46 +2,39 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Paneli - Testlik.com</title>
-  <link rel="stylesheet" href="admin-style.css">
+  <title>Testlik Admin Paneli</title>
   <script type="module" src="admin.js" defer></script>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 2rem;
+      background: #f2f2f2;
+    }
+    textarea {
+      width: 100%;
+      height: 300px;
+    }
+    button {
+      padding: 0.7rem 1.5rem;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      margin-top: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Admin Paneli</h1>
-    <p>Yalnızca yetkili kullanıcılar için</p>
-  </header>
-
-  <main>
-    <section>
-      <h2>Test Ekle</h2>
-      <textarea id="testJson" placeholder="JSON formatında test verisi"></textarea>
-      <button id="testEkleBtn">Teste Kaydet</button>
-    </section>
-
-    <section>
-      <h2>Haber Ekle</h2>
-      <input type="text" id="haberBaslik" placeholder="Haber Başlığı">
-      <input type="text" id="haberKategori" placeholder="Kategori">
-      <textarea id="haberIcerik" placeholder="İçerik"></textarea>
-      <button id="haberEkleBtn">Haberi Kaydet</button>
-    </section>
-
-    <section>
-      <h2>Puan Sıfırla</h2>
-      <button id="puanSifirlaBtn">Tüm Kullanıcı Puanlarını Sıfırla</button>
-    </section>
-
-    <section>
-      <h2>Bildirim Gönder</h2>
-      <input type="text" id="bildirimMesaji" placeholder="Bildirim içeriği">
-      <button id="bildirimGonderBtn">Gönder</button>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Testlik.com | Admin Paneli</p>
-  </footer>
+  <h1>🛠️ Admin Paneli – Test Ekle</h1>
+  <label>Test Başlığı:</label>
+  <input type="text" id="baslik"><br><br>
+  <label>Kategori (örn: dizi, spor, bilgi):</label>
+  <input type="text" id="kategori"><br><br>
+  <label>JSON formatında sorular (soru, secenekler[], cevap):</label>
+  <textarea id="jsonVeri" placeholder='[{"soru": "...", "secenekler": ["A", "B", "C", "D"], "cevap": 1}]'></textarea>
+  <br>
+  <button id="ekleBtn">Teste Kaydet</button>
+  <p id="durum"></p>
 </body>
 </html>
