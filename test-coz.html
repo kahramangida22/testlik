@@ -4,34 +4,70 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Test Çöz - Testlik.com</title>
-  <link rel="stylesheet" href="test-coz-style.css" />
+  <link rel="stylesheet" href="index-style.css" />
+  <script type="module" src="test-coz.js" defer></script>
+
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX"
+    crossorigin="anonymous"></script>
 </head>
 <body>
 
-  <header>
-    <h1>Testlik.com</h1>
-    <nav>
-      <a href="kategoriler.html">Kategoriler</a>
-      <a href="index.html">Ana Sayfa</a>
-      <a href="haberler.html">Haberler</a>
-      <a href="puan-tablosu.html">Puan Durumu</a>
-    </nav>
+  <!-- SABİT SAĞ REKLAM -->
+  <div class="sabit-reklam sag-reklam">
+    <ins class="adsbygoogle"
+      style="display:block;width:120px;height:600px"
+      data-ad-client="ca-pub-XXXXXXXXXXXX"
+      data-ad-slot="1111111111"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- SABİT SOL REKLAM -->
+  <div class="sabit-reklam sol-reklam">
+    <ins class="adsbygoogle"
+      style="display:block;width:120px;height:600px"
+      data-ad-client="ca-pub-XXXXXXXXXXXX"
+      data-ad-slot="2222222222"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <header class="site-header">
+    <div class="navbar">
+      <div class="logo">🧠 <span>Testlik</span><strong>.com</strong></div>
+      <nav class="menu">
+        <a href="index.html">🏠 Ana Sayfa</a>
+        <a href="kategoriler.html">🎯 Kategoriler</a>
+        <a href="haberler.html">📰 Haberler</a>
+        <a href="puan-tablosu.html">🏆 Puan Durumu</a>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <div id="testKapsayici">
-      <h2 id="testBasligi">Test Başlığı</h2>
-      <h3 id="soru">Yükleniyor...</h3>
-      <div id="secenekler"></div>
-    </div>
+    <section>
+      <h2 id="testBasligi">🧪 Test Yükleniyor...</h2>
+      <div id="testKapsayici">
+        <h3 id="soru">⏳ Soru hazırlanıyor...</h3>
+        <div id="secenekler"></div>
+      </div>
 
-    <div id="sonuc" style="display: none;"></div>
+      <div id="sonuc" style="display:none;"></div>
+    </section>
+
+    <!-- ALT REKLAM -->
+    <div class="alt-reklam">
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-XXXXXXXXXXXX"
+        data-ad-slot="3333333333"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
   </main>
 
   <footer>
-    <p>© 2025 Testlik.com</p>
+    <p>© 2025 Testlik.com | Test Çöz</p>
   </footer>
-
-  <script type="module" src="test-coz.js"></script>
 </body>
 </html>
