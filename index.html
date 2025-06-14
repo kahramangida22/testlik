@@ -1,49 +1,49 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Testlik.com - Ana Sayfa</title>
-  <link rel="stylesheet" href="index-style.css">
+  <link rel="stylesheet" href="index-style.css" />
   <script type="module" src="index.js" defer></script>
 </head>
 <body>
-  <header>
-    <h1>Testlik.com</h1>
-    <nav>
+  <header class="site-header">
+    <h1 class="logo">🎯 Testlik<span>.com</span></h1>
+    <nav class="menu">
       <ul>
         <li><a href="kategoriler.html">Kategoriler</a></li>
-        <li><a href="index.html">Ana Sayfa</a></li>
+        <li><a href="index.html" class="aktif">Ana Sayfa</a></li>
         <li><a href="haberler.html">Haberler</a></li>
         <li><a href="puan-tablosu.html">Puan Durumu</a></li>
       </ul>
     </nav>
   </header>
 
-  <main>
+  <main class="icerik">
     <section id="populer-testler">
       <h2>🔥 En Çok Çözülen Testler</h2>
-      <div class="test-listesi" id="populerTestler"></div>
+      <div class="liste test-listesi" id="populerTestler"></div>
     </section>
 
     <section id="populer-haberler">
       <h2>📰 En Çok Tıklanan Haberler</h2>
-      <div class="haber-listesi" id="populerHaberler"></div>
+      <div class="liste haber-listesi" id="populerHaberler"></div>
     </section>
 
     <section id="yeni-testler">
       <h2>🆕 Yeni Eklenen Testler</h2>
-      <div class="test-listesi" id="yeniTestler"></div>
+      <div class="liste test-listesi" id="yeniTestler"></div>
     </section>
 
     <section id="yeni-haberler">
       <h2>📰 Yeni Eklenen Haberler</h2>
-      <div class="haber-listesi" id="yeniHaberler"></div>
+      <div class="liste haber-listesi" id="yeniHaberler"></div>
     </section>
   </main>
 
   <footer>
-    <p>&copy; 2025 Testlik.com</p>
+    <p>&copy; 2025 <strong>Testlik.com</strong> | Tüm Hakları Saklıdır.</p>
   </footer>
 </body>
 </html>
