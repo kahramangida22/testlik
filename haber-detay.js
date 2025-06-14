@@ -1,39 +1,76 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import {
-  getFirestore, doc, getDoc, updateDoc, increment
+  getFirestore,
+  collection,
+  getDoc,
+  getDocs,
+  doc,
+  query,
+  where
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
   authDomain: "testlik.firebaseapp.com",
   projectId: "testlik",
-  storageBucket: "testlik.firebasestorage.app",
+  storageBucket: "testlik.appspot.com",
   messagingSenderId: "668524500496",
-  appId: "1:668524500496:web:579bb4fc5990c87afedc95",
-  measurementId: "G-8ZEYBJCV3T"
+  appId: "1:668524500496:web:579bb4fc5990c87afedc95"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Haber ID'yi al
 const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
+const haberId = params.get("id");
 
-const baslikEl = document.getElementById("haberBaslik");
-const icerikEl = document.getElementById("haberIcerik");
+const haberBaslik = document.getElementById("haberBaslik");
+const haberIcerik = document.getElementById("haberIcerik");
 
-async function haberYukle() {
-  const ref = doc(db, "haberler", id);
-  const snap = await getDoc(ref);
-  if (snap.exists()) {
-    const veri = snap.data();
-    baslikEl.textContent = veri.baslik;
-    icerikEl.textContent = veri.icerik;
-    updateDoc(ref, { tiklanmaSayisi: increment(1) });
+async function haberiGetir() {
+  const docRef = doc(db, "haberler", haberId);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    const data = docSnap.data();
+    haberBaslik.textContent = data.baslik;
+    haberIcerik.textContent = data.icerik;
+
+    // Butonlar için kategori bilgisi
+    const kategori = data.kategori;
+    document.getElementById("sonrakiHaberBtn").onclick = () => sonrakiHabereGit(kategori);
+    document.getElementById("rastgeleHaberBtn").onclick = rastgeleHabereGit;
   } else {
-    baslikEl.textContent = "Haber bulunamadı";
-    icerikEl.textContent = "Bu haber sistemde kayıtlı değil.";
+    haberBaslik.textContent = "Haber bulunamadı.";
+    haberIcerik.textContent = "";
   }
 }
 
-haberYukle();
+async function sonrakiHabereGit(kategori) {
+  const q = query(collection(db, "haberler"), where("kategori", "==", kategori));
+  const snapshot = await getDocs(q);
+  const haberler = [];
+
+  snapshot.forEach(doc => {
+    haberler.push({ id: doc.id, ...doc.data() });
+  });
+
+  haberler.sort((a, b) => a.baslik.localeCompare(b.baslik));
+  const index = haberler.findIndex(h => h.id === haberId);
+  const sonraki = haberler[index + 1] || haberler[0];
+  window.location.href = `haber-detay.html?id=${sonraki.id}`;
+}
+
+async function rastgeleHabereGit() {
+  const q = query(collection(db, "haberler"));
+  const snapshot = await getDocs(q);
+  const haberler = [];
+
+  snapshot.forEach(doc => haberler.push(doc.id));
+  const rastgele = haberler[Math.floor(Math.random() * haberler.length)];
+  window.location.href = `haber-detay.html?id=${rastgele}`;
+}
+
+haberiGetir();
