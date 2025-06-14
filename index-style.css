@@ -338,6 +338,6 @@ footer {
   overflow-wrap: break-word;
   white-space: normal;
   hyphens: auto;
-  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-  line-height: 1.4;
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
+  line-height: 1.3;
 }
