@@ -1,79 +1,31 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Paneli - Testlik.com</title>
-  <link rel="stylesheet" href="index-style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Paneli - Testlik</title>
+  <link rel="stylesheet" href="admin-style.css" />
   <script type="module" src="admin.js" defer></script>
 </head>
 <body>
-
-  <!-- SABİT REKLAMLAR -->
-  <div class="sabit-reklam sag-reklam">
-    <ins class="adsbygoogle"
-      style="display:block;width:120px;height:600px"
-      data-ad-client="ca-pub-XXXXXXXXXXXX"
-      data-ad-slot="1111111111"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-  <div class="sabit-reklam sol-reklam">
-    <ins class="adsbygoogle"
-      style="display:block;width:120px;height:600px"
-      data-ad-client="ca-pub-XXXXXXXXXXXX"
-      data-ad-slot="2222222222"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="navbar">
-      <div class="logo">🧠 <span>Testlik</span><strong>.com</strong></div>
-      <nav class="menu">
-        <a href="index.html">🏠 Ana Sayfa</a>
-        <a href="kategoriler.html">🎯 Kategoriler</a>
-        <a href="haberler.html">📰 Haberler</a>
-        <a href="puan-tablosu.html">🏆 Puan Durumu</a>
-      </nav>
-    </div>
+  <header class="admin-header">
+    <h1>🛠️ Testlik Admin Paneli</h1>
   </header>
 
-  <main>
+  <main class="admin-panel">
     <section>
-      <h2>🧪 Test Ekle (Tam JSON Yapıştır)</h2>
-      <textarea id="jsonVeri" placeholder='{
-  "baslik": "Test Başlığı",
-  "kategori": "dizi",
-  "sorular": [ { "soru": "...", "secenekler": [...], "cevap": 0 } ]
-}'></textarea>
-      <button id="ekleBtn">✅ Testi Kaydet</button>
-      <p id="durum"></p>
+      <h2>📥 Toplu Test Ekle</h2>
+      <textarea id="testJsonInput" placeholder='[ { "baslik": "...", "sorular": [ ... ] }, ... ]'></textarea>
+      <button id="testEkleBtn">🧪 Test(ler)i Ekle</button>
     </section>
 
     <section>
-      <h2>📰 Haber Ekle (Tam JSON Yapıştır)</h2>
-      <textarea id="haberJson" placeholder='{
-  "baslik": "Haber Başlığı",
-  "kategori": "gundem",
-  "icerik": "Haber içeriği buraya yazılır."
-}'></textarea>
-      <button id="haberEkleBtn">✅ Haberi Kaydet</button>
-      <p id="haberDurum"></p>
+      <h2>📰 Toplu Haber Ekle</h2>
+      <textarea id="haberJsonInput" placeholder='[ { "baslik": "...", "icerik": "...", "kategori": "...", ... }, ... ]'></textarea>
+      <button id="haberEkleBtn">📢 Haber(ler)i Ekle</button>
     </section>
 
-    <!-- ALT REKLAM -->
-    <div class="alt-reklam">
-      <ins class="adsbygoogle"
-        style="display:block"
-        data-ad-client="ca-pub-XXXXXXXXXXXX"
-        data-ad-slot="3333333333"
-        data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
+    <div id="sonucAlani"></div>
   </main>
-
-  <footer>
-    <p>© 2025 Testlik.com | Admin Paneli</p>
-  </footer>
 </body>
 </html>
