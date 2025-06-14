@@ -1,73 +1,39 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8">
-  <title>Testlik Admin Paneli</title>
-  <link rel="stylesheet" href="index-style.css" />
-  <script type="module" src="admin.js" defer></script>
-</head>
-<body>
+<!-- ... yukarısı aynı kalıyor ... -->
 
-  <!-- SABİT SAĞ REKLAM -->
-  <div class="sabit-reklam sag-reklam">
-    <ins class="adsbygoogle"
-      style="display:block;width:120px;height:600px"
-      data-ad-client="ca-pub-XXXXXXXXXXXX"
-      data-ad-slot="1111111111"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<main>
+  <section>
+    <h2>🛠️ Admin Paneli – Test Ekle</h2>
+    <label>Test Başlığı:</label>
+    <input type="text" id="baslik" placeholder="Örn: Futbol Bilgisi"><br>
+
+    <label>Kategori (örn: dizi, spor, bilgi):</label>
+    <input type="text" id="kategori" placeholder="Örn: spor"><br>
+
+    <label>JSON formatında sorular:</label>
+    <textarea id="jsonVeri" placeholder='[{"soru": "...", "secenekler": ["A", "B", "C", "D"], "cevap": 1}]'></textarea>
+
+    <button id="ekleBtn">Teste Kaydet</button>
+    <p id="durum"></p>
+  </section>
+
+  <section>
+    <h2>📰 Admin Paneli – Haber Ekle</h2>
+    <label>Haber Başlığı:</label>
+    <input type="text" id="haberBaslik" placeholder="Örn: Yapay Zeka Trendi"><br>
+
+    <label>Haber Kategorisi:</label>
+    <input type="text" id="haberKategori" placeholder="Örn: teknoloji"><br>
+
+    <label>Haber İçeriği:</label>
+    <textarea id="haberIcerik" placeholder="Haberin içeriğini buraya yaz..."></textarea>
+
+    <button id="haberEkleBtn">Haberi Kaydet</button>
+    <p id="haberDurum"></p>
+  </section>
+
+  <div class="alt-reklam">
+    <!-- reklam -->
   </div>
+</main>
 
-  <!-- SABİT SOL REKLAM -->
-  <div class="sabit-reklam sol-reklam">
-    <ins class="adsbygoogle"
-      style="display:block;width:120px;height:600px"
-      data-ad-client="ca-pub-XXXXXXXXXXXX"
-      data-ad-slot="2222222222"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-
-  <header class="site-header">
-    <div class="navbar">
-      <div class="logo">🧠 <span>Testlik</span><strong>.com</strong></div>
-      <nav class="menu">
-        <a href="index.html">🏠 Ana Sayfa</a>
-        <a href="kategoriler.html">🎯 Kategoriler</a>
-        <a href="haberler.html">📰 Haberler</a>
-        <a href="puan-tablosu.html">🏆 Puan Durumu</a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <section>
-      <h2>🛠️ Admin Paneli – Test Ekle</h2>
-      <label>Test Başlığı:</label>
-      <input type="text" id="baslik" placeholder="Örn: Futbol Bilgisi"><br>
-
-      <label>Kategori (örn: dizi, spor, bilgi):</label>
-      <input type="text" id="kategori" placeholder="Örn: spor"><br>
-
-      <label>JSON formatında sorular:</label>
-      <textarea id="jsonVeri" placeholder='[{"soru": "...", "secenekler": ["A", "B", "C", "D"], "cevap": 1}]'></textarea>
-
-      <button id="ekleBtn">Teste Kaydet</button>
-      <p id="durum"></p>
-    </section>
-
-    <!-- ALT REKLAM -->
-    <div class="alt-reklam">
-      <ins class="adsbygoogle"
-        style="display:block"
-        data-ad-client="ca-pub-XXXXXXXXXXXX"
-        data-ad-slot="3333333333"
-        data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-  </main>
-
-  <footer>
-    <p>© 2025 Testlik.com | Admin Paneli</p>
-  </footer>
-</body>
-</html>
+<!-- footer aynı -->
