@@ -162,3 +162,67 @@ footer {
     display: none;
   }
 }
+/* TEST ÇÖZÜM SEÇENEKLERİ */
+#testKapsayici {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  margin-top: 1rem;
+}
+
+#soru {
+  font-size: 1.3rem;
+  color: #4a148c;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+#secenekler {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.secenek {
+  background: #f3e5f5;
+  border: 2px solid #ce93d8;
+  padding: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+.secenek:hover {
+  background: #ba68c8;
+  color: white;
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(186, 104, 200, 0.4);
+}
+
+/* DOĞRU - YANLIŞ RENKLENDİRME */
+.secenek.dogru {
+  background-color: #c8e6c9 !important;
+  border-color: #66bb6a !important;
+  color: #2e7d32 !important;
+}
+
+.secenek.yanlis {
+  background-color: #ffcdd2 !important;
+  border-color: #e57373 !important;
+  color: #c62828 !important;
+}
+
+#sonuc {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  text-align: center;
+  font-weight: bold;
+  color: #4a148c;
+  background: #ede7f6;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
