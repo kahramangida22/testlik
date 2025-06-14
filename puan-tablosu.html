@@ -4,43 +4,79 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Puan Tablosu - Testlik.com</title>
-  <link rel="stylesheet" href="puan-style.css" />
+  <link rel="stylesheet" href="index-style.css" />
+  <script type="module" src="puan-tablosu.js" defer></script>
+
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX"
+    crossorigin="anonymous"></script>
 </head>
 <body>
 
-  <header>
-    <h1>Testlik.com</h1>
-    <nav>
-      <a href="kategoriler.html">Kategoriler</a>
-      <a href="index.html">Ana Sayfa</a>
-      <a href="haberler.html">Haberler</a>
-      <a href="puan-tablosu.html">Puan Durumu</a>
-    </nav>
+  <!-- SABİT SAĞ REKLAM -->
+  <div class="sabit-reklam sag-reklam">
+    <ins class="adsbygoogle"
+      style="display:block;width:120px;height:600px"
+      data-ad-client="ca-pub-XXXXXXXXXXXX"
+      data-ad-slot="1111111111"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- SABİT SOL REKLAM -->
+  <div class="sabit-reklam sol-reklam">
+    <ins class="adsbygoogle"
+      style="display:block;width:120px;height:600px"
+      data-ad-client="ca-pub-XXXXXXXXXXXX"
+      data-ad-slot="2222222222"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <header class="site-header">
+    <div class="navbar">
+      <div class="logo">🧠 <span>Testlik</span><strong>.com</strong></div>
+      <nav class="menu">
+        <a href="index.html">🏠 Ana Sayfa</a>
+        <a href="kategoriler.html">🎯 Kategoriler</a>
+        <a href="haberler.html">📰 Haberler</a>
+        <a href="puan-tablosu.html" class="aktif">🏆 Puan Durumu</a>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <div class="puan-kutu">
+    <section>
       <h2>🏆 En Yüksek Puan Alanlar</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Kullanıcı</th>
-            <th>Puan</th>
-          </tr>
-        </thead>
-        <tbody id="puanTablosuBody">
-          <!-- JavaScript ile doldurulacak -->
-        </tbody>
-      </table>
+      <div class="icerik-kutulari">
+        <table style="width:100%; background:white; border-radius:10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden;">
+          <thead style="background:#7873f5; color:white;">
+            <tr>
+              <th style="padding:10px;">#</th>
+              <th>Kullanıcı</th>
+              <th>Puan</th>
+            </tr>
+          </thead>
+          <tbody id="puanTablosuBody" style="text-align:center;">
+            <!-- JavaScript ile doldurulacak -->
+          </tbody>
+        </table>
+        <div id="benimPuan" class="benim-puan-alani" style="margin-top:1rem; font-weight:bold;"></div>
+      </div>
+    </section>
+
+    <!-- ALT REKLAM -->
+    <div class="alt-reklam">
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-XXXXXXXXXXXX"
+        data-ad-slot="3333333333"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-<div id="benimPuan" class="benim-puan-alani"></div>
   </main>
 
   <footer>
-    <p>© 2025 Testlik.com</p>
+    <p>© 2025 Testlik.com | Puan Tablosu</p>
   </footer>
-
-  <script type="module" src="puan-tablosu.js"></script>
 </body>
 </html>
