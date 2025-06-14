@@ -1,27 +1,25 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Puan Tablosu - Testlik.com</title>
-  <link rel="stylesheet" href="puan-style.css">
-  <script type="module" src="puan.js" defer></script>
+  <link rel="stylesheet" href="puan-style.css" />
 </head>
 <body>
+
   <header>
     <h1>Testlik.com</h1>
     <nav>
-      <ul>
-        <li><a href="kategoriler.html">Kategoriler</a></li>
-        <li><a href="index.html">Ana Sayfa</a></li>
-        <li><a href="haberler.html">Haberler</a></li>
-        <li><a href="puan-tablosu.html">Puan Durumu</a></li>
-      </ul>
+      <a href="kategoriler.html">Kategoriler</a>
+      <a href="index.html">Ana Sayfa</a>
+      <a href="haberler.html">Haberler</a>
+      <a href="puan-tablosu.html">Puan Durumu</a>
     </nav>
   </header>
 
   <main>
-    <section>
+    <div class="puan-kutu">
       <h2>🏆 En Yüksek Puan Alanlar</h2>
       <table>
         <thead>
@@ -31,13 +29,17 @@
             <th>Puan</th>
           </tr>
         </thead>
-        <tbody id="puanTablosu"></tbody>
+        <tbody id="puanTablosuBody">
+          <!-- JavaScript ile doldurulacak -->
+        </tbody>
       </table>
-    </section>
+    </div>
   </main>
 
   <footer>
-    <p>&copy; 2025 Testlik.com</p>
+    <p>© 2025 Testlik.com</p>
   </footer>
+
+  <script type="module" src="puan-tablosu.js"></script>
 </body>
 </html>
