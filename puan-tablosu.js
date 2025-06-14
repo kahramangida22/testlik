@@ -6,6 +6,10 @@ import {
   query,
   orderBy
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+import {
+  getAuth,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
@@ -19,21 +23,26 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
-// Tabloya yaz
 const tabloBody = document.querySelector("#puanTablosuBody");
+const benimPuanKutu = document.querySelector("#benimPuan");
 
-async function puanlariGetir() {
+onAuthStateChanged(auth, async (user) => {
   const q = query(collection(db, "users"), orderBy("puan", "desc"));
   const querySnapshot = await getDocs(q);
 
   let sira = 1;
+  let benimVeri = null;
+
   querySnapshot.forEach((docSnap) => {
     const veri = docSnap.data();
+    const uid = docSnap.id;
+
     const tr = document.createElement("tr");
 
     const tdSira = document.createElement("td");
-    tdSira.textContent = sira++;
+    tdSira.textContent = sira;
 
     const tdIsim = document.createElement("td");
     tdIsim.textContent = veri.displayName || "İsimsiz";
@@ -44,9 +53,29 @@ async function puanlariGetir() {
     tr.appendChild(tdSira);
     tr.appendChild(tdIsim);
     tr.appendChild(tdPuan);
-
     tabloBody.appendChild(tr);
-  });
-}
 
-puanlariGetir();
+    // Eğer giriş yapan kullanıcıysa, üst kutuya yazmak için sakla
+    if (user && uid === user.uid) {
+      benimVeri = {
+        sira,
+        isim: veri.displayName || "İsimsiz",
+        puan: veri.puan || 0
+      };
+    }
+
+    sira++;
+  });
+
+  if (benimVeri) {
+    benimPuanKutu.innerHTML = `
+      <div class="benim-kart">
+        <h3>🎯 Senin Sıran</h3>
+        <p><strong>#${benimVeri.sira}</strong> - ${benimVeri.isim}</p>
+        <p>⭐ Puan: <strong>${benimVeri.puan}</strong></p>
+      </div>
+    `;
+  } else {
+    benimPuanKutu.innerHTML = `<p>Giriş yapmadığınız için sıralamanız görünmüyor.</p>`;
+  }
+});
