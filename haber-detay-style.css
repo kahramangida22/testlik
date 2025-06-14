@@ -14,52 +14,53 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* ÜST BAR */
+/* HEADER */
 .site-header {
-  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  background: linear-gradient(to right, #ff6ec4, #7873f5);
+  padding: 0.8rem 1rem;
   color: white;
-  padding: 1rem;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  position: relative;
-  z-index: 10;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: auto;
 }
 
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
 }
-
 .logo span {
   color: #ffeb3b;
 }
 
+/* NAV */
 .menu {
   display: flex;
-  gap: 1rem;
+  gap: 0.8rem;
   flex-wrap: wrap;
 }
-
 .menu a {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.4rem 0.9rem;
+  border-radius: 18px;
   color: white;
+  font-weight: 600;
   text-decoration: none;
-  font-weight: bold;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 0.4rem 0.8rem;
-  border-radius: 8px;
-  transition: 0.3s;
+  font-size: 0.95rem;
+  transition: 0.2s;
+}
+.menu a:hover,
+.menu a.aktif {
+  background: rgba(255, 255, 255, 0.35);
 }
 
-.menu a:hover, .menu a.aktif {
-  background: white;
-  color: #2575fc;
-}
 
 /* KULLANICI GÖRÜNÜMÜ */
 .kullanici-kontrol {
