@@ -341,3 +341,13 @@ footer {
   font-size: clamp(0.85rem, 2.5vw, 1rem);
   line-height: 1.3;
 }
+.duyuru-banner {
+  background: linear-gradient(90deg, #ffcc00, #ff9900);
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+  padding: 1rem;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 999;
+}
