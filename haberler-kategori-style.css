@@ -13,7 +13,7 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* NAVBAR */
+/* NAVBAR (index.html ile birebir) */
 .site-header {
   background: linear-gradient(90deg, #6a11cb, #2575fc);
   color: white;
@@ -55,12 +55,13 @@ body {
   transition: 0.3s;
 }
 
-.menu a:hover, .menu a.aktif {
+.menu a:hover,
+.menu a.aktif {
   background: white;
   color: #2575fc;
 }
 
-/* KULLANICI GİRİŞ ALANI */
+/* KULLANICI ALANI */
 .kullanici-kontrol {
   display: flex;
   gap: 0.5rem;
