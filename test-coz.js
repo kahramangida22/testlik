@@ -1,6 +1,4 @@
-import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import {
   getFirestore,
   doc,
@@ -24,7 +22,6 @@ const firebaseConfig = {
   measurementId: "G-8ZEYBJCV3T"
 };
 
-// Initialize
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
@@ -61,7 +58,7 @@ async function baslat() {
 
   if (docSnap.exists()) {
     const veri = docSnap.data();
-    sorular = shuffleArray(veri.sorular); // rastgele sırala
+    sorular = shuffleArray(veri.sorular);
     testBasligi.innerText = veri.baslik || "Test";
     gosterSoru();
   } else {
@@ -75,27 +72,27 @@ function gosterSoru() {
   seceneklerAlani.innerHTML = "";
 
   soru.secenekler.forEach((secenek, index) => {
-    const buton = document.createElement("button");
-    buton.className = "secenek";
-    buton.innerText = secenek;
-    buton.onclick = () => kontrolEt(buton, index);
-    seceneklerAlani.appendChild(buton);
+    const btn = document.createElement("div");
+    btn.className = "secenek";
+    btn.textContent = secenek;
+    btn.addEventListener("click", () => kontrolEt(btn, index));
+    seceneklerAlani.appendChild(btn);
   });
 }
 
-function kontrolEt(buton, index) {
+function kontrolEt(btn, index) {
   const soru = sorular[mevcutSoru];
   const secenekler = document.querySelectorAll(".secenek");
 
-  secenekler.forEach(b => b.disabled = true); // Tek tıklama hakkı
+  secenekler.forEach(b => b.style.pointerEvents = "none");
 
   if (parseInt(index) === parseInt(soru.cevap)) {
-    buton.classList.add("dogru");
+    btn.classList.add("dogru");
     puan += 10;
     localStorage.setItem("puan", puan);
     puanYaz(kullanici.uid, 10);
   } else {
-    buton.classList.add("yanlis");
+    btn.classList.add("yanlis");
     secenekler[soru.cevap].classList.add("dogru");
   }
 
@@ -106,7 +103,7 @@ function kontrolEt(buton, index) {
     } else {
       bitirTest();
     }
-  }, 1000);
+  }, 1200);
 }
 
 async function puanYaz(uid, artiPuan) {
@@ -120,14 +117,13 @@ function bitirTest() {
   testKapsayici.style.display = "none";
   sonucAlani.style.display = "block";
   sonucAlani.innerHTML = `
-    <h2>Test Bitti!</h2>
-    <p>Toplam Puan: ${puan}</p>
-    <a href="index.html" class="buton">Ana Sayfa</a>
-    <a href="test.html?kategori=${params.get("kategori")}" class="buton">Aynı Kategoriden Başka Test</a>
+    <h2>🎉 Test Bitti!</h2>
+    <p>Toplam Puan: <strong>${puan}</strong></p>
+    <a href="index.html" class="buton">🏠 Ana Sayfa</a>
+    <a href="test.html?kategori=${params.get("kategori")}" class="buton">➕ Aynı Kategoriden Başka Test</a>
   `;
 }
 
-// Rastgele sıralama fonksiyonu
 function shuffleArray(array) {
   return array.sort(() => Math.random() - 0.5);
 }
