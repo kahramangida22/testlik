@@ -7,14 +7,13 @@
   <link rel="stylesheet" href="index-style.css" />
   <script type="module" src="index.js" defer></script>
 
-  <!-- Google AdSense -->
+  <!-- AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX"
-     crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script>
 </head>
 <body>
-
   <!-- ÜST REKLAM -->
-  <div class="reklam-alani ust-reklam">
+  <div class="reklam ust-reklam">
     <ins class="adsbygoogle"
       style="display:block"
       data-ad-client="ca-pub-XXXXXXXXXXXX"
@@ -24,22 +23,24 @@
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
-  <header class="site-header">
-    <h1 class="logo">🎯 Testlik<span>.com</span></h1>
-    <nav class="menu">
-      <ul>
-        <li><a href="kategoriler.html">Kategoriler</a></li>
-        <li><a href="index.html" class="aktif">Ana Sayfa</a></li>
-        <li><a href="haberler.html">Haberler</a></li>
-        <li><a href="puan-tablosu.html">Puan Durumu</a></li>
-      </ul>
+  <header>
+    <div class="logo">🧠 Testlik<span>.com</span></div>
+    <nav>
+      <a href="kategoriler.html">🎯 Kategoriler</a>
+      <a href="index.html" class="aktif">🏠 Ana Sayfa</a>
+      <a href="haberler.html">📰 Haberler</a>
+      <a href="puan-tablosu.html">🏆 Puan Durumu</a>
     </nav>
   </header>
 
-  <main class="icerik">
+  <main>
+    <section>
+      <h2>🔥 En Çok Çözülen Testler</h2>
+      <div class="icerik-kutulari" id="populerTestler"></div>
+    </section>
 
     <!-- ORTA REKLAM -->
-    <div class="reklam-alani orta-reklam">
+    <div class="reklam orta-reklam">
       <ins class="adsbygoogle"
         style="display:block"
         data-ad-client="ca-pub-XXXXXXXXXXXX"
@@ -49,28 +50,23 @@
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
-    <section id="populer-testler">
-      <h2>🔥 En Çok Çözülen Testler</h2>
-      <div class="liste test-listesi" id="populerTestler"></div>
-    </section>
-
-    <section id="populer-haberler">
+    <section>
       <h2>📰 En Çok Tıklanan Haberler</h2>
-      <div class="liste haber-listesi" id="populerHaberler"></div>
+      <div class="icerik-kutulari" id="populerHaberler"></div>
     </section>
 
-    <section id="yeni-testler">
+    <section>
       <h2>🆕 Yeni Eklenen Testler</h2>
-      <div class="liste test-listesi" id="yeniTestler"></div>
+      <div class="icerik-kutulari" id="yeniTestler"></div>
     </section>
 
-    <section id="yeni-haberler">
-      <h2>📰 Yeni Eklenen Haberler</h2>
-      <div class="liste haber-listesi" id="yeniHaberler"></div>
+    <section>
+      <h2>🗞️ Yeni Eklenen Haberler</h2>
+      <div class="icerik-kutulari" id="yeniHaberler"></div>
     </section>
 
     <!-- ALT REKLAM -->
-    <div class="reklam-alani alt-reklam">
+    <div class="reklam alt-reklam">
       <ins class="adsbygoogle"
         style="display:block"
         data-ad-client="ca-pub-XXXXXXXXXXXX"
@@ -79,11 +75,10 @@
         data-full-width-responsive="true"></ins>
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-
   </main>
 
   <footer>
-    <p>&copy; 2025 <strong>Testlik.com</strong> | Tüm Hakları Saklıdır.</p>
+    <p>© 2025 Testlik.com | Tüm hakları saklıdır.</p>
   </footer>
 </body>
 </html>
