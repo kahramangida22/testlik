@@ -1,0 +1,86 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f4f4;
+  color: #333;
+}
+
+header {
+  background-color: #e91e63;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+nav ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+  flex-wrap: wrap;
+}
+
+nav ul li {
+  margin: 0 1rem;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+main {
+  padding: 1rem;
+  max-width: 1000px;
+  margin: auto;
+}
+
+section {
+  background: white;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+section h2 {
+  color: #e91e63;
+  margin-top: 0;
+}
+
+.haber-grid, .kategori-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.haber-kutu, .kategori-kutu {
+  background: #fff;
+  padding: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.haber-kutu:hover, .kategori-kutu:hover {
+  border-color: #e91e63;
+  box-shadow: 0 0 8px rgba(233, 30, 99, 0.4);
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  background-color: #eee;
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 3rem;
+}
