@@ -96,6 +96,8 @@ function kontrolEt(btn, index) {
     secenekler[soru.cevap].classList.add("dogru");
   }
 
+  guncelleReklamlar(); // ✅ Her cevaptan sonra reklamı yenile
+
   setTimeout(() => {
     mevcutSoru++;
     if (mevcutSoru < sorular.length) {
@@ -104,6 +106,18 @@ function kontrolEt(btn, index) {
       bitirTest();
     }
   }, 1200);
+}
+
+function guncelleReklamlar() {
+  const reklamlar = document.querySelectorAll(".adsbygoogle");
+  reklamlar.forEach((reklam) => {
+    try {
+      reklam.innerHTML = "";
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {
+      console.warn("Reklam yeniden yüklenemedi", e);
+    }
+  });
 }
 
 async function puanYaz(uid, artiPuan) {
