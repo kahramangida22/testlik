@@ -1,12 +1,3 @@
-/* RENKLİ KAYAN ARKAPLAN */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(270deg, #fceabb, #e8dff5, #c2e9fb, #fceabb);
-  background-size: 800% 800%;
-  animation: arkaPlanAkisi 30s ease infinite;
-  color: #333;
-}
 
 @keyframes arkaPlanAkisi {
   0% { background-position: 0% 50%; }
@@ -18,7 +9,9 @@ body {
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: #f9f9f9;
+  background: linear-gradient(270deg, #fceabb, #e8dff5, #c2e9fb, #fceabb);
+  background-size: 800% 800%;
+  animation: arkaPlanAkisi 30s ease infinite;
   color: #333;
 }
 
