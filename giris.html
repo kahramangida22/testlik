@@ -5,16 +5,103 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Giriş Yap - Testlik.com</title>
   <link rel="stylesheet" href="index-style.css" />
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(270deg, #6a11cb, #2575fc, #ff0080, #6a11cb);
+      background-size: 800% 800%;
+      animation: gradientAkis 20s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    @keyframes gradientAkis {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .giris-kutu {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 3rem;
+      text-align: center;
+      color: white;
+      max-width: 400px;
+    }
+
+    .giris-kutu h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, #ffcc70, #ffffff, #ffcc70);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: parilti 3s linear infinite;
+    }
+
+    @keyframes parilti {
+      to {
+        background-position: 200% center;
+      }
+    }
+
+    .giris-kutu p {
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+
+    #girisBtn {
+      background: linear-gradient(45deg, #ff4081, #7c4dff);
+      color: white;
+      padding: 0.9rem 1.8rem;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #girisBtn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    }
+
+    #girisBtn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -75%;
+      width: 50%;
+      height: 100%;
+      background: rgba(255,255,255,0.4);
+      transform: skewX(-25deg);
+      transition: 0.5s;
+    }
+
+    #girisBtn:hover::before {
+      left: 130%;
+    }
+  </style>
   <script type="module" src="giris.js" defer></script>
 </head>
 <body>
 
-  <div class="giris-kapsayici">
-    <div class="giris-kutu">
-      <h1>🔐 Testlik.com</h1>
-      <p>Google hesabınla giriş yap</p>
-      <button id="girisBtn">📩 Google ile Giriş Yap</button>
-    </div>
+  <div class="giris-kutu">
+    <h1>🔐 Testlik.com</h1>
+    <p>Google hesabınla giriş yap</p>
+    <button id="girisBtn">📩 Google ile Giriş Yap</button>
   </div>
 
 </body>
