@@ -226,3 +226,34 @@ footer {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
+/* GİRİŞ/ÇIKIŞ ALANI */
+.kullanici-kontrol {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+.kullanici-kontrol span {
+  background: white;
+  color: #333;
+  padding: 0.3rem 0.6rem;
+  border-radius: 12px;
+  font-weight: bold;
+}
+.kullanici-kontrol a, .kullanici-kontrol button {
+  background: #fff;
+  color: #4a148c;
+  border: 2px solid #7873f5;
+  padding: 0.3rem 0.6rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.2s;
+}
+.kullanici-kontrol button:hover,
+.kullanici-kontrol a:hover {
+  background: #7873f5;
+  color: white;
+}
