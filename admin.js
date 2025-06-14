@@ -6,11 +6,12 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
   authDomain: "testlik.firebaseapp.com",
   projectId: "testlik",
-  storageBucket: "testlik.firebasestorage.app",
+  storageBucket: "testlik.appspot.com",
   messagingSenderId: "668524500496",
   appId: "1:668524500496:web:579bb4fc5990c87afedc95",
   measurementId: "G-8ZEYBJCV3T"
@@ -19,23 +20,23 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// TEST EKLEME
+// ✅ TEST EKLEME
 document.getElementById("ekleBtn").addEventListener("click", async () => {
-  const baslik = document.getElementById("baslik").value.trim();
-  const kategori = document.getElementById("kategori").value.trim();
-  const jsonVeri = document.getElementById("jsonVeri").value.trim();
+  const jsonText = document.getElementById("jsonVeri").value.trim();
   const durum = document.getElementById("durum");
 
   try {
-    const sorular = JSON.parse(jsonVeri);
-    if (!Array.isArray(sorular)) throw new Error("Geçersiz JSON dizisi!");
+    const veri = JSON.parse(jsonText);
+    if (!veri.baslik || !veri.kategori || !veri.sorular || !Array.isArray(veri.sorular)) {
+      throw new Error("Test formatı hatalı.");
+    }
 
     await addDoc(collection(db, "testler"), {
-      baslik,
-      kategori,
+      baslik: veri.baslik,
+      kategori: veri.kategori,
+      sorular: veri.sorular,
       cozulmeSayisi: 0,
-      eklenmeTarihi: serverTimestamp(),
-      sorular
+      eklenmeTarihi: serverTimestamp()
     });
 
     durum.innerText = "✅ Test başarıyla eklendi!";
@@ -46,20 +47,21 @@ document.getElementById("ekleBtn").addEventListener("click", async () => {
   }
 });
 
-// HABER EKLEME
+// ✅ HABER EKLEME
 document.getElementById("haberEkleBtn").addEventListener("click", async () => {
-  const baslik = document.getElementById("haberBaslik").value.trim();
-  const kategori = document.getElementById("haberKategori").value.trim();
-  const icerik = document.getElementById("haberIcerik").value.trim();
+  const jsonText = document.getElementById("haberJson").value.trim();
   const haberDurum = document.getElementById("haberDurum");
 
   try {
-    if (!baslik || !kategori || !icerik) throw new Error("Tüm alanları doldurun.");
+    const veri = JSON.parse(jsonText);
+    if (!veri.baslik || !veri.kategori || !veri.icerik) {
+      throw new Error("Haber formatı hatalı.");
+    }
 
     await addDoc(collection(db, "haberler"), {
-      baslik,
-      kategori,
-      icerik,
+      baslik: veri.baslik,
+      kategori: veri.kategori,
+      icerik: veri.icerik,
       tiklanmaSayisi: 0,
       eklenmeTarihi: serverTimestamp()
     });
