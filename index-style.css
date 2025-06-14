@@ -21,7 +21,7 @@ body {
   background: linear-gradient(to right, #ff6ec4, #7873f5);
   padding: 0.8rem 1rem;
   color: white;
-  position: sticky;
+  position: relative;
   top: 0;
   z-index: 1000;
 }
