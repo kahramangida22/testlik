@@ -6,70 +6,75 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-// Firebase config
+// Firebase yapılandırması
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
   authDomain: "testlik.firebaseapp.com",
   projectId: "testlik",
   storageBucket: "testlik.appspot.com",
   messagingSenderId: "668524500496",
-  appId: "1:668524500496:web:579bb4fc5990c87afedc95",
-  measurementId: "G-8ZEYBJCV3T"
+  appId: "1:668524500496:web:579bb4fc5990c87afedc95"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ✅ TEST EKLEME
-document.getElementById("ekleBtn").addEventListener("click", async () => {
-  const jsonText = document.getElementById("jsonVeri").value.trim();
-  const durum = document.getElementById("durum");
+// DOM elemanları
+const testBtn = document.getElementById("testEkleBtn");
+const haberBtn = document.getElementById("haberEkleBtn");
+const testInput = document.getElementById("testJsonInput");
+const haberInput = document.getElementById("haberJsonInput");
+const sonucAlani = document.getElementById("sonucAlani");
 
+// Geri bildirim yazdır
+function yazSonuc(mesaj, basarili = true) {
+  sonucAlani.innerText = mesaj;
+  sonucAlani.style.color = basarili ? "green" : "red";
+  setTimeout(() => (sonucAlani.innerText = ""), 4000);
+}
+
+// Testleri ekle
+testBtn.addEventListener("click", async () => {
   try {
-    const veri = JSON.parse(jsonText);
-    if (!veri.baslik || !veri.kategori || !veri.sorular || !Array.isArray(veri.sorular)) {
-      throw new Error("Test formatı hatalı.");
+    const veriler = JSON.parse(testInput.value);
+    if (!Array.isArray(veriler)) throw new Error("JSON bir dizi olmalı");
+
+    for (let test of veriler) {
+      if (!test.baslik || !test.kategori || !Array.isArray(test.sorular)) continue;
+
+      await addDoc(collection(db, "testler"), {
+        ...test,
+        cozulmeSayisi: 0,
+        eklenmeTarihi: serverTimestamp()
+      });
     }
-
-    await addDoc(collection(db, "testler"), {
-      baslik: veri.baslik,
-      kategori: veri.kategori,
-      sorular: veri.sorular,
-      cozulmeSayisi: 0,
-      eklenmeTarihi: serverTimestamp()
-    });
-
-    durum.innerText = "✅ Test başarıyla eklendi!";
-    durum.style.color = "green";
+    yazSonuc("✅ Test(ler) başarıyla eklendi.");
+    testInput.value = "";
   } catch (e) {
-    durum.innerText = "❌ Hata: " + e.message;
-    durum.style.color = "red";
+    console.error(e);
+    yazSonuc("❌ Hatalı JSON formatı (Testler)", false);
   }
 });
 
-// ✅ HABER EKLEME
-document.getElementById("haberEkleBtn").addEventListener("click", async () => {
-  const jsonText = document.getElementById("haberJson").value.trim();
-  const haberDurum = document.getElementById("haberDurum");
-
+// Haberleri ekle
+haberBtn.addEventListener("click", async () => {
   try {
-    const veri = JSON.parse(jsonText);
-    if (!veri.baslik || !veri.kategori || !veri.icerik) {
-      throw new Error("Haber formatı hatalı.");
+    const veriler = JSON.parse(haberInput.value);
+    if (!Array.isArray(veriler)) throw new Error("JSON bir dizi olmalı");
+
+    for (let haber of veriler) {
+      if (!haber.baslik || !haber.icerik || !haber.kategori) continue;
+
+      await addDoc(collection(db, "haberler"), {
+        ...haber,
+        tiklanmaSayisi: 0,
+        eklenmeTarihi: serverTimestamp()
+      });
     }
-
-    await addDoc(collection(db, "haberler"), {
-      baslik: veri.baslik,
-      kategori: veri.kategori,
-      icerik: veri.icerik,
-      tiklanmaSayisi: 0,
-      eklenmeTarihi: serverTimestamp()
-    });
-
-    haberDurum.innerText = "✅ Haber başarıyla eklendi!";
-    haberDurum.style.color = "green";
+    yazSonuc("✅ Haber(ler) başarıyla eklendi.");
+    haberInput.value = "";
   } catch (e) {
-    haberDurum.innerText = "❌ Hata: " + e.message;
-    haberDurum.style.color = "red";
+    console.error(e);
+    yazSonuc("❌ Hatalı JSON formatı (Haberler)", false);
   }
 });
