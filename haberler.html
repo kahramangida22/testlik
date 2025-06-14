@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -5,24 +7,67 @@
   <link rel="stylesheet" href="index-style.css">
   <script type="module" src="haberler.js" defer></script>
 
-  <!-- Arka Plan Teması -->
-  <style>
-    body {
-      background: linear-gradient(270deg, #fceabb, #e8dff5, #c2e9fb, #fceabb);
-      background-size: 800% 800%;
-      animation: arkaPlanAkisi 30s ease infinite;
-      margin: 0;
-      font-family: Arial, sans-serif;
-      color: #333;
-    }
-
-    @keyframes arkaPlanAkisi {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-  </style>
-
   <!-- AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX" crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX"
+    crossorigin="anonymous"></script>
 </head>
+<body>
+
+  <!-- SABİT SAĞ REKLAM -->
+  <div class="sabit-reklam sag-reklam">
+    <ins class="adsbygoogle"
+      style="display:block;width:120px;height:600px"
+      data-ad-client="ca-pub-XXXXXXXXXXXX"
+      data-ad-slot="1111111111"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- SABİT SOL REKLAM -->
+  <div class="sabit-reklam sol-reklam">
+    <ins class="adsbygoogle"
+      style="display:block;width:120px;height:600px"
+      data-ad-client="ca-pub-XXXXXXXXXXXX"
+      data-ad-slot="2222222222"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <header class="site-header">
+    <div class="navbar">
+      <div class="logo">🧠 <span>Testlik</span><strong>.com</strong></div>
+      <nav class="menu">
+        <a href="index.html">🏠 Ana Sayfa</a>
+        <a href="kategoriler.html">🎯 Kategoriler</a>
+        <a href="haberler.html" class="aktif">📰 Haberler</a>
+        <a href="puan-tablosu.html">🏆 Puan Durumu</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2>📰 En Çok Tıklanan 5 Haber</h2>
+      <div class="icerik-kutulari" id="populerHaberler"></div>
+    </section>
+
+    <section>
+      <h2>📚 Haber Kategorileri</h2>
+      <div class="icerik-kutulari" id="haberKategorileri"></div>
+    </section>
+
+    <!-- ALT REKLAM -->
+    <div class="alt-reklam">
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-XXXXXXXXXXXX"
+        data-ad-slot="3333333333"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Testlik.com | Haberler</p>
+  </footer>
+</body>
+</html>
