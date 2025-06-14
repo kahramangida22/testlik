@@ -19,6 +19,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// TEST EKLEME
 document.getElementById("ekleBtn").addEventListener("click", async () => {
   const baslik = document.getElementById("baslik").value.trim();
   const kategori = document.getElementById("kategori").value.trim();
@@ -42,5 +43,31 @@ document.getElementById("ekleBtn").addEventListener("click", async () => {
   } catch (e) {
     durum.innerText = "❌ Hata: " + e.message;
     durum.style.color = "red";
+  }
+});
+
+// HABER EKLEME
+document.getElementById("haberEkleBtn").addEventListener("click", async () => {
+  const baslik = document.getElementById("haberBaslik").value.trim();
+  const kategori = document.getElementById("haberKategori").value.trim();
+  const icerik = document.getElementById("haberIcerik").value.trim();
+  const haberDurum = document.getElementById("haberDurum");
+
+  try {
+    if (!baslik || !kategori || !icerik) throw new Error("Tüm alanları doldurun.");
+
+    await addDoc(collection(db, "haberler"), {
+      baslik,
+      kategori,
+      icerik,
+      tiklanmaSayisi: 0,
+      eklenmeTarihi: serverTimestamp()
+    });
+
+    haberDurum.innerText = "✅ Haber başarıyla eklendi!";
+    haberDurum.style.color = "green";
+  } catch (e) {
+    haberDurum.innerText = "❌ Hata: " + e.message;
+    haberDurum.style.color = "red";
   }
 });
