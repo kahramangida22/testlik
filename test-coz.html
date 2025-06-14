@@ -1,42 +1,37 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Test Çöz - Testlik.com</title>
-  <link rel="stylesheet" href="test-coz-style.css">
-  <script type="module" src="test-coz.js" defer></script>
+  <link rel="stylesheet" href="test-coz-style.css" />
 </head>
 <body>
+
   <header>
     <h1>Testlik.com</h1>
     <nav>
-      <ul>
-        <li><a href="kategoriler.html">Kategoriler</a></li>
-        <li><a href="index.html">Ana Sayfa</a></li>
-        <li><a href="haberler.html">Haberler</a></li>
-        <li><a href="puan-tablosu.html">Puan Durumu</a></li>
-      </ul>
+      <a href="kategoriler.html">Kategoriler</a>
+      <a href="index.html">Ana Sayfa</a>
+      <a href="haberler.html">Haberler</a>
+      <a href="puan-tablosu.html">Puan Durumu</a>
     </nav>
   </header>
 
   <main>
-    <div class="test-alani">
-      <h2 id="testBaslik"></h2>
-      <div id="soruAlani">
-        <p id="soruMetni"></p>
-        <div id="secenekler"></div>
-      </div>
-      <div id="testSonu" style="display:none">
-        <h3>Test tamamlandı!</h3>
-        <a href="index.html">Ana Sayfa</a> |
-        <a id="ayniKategoriLink" href="#">Aynı kategoriden test çöz</a>
-      </div>
+    <div id="testKapsayici">
+      <h2 id="testBasligi">Test Başlığı</h2>
+      <h3 id="soru">Yükleniyor...</h3>
+      <div id="secenekler"></div>
     </div>
+
+    <div id="sonuc" style="display: none;"></div>
   </main>
 
   <footer>
-    <p>&copy; 2025 Testlik.com</p>
+    <p>© 2025 Testlik.com</p>
   </footer>
+
+  <script type="module" src="test-coz.js"></script>
 </body>
 </html>
