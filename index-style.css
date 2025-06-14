@@ -333,9 +333,11 @@ footer {
   max-width: 900px;
   backdrop-filter: blur(6px);
 }
-.kutu h3, .haber-kutu h3 {
+.kutu h3, .haber-kutu h3, .menu a {
   word-wrap: break-word;
   overflow-wrap: break-word;
+  white-space: normal;
   hyphens: auto;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  line-height: 1.4;
 }
