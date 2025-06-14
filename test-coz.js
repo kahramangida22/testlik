@@ -1,106 +1,133 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import {
-  getFirestore, doc, getDoc, updateDoc
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  updateDoc,
+  increment
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 import {
-  getAuth, onAuthStateChanged
+  getAuth,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
   authDomain: "testlik.firebaseapp.com",
   projectId: "testlik",
-  storageBucket: "testlik.firebasestorage.app",
+  storageBucket: "testlik.appspot.com",
   messagingSenderId: "668524500496",
   appId: "1:668524500496:web:579bb4fc5990c87afedc95",
   measurementId: "G-8ZEYBJCV3T"
 };
 
+// Initialize
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuth();
+const auth = getAuth(app);
 
+// Elemanlar
+const soruAlani = document.getElementById("soru");
+const seceneklerAlani = document.getElementById("secenekler");
+const testBasligi = document.getElementById("testBasligi");
+const sonucAlani = document.getElementById("sonuc");
+const testKapsayici = document.getElementById("testKapsayici");
+
+let sorular = [];
+let mevcutSoru = 0;
+let puan = 0;
+let kullanici = null;
+
+// URL'den test ID'yi al
 const params = new URLSearchParams(window.location.search);
 const testId = params.get("id");
 
-const baslikEl = document.getElementById("testBaslik");
-const soruMetni = document.getElementById("soruMetni");
-const seceneklerEl = document.getElementById("secenekler");
-const testSonu = document.getElementById("testSonu");
-const kategoriLink = document.getElementById("ayniKategoriLink");
-
-let sorular = [], soruIndex = 0, cevaplandi = false, kategori = "";
-
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, (user) => {
   if (user) {
-    baslatTest();
+    kullanici = user;
+    baslat();
   } else {
-    alert("Test çözmek için giriş yapmalısınız.");
+    alert("Test çözmek için giriş yapmalısın.");
     window.location.href = "index.html";
   }
 });
 
-async function baslatTest() {
-  const ref = doc(db, "testler", testId);
-  const docSnap = await getDoc(ref);
+async function baslat() {
+  const docRef = doc(db, "testler", testId);
+  const docSnap = await getDoc(docRef);
+
   if (docSnap.exists()) {
     const veri = docSnap.data();
-    baslikEl.textContent = veri.baslik;
-    sorular = veri.sorular;
-    kategori = veri.kategori;
-    kategoriLink.href = `test.html?kategori=${kategori}`;
-    soruIndex = 0;
+    sorular = shuffleArray(veri.sorular); // rastgele sırala
+    testBasligi.innerText = veri.baslik || "Test";
     gosterSoru();
   } else {
-    baslikEl.textContent = "Test bulunamadı.";
+    soruAlani.innerText = "Test bulunamadı.";
   }
 }
 
 function gosterSoru() {
-  if (soruIndex >= sorular.length) {
-    soruMetni.style.display = "none";
-    seceneklerEl.style.display = "none";
-    testSonu.style.display = "block";
-    return;
-  }
-  cevaplandi = false;
-  const soru = sorular[soruIndex];
-  soruMetni.textContent = soru.soru;
-  seceneklerEl.innerHTML = "";
+  const soru = sorular[mevcutSoru];
+  soruAlani.innerText = soru.soru;
+  seceneklerAlani.innerHTML = "";
 
-  soru.secenekler.forEach(secenek => {
-    const btn = document.createElement("div");
-    btn.className = "secenek";
-    btn.textContent = secenek;
-    btn.onclick = () => cevapla(btn, secenek, soru.cevap);
-    seceneklerEl.appendChild(btn);
+  soru.secenekler.forEach((secenek, index) => {
+    const buton = document.createElement("button");
+    buton.className = "secenek";
+    buton.innerText = secenek;
+    buton.onclick = () => kontrolEt(buton, index);
+    seceneklerAlani.appendChild(buton);
   });
 }
 
-function cevapla(btn, secilen, dogru) {
-  if (cevaplandi) return;
-  cevaplandi = true;
-
+function kontrolEt(buton, index) {
+  const soru = sorular[mevcutSoru];
   const secenekler = document.querySelectorAll(".secenek");
-  secenekler.forEach(s => {
-    if (s.textContent === dogru) s.classList.add("dogru");
-    else if (s.textContent === secilen) s.classList.add("yanlis");
-    s.style.pointerEvents = "none";
-  });
 
-  if (secilen === dogru) puanEkle(10);
+  secenekler.forEach(b => b.disabled = true); // Tek tıklama hakkı
+
+  if (parseInt(index) === parseInt(soru.cevap)) {
+    buton.classList.add("dogru");
+    puan += 10;
+    localStorage.setItem("puan", puan);
+    puanYaz(kullanici.uid, 10);
+  } else {
+    buton.classList.add("yanlis");
+    secenekler[soru.cevap].classList.add("dogru");
+  }
 
   setTimeout(() => {
-    soruIndex++;
-    gosterSoru();
+    mevcutSoru++;
+    if (mevcutSoru < sorular.length) {
+      gosterSoru();
+    } else {
+      bitirTest();
+    }
   }, 1000);
 }
 
-function puanEkle(puan) {
-  const user = auth.currentUser;
-  if (!user) return;
-  const ref = doc(db, "kullanicilar", user.uid);
-  updateDoc(ref, {
-    puan: firebase.firestore.FieldValue.increment(puan)
-  }).catch(() => {});
+async function puanYaz(uid, artiPuan) {
+  const kullaniciRef = doc(db, "users", uid);
+  await updateDoc(kullaniciRef, {
+    puan: increment(artiPuan)
+  });
+}
+
+function bitirTest() {
+  testKapsayici.style.display = "none";
+  sonucAlani.style.display = "block";
+  sonucAlani.innerHTML = `
+    <h2>Test Bitti!</h2>
+    <p>Toplam Puan: ${puan}</p>
+    <a href="index.html" class="buton">Ana Sayfa</a>
+    <a href="test.html?kategori=${params.get("kategori")}" class="buton">Aynı Kategoriden Başka Test</a>
+  `;
+}
+
+// Rastgele sıralama fonksiyonu
+function shuffleArray(array) {
+  return array.sort(() => Math.random() - 0.5);
 }
