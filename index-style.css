@@ -1,3 +1,4 @@
+/* Genel */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
@@ -5,6 +6,7 @@ body {
   color: #333;
 }
 
+/* HEADER */
 .site-header {
   background: linear-gradient(to right, #ff6ec4, #7873f5);
   padding: 0.8rem 1rem;
@@ -30,6 +32,7 @@ body {
   color: #ffeb3b;
 }
 
+/* NAV */
 .menu {
   display: flex;
   gap: 0.8rem;
@@ -50,6 +53,7 @@ body {
   background: rgba(255, 255, 255, 0.35);
 }
 
+/* MAIN İÇERİK */
 main {
   max-width: 1200px;
   margin: auto;
@@ -67,6 +71,7 @@ section h2 {
   margin-bottom: 1rem;
 }
 
+/* TEST & HABER KUTULARI */
 .icerik-kutulari {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -96,8 +101,9 @@ section h2 {
   color: #666;
 }
 
-.reklam {
-  margin: 2rem auto;
+/* ALT REKLAM */
+.alt-reklam {
+  margin: 3rem auto 1rem auto;
   text-align: center;
   background: #f2f2f2;
   padding: 1rem;
@@ -105,10 +111,33 @@ section h2 {
   max-width: 100%;
 }
 
+/* SAĞ-SOL SABİT REKLAM */
+.sabit-reklam {
+  position: fixed;
+  top: 100px;
+  width: 120px;
+  height: 600px;
+  z-index: 999;
+}
+.sag-reklam {
+  right: 0;
+}
+.sol-reklam {
+  left: 0;
+}
+
+/* FOOTER */
 footer {
   text-align: center;
   padding: 2rem 1rem;
   background: #eee;
   margin-top: 4rem;
   font-size: 0.9rem;
+}
+
+/* MOBİLDE SABİT REKLAMLARI GİZLE */
+@media (max-width: 1000px) {
+  .sabit-reklam {
+    display: none;
+  }
 }
