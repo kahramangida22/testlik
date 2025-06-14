@@ -4,36 +4,70 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Haberler - Testlik.com</title>
-  <link rel="stylesheet" href="haberler-style.css">
+  <link rel="stylesheet" href="index-style.css">
   <script type="module" src="haberler.js" defer></script>
+
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX"
+    crossorigin="anonymous"></script>
 </head>
 <body>
-  <header>
-    <h1>Testlik.com</h1>
-    <nav>
-      <ul>
-        <li><a href="kategoriler.html">Kategoriler</a></li>
-        <li><a href="index.html">Ana Sayfa</a></li>
-        <li><a href="haberler.html">Haberler</a></li>
-        <li><a href="puan-tablosu.html">Puan Durumu</a></li>
-      </ul>
-    </nav>
+
+  <!-- SABİT SAĞ REKLAM -->
+  <div class="sabit-reklam sag-reklam">
+    <ins class="adsbygoogle"
+      style="display:block;width:120px;height:600px"
+      data-ad-client="ca-pub-XXXXXXXXXXXX"
+      data-ad-slot="1111111111"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- SABİT SOL REKLAM -->
+  <div class="sabit-reklam sol-reklam">
+    <ins class="adsbygoogle"
+      style="display:block;width:120px;height:600px"
+      data-ad-client="ca-pub-XXXXXXXXXXXX"
+      data-ad-slot="2222222222"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <header class="site-header">
+    <div class="navbar">
+      <div class="logo">🧠 <span>Testlik</span><strong>.com</strong></div>
+      <nav class="menu">
+        <a href="index.html">🏠 Ana Sayfa</a>
+        <a href="kategoriler.html">🎯 Kategoriler</a>
+        <a href="haberler.html" class="aktif">📰 Haberler</a>
+        <a href="puan-tablosu.html">🏆 Puan Durumu</a>
+      </nav>
+    </div>
   </header>
 
   <main>
     <section>
       <h2>📰 En Çok Tıklanan 5 Haber</h2>
-      <div class="haber-grid" id="populerHaberler"></div>
+      <div class="icerik-kutulari" id="populerHaberler"></div>
     </section>
 
     <section>
       <h2>📚 Haber Kategorileri</h2>
-      <div class="kategori-grid" id="haberKategorileri"></div>
+      <div class="icerik-kutulari" id="haberKategorileri"></div>
     </section>
+
+    <!-- ALT REKLAM -->
+    <div class="alt-reklam">
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-XXXXXXXXXXXX"
+        data-ad-slot="3333333333"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
   </main>
 
   <footer>
-    <p>&copy; 2025 Testlik.com</p>
+    <p>© 2025 Testlik.com | Haberler</p>
   </footer>
 </body>
 </html>
