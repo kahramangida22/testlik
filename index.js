@@ -1,6 +1,11 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import {
-  getFirestore, collection, query, orderBy, limit, getDocs
+  getFirestore,
+  collection,
+  query,
+  orderBy,
+  limit,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -19,7 +24,6 @@ const db = getFirestore(app);
 async function getVeriler(koleksiyon, siralamaAlani, hedefId) {
   const q = query(collection(db, koleksiyon), orderBy(siralamaAlani, "desc"), limit(5));
   const querySnapshot = await getDocs(q);
-
   const container = document.getElementById(hedefId);
   container.innerHTML = "";
 
