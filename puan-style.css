@@ -1,85 +1,95 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 0;
-  background: #f2f2f2;
+  background-color: #f5f7fa;
   color: #333;
 }
 
 header {
   background-color: #3f51b5;
-  color: white;
-  padding: 1rem;
+  padding: 20px;
   text-align: center;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  color: white;
 }
 
-nav ul {
-  display: flex;
-  justify-content: center;
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0 0;
-  flex-wrap: wrap;
+header h1 {
+  margin: 0;
+  font-size: 30px;
 }
 
-nav ul li {
-  margin: 0 1rem;
+nav {
+  margin-top: 10px;
 }
 
-nav ul li a {
+nav a {
   color: white;
   text-decoration: none;
+  margin: 0 10px;
   font-weight: bold;
 }
 
 main {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 1rem;
+  padding: 30px 20px;
+  display: flex;
+  justify-content: center;
 }
 
-section {
+.puan-kutu {
   background: white;
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 700px;
+  text-align: center;
 }
 
-section h2 {
-  margin-top: 0;
+.puan-kutu h2 {
+  margin-bottom: 25px;
+  font-size: 24px;
   color: #3f51b5;
-  text-align: center;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1rem;
+  font-size: 16px;
 }
 
-th, td {
-  border: 1px solid #ddd;
-  padding: 0.75rem;
-  text-align: center;
-}
-
-th {
+thead th {
   background-color: #3f51b5;
   color: white;
+  padding: 12px;
+  border-radius: 4px;
 }
 
-tr:nth-child(even) {
-  background-color: #f9f9f9;
+tbody td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f1f1f1;
+}
+
+tbody tr:hover {
+  background-color: #e3f2fd;
 }
 
 footer {
   text-align: center;
-  padding: 2rem 1rem;
-  background-color: #eee;
-  color: #666;
-  font-size: 0.9rem;
-  margin-top: 3rem;
+  padding: 20px;
+  font-size: 14px;
+  color: #888;
+  background-color: #f0f0f0;
+}
+
+@media screen and (max-width: 600px) {
+  .puan-kutu {
+    padding: 20px 10px;
+  }
+
+  table {
+    font-size: 14px;
+  }
 }
