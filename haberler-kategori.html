@@ -3,20 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Haberler - Kategori</title>
-  <link rel="stylesheet" href="haberler-kategori-style.css">
+  <title>Testlik.com | Haber Kategorisi</title>
+  <link rel="stylesheet" href="index-style.css" />
   <script type="module" src="haberler-kategori.js" defer></script>
 </head>
 <body>
 
-  <!-- NAVBAR (index ile birebir) -->
+  <!-- SABİT REKLAMLAR -->
+  <div class="sabit-reklam sag-reklam">
+    <ins class="adsbygoogle" style="display:block;width:120px;height:600px" data-ad-client="ca-pub-XXXXXXXXXXXX" data-ad-slot="1111111111"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+  <div class="sabit-reklam sol-reklam">
+    <ins class="adsbygoogle" style="display:block;width:120px;height:600px" data-ad-client="ca-pub-XXXXXXXXXXXX" data-ad-slot="2222222222"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- ÜST BAR -->
   <header class="site-header">
     <div class="navbar">
       <div class="logo">🧠 <span>Testlik</span><strong>.com</strong></div>
       <nav class="menu">
         <a href="kategoriler.html">🎯 Kategoriler</a>
         <a href="index.html">🏠 Ana Sayfa</a>
-        <a href="haberler.html">📰 Haberler</a>
+        <a href="haberler.html" class="aktif">📰 Haberler</a>
         <a href="puan-tablosu.html">🏆 Puan Durumu</a>
       </nav>
       <div id="kullaniciAlani" class="kullanici-kontrol"></div>
@@ -25,15 +35,22 @@
 
   <!-- İÇERİK -->
   <main>
-    <h2 id="kategoriBaslik">Kategori</h2>
-    <div id="haberListesi" class="haber-grid"></div>
+    <section class="bolum">
+      <h2 id="kategoriBaslik">Yükleniyor...</h2>
+      <div id="haberListesi" class="icerik-kutulari"></div>
+    </section>
+
+    <div class="alt-reklam">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXX" data-ad-slot="3333333333" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
   </main>
 
   <footer>
-    <p>© 2025 Testlik.com | Tüm hakları saklıdır.</p>
+    <p>© 2025 Testlik.com | Eğlenceli testlerin ve ilginç haberlerin adresi</p>
   </footer>
 
-  <!-- GİRİŞ / ÇIKIŞ -->
+  <!-- Giriş/Çıkış JS -->
   <script type="module">
     import {
       getAuth,
