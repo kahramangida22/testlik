@@ -301,3 +301,26 @@ footer {
 .giris-kutu button:hover {
   background: #6a1b9a;
 }
+.haber-alt-butonlar {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem auto;
+  flex-wrap: wrap;
+}
+
+.haber-alt-butonlar button {
+  background: linear-gradient(45deg, #6a11cb, #2575fc);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.haber-alt-butonlar button:hover {
+  transform: scale(1.05);
+  background: #4a148c;
+}
