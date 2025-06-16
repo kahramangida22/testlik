@@ -78,38 +78,3 @@ haberBtn.addEventListener("click", async () => {
     yazSonuc("❌ Hatalı JSON formatı (Haberler)", false);
   }
 });
-const konuInput = document.getElementById("konuJsonInput");
-const konuBtn = document.getElementById("konuEkleBtn");
-
-konuBtn.addEventListener("click", async () => {
-  const input = konuInput.value.trim();
-  if (!input) return yazSonuc("Lütfen konu JSON'u girin.", false);
-
-  let konular = [];
-  try {
-    konular = JSON.parse(input);
-  } catch {
-    return yazSonuc("Geçersiz JSON formatı.", false);
-  }
-
-  let eklendi = 0;
-  for (const konu of konular) {
-    if (!konu.baslik || !konu.aciklama) continue;
-    await addDoc(collection(db, "konular"), {
-      baslik: konu.baslik,
-      aciklama: konu.aciklama,
-      kullaniciAdi: "admin",
-      uid: "admin",
-      tarih: serverTimestamp(),
-      begeniler: 0,
-      dislikelar: 0,
-      begenenler: [],
-      dislikelayanlar: [],
-      okunma: 0
-    });
-    eklendi++;
-  }
-
-  yazSonuc(`${eklendi} konu başarıyla eklendi ✅`);
-  konuInput.value = "";
-});
