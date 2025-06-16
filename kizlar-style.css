@@ -208,3 +208,49 @@ select#filtreSelect {
     margin-top: 8px;
   }
 }
+/* HEADER */
+.site-header {
+  background: linear-gradient(to right, #ff6ec4, #7873f5);
+  padding: 0.8rem 1rem;
+  color: white;
+  position: relative;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.logo span {
+  color: #ffeb3b;
+}
+
+/* NAV */
+.menu {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+.menu a {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.4rem 0.9rem;
+  border-radius: 18px;
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: 0.2s;
+}
+.menu a:hover,
+.menu a.aktif {
+  background: rgba(255, 255, 255, 0.35);
+}
