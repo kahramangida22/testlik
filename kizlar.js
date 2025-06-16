@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import {
   getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, increment,
-  collection, query, orderBy, getDocs, serverTimestamp
+  collection, query, orderBy, getDocs, serverTimestamp, getCountFromServer
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 import {
   getAuth, onAuthStateChanged
@@ -74,8 +74,17 @@ const konulariYukle = async () => {
   const q = query(collection(db, "konular"), orderBy(filtre === "populer" ? "begeniler" : "tarih", "desc"));
   const snapshot = await getDocs(q);
 
-  snapshot.forEach((docu) => {
+  for (const docu of snapshot.docs) {
     const veri = docu.data();
+    const yorumRef = collection(db, `konular/${docu.id}/yorumlar`);
+    const yorumSnap = await getCountFromServer(yorumRef);
+    const yorumSayisi = yorumSnap.data().count;
+
+    const konularDocRef = doc(db, "konular", docu.id);
+    await updateDoc(konularDocRef, { okunma: increment(1) });
+    const updatedDoc = await getDoc(konularDocRef);
+    const okunma = updatedDoc.data().okunma || 1;
+
     const div = document.createElement("div");
     div.className = "konu-kutu";
     div.innerHTML = `
@@ -84,11 +93,14 @@ const konulariYukle = async () => {
       <small>${veri.kullaniciAdi} • ${veri.tarih?.toDate().toLocaleString() || ''}</small>
       <div>
         ❤️ ${veri.begeniler || 0}
+        • 💬 ${yorumSayisi} yorum
+        • 👁️ ${okunma} okunma
+        <br>
         <button onclick="konuBegeni('${docu.id}', true)">Beğen</button>
         <button onclick="konuBegeni('${docu.id}', false)">Dislike</button>
+        <button onclick="location.href='konu.html?id=${docu.id}'">Detay</button>
       </div>
     `;
-    div.onclick = () => yorumlariYukle(docu.id);
     liste.appendChild(div);
-  });
+  }
 };
