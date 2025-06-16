@@ -131,3 +131,30 @@ window.konuRaporla = async function (konuId) {
 
   alert("Raporun gönderildi. Gerekli inceleme admin tarafından yapılacaktır.");
 };
+async function konulariYukle() {
+  const liste = document.getElementById("konuListesi");
+  liste.innerHTML = "";
+
+  const filtre = document.getElementById("filtreSelect").value;
+
+  let siralama = "tarih";
+  if (filtre === "populer") siralama = "yorumSayisi";
+  if (filtre === "begeni") siralama = "begeniler";
+
+  const q = query(collection(db, "konular"), orderBy(siralama, "desc"));
+  const snapshot = await getDocs(q);
+
+  snapshot.forEach((docu) => {
+    const veri = docu.data();
+    const div = document.createElement("div");
+    div.className = "konu-kutu";
+    div.innerHTML = `
+      <h3>${veri.baslik}</h3>
+      <p>${veri.aciklama}</p>
+      <small>${veri.kullaniciAdi} • ${veri.tarih?.toDate().toLocaleString() || ''}</small>
+      <div>❤️ ${veri.begeniler || 0} | 👎 ${veri.dislikelar || 0} | 👁️ ${veri.okunma || 0}</div>
+      <button onclick="window.location.href='konu.html?id=${docu.id}'">Detay</button>
+    `;
+    liste.appendChild(div);
+  });
+}
