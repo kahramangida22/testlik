@@ -176,3 +176,16 @@ document.getElementById("konuGonderBtn")?.addEventListener("click", async () => 
   modalKapat();
   konulariYukle();
 });
+window.raporlaKonu = async (konuId) => {
+  const user = auth.currentUser;
+  if (!user) return alert("Giriş yapmalısın!");
+  
+  await addDoc(collection(db, "raporlar"), {
+    konuId,
+    uid: user.uid,
+    tur: "konu",
+    tarih: serverTimestamp()
+  });
+
+  alert("🚨 Konu başarıyla raporlandı.");
+};
