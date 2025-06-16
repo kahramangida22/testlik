@@ -1,154 +1,161 @@
-// konu.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import {
-  getFirestore, doc, getDoc, collection, query, where,
-  addDoc, serverTimestamp, orderBy, getDocs, updateDoc, increment
-} from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-import {
-  getAuth, onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
-  authDomain: "testlik.firebaseapp.com",
-  projectId: "testlik",
-  storageBucket: "testlik.appspot.com",
-  messagingSenderId: "668524500496",
-  appId: "1:668524500496:web:579bb4fc5990c87afedc95"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-
-let currentUser;
-let aktifKonuId;
-
-function getQueryParam(name) {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get(name);
+/* GENEL STİL */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #fff1f9, #fce4ec);
+  color: #333;
 }
 
-onAuthStateChanged(auth, async (user) => {
-  if (!user) return (window.location.href = "giris.html");
-  currentUser = user;
-  aktifKonuId = getQueryParam("id");
-  if (!aktifKonuId) return (window.location.href = "kizlar-klubu.html");
-  await updateDoc(doc(db, "konular", aktifKonuId), { okunma: increment(1) });
-  yukleKonu();
-  yorumlariGetir();
-});
-
-async function yukleKonu() {
-  const docRef = doc(db, "konular", aktifKonuId);
-  const docSnap = await getDoc(docRef);
-  if (!docSnap.exists()) return;
-  const veri = docSnap.data();
-  document.getElementById("konuDetay").innerHTML = `
-    <div class="konu-kutu">
-      <h2>${veri.baslik}</h2>
-      <p>${veri.aciklama}</p>
-      <small>${veri.kullaniciAdi} • ${veri.tarih?.toDate().toLocaleString() || ""}</small>
-    </div>
-  `;
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  position: relative;
 }
 
-const yorumInput = document.getElementById("yorumInput");
-const yorumGonderBtn = document.getElementById("yorumGonderBtn");
-
-yorumGonderBtn.addEventListener("click", async () => {
-  const yorum = yorumInput.value.trim();
-  if (yorum.length < 5) return alert("Yorum çok kısa.");
-  await addDoc(collection(db, `konular/${aktifKonuId}/yorumlar`), {
-    yorum,
-    uid: currentUser.uid,
-    kullaniciAdi: currentUser.email.split("@")[0],
-    tarih: serverTimestamp(),
-    parentId: null,
-    begeniler: 0,
-    dislikelar: 0,
-    begenenler: [],
-    dislikelayanlar: []
-  });
-  yorumInput.value = "";
-  yorumlariGetir();
-});
-
-async function yorumlariGetir() {
-  const yorumlarRef = collection(db, `konular/${aktifKonuId}/yorumlar`);
-  const q = query(yorumlarRef, orderBy("tarih"));
-  const snap = await getDocs(q);
-  const yorumlar = [];
-  snap.forEach((docu) => yorumlar.push({ id: docu.id, ...docu.data() }));
-  const agac = kurYorumAgaci(yorumlar);
-  const container = document.getElementById("yorumlar");
-  container.innerHTML = "";
-  agac.forEach((y) => container.appendChild(olusturYorumHTML(y)));
+header {
+  background-color: #f8bbd0;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
 }
 
-function kurYorumAgaci(yorumlar, parentId = null) {
-  return yorumlar.filter((y) => y.parentId === parentId).map((y) => ({ ...y, alt: kurYorumAgaci(yorumlar, y.id) }));
+header .geri-btn {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  background: white;
+  color: #d81b60;
+  padding: 6px 12px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
 }
 
-function olusturYorumHTML(yorum) {
-  const div = document.createElement("div");
-  div.className = "yorum-kutu";
-  div.innerHTML = `
-    <p>${yorum.yorum}</p>
-    <small>${yorum.kullaniciAdi} • ${yorum.tarih?.toDate().toLocaleString() || ""}</small>
-    <div>
-      ❤️ ${yorum.begeniler || 0}
-      <button onclick="window.begen('${yorum.id}', true)">Beğen</button>
-      <button onclick="window.begen('${yorum.id}', false)">Dislike</button>
-    </div>
-    <div class="cevap-form">
-      <textarea placeholder="Cevap yaz..." id="cevap-${yorum.id}"></textarea>
-      <button onclick="window.yanitlaYorum('${yorum.id}')">Yanıtla</button>
-    </div>
-  `;
-  if (yorum.alt?.length > 0) {
-    const altlar = document.createElement("div");
-    altlar.className = "yorum-alt";
-    yorum.alt.forEach((alt) => altlar.appendChild(olusturYorumHTML(alt)));
-    div.appendChild(altlar);
+.konu-detay {
+  background: white;
+  border-left: 5px solid #d81b60;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.konu-detay h2 {
+  margin-top: 0;
+  color: #d81b60;
+}
+
+.konu-bilgi {
+  font-size: 14px;
+  color: #777;
+  margin-top: 10px;
+}
+
+.butonlar {
+  margin-top: 20px;
+}
+
+.butonlar button {
+  background: #f8bbd0;
+  border: none;
+  color: #880e4f;
+  padding: 10px 16px;
+  border-radius: 6px;
+  margin-right: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.butonlar button:hover {
+  background-color: #f48fb1;
+}
+
+.yorumlar {
+  margin-top: 30px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 5px solid #ab47bc;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.yorumlar h3 {
+  margin-top: 0;
+  color: #6a1b9a;
+}
+
+#yorumInput {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 10px;
+  font-size: 15px;
+  resize: vertical;
+}
+
+#yorumGonderBtn {
+  background-color: #ce93d8;
+  color: #4a148c;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#yorumGonderBtn:hover {
+  background-color: #ba68c8;
+}
+
+/* Yorum kutuları */
+.yorum-kutu {
+  background: #f9f9f9;
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 10px;
+  border-left: 4px solid #8e24aa;
+}
+
+.yorum-kutu small {
+  color: #888;
+  display: block;
+  margin-top: 6px;
+}
+
+.yorum-cevap {
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+.reklam-footer {
+  background-color: #f8bbd0;
+  color: #880e4f;
+  text-align: center;
+  padding: 15px;
+  font-weight: bold;
+  border-radius: 10px;
+  margin-top: 30px;
+}
+
+/* Mobil uyum */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
   }
-  return div;
-}
 
-window.yanitlaYorum = async function (parentId) {
-  const textarea = document.getElementById("cevap-" + parentId);
-  const metin = textarea.value.trim();
-  if (metin.length < 3) return alert("Cevap çok kısa.");
-  await addDoc(collection(db, `konular/${aktifKonuId}/yorumlar`), {
-    yorum: metin,
-    uid: currentUser.uid,
-    kullaniciAdi: currentUser.email.split("@")[0],
-    tarih: serverTimestamp(),
-    parentId: parentId,
-    begeniler: 0,
-    dislikelar: 0,
-    begenenler: [],
-    dislikelayanlar: []
-  });
-  textarea.value = "";
-  yorumlariGetir();
-};
-
-window.begen = async function (yorumId, begeniMi) {
-  const yorumRef = doc(db, `konular/${aktifKonuId}/yorumlar/${yorumId}`);
-  const snap = await getDoc(yorumRef);
-  if (!snap.exists()) return;
-  const data = snap.data();
-  const begenenler = data.begenenler || [];
-  const dislikelayanlar = data.dislikelayanlar || [];
-  if (begenenler.includes(currentUser.uid) || dislikelayanlar.includes(currentUser.uid)) {
-    alert("Bu yoruma zaten oy verdiniz.");
-    return;
+  header .geri-btn {
+    font-size: 13px;
+    padding: 5px 10px;
   }
-  const updates = {
-    [begeniMi ? "begeniler" : "dislikelar"]: increment(1),
-    [begeniMi ? "begenenler" : "dislikelayanlar"]: [...(begeniMi ? begenenler : dislikelayanlar), currentUser.uid]
-  };
-  await updateDoc(yorumRef, updates);
-  yorumlariGetir();
-};
+
+  .butonlar button, #yorumGonderBtn {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
