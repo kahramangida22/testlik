@@ -1,4 +1,4 @@
-// admin-kizlar.js (GÜNCELLENDİ: RAPORLARI GÖRÜNTÜLEME + ENGELLEME)
+// admin-kizlar.js (TÜM İŞLEMLER: KONULAR + RAPORLAR + ENGELLEME)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import {
   getFirestore,
@@ -23,6 +23,47 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const konuInput = document.getElementById("konuJsonInput");
+const konuBtn = document.getElementById("konuEkleBtn");
+const sonucAlani = document.getElementById("sonucAlani");
+
+konuBtn?.addEventListener("click", async () => {
+  const input = konuInput.value.trim();
+  if (!input) return yazSonuc("Lütfen konu JSON'u girin.", false);
+  let konular = [];
+  try {
+    konular = JSON.parse(input);
+  } catch {
+    return yazSonuc("Geçersiz JSON formatı.", false);
+  }
+  let eklendi = 0;
+  for (const konu of konular) {
+    if (!konu.baslik || !konu.aciklama) continue;
+    await addDoc(collection(db, "konular"), {
+      baslik: konu.baslik,
+      aciklama: konu.aciklama,
+      kullaniciAdi: "admin",
+      uid: "admin",
+      tarih: serverTimestamp(),
+      begeniler: 0,
+      dislikelar: 0,
+      begenenler: [],
+      dislikelayanlar: [],
+      okunma: 0
+    });
+    eklendi++;
+  }
+  yazSonuc(`${eklendi} konu başarıyla eklendi ✅`);
+  konuInput.value = "";
+});
+
+function yazSonuc(mesaj, basarili = true) {
+  sonucAlani.innerText = mesaj;
+  sonucAlani.style.color = basarili ? "green" : "red";
+  setTimeout(() => (sonucAlani.innerText = ""), 4000);
+}
+
+// Raporlanan konuları yükle
 const raporDiv = document.createElement("section");
 raporDiv.innerHTML = `<h2>🚨 Raporlanan Konular</h2><div id="raporlar"></div>`;
 document.body.appendChild(raporDiv);
@@ -32,15 +73,12 @@ async function raporlariYukle() {
   raporlarAlani.innerHTML = "Yükleniyor...";
   const snap = await getDocs(collection(db, "raporlar"));
   raporlarAlani.innerHTML = "";
-
   snap.forEach(async (raporDoc) => {
     const rapor = raporDoc.data();
     if (rapor.tur === "konu") {
-      const konuRef = doc(db, "konular", rapor.konuId);
       const konuSnap = await getDocs(collection(db, "konular"));
       const konu = konuSnap.docs.find(k => k.id === rapor.konuId)?.data();
       if (!konu) return;
-
       const div = document.createElement("div");
       div.className = "rapor-kutu";
       div.innerHTML = `
