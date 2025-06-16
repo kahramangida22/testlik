@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kızlar Kulübü</title>
+  <link rel="stylesheet" href="kizlar-style.css">
+  <script type="module" src="kizlar.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1 class="logo">Testlik.com</h1>
+    <nav>
+      <a href="index.html">Ana Sayfa</a>
+      <a href="kategoriler.html">Kategoriler</a>
+      <a href="haberler.html">Haberler</a>
+      <a href="puan-tablosu.html">Puan Durumu</a>
+    </nav>
+  </header>
+
+  <!-- Ana içerik sadece kadın kullanıcılar için -->
+  <main id="icerik" style="display:none;">
+    <h2>Kızlar Kulübü 💖</h2>
+
+    <div id="filtre">
+      <label for="filtreSelect">Sırala:</label>
+      <select id="filtreSelect">
+        <option value="tarih">En Yeni</option>
+        <option value="populer">En Popüler</option>
+      </select>
+    </div>
+
+    <div id="konuListesi">
+      <!-- Konular buraya yüklenecek -->
+    </div>
+
+    <div id="yeniKonuBtnContainer">
+      <button id="yeniKonuBtn">+ Yeni Konu Aç</button>
+    </div>
+
+    <!-- Yorumlar -->
+    <div id="yorumlarAlani" style="margin-top: 40px;">
+      <h3>Yorumlar</h3>
+      <div id="yorumListesi"></div>
+      <textarea id="yorumInput" placeholder="Yorumunuzu yazın..."></textarea>
+      <button id="yorumGonderBtn">Yorumu Gönder</button>
+    </div>
+  </main>
+
+  <!-- Cinsiyet Seçimi Modal -->
+  <div id="cinsiyetModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h3>Cinsiyetinizi Seçin</h3>
+      <button onclick="cinsiyetSec('kadın')">Kadın</button>
+      <button onclick="cinsiyetSec('erkek')">Erkek</button>
+    </div>
+  </div>
+
+  <!-- Yeni Konu Açma Modalı -->
+  <div id="yeniKonuModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h3>Yeni Konu Aç</h3>
+      <input type="text" id="konuBaslik" placeholder="Konu başlığı">
+      <textarea id="konuAciklama" placeholder="Açıklama"></textarea>
+      <button id="konuGonderBtn">Gönder</button>
+      <button onclick="modalKapat()">İptal</button>
+    </div>
+  </div>
+</body>
+</html>
