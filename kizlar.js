@@ -1,8 +1,8 @@
-// kizlar.js
+// kizlar.js (GÜNCELLENDİ)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import {
-  getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, increment,
-  collection, query, orderBy, getDocs, serverTimestamp, getCountFromServer
+  getFirestore, doc, getDoc, setDoc, updateDoc, collection,
+  query, orderBy, getDocs, increment, getCountFromServer
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 import {
   getAuth, onAuthStateChanged
@@ -20,7 +20,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
-let aktifKonuId = null;
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) return (window.location.href = "giris.html");
@@ -55,18 +54,6 @@ onAuthStateChanged(auth, async (user) => {
   konulariYukle();
 });
 
-const cinsiyetSec = async (secim) => {
-  if (!window.userRef) return;
-  if (secim === "kadın") {
-    await updateDoc(window.userRef, { cinsiyet: "kadın" });
-    location.reload();
-  } else {
-    alert("❌ Kızlar Kulübü sadece kadın kullanıcılarımıza özeldir. Anlayışınız için teşekkür ederiz.");
-    setTimeout(() => (window.location.href = "index.html"), 3000);
-  }
-};
-window.cinsiyetSec = cinsiyetSec;
-
 const konulariYukle = async () => {
   const liste = document.getElementById("konuListesi");
   liste.innerHTML = "";
@@ -94,8 +81,7 @@ const konulariYukle = async () => {
       <div>
         ❤️ ${veri.begeniler || 0}
         • 💬 ${yorumSayisi} yorum
-        • 👁️ ${okunma} okunma
-        <br>
+        • 👁️ ${okunma} okunma<br>
         <button onclick="konuBegeni('${docu.id}', true)">Beğen</button>
         <button onclick="konuBegeni('${docu.id}', false)">Dislike</button>
         <button onclick="location.href='konu.html?id=${docu.id}'">Detay</button>
@@ -103,4 +89,27 @@ const konulariYukle = async () => {
     `;
     liste.appendChild(div);
   }
+};
+
+window.konuBegeni = async function (konuId, begeniMi) {
+  const konuRef = doc(db, "konular", konuId);
+  const snap = await getDoc(konuRef);
+  if (!snap.exists()) return;
+  const data = snap.data();
+  const begenenler = data.begenenler || [];
+  const dislikelayanlar = data.dislikelayanlar || [];
+  const currentUserId = auth.currentUser?.uid;
+
+  if (begenenler.includes(currentUserId) || dislikelayanlar.includes(currentUserId)) {
+    alert("Bu konuya zaten oy verdiniz.");
+    return;
+  }
+
+  const updates = {
+    [begeniMi ? "begeniler" : "dislikelar"]: increment(1),
+    [begeniMi ? "begenenler" : "dislikelayanlar"]: [...(begeniMi ? begenenler : dislikelayanlar), currentUserId]
+  };
+
+  await updateDoc(konuRef, updates);
+  konulariYukle();
 };
