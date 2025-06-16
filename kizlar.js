@@ -53,6 +53,7 @@ onAuthStateChanged(auth, async (user) => {
 
   const userData = userSnap.data();
 
+  // Kullanıcı engelliyse
   if (userData.engelTarihi) {
     const engelTarih = new Date(userData.engelTarihi);
     if (engelTarih > new Date()) {
@@ -62,7 +63,13 @@ onAuthStateChanged(auth, async (user) => {
     }
   }
 
-  if (!userData.cinsiyet || userData.cinsiyet.toLowerCase() !== "kadın") {
+  if (!userData.cinsiyet) {
+    document.getElementById("cinsiyetModal").style.display = "flex";
+    window.userRef = userRef;
+    return;
+  }
+
+  if (userData.cinsiyet !== "kadın") {
     alert("❌ Kızlar Kulübü sadece kadın kullanıcılarımıza özeldir. Anlayışınız için teşekkür ederiz.");
     setTimeout(() => {
       window.location.href = "index.html";
@@ -74,6 +81,7 @@ onAuthStateChanged(auth, async (user) => {
   konulariYukle();
 });
 
+// Cinsiyet seçimi
 window.cinsiyetSec = async (secim) => {
   if (!window.userRef) return;
   if (secim === "kadın") {
@@ -85,6 +93,7 @@ window.cinsiyetSec = async (secim) => {
   }
 };
 
+// Konulari Yükle (filtreli)
 async function konulariYukle() {
   const liste = document.getElementById("konuListesi");
   liste.innerHTML = "";
@@ -100,27 +109,30 @@ async function konulariYukle() {
 
   snapshot.forEach((docu) => {
     const veri = docu.data();
-    const div = document.createElement("div");
-    div.className = "konu-kutu";
-    div.onclick = () => window.location.href = `konu.html?id=${docu.id}`;
-    div.innerHTML = `
-      <h3>${veri.baslik}</h3>
-      <p>${veri.aciklama}</p>
-      <small>${veri.kullaniciAdi} • ${veri.tarih?.toDate().toLocaleString() || ''}</small>
-      <div>
-        ❤️ ${veri.begeniler || 0}
-        👎 ${veri.dislikelar || 0}
-        💬 ${veri.yorumSayisi || 0}
-        👁️ ${veri.okunma || 0}
-      </div>
-      <button class="rapor-btn" onclick="event.stopPropagation(); raporlaKonu('${docu.id}')">🚨 Raporla</button>
-    `;
+   const div = document.createElement("div");
+div.className = "konu-kutu";
+div.onclick = () => window.location.href = konu.html?id=${docu.id};
+div.innerHTML = 
+  <h3>${veri.baslik}</h3>
+  <p>${veri.aciklama}</p>
+  <small>${veri.kullaniciAdi} • ${veri.tarih?.toDate().toLocaleString() || ''}</small>
+  <div>
+    ❤️ ${veri.begeniler || 0}
+    👎 ${veri.dislikelar || 0}
+    💬 ${veri.yorumSayisi || 0}
+    👁️ ${veri.okunma || 0}
+  </div>
+  <button class="rapor-btn" onclick="event.stopPropagation(); raporlaKonu('${docu.id}')">🚨 Raporla</button>
+;
+
     liste.appendChild(div);
   });
 }
 
+// Filtre seçilince tetiklenir
 document.getElementById("filtreSelect").addEventListener("change", konulariYukle);
 
+// Yeni Konu Ekle Modal
 document.getElementById("yeniKonuBtn")?.addEventListener("click", () => {
   document.getElementById("yeniKonuModal").style.display = "flex";
 });
@@ -128,6 +140,7 @@ window.modalKapat = () => {
   document.getElementById("yeniKonuModal").style.display = "none";
 };
 
+// Yeni Konu Gönder
 document.getElementById("konuGonderBtn")?.addEventListener("click", async () => {
   const baslik = document.getElementById("konuBaslik").value.trim();
   const aciklama = document.getElementById("konuAciklama").value.trim();
@@ -164,11 +177,10 @@ document.getElementById("konuGonderBtn")?.addEventListener("click", async () => 
   modalKapat();
   konulariYukle();
 });
-
 window.raporlaKonu = async (konuId) => {
   const user = auth.currentUser;
   if (!user) return alert("Giriş yapmalısın!");
-
+  
   await addDoc(collection(db, "raporlar"), {
     konuId,
     uid: user.uid,
@@ -178,8 +190,3 @@ window.raporlaKonu = async (konuId) => {
 
   alert("🚨 Konu başarıyla raporlandı.");
 };
-if (!userData.cinsiyet) {
-  document.getElementById("cinsiyetModal").style.display = "flex";
-  window.userRef = userRef;
-  return;
-}
