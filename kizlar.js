@@ -1,8 +1,8 @@
-// kizlar.js (GÜNCELLENDİ)
+// kizlar.js (GÜNCELLENDİ + RAPOR SİSTEMİ EKLENDİ)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import {
   getFirestore, doc, getDoc, setDoc, updateDoc, collection,
-  query, orderBy, getDocs, increment, getCountFromServer
+  query, orderBy, getDocs, increment, getCountFromServer, addDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 import {
   getAuth, onAuthStateChanged
@@ -45,6 +45,11 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
 
+  if (userData.engelTarihi && new Date() < new Date(userData.engelTarihi)) {
+    alert("Hesabınız geçici olarak kısıtlandı. Lütfen daha sonra tekrar deneyin.");
+    return setTimeout(() => (window.location.href = "index.html"), 5000);
+  }
+
   if (userData.cinsiyet !== "kadın") {
     alert("❌ Kızlar Kulübü sadece kadın kullanıcılarımıza özeldir. Anlayışınız için teşekkür ederiz.");
     return setTimeout(() => (window.location.href = "index.html"), 3000);
@@ -79,12 +84,11 @@ const konulariYukle = async () => {
       <p>${veri.aciklama}</p>
       <small>${veri.kullaniciAdi} • ${veri.tarih?.toDate().toLocaleString() || ''}</small>
       <div>
-        ❤️ ${veri.begeniler || 0}
-        • 💬 ${yorumSayisi} yorum
-        • 👁️ ${okunma} okunma<br>
+        ❤️ ${veri.begeniler || 0} • 💬 ${yorumSayisi} yorum • 👁️ ${okunma} okunma<br>
         <button onclick="konuBegeni('${docu.id}', true)">Beğen</button>
         <button onclick="konuBegeni('${docu.id}', false)">Dislike</button>
         <button onclick="location.href='konu.html?id=${docu.id}'">Detay</button>
+        <button onclick="konuRaporla('${docu.id}')">🚨 Raporla</button>
       </div>
     `;
     liste.appendChild(div);
@@ -112,4 +116,18 @@ window.konuBegeni = async function (konuId, begeniMi) {
 
   await updateDoc(konuRef, updates);
   konulariYukle();
+};
+
+window.konuRaporla = async function (konuId) {
+  const currentUser = auth.currentUser;
+  if (!currentUser) return alert("Giriş yapmalısın.");
+
+  await addDoc(collection(db, "raporlar"), {
+    tur: "konu",
+    konuId,
+    uid: currentUser.uid,
+    tarih: serverTimestamp()
+  });
+
+  alert("Raporun gönderildi. Gerekli inceleme admin tarafından yapılacaktır.");
 };
