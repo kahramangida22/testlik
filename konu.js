@@ -10,7 +10,8 @@ import {
   getDocs,
   query,
   orderBy,
-  serverTimestamp
+  serverTimestamp,
+  setDoc
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
 import {
@@ -32,7 +33,6 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Konu ID'yi al
 const params = new URLSearchParams(window.location.search);
 const konuId = params.get("id");
 let currentUser;
@@ -56,10 +56,8 @@ async function konuYukle() {
   document.getElementById("konuTarih").innerText = veri.tarih?.toDate().toLocaleString() || "";
   document.getElementById("konuOkunma").innerText = (veri.okunma || 0) + 1;
 
-  // Okunma sayısını 1 artır
   await updateDoc(ref, { okunma: increment(1) });
 
-  // Beğeniler
   document.getElementById("begenBtn").onclick = async () => {
     await updateDoc(ref, { begeniler: increment(1) });
     alert("❤️ Beğendin!");
@@ -77,7 +75,7 @@ async function konuYukle() {
       tur: "konu",
       tarih: serverTimestamp()
     });
-    alert("🚨 Rapor gönderildi!");
+    alert("🚨 Konu başarıyla raporlandı.");
   };
 }
 
@@ -85,10 +83,7 @@ async function yorumlariYukle() {
   const liste = document.getElementById("yorumListesi");
   liste.innerHTML = "";
 
-  const q = query(
-    collection(db, "konular", konuId, "yorumlar"),
-    orderBy("tarih", "asc")
-  );
+  const q = query(collection(db, "konular", konuId, "yorumlar"), orderBy("tarih", "asc"));
   const snap = await getDocs(q);
 
   snap.forEach((docu) => {
@@ -98,8 +93,27 @@ async function yorumlariYukle() {
     div.innerHTML = `
       <p>${y.yorum}</p>
       <small>${y.kullaniciAdi} • ${y.tarih?.toDate().toLocaleString() || ""}</small>
+      <div class="yorum-butonlar">
+        <button onclick="begenYorum('${docu.id}')">❤️ ${y.begeniler || 0}</button>
+        <button onclick="dislikeYorum('${docu.id}')">👎 ${y.dislikelar || 0}</button>
+        <button onclick="raporlaYorum('${docu.id}')">🚨</button>
+        <button onclick="cevaplaYorum('${docu.id}', '${y.kullaniciAdi}')">💬 Cevapla</button>
+      </div>
+      <div class="yorum-cevap" id="cevap-${docu.id}"></div>
     `;
     liste.appendChild(div);
+    // Cevaplar varsa yükle
+    if (y.cevaplar && y.cevaplar.length > 0) {
+      y.cevaplar.forEach((cevap) => {
+        const cevapDiv = document.createElement("div");
+        cevapDiv.className = "yorum-kutu yorum-cevap";
+        cevapDiv.innerHTML = `
+          <p>${cevap.yorum}</p>
+          <small>${cevap.kullaniciAdi} • ${new Date(cevap.tarih).toLocaleString()}</small>
+        `;
+        document.getElementById("cevap-" + docu.id).appendChild(cevapDiv);
+      });
+    }
   });
 }
 
@@ -112,7 +126,10 @@ document.getElementById("yorumGonderBtn").addEventListener("click", async () => 
     yorum,
     uid: currentUser.uid,
     kullaniciAdi: currentUser.email.split("@")[0],
-    tarih: serverTimestamp()
+    tarih: serverTimestamp(),
+    begeniler: 0,
+    dislikelar: 0,
+    cevaplar: []
   });
 
   await updateDoc(doc(db, "konular", konuId), {
@@ -122,3 +139,55 @@ document.getElementById("yorumGonderBtn").addEventListener("click", async () => 
   document.getElementById("yorumInput").value = "";
   yorumlariYukle();
 });
+
+window.begenYorum = async (yorumId) => {
+  const ref = doc(db, "konular", konuId, "yorumlar", yorumId);
+  await updateDoc(ref, { begeniler: increment(1) });
+  yorumlariYukle();
+};
+
+window.dislikeYorum = async (yorumId) => {
+  const ref = doc(db, "konular", konuId, "yorumlar", yorumId);
+  await updateDoc(ref, { dislikelar: increment(1) });
+  yorumlariYukle();
+};
+
+window.raporlaYorum = async (yorumId) => {
+  await addDoc(collection(db, "raporlar"), {
+    konuId,
+    yorumId,
+    uid: currentUser.uid,
+    tur: "yorum",
+    tarih: serverTimestamp()
+  });
+  alert("🚨 Yorum raporlandı.");
+};
+
+window.cevaplaYorum = (yorumId, kullaniciAdi) => {
+  const div = document.getElementById("cevap-" + yorumId);
+  div.innerHTML += `
+    <textarea class="cevap-input" placeholder="@${kullaniciAdi} yanıtla..." id="cevap-input-${yorumId}"></textarea>
+    <button onclick="cevapGonder('${yorumId}')">Gönder</button>
+  `;
+};
+
+window.cevapGonder = async (yorumId) => {
+  const input = document.getElementById("cevap-input-" + yorumId);
+  const yorum = input.value.trim();
+  if (yorum.length < 2) return;
+
+  const yorumRef = doc(db, "konular", konuId, "yorumlar", yorumId);
+  const snap = await getDoc(yorumRef);
+  const y = snap.data();
+
+  const yeniCevap = {
+    yorum,
+    kullaniciAdi: currentUser.email.split("@")[0],
+    tarih: new Date().toISOString()
+  };
+
+  const guncel = [...(y.cevaplar || []), yeniCevap];
+  await updateDoc(yorumRef, { cevaplar: guncel });
+
+  yorumlariYukle();
+};
