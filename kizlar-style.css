@@ -160,3 +160,51 @@ select#filtreSelect {
     width: 90%;
   }
 }
+/* Mobil görünüm - 768px altı ekranlar */
+@media (max-width: 768px) {
+  body {
+    padding: 10px !important;
+    font-size: 15px;
+  }
+
+  .reklam-sag,
+  .reklam-sol {
+    display: none !important;
+  }
+
+  .modal-content {
+    width: 95%;
+  }
+
+  .konu-kutu {
+    width: 100%;
+    font-size: 15px;
+    padding: 12px;
+  }
+
+  #yeniKonuBtn {
+    width: 100%;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  select#filtreSelect {
+    width: 100%;
+    margin-top: 8px;
+    font-size: 15px;
+  }
+
+  .konu-kutu h3 {
+    font-size: 17px;
+  }
+
+  .konu-kutu p {
+    font-size: 15px;
+  }
+
+  .konu-kutu button {
+    width: 100%;
+    font-size: 15px;
+    margin-top: 8px;
+  }
+}
