@@ -178,3 +178,8 @@ window.raporlaKonu = async (konuId) => {
 
   alert("🚨 Konu başarıyla raporlandı.");
 };
+if (!userData.cinsiyet) {
+  document.getElementById("cinsiyetModal").style.display = "flex";
+  window.userRef = userRef;
+  return;
+}
