@@ -109,21 +109,22 @@ async function konulariYukle() {
 
   snapshot.forEach((docu) => {
     const veri = docu.data();
-    const div = document.createElement("div");
-    div.className = "konu-kutu";
-    div.innerHTML = `
-      <h3>${veri.baslik}</h3>
-      <p>${veri.aciklama}</p>
-      <small>${veri.kullaniciAdi} • ${veri.tarih?.toDate().toLocaleString() || ''}</small>
-      <div>
-        ❤️ ${veri.begeniler || 0}
-        👎 ${veri.dislikelar || 0}
-        💬 ${veri.yorumSayisi || 0}
-        👁️ ${veri.okunma || 0}
-      </div>
-      <button onclick="window.location.href='konu.html?id=${docu.id}'">Detay</button>
-      <button onclick="raporlaKonu('${docu.id}')">🚨 Raporla</button>
-    `;
+   const div = document.createElement("div");
+div.className = "konu-kutu";
+div.onclick = () => window.location.href = `konu.html?id=${docu.id}`;
+div.innerHTML = `
+  <h3>${veri.baslik}</h3>
+  <p>${veri.aciklama}</p>
+  <small>${veri.kullaniciAdi} • ${veri.tarih?.toDate().toLocaleString() || ''}</small>
+  <div>
+    ❤️ ${veri.begeniler || 0}
+    👎 ${veri.dislikelar || 0}
+    💬 ${veri.yorumSayisi || 0}
+    👁️ ${veri.okunma || 0}
+  </div>
+  <button class="rapor-btn" onclick="event.stopPropagation(); raporlaKonu('${docu.id}')">🚨 Raporla</button>
+`;
+
     liste.appendChild(div);
   });
 }
