@@ -50,16 +50,11 @@ select#filtreSelect {
 }
 
 .konu-kutu {
-  background-color: white;
-  border-left: 5px solid #ec407a;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
-
 .konu-kutu:hover {
-  transform: translateY(-3px);
+  background-color: #fff0f5;
 }
 
 .konu-kutu button {
