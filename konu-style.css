@@ -1,0 +1,161 @@
+/* GENEL STİL */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #fff1f9, #fce4ec);
+  color: #333;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  position: relative;
+}
+
+header {
+  background-color: #f8bbd0;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
+}
+
+header .geri-btn {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  background: white;
+  color: #d81b60;
+  padding: 6px 12px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.konu-detay {
+  background: white;
+  border-left: 5px solid #d81b60;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.konu-detay h2 {
+  margin-top: 0;
+  color: #d81b60;
+}
+
+.konu-bilgi {
+  font-size: 14px;
+  color: #777;
+  margin-top: 10px;
+}
+
+.butonlar {
+  margin-top: 20px;
+}
+
+.butonlar button {
+  background: #f8bbd0;
+  border: none;
+  color: #880e4f;
+  padding: 10px 16px;
+  border-radius: 6px;
+  margin-right: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.butonlar button:hover {
+  background-color: #f48fb1;
+}
+
+.yorumlar {
+  margin-top: 30px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 5px solid #ab47bc;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.yorumlar h3 {
+  margin-top: 0;
+  color: #6a1b9a;
+}
+
+#yorumInput {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 10px;
+  font-size: 15px;
+  resize: vertical;
+}
+
+#yorumGonderBtn {
+  background-color: #ce93d8;
+  color: #4a148c;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#yorumGonderBtn:hover {
+  background-color: #ba68c8;
+}
+
+/* Yorum kutuları */
+.yorum-kutu {
+  background: #f9f9f9;
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 10px;
+  border-left: 4px solid #8e24aa;
+}
+
+.yorum-kutu small {
+  color: #888;
+  display: block;
+  margin-top: 6px;
+}
+
+.yorum-cevap {
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+.reklam-footer {
+  background-color: #f8bbd0;
+  color: #880e4f;
+  text-align: center;
+  padding: 15px;
+  font-weight: bold;
+  border-radius: 10px;
+  margin-top: 30px;
+}
+
+/* Mobil uyum */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  header .geri-btn {
+    font-size: 13px;
+    padding: 5px 10px;
+  }
+
+  .butonlar button, #yorumGonderBtn {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
