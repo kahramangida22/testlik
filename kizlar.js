@@ -122,6 +122,7 @@ async function konulariYukle() {
         👁️ ${veri.okunma || 0}
       </div>
       <button onclick="window.location.href='konu.html?id=${docu.id}'">Detay</button>
+      <button onclick="raporlaKonu('${docu.id}')">🚨 Raporla</button>
     `;
     liste.appendChild(div);
   });
