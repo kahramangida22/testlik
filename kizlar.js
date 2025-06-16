@@ -66,3 +66,29 @@ const cinsiyetSec = async (secim) => {
   }
 };
 window.cinsiyetSec = cinsiyetSec;
+
+const konulariYukle = async () => {
+  const liste = document.getElementById("konuListesi");
+  liste.innerHTML = "";
+  const filtre = document.getElementById("filtreSelect").value;
+  const q = query(collection(db, "konular"), orderBy(filtre === "populer" ? "begeniler" : "tarih", "desc"));
+  const snapshot = await getDocs(q);
+
+  snapshot.forEach((docu) => {
+    const veri = docu.data();
+    const div = document.createElement("div");
+    div.className = "konu-kutu";
+    div.innerHTML = `
+      <h3>${veri.baslik}</h3>
+      <p>${veri.aciklama}</p>
+      <small>${veri.kullaniciAdi} • ${veri.tarih?.toDate().toLocaleString() || ''}</small>
+      <div>
+        ❤️ ${veri.begeniler || 0}
+        <button onclick="konuBegeni('${docu.id}', true)">Beğen</button>
+        <button onclick="konuBegeni('${docu.id}', false)">Dislike</button>
+      </div>
+    `;
+    div.onclick = () => yorumlariYukle(docu.id);
+    liste.appendChild(div);
+  });
+};
