@@ -54,3 +54,15 @@ onAuthStateChanged(auth, async (user) => {
   document.getElementById("icerik").style.display = "block";
   konulariYukle();
 });
+
+const cinsiyetSec = async (secim) => {
+  if (!window.userRef) return;
+  if (secim === "kadın") {
+    await updateDoc(window.userRef, { cinsiyet: "kadın" });
+    location.reload();
+  } else {
+    alert("❌ Kızlar Kulübü sadece kadın kullanıcılarımıza özeldir. Anlayışınız için teşekkür ederiz.");
+    setTimeout(() => (window.location.href = "index.html"), 3000);
+  }
+};
+window.cinsiyetSec = cinsiyetSec;
