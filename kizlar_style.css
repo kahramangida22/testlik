@@ -1,0 +1,103 @@
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #ffe0f0, #f3e5f5);
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+header {
+  background-color: #e91e63;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+nav a {
+  color: white;
+  margin-left: 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+main {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.konu-kutu, .yorum-kutu {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: 0.3s ease;
+}
+
+.konu-kutu:hover, .yorum-kutu:hover {
+  transform: scale(1.01);
+}
+
+button {
+  background-color: #e91e63;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 5px 5px 0 0;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #d81b60;
+}
+
+textarea, input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  resize: vertical;
+}
+
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+#filtre {
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+#filtre select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
