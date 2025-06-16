@@ -24,31 +24,25 @@ const auth = getAuth(app);
 let currentUser;
 let aktifKonuId;
 
-// Yardımcı: URL'den id al
 function getQueryParam(name) {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(name);
 }
 
-// Kullanıcı kontrolü
 onAuthStateChanged(auth, async (user) => {
   if (!user) return (window.location.href = "giris.html");
   currentUser = user;
-
   aktifKonuId = getQueryParam("id");
   if (!aktifKonuId) return (window.location.href = "kizlar-klubu.html");
-
   await updateDoc(doc(db, "konular", aktifKonuId), { okunma: increment(1) });
   yukleKonu();
   yorumlariGetir();
 });
 
-// Konu verisini getir
 async function yukleKonu() {
   const docRef = doc(db, "konular", aktifKonuId);
   const docSnap = await getDoc(docRef);
   if (!docSnap.exists()) return;
-
   const veri = docSnap.data();
   document.getElementById("konuDetay").innerHTML = `
     <div class="konu-kutu">
@@ -59,36 +53,33 @@ async function yukleKonu() {
   `;
 }
 
-// Yorum gönder
 const yorumInput = document.getElementById("yorumInput");
 const yorumGonderBtn = document.getElementById("yorumGonderBtn");
 
 yorumGonderBtn.addEventListener("click", async () => {
   const yorum = yorumInput.value.trim();
   if (yorum.length < 5) return alert("Yorum çok kısa.");
-
   await addDoc(collection(db, `konular/${aktifKonuId}/yorumlar`), {
     yorum,
     uid: currentUser.uid,
     kullaniciAdi: currentUser.email.split("@")[0],
     tarih: serverTimestamp(),
-    parentId: null
+    parentId: null,
+    begeniler: 0,
+    dislikelar: 0,
+    begenenler: [],
+    dislikelayanlar: []
   });
   yorumInput.value = "";
   yorumlariGetir();
 });
 
-// Yorumları getir ve iç içe yaz
 async function yorumlariGetir() {
   const yorumlarRef = collection(db, `konular/${aktifKonuId}/yorumlar`);
   const q = query(yorumlarRef, orderBy("tarih"));
   const snap = await getDocs(q);
-
   const yorumlar = [];
-  snap.forEach((docu) => {
-    yorumlar.push({ id: docu.id, ...docu.data() });
-  });
-
+  snap.forEach((docu) => yorumlar.push({ id: docu.id, ...docu.data() }));
   const agac = kurYorumAgaci(yorumlar);
   const container = document.getElementById("yorumlar");
   container.innerHTML = "";
@@ -96,9 +87,7 @@ async function yorumlariGetir() {
 }
 
 function kurYorumAgaci(yorumlar, parentId = null) {
-  return yorumlar
-    .filter((y) => y.parentId === parentId)
-    .map((y) => ({ ...y, alt: kurYorumAgaci(yorumlar, y.id) }));
+  return yorumlar.filter((y) => y.parentId === parentId).map((y) => ({ ...y, alt: kurYorumAgaci(yorumlar, y.id) }));
 }
 
 function olusturYorumHTML(yorum) {
@@ -107,6 +96,11 @@ function olusturYorumHTML(yorum) {
   div.innerHTML = `
     <p>${yorum.yorum}</p>
     <small>${yorum.kullaniciAdi} • ${yorum.tarih?.toDate().toLocaleString() || ""}</small>
+    <div>
+      ❤️ ${yorum.begeniler || 0}
+      <button onclick="window.begen('${yorum.id}', true)">Beğen</button>
+      <button onclick="window.begen('${yorum.id}', false)">Dislike</button>
+    </div>
     <div class="cevap-form">
       <textarea placeholder="Cevap yaz..." id="cevap-${yorum.id}"></textarea>
       <button onclick="window.yanitlaYorum('${yorum.id}')">Yanıtla</button>
@@ -130,8 +124,31 @@ window.yanitlaYorum = async function (parentId) {
     uid: currentUser.uid,
     kullaniciAdi: currentUser.email.split("@")[0],
     tarih: serverTimestamp(),
-    parentId: parentId
+    parentId: parentId,
+    begeniler: 0,
+    dislikelar: 0,
+    begenenler: [],
+    dislikelayanlar: []
   });
   textarea.value = "";
+  yorumlariGetir();
+};
+
+window.begen = async function (yorumId, begeniMi) {
+  const yorumRef = doc(db, `konular/${aktifKonuId}/yorumlar/${yorumId}`);
+  const snap = await getDoc(yorumRef);
+  if (!snap.exists()) return;
+  const data = snap.data();
+  const begenenler = data.begenenler || [];
+  const dislikelayanlar = data.dislikelayanlar || [];
+  if (begenenler.includes(currentUser.uid) || dislikelayanlar.includes(currentUser.uid)) {
+    alert("Bu yoruma zaten oy verdiniz.");
+    return;
+  }
+  const updates = {
+    [begeniMi ? "begeniler" : "dislikelar"]: increment(1),
+    [begeniMi ? "begenenler" : "dislikelayanlar"]: [...(begeniMi ? begenenler : dislikelayanlar), currentUser.uid]
+  };
+  await updateDoc(yorumRef, updates);
   yorumlariGetir();
 };
