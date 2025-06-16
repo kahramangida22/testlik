@@ -1,13 +1,16 @@
-// admin-kizlar.js
+// admin-kizlar.js (GÜNCELLENDİ: RAPORLARI GÖRÜNTÜLEME + ENGELLEME)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import {
   getFirestore,
   collection,
   addDoc,
-  serverTimestamp
+  serverTimestamp,
+  getDocs,
+  deleteDoc,
+  updateDoc,
+  doc
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-// Firebase yapılandırması
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
   authDomain: "testlik.firebaseapp.com",
@@ -20,45 +23,51 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const konuInput = document.getElementById("konuJsonInput");
-const konuBtn = document.getElementById("konuEkleBtn");
-const sonucAlani = document.getElementById("sonucAlani");
+const raporDiv = document.createElement("section");
+raporDiv.innerHTML = `<h2>🚨 Raporlanan Konular</h2><div id="raporlar"></div>`;
+document.body.appendChild(raporDiv);
 
-konuBtn.addEventListener("click", async () => {
-  const input = konuInput.value.trim();
-  if (!input) return yazSonuc("Lütfen konu JSON'u girin.", false);
+async function raporlariYukle() {
+  const raporlarAlani = document.getElementById("raporlar");
+  raporlarAlani.innerHTML = "Yükleniyor...";
+  const snap = await getDocs(collection(db, "raporlar"));
+  raporlarAlani.innerHTML = "";
 
-  let konular = [];
-  try {
-    konular = JSON.parse(input);
-  } catch {
-    return yazSonuc("Geçersiz JSON formatı.", false);
-  }
+  snap.forEach(async (raporDoc) => {
+    const rapor = raporDoc.data();
+    if (rapor.tur === "konu") {
+      const konuRef = doc(db, "konular", rapor.konuId);
+      const konuSnap = await getDocs(collection(db, "konular"));
+      const konu = konuSnap.docs.find(k => k.id === rapor.konuId)?.data();
+      if (!konu) return;
 
-  let eklendi = 0;
-  for (const konu of konular) {
-    if (!konu.baslik || !konu.aciklama) continue;
-    await addDoc(collection(db, "konular"), {
-      baslik: konu.baslik,
-      aciklama: konu.aciklama,
-      kullaniciAdi: "admin",
-      uid: "admin",
-      tarih: serverTimestamp(),
-      begeniler: 0,
-      dislikelar: 0,
-      begenenler: [],
-      dislikelayanlar: [],
-      okunma: 0
-    });
-    eklendi++;
-  }
-
-  yazSonuc(`${eklendi} konu başarıyla eklendi ✅`);
-  konuInput.value = "";
-});
-
-function yazSonuc(mesaj, basarili = true) {
-  sonucAlani.innerText = mesaj;
-  sonucAlani.style.color = basarili ? "green" : "red";
-  setTimeout(() => (sonucAlani.innerText = ""), 4000);
+      const div = document.createElement("div");
+      div.className = "rapor-kutu";
+      div.innerHTML = `
+        <p><strong>${konu.baslik}</strong></p>
+        <p>${konu.aciklama}</p>
+        <button onclick="silKonu('${rapor.konuId}', '${raporDoc.id}')">Kaldır</button>
+        <button onclick="engelKoy('${rapor.uid}')">Kullanıcıyı 7 Gün Engelle</button>
+      `;
+      raporlarAlani.appendChild(div);
+    }
+  });
 }
+
+window.silKonu = async (konuId, raporId) => {
+  await deleteDoc(doc(db, "konular", konuId));
+  await deleteDoc(doc(db, "raporlar", raporId));
+  alert("Konu ve rapor silindi.");
+  raporlariYukle();
+};
+
+window.engelKoy = async (uid) => {
+  const engelTarihi = new Date();
+  engelTarihi.setDate(engelTarihi.getDate() + 7);
+  await updateDoc(doc(db, "kullanicilar", uid), {
+    engelTarihi: engelTarihi.toISOString()
+  });
+  alert("Kullanıcı 7 gün boyunca engellendi.");
+};
+
+raporlariYukle();
