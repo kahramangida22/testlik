@@ -1,13 +1,24 @@
-// konu.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import {
-  getFirestore, doc, getDoc, collection, query, where,
-  addDoc, serverTimestamp, orderBy, getDocs, updateDoc, increment
+  getFirestore,
+  doc,
+  getDoc,
+  updateDoc,
+  increment,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  orderBy,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+
 import {
-  getAuth, onAuthStateChanged
+  getAuth,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
   authDomain: "testlik.firebaseapp.com",
@@ -21,117 +32,93 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+// Konu ID'yi al
+const params = new URLSearchParams(window.location.search);
+const konuId = params.get("id");
 let currentUser;
-let aktifKonuId;
 
-// Yardımcı: URL'den id al
-function getQueryParam(name) {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get(name);
-}
-
-// Kullanıcı kontrolü
 onAuthStateChanged(auth, async (user) => {
   if (!user) return (window.location.href = "giris.html");
   currentUser = user;
-
-  aktifKonuId = getQueryParam("id");
-  if (!aktifKonuId) return (window.location.href = "kizlar-klubu.html");
-
-  await updateDoc(doc(db, "konular", aktifKonuId), { okunma: increment(1) });
-  yukleKonu();
-  yorumlariGetir();
+  konuYukle();
+  yorumlariYukle();
 });
 
-// Konu verisini getir
-async function yukleKonu() {
-  const docRef = doc(db, "konular", aktifKonuId);
-  const docSnap = await getDoc(docRef);
-  if (!docSnap.exists()) return;
+async function konuYukle() {
+  const ref = doc(db, "konular", konuId);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) return;
 
-  const veri = docSnap.data();
-  document.getElementById("konuDetay").innerHTML = `
-    <div class="konu-kutu">
-      <h2>${veri.baslik}</h2>
-      <p>${veri.aciklama}</p>
-      <small>${veri.kullaniciAdi} • ${veri.tarih?.toDate().toLocaleString() || ""}</small>
-    </div>
-  `;
+  const veri = snap.data();
+  document.getElementById("konuBaslik").innerText = veri.baslik;
+  document.getElementById("konuAciklama").innerText = veri.aciklama;
+  document.getElementById("konuYazar").innerText = veri.kullaniciAdi;
+  document.getElementById("konuTarih").innerText = veri.tarih?.toDate().toLocaleString() || "";
+  document.getElementById("konuOkunma").innerText = (veri.okunma || 0) + 1;
+
+  // Okunma sayısını 1 artır
+  await updateDoc(ref, { okunma: increment(1) });
+
+  // Beğeniler
+  document.getElementById("begenBtn").onclick = async () => {
+    await updateDoc(ref, { begeniler: increment(1) });
+    alert("❤️ Beğendin!");
+  };
+
+  document.getElementById("dislikeBtn").onclick = async () => {
+    await updateDoc(ref, { dislikelar: increment(1) });
+    alert("👎 Beğenmedin!");
+  };
+
+  document.getElementById("raporlaBtn").onclick = async () => {
+    await addDoc(collection(db, "raporlar"), {
+      konuId: konuId,
+      uid: currentUser.uid,
+      tur: "konu",
+      tarih: serverTimestamp()
+    });
+    alert("🚨 Rapor gönderildi!");
+  };
 }
 
-// Yorum gönder
-const yorumInput = document.getElementById("yorumInput");
-const yorumGonderBtn = document.getElementById("yorumGonderBtn");
+async function yorumlariYukle() {
+  const liste = document.getElementById("yorumListesi");
+  liste.innerHTML = "";
 
-yorumGonderBtn.addEventListener("click", async () => {
-  const yorum = yorumInput.value.trim();
-  if (yorum.length < 5) return alert("Yorum çok kısa.");
+  const q = query(
+    collection(db, "konular", konuId, "yorumlar"),
+    orderBy("tarih", "asc")
+  );
+  const snap = await getDocs(q);
 
-  await addDoc(collection(db, `konular/${aktifKonuId}/yorumlar`), {
+  snap.forEach((docu) => {
+    const y = docu.data();
+    const div = document.createElement("div");
+    div.className = "yorum-kutu";
+    div.innerHTML = `
+      <p>${y.yorum}</p>
+      <small>${y.kullaniciAdi} • ${y.tarih?.toDate().toLocaleString() || ""}</small>
+    `;
+    liste.appendChild(div);
+  });
+}
+
+document.getElementById("yorumGonderBtn").addEventListener("click", async () => {
+  const yorum = document.getElementById("yorumInput").value.trim();
+  if (yorum.length < 3) return alert("Yorum çok kısa!");
+
+  const yorumRef = collection(db, "konular", konuId, "yorumlar");
+  await addDoc(yorumRef, {
     yorum,
     uid: currentUser.uid,
     kullaniciAdi: currentUser.email.split("@")[0],
-    tarih: serverTimestamp(),
-    parentId: null
+    tarih: serverTimestamp()
   });
-  yorumInput.value = "";
-  yorumlariGetir();
+
+  await updateDoc(doc(db, "konular", konuId), {
+    yorumSayisi: increment(1)
+  });
+
+  document.getElementById("yorumInput").value = "";
+  yorumlariYukle();
 });
-
-// Yorumları getir ve iç içe yaz
-async function yorumlariGetir() {
-  const yorumlarRef = collection(db, `konular/${aktifKonuId}/yorumlar`);
-  const q = query(yorumlarRef, orderBy("tarih"));
-  const snap = await getDocs(q);
-
-  const yorumlar = [];
-  snap.forEach((docu) => {
-    yorumlar.push({ id: docu.id, ...docu.data() });
-  });
-
-  const agac = kurYorumAgaci(yorumlar);
-  const container = document.getElementById("yorumlar");
-  container.innerHTML = "";
-  agac.forEach((y) => container.appendChild(olusturYorumHTML(y)));
-}
-
-function kurYorumAgaci(yorumlar, parentId = null) {
-  return yorumlar
-    .filter((y) => y.parentId === parentId)
-    .map((y) => ({ ...y, alt: kurYorumAgaci(yorumlar, y.id) }));
-}
-
-function olusturYorumHTML(yorum) {
-  const div = document.createElement("div");
-  div.className = "yorum-kutu";
-  div.innerHTML = `
-    <p>${yorum.yorum}</p>
-    <small>${yorum.kullaniciAdi} • ${yorum.tarih?.toDate().toLocaleString() || ""}</small>
-    <div class="cevap-form">
-      <textarea placeholder="Cevap yaz..." id="cevap-${yorum.id}"></textarea>
-      <button onclick="window.yanitlaYorum('${yorum.id}')">Yanıtla</button>
-    </div>
-  `;
-  if (yorum.alt?.length > 0) {
-    const altlar = document.createElement("div");
-    altlar.className = "yorum-alt";
-    yorum.alt.forEach((alt) => altlar.appendChild(olusturYorumHTML(alt)));
-    div.appendChild(altlar);
-  }
-  return div;
-}
-
-window.yanitlaYorum = async function (parentId) {
-  const textarea = document.getElementById("cevap-" + parentId);
-  const metin = textarea.value.trim();
-  if (metin.length < 3) return alert("Cevap çok kısa.");
-  await addDoc(collection(db, `konular/${aktifKonuId}/yorumlar`), {
-    yorum: metin,
-    uid: currentUser.uid,
-    kullaniciAdi: currentUser.email.split("@")[0],
-    tarih: serverTimestamp(),
-    parentId: parentId
-  });
-  textarea.value = "";
-  yorumlariGetir();
-};
