@@ -10,7 +10,8 @@ import {
   increment,
   getDocs,
   query,
-  orderBy
+  orderBy,
+  setDoc
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
 import {
@@ -39,8 +40,9 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   const userRef = doc(db, "kullanicilar", user.uid);
-  let userSnap = await getDoc(userRef);
+  window.userRef = userRef;
 
+  let userSnap = await getDoc(userRef);
   if (!userSnap.exists()) {
     await setDoc(userRef, {
       kullaniciAdi: user.email.split("@")[0],
@@ -53,6 +55,11 @@ onAuthStateChanged(auth, async (user) => {
 
   const userData = userSnap.data();
 
+  if (!userData.cinsiyet) {
+    document.getElementById("cinsiyetModal").style.display = "flex";
+    return;
+  }
+
   if (userData.engelTarihi) {
     const engelTarih = new Date(userData.engelTarihi);
     if (engelTarih > new Date()) {
@@ -62,8 +69,8 @@ onAuthStateChanged(auth, async (user) => {
     }
   }
 
-  if (!userData.cinsiyet || userData.cinsiyet.toLowerCase() !== "kadın") {
-    alert("❌ Kızlar Kulübü sadece kadın kullanıcılarımıza özeldir. Anlayışınız için teşekkür ederiz.");
+  if (userData.cinsiyet.toLowerCase() !== "kadın") {
+    alert("❌ Kızlar Kulübü sadece kadın kullanıcılarımıza özeldir.");
     setTimeout(() => {
       window.location.href = "index.html";
     }, 3000);
@@ -76,11 +83,14 @@ onAuthStateChanged(auth, async (user) => {
 
 window.cinsiyetSec = async (secim) => {
   if (!window.userRef) return;
+
   if (secim === "kadın") {
     await updateDoc(window.userRef, { cinsiyet: "kadın" });
+    document.getElementById("cinsiyetModal").style.display = "none";
     location.reload();
   } else {
-    alert("❌ Kızlar Kulübü sadece kadın kullanıcılarımıza özeldir. Anlayışınız için teşekkür ederiz.");
+    await updateDoc(window.userRef, { cinsiyet: "erkek" });
+    alert("❌ Kızlar Kulübü sadece kadın kullanıcılarımıza özeldir.");
     setTimeout(() => window.location.href = "index.html", 3000);
   }
 };
@@ -124,6 +134,7 @@ document.getElementById("filtreSelect").addEventListener("change", konulariYukle
 document.getElementById("yeniKonuBtn")?.addEventListener("click", () => {
   document.getElementById("yeniKonuModal").style.display = "flex";
 });
+
 window.modalKapat = () => {
   document.getElementById("yeniKonuModal").style.display = "none";
 };
@@ -155,8 +166,7 @@ document.getElementById("konuGonderBtn")?.addEventListener("click", async () => 
     yorumSayisi: 0
   });
 
-  const userRef = doc(db, "kullanicilar", uid);
-  await updateDoc(userRef, {
+  await updateDoc(doc(db, "kullanicilar", uid), {
     puan: increment(1000)
   });
 
