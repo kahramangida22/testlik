@@ -1,15 +1,16 @@
-/* Genel Ayarlar */
+/* Genel */
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #ffe0f0, #f0d9ff);
-  color: #4d004d;
+  font-family: 'Segoe UI', 'Quicksand', sans-serif;
+  background: linear-gradient(to right, #ffe5f3, #e3d1ff);
+  color: #4b0055;
+  overflow-x: hidden;
 }
 
 /* Navbar */
 .site-header {
   background: #fff0fa;
-  box-shadow: 0 2px 10px rgba(255, 192, 203, 0.4);
+  box-shadow: 0 3px 10px rgba(255, 160, 200, 0.3);
 }
 
 .navbar {
@@ -17,18 +18,21 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
+  flex-wrap: wrap;
 }
 
 .menu a {
-  margin-right: 20px;
+  margin: 8px;
   text-decoration: none;
-  color: #d63384;
-  font-weight: bold;
-  transition: color 0.3s ease;
+  color: #cc2b78;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
 }
 
 .menu a:hover {
   color: #800080;
+  text-decoration: underline;
 }
 
 .aktif {
@@ -38,13 +42,14 @@ body {
 
 /* Reklam Alanları */
 .reklam-ust, .reklam-alt {
-  background: #ffe0f0;
+  background: #ffd1ec;
   color: #800080;
   text-align: center;
-  padding: 10px;
+  padding: 12px;
   font-weight: bold;
-  border-top: 2px solid #ffb6c1;
-  border-bottom: 2px solid #ffb6c1;
+  font-size: 15px;
+  border-top: 2px solid #ffb6d1;
+  border-bottom: 2px solid #ffb6d1;
 }
 
 .reklam-sag, .reklam-sol {
@@ -69,15 +74,30 @@ body {
   left: 0;
 }
 
+/* MOBİLDE yan reklamları gizle */
+@media (max-width: 768px) {
+  .reklam-sag, .reklam-sol {
+    display: none;
+  }
+}
+
 /* Sayfa İçeriği */
 #icerik {
-  max-width: 800px;
+  max-width: 820px;
   margin: 80px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 0 20px rgba(255, 105, 180, 0.2);
-  animation: fadeIn 0.6s ease;
+  padding: 25px;
+  background: #ffffffd8;
+  border-radius: 22px;
+  box-shadow: 0 0 25px rgba(255, 105, 180, 0.2);
+  animation: fadeIn 0.7s ease;
+}
+
+/* Başlık */
+#icerik h1 {
+  color: #990066;
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 25px;
 }
 
 /* Konu Kutuları */
@@ -86,14 +106,15 @@ body {
   padding: 20px;
   margin-bottom: 15px;
   border: 2px dashed #d63384;
-  border-radius: 16px;
-  transition: transform 0.3s ease;
+  border-radius: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
 }
 
 .konu-kutu:hover {
-  transform: scale(1.02);
-  background: #ffe6f3;
+  transform: scale(1.01);
+  box-shadow: 0 0 10px rgba(255, 128, 170, 0.3);
+  background: #ffeaf6;
 }
 
 .konu-kutu h3 {
@@ -121,15 +142,16 @@ body {
 .modal-content {
   background: #fff0fa;
   padding: 30px;
-  border-radius: 20px;
+  border-radius: 24px;
   text-align: center;
   width: 90%;
-  max-width: 400px;
+  max-width: 420px;
   box-shadow: 0 0 15px rgba(255, 182, 193, 0.5);
 }
 
 .modal-content h3 {
   color: #800080;
+  margin-bottom: 20px;
 }
 
 .modal-content button {
@@ -153,12 +175,13 @@ body {
   background-color: #ff66b2;
   border: none;
   color: white;
-  padding: 10px 25px;
+  padding: 12px 30px;
   font-weight: bold;
   border-radius: 30px;
   cursor: pointer;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   transition: background-color 0.3s ease;
+  float: right;
 }
 
 #yeniKonuBtn:hover {
@@ -167,17 +190,18 @@ body {
 
 /* Select */
 #filtreSelect {
-  padding: 8px 12px;
-  border-radius: 12px;
+  padding: 10px 15px;
+  border-radius: 14px;
   border: 2px solid #d63384;
   background: #fff0fa;
   color: #800080;
   font-weight: bold;
-  margin-left: 10px;
+  margin-top: 10px;
+  font-size: 15px;
 }
 
 /* Animasyon */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
