@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin.html
+Disallow: /admin-kizlar.html
+
+Sitemap: https://testlik.vercel.app/sitemap.xml
