@@ -45,7 +45,7 @@ onAuthStateChanged(auth, async (user) => {
     tdSira.textContent = sira;
 
     const tdIsim = document.createElement("td");
-    tdIsim.textContent = veri.displayName || "İsimsiz";
+    tdIsim.textContent = veri.kullaniciAdi || "İsimsiz";
 
     const tdPuan = document.createElement("td");
     tdPuan.textContent = veri.puan || 0;
@@ -55,11 +55,10 @@ onAuthStateChanged(auth, async (user) => {
     tr.appendChild(tdPuan);
     tabloBody.appendChild(tr);
 
-    // Eğer giriş yapan kullanıcıysa, üst kutuya yazmak için sakla
     if (user && uid === user.uid) {
       benimVeri = {
         sira,
-        isim: veri.displayName || "İsimsiz",
+        isim: veri.kullaniciAdi || "İsimsiz",
         puan: veri.puan || 0
       };
     }
