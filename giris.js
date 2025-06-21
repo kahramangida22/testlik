@@ -8,10 +8,10 @@ import {
   getFirestore,
   doc,
   getDoc,
-  setDoc
+  setDoc,
+  updateDoc
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-// Firebase config (senin yapılandırman)
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
   authDomain: "testlik.firebaseapp.com",
@@ -36,15 +36,27 @@ document.getElementById("girisBtn").addEventListener("click", async () => {
     const docSnap = await getDoc(userRef);
 
     if (!docSnap.exists()) {
+      // Yeni kullanıcı: boş profil oluştur
       await setDoc(userRef, {
         uid: user.uid,
-        ad: user.displayName || "Kullanıcı",
         puan: 0
       });
-      localStorage.setItem("puan", 0);
-    } else {
-      const data = docSnap.data();
-      localStorage.setItem("puan", data.puan || 0);
+    }
+
+    // Kullanıcıya ad ve cinsiyet sor (eğer yoksa)
+    const snapshot = await getDoc(userRef);
+    const userData = snapshot.data();
+
+    if (!userData.kullaniciAdi || !userData.cinsiyet) {
+      const kullaniciAdi = prompt("Kullanıcı adınızı girin:");
+      const cinsiyet = prompt("Cinsiyetinizi girin (kadın/erkek):");
+
+      if (kullaniciAdi && cinsiyet) {
+        await updateDoc(userRef, {
+          kullaniciAdi,
+          cinsiyet
+        });
+      }
     }
 
     window.location.href = "index.html";
