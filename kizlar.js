@@ -1,3 +1,4 @@
+// kizlar.js (güncellenmiş)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import {
   getFirestore,
@@ -19,7 +20,6 @@ import {
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 
-// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDcneigub2eAJjTrfrkiETuLgy5ule8L6s",
   authDomain: "testlik.firebaseapp.com",
@@ -34,46 +34,18 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    window.location.href = "giris.html";
-    return;
-  }
+  if (!user) return window.location.href = "giris.html";
 
   const userRef = doc(db, "kullanicilar", user.uid);
-  window.userRef = userRef;
+  const userSnap = await getDoc(userRef);
 
-  let userSnap = await getDoc(userRef);
-  if (!userSnap.exists()) {
-    await setDoc(userRef, {
-      kullaniciAdi: user.email.split("@")[0],
-      uid: user.uid,
-      puan: 0,
-      cinsiyet: ""
-    });
-    userSnap = await getDoc(userRef);
-  }
+  if (!userSnap.exists()) return;
 
   const userData = userSnap.data();
+  const cinsiyet = userData.cinsiyet?.toLowerCase();
 
-  if (!userData.cinsiyet) {
-    document.getElementById("cinsiyetModal").style.display = "flex";
-    return;
-  }
-
-  if (userData.engelTarihi) {
-    const engelTarih = new Date(userData.engelTarihi);
-    if (engelTarih > new Date()) {
-      alert("Hesabınız geçici olarak kısıtlandı. Lütfen daha sonra tekrar deneyin.");
-      window.location.href = "index.html";
-      return;
-    }
-  }
-
-  if (userData.cinsiyet.toLowerCase() !== "kadın") {
-    alert("❌ Kızlar Kulübü sadece kadın kullanıcılarımıza özeldir.");
-    setTimeout(() => {
-      window.location.href = "index.html";
-    }, 3000);
+  if (cinsiyet !== "kadın" && cinsiyet !== "diğer") {
+    document.getElementById("engelEkrani").style.display = "flex";
     return;
   }
 
@@ -81,26 +53,11 @@ onAuthStateChanged(auth, async (user) => {
   konulariYukle();
 });
 
-window.cinsiyetSec = async (secim) => {
-  if (!window.userRef) return;
-
-  if (secim === "kadın") {
-    await updateDoc(window.userRef, { cinsiyet: "kadın" });
-    document.getElementById("cinsiyetModal").style.display = "none";
-    location.reload();
-  } else {
-    await updateDoc(window.userRef, { cinsiyet: "erkek" });
-    alert("❌ Kızlar Kulübü sadece kadın kullanıcılarımıza özeldir.");
-    setTimeout(() => window.location.href = "index.html", 3000);
-  }
-};
-
 async function konulariYukle() {
   const liste = document.getElementById("konuListesi");
   liste.innerHTML = "";
 
   const filtre = document.getElementById("filtreSelect").value;
-
   let siralama = "tarih";
   if (filtre === "populer") siralama = "yorumSayisi";
   if (filtre === "begeni") siralama = "begeniler";
@@ -130,7 +87,6 @@ async function konulariYukle() {
 }
 
 document.getElementById("filtreSelect").addEventListener("change", konulariYukle);
-
 document.getElementById("yeniKonuBtn")?.addEventListener("click", () => {
   document.getElementById("yeniKonuModal").style.display = "flex";
 });
@@ -142,7 +98,6 @@ window.modalKapat = () => {
 document.getElementById("konuGonderBtn")?.addEventListener("click", async () => {
   const baslik = document.getElementById("konuBaslik").value.trim();
   const aciklama = document.getElementById("konuAciklama").value.trim();
-
   if (baslik.length < 5 || aciklama.length < 10) {
     alert("Başlık en az 5, açıklama en az 10 karakter olmalı.");
     return;
