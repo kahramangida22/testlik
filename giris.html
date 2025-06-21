@@ -1,3 +1,4 @@
+<!-- giris.html -->
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -5,8 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Giriş Yap | Testlik.com</title>
   <meta name="description" content="Testlik.com'a Google hesabınla giriş yaparak puan toplayabilir, eğlenceli testler çözebilir ve yarışmalara katılabilirsin.">
-  <meta name="robots" content="index, follow"> <!-- Dilersen 'noindex' yapabiliriz ama şu an açık bıraktım -->
+  <meta name="robots" content="index, follow">
   <link rel="stylesheet" href="index-style.css" />
+  <script type="module" src="giris.js" defer></script>
   <style>
     body {
       margin: 0;
@@ -28,15 +30,12 @@
 
     .giris-kutu {
       background: rgba(255, 255, 255, 0.15);
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      backdrop-filter: blur(10px);
       border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
       padding: 3rem;
       text-align: center;
       color: white;
-      max-width: 400px;
     }
 
     .giris-kutu h1 {
@@ -50,22 +49,14 @@
     }
 
     @keyframes parilti {
-      to {
-        background-position: 200% center;
-      }
-    }
-
-    .giris-kutu p {
-      margin-bottom: 2rem;
-      font-size: 1.1rem;
+      to { background-position: 200% center; }
     }
 
     #girisBtn {
       background: linear-gradient(45deg, #ff4081, #7c4dff);
       color: white;
-      padding: 0.9rem 1.8rem;
+      padding: 0.9rem 2rem;
       font-size: 1rem;
-      font-weight: bold;
       border: none;
       border-radius: 50px;
       cursor: pointer;
@@ -77,26 +68,66 @@
 
     #girisBtn:hover {
       transform: scale(1.05);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
     }
 
-    #girisBtn::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -75%;
-      width: 50%;
-      height: 100%;
-      background: rgba(255,255,255,0.4);
-      transform: skewX(-25deg);
-      transition: 0.5s;
+    /* MODAL */
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
     }
 
-    #girisBtn:hover::before {
-      left: 130%;
+    .modal-icerik {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
     }
+
+    .modal-icerik input {
+      width: 80%;
+      padding: 10px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .cinsiyet-grup {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .cinsiyet-grup label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .modal-icerik button {
+      background-color: #6a11cb;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .modal-icerik button:hover {
+      background-color: #4a0fa6;
+    }
+
   </style>
-  <script type="module" src="giris.js" defer></script>
 </head>
 <body>
 
@@ -104,6 +135,20 @@
     <h1>🔐 Testlik.com</h1>
     <p>Google hesabınla giriş yap</p>
     <button id="girisBtn">📩 Google ile Giriş Yap</button>
+  </div>
+
+  <!-- Kullanıcı adı ve cinsiyet modal -->
+  <div id="profilModal" class="modal" style="display:none;">
+    <div class="modal-icerik">
+      <h2>Profilini Tamamla</h2>
+      <input type="text" id="kullaniciAdiInput" placeholder="Kullanıcı Adı">
+      <div class="cinsiyet-grup">
+        <label><input type="radio" name="cinsiyet" value="erkek"> Erkek</label>
+        <label><input type="radio" name="cinsiyet" value="kadın"> Kadın</label>
+        <label><input type="radio" name="cinsiyet" value="diğer"> Diğer</label>
+      </div>
+      <button id="kaydetBtn">Kaydet ve Devam Et</button>
+    </div>
   </div>
 
 </body>
