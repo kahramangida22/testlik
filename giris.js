@@ -26,41 +26,53 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+let currentUser;
+
 document.getElementById("girisBtn").addEventListener("click", async () => {
   const provider = new GoogleAuthProvider();
 
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
+    currentUser = user;
+
     const userRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(userRef);
 
     if (!docSnap.exists()) {
-      // Yeni kullanıcı: boş profil oluştur
       await setDoc(userRef, {
         uid: user.uid,
         puan: 0
       });
     }
 
-    // Kullanıcıya ad ve cinsiyet sor (eğer yoksa)
-    const snapshot = await getDoc(userRef);
-    const userData = snapshot.data();
-
-    if (!userData.kullaniciAdi || !userData.cinsiyet) {
-      const kullaniciAdi = prompt("Kullanıcı adınızı girin:");
-      const cinsiyet = prompt("Cinsiyetinizi girin (kadın/erkek):");
-
-      if (kullaniciAdi && cinsiyet) {
-        await updateDoc(userRef, {
-          kullaniciAdi,
-          cinsiyet
-        });
-      }
+    const data = (await getDoc(userRef)).data();
+    if (!data.kullaniciAdi || !data.cinsiyet) {
+      document.getElementById("profilModal").style.display = "flex";
+    } else {
+      window.location.href = "index.html";
     }
 
-    window.location.href = "index.html";
   } catch (error) {
     alert("Giriş yapılamadı: " + error.message);
   }
+});
+
+// Modal kayıt butonu
+document.getElementById("kaydetBtn").addEventListener("click", async () => {
+  const kullaniciAdi = document.getElementById("kullaniciAdiInput").value.trim();
+  const cinsiyet = document.querySelector('input[name="cinsiyet"]:checked')?.value;
+
+  if (!kullaniciAdi || !cinsiyet) {
+    alert("Lütfen tüm alanları doldurun.");
+    return;
+  }
+
+  const userRef = doc(db, "users", currentUser.uid);
+  await updateDoc(userRef, {
+    kullaniciAdi,
+    cinsiyet
+  });
+
+  window.location.href = "index.html";
 });
