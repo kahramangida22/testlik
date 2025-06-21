@@ -26,15 +26,6 @@
   <!-- Üst Banner Reklam -->
   <div class="reklam-ust">BU ALAN SADECE KADINLAR İÇİNDİR.</div>
 
-  <!-- Cinsiyet Seçimi Modal -->
-  <div id="cinsiyetModal" class="modal">
-    <div class="modal-content">
-      <h3>Cinsiyetinizi Seçin</h3>
-      <button onclick="cinsiyetSec('kadın')">Kadın</button>
-      <button onclick="cinsiyetSec('erkek')">Erkek</button>
-    </div>
-  </div>
-
   <!-- Dikey Reklamlar -->
   <div class="reklam-sag">REKLAM<br>DİKEY</div>
   <div class="reklam-sol">REKLAM<br>DİKEY</div>
@@ -44,7 +35,6 @@
     <header>
       <h1>Kızlar Kulübü</h1>
       <button id="yeniKonuBtn">+ Yeni Konu Aç</button>
-
       <select id="filtreSelect">
         <option value="tarih">En Yeni</option>
         <option value="populer">En Popüler</option>
@@ -68,5 +58,13 @@
 
   <!-- Footer Reklam -->
   <footer class="reklam-alt">REKLAM ALANI (728x90)</footer>
+
+  <!-- ERKEKLER İÇİN ENGEL EKRANI -->
+  <div id="engelEkrani" style="display:none; text-align:center; padding:2rem; color:#fff; background:linear-gradient(45deg, #ff0055, #7c4dff); position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:999; display:flex; align-items:center; justify-content:center; flex-direction:column;">
+    <h1>🚫 Giriş Reddedildi</h1>
+    <p style="max-width:400px;">Kızlar Kulübü sadece <strong>kadın</strong> olan ya da <strong>kendini kadın hisseden</strong> kullanıcılarımız içindir 💖 Bu alanda samimi ve güvenli bir ortam hedeflenmektedir.</p>
+    <button onclick="window.location.href='index.html'" style="margin-top:1rem; padding:10px 20px; border:none; border-radius:25px; background:white; color:#7c4dff; font-weight:bold;">Ana Sayfaya Dön</button>
+  </div>
+
 </body>
 </html>
