@@ -71,20 +71,24 @@
       }
     }
   </style>
-  <script>
-    // Sadece ilk girişte yönlendirme yapsın
-    if (!localStorage.getItem("hosgeldinGoruldu")) {
-      localStorage.setItem("hosgeldinGoruldu", "true");
-    } else {
-      window.location.href = "index.html";
-    }
-  </script>
 </head>
 <body>
   <div class="kutu-container">
-    <div class="kutu" onclick="window.location.href='index.html'">🏠 Ana Sayfa</div>
-    <div class="kutu" onclick="window.location.href='kizlar_klubu.html'">💅 Kızlar Kulübü</div>
-    <div class="kutu" onclick="window.location.href='haberler.html'">📰 Haberler</div>
+    <div class="kutu" onclick="openPage('index.html')">🏠 Ana Sayfa</div>
+    <div class="kutu" onclick="openPage('kizlar_klubu.html')">💅 Kızlar Kulübü</div>
+    <div class="kutu" onclick="openPage('haberler.html')">📰 Haberler</div>
   </div>
+
+  <script>
+    function openPage(target) {
+      localStorage.setItem("hosgeldinGoruldu", "true");
+      window.location.href = target;
+    }
+
+    // Eğer daha önce açılmışsa, bu sayfayı atla
+    if (localStorage.getItem("hosgeldinGoruldu")) {
+      window.location.href = "index.html";
+    }
+  </script>
 </body>
 </html>
