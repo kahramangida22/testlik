@@ -29,6 +29,7 @@
       gap: 2rem;
       flex-wrap: wrap;
       justify-content: center;
+      padding: 1rem;
     }
 
     .kutu {
@@ -37,7 +38,7 @@
       border: 2px solid rgba(255,255,255,0.2);
       border-radius: 20px;
       padding: 2rem;
-      width: 200px;
+      width: 220px;
       text-align: center;
       color: white;
       cursor: pointer;
@@ -47,9 +48,19 @@
       transition: transform 0.3s, background 0.3s;
     }
 
+    .kutu:nth-child(1) {
+      background-color: rgba(0, 255, 255, 0.2);
+    }
+    .kutu:nth-child(2) {
+      background-color: rgba(255, 105, 180, 0.2);
+    }
+    .kutu:nth-child(3) {
+      background-color: rgba(255, 255, 0, 0.2);
+    }
+
     .kutu:hover {
       transform: scale(1.05);
-      background: rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.35);
     }
 
     @media(max-width: 600px) {
@@ -60,6 +71,14 @@
       }
     }
   </style>
+  <script>
+    // Sadece ilk girişte yönlendirme yapsın
+    if (!localStorage.getItem("hosgeldinGoruldu")) {
+      localStorage.setItem("hosgeldinGoruldu", "true");
+    } else {
+      window.location.href = "index.html";
+    }
+  </script>
 </head>
 <body>
   <div class="kutu-container">
