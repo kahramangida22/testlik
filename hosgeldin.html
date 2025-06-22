@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Testlik.com'a Hoş Geldin</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: linear-gradient(270deg, #6a11cb, #2575fc, #ff0080, #6a11cb);
+      background-size: 800% 800%;
+      animation: gradientAnim 20s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    @keyframes gradientAnim {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .kutu-container {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .kutu {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 2rem;
+      width: 200px;
+      text-align: center;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1.2rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      transition: transform 0.3s, background 0.3s;
+    }
+
+    .kutu:hover {
+      transform: scale(1.05);
+      background: rgba(255,255,255,0.25);
+    }
+
+    @media(max-width: 600px) {
+      .kutu-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="kutu-container">
+    <div class="kutu" onclick="window.location.href='index.html'">🏠 Ana Sayfa</div>
+    <div class="kutu" onclick="window.location.href='kizlar_klubu.html'">💅 Kızlar Kulübü</div>
+    <div class="kutu" onclick="window.location.href='haberler.html'">📰 Haberler</div>
+  </div>
+</body>
+</html>
